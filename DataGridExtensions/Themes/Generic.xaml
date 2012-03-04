@@ -1,0 +1,87 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
+    xmlns:src="clr-namespace:DataGridExtensions">
+
+  <!-- Style for a filter check box. The check box is only visible when it's hovered, focused or has a value.  -->
+  <Style x:Key="{x:Static src:DataGridFilter.ColumnHeaderSearchCheckBoxStyleKey}" TargetType="CheckBox">
+    <Setter Property="IsThreeState" Value="True"/>
+    <Setter Property="Margin" Value="4,0,2,0"/>
+    <Style.Triggers>
+      <Trigger Property="CheckBox.IsChecked" Value="{x:Null}">
+        <Setter Property="Opacity" Value="0"/>
+      </Trigger>
+      <Trigger Property="IsMouseOver" Value="True">
+        <Setter Property="Opacity" Value="1"/>
+      </Trigger>
+      <Trigger Property="IsFocused" Value="True">
+        <Setter Property="Opacity" Value="1"/>
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+
+  <!-- Style for a filter text box. The text box is only visible when it's hovered, focused or has a value.  -->
+  <Style x:Key="{x:Static src:DataGridFilter.ColumnHeaderSearchTextBoxStyleKey}" TargetType="TextBox">
+    <Setter Property="MinWidth" Value="20"/>
+    <Setter Property="Margin" Value="4,0,2,0"/>
+    <Style.Triggers>
+      <Trigger Property="Text" Value="">
+        <Setter Property="Opacity" Value="0"/>
+      </Trigger>
+      <Trigger Property="IsMouseOver" Value="True">
+        <Setter Property="Opacity" Value="1"/>
+      </Trigger>
+      <Trigger Property="IsFocused" Value="True">
+        <Setter Property="Opacity" Value="1"/>
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+
+  <!-- Reusable filter symbol -->
+  <ControlTemplate x:Key="{x:Static src:DataGridFilter.IconTemplateKey}">
+    <Path Data="M0,0 L10,0 6,4 6,9 4,9 4,4 Z" Fill="Gray" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,0"/>
+  </ControlTemplate>
+
+  <Style TargetType="Control" x:Key="{x:Static src:DataGridFilter.IconStyleKey}">
+    <Setter Property="HorizontalAlignment" Value="Right"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="Template" Value="{DynamicResource {x:Static src:DataGridFilter.IconTemplateKey}}"/>
+    <Setter Property="Focusable" Value="False"/>
+  </Style>
+
+    <!-- Default style for the column header: strecht content -->
+  <Style TargetType="DataGridColumnHeader" x:Key="{x:Static src:DataGridFilter.DataGridColumnHeaderDefaultStyleKey}">
+    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+  </Style>
+
+  <!-- Default template for a filter on a colum represened by a DataGridTextColumn. -->
+  <ControlTemplate x:Key="{x:Static src:DataGridFilter.TextColumnFilterTemplateKey}">
+    <Grid>
+      <Control Style="{DynamicResource {x:Static src:DataGridFilter.IconStyleKey}}"/>
+      <TextBox Style="{DynamicResource {x:Static src:DataGridFilter.ColumnHeaderSearchTextBoxStyleKey}}"
+          Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}"/>
+    </Grid>
+  </ControlTemplate>
+
+  <!-- Default template for a filter on a colum represened by a DataGridCheckBoxColumn. -->
+  <ControlTemplate x:Key="{x:Static src:DataGridFilter.CheckBoxColumnFilterTemplateKey}">
+    <Grid>
+      <Control Style="{DynamicResource {x:Static src:DataGridFilter.IconStyleKey}}"/>
+      <CheckBox Style="{DynamicResource {x:Static src:DataGridFilter.ColumnHeaderSearchCheckBoxStyleKey}}"
+         IsChecked="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}"/>
+    </Grid>
+  </ControlTemplate>
+
+  <!-- Default template for the column header including the filter control. -->
+  <DataTemplate x:Key="{x:Static src:DataGridFilter.ColumnHeaderTemplateKey}">
+    <DockPanel>
+      <!-- The control to host the filter UI for this column -->
+      <src:DataGridFilterColumnControl DockPanel.Dock="Right"/>
+      <ContentPresenter x:Name="PART_Content" Content="{Binding}"
+          SnapsToDevicePixels="{Binding SnapsToDevicePixels, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridColumnHeader}}" 
+          HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridColumnHeader}}" 
+          VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridColumnHeader}}"/>
+    </DockPanel>
+  </DataTemplate>
+
+</ResourceDictionary>
