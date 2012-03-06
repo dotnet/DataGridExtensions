@@ -5,7 +5,7 @@
         xmlns:src="clr-namespace:DataGridExtensionsSample"
         xmlns:dgx="clr-namespace:DataGridExtensions;assembly=DataGridExtensions"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
-        Title="DataGrid dgx sample">
+        Title="DataGrid Extensions Sample">
   <Window.Resources>
 
     <dgx:RegexContentFilterFactory x:Key="RegexContentFilterFactory"/>
@@ -17,7 +17,7 @@
     </ControlTemplate>
 
     <ControlTemplate x:Key="FilterWithPopup">
-      <src:FilterWithPopupControl Filter="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}"/>
+      <src:FilterWithPopupControl Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}"/>
     </ControlTemplate>
 
   </Window.Resources>
