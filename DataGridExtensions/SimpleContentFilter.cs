@@ -10,8 +10,8 @@ namespace DataGridExtensions
     /// </summary>
     public class SimpleContentFilter : IContentFilter
     {
-        private string content;
-        private StringComparison stringComparison;
+        private readonly string content;
+        private readonly StringComparison stringComparison;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleContentFilter"/> class.

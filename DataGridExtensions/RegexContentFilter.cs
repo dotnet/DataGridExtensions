@@ -11,7 +11,7 @@ namespace DataGridExtensions
     /// </summary>
     public class RegexContentFilter : IContentFilter
     {
-        Regex filterRegex;
+        readonly Regex filterRegex;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RegexContentFilter"/> class.

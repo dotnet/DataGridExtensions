@@ -15,8 +15,8 @@ namespace DataGridExtensions
     /// </summary>
     public sealed class DataGridFilterColumnControl : Control, INotifyPropertyChanged
     {
-        private static BooleanToVisibilityConverter BooleanToVisibilityConverter = new BooleanToVisibilityConverter();
-        private static ControlTemplate EmptyControlTemplate = new ControlTemplate();
+        private static readonly BooleanToVisibilityConverter BooleanToVisibilityConverter = new BooleanToVisibilityConverter();
+        private static readonly ControlTemplate EmptyControlTemplate = new ControlTemplate();
 
         /// <summary>
         /// The column header of the column we are filtering. This control must be a child element of the column header.
@@ -43,7 +43,7 @@ namespace DataGridExtensions
         public DataGridFilterColumnControl()
         {
             Loaded += self_Loaded;
-            Unloaded += self_Loaded;
+            Unloaded += self_Unloaded;
 
             Focusable = false;
             this.DataContext = this;
@@ -173,12 +173,7 @@ namespace DataGridExtensions
                 activeFilter = filterHost.CreateContentFilter(Filter);
             }
 
-            var propertyValue = GetCellContent(item);
-
-            if (propertyValue == null)
-                return false;
-
-            return activeFilter.IsMatch(propertyValue);
+            return activeFilter.IsMatch(GetCellContent(item));
         }
 
         /// <summary>
@@ -232,17 +227,11 @@ namespace DataGridExtensions
         private IEnumerable<string> InternalValues()
         {
             var dataGrid = columnHeader.FindAncestorOrSelf<DataGrid>();
-            var items = dataGrid.Items;
+            var items = dataGrid.Items.Cast<object>();
 
-            foreach (var item in items)
-            {
-                var propertyValue = GetCellContent(item);
-
-                if (propertyValue != null)
-                {
-                    yield return propertyValue.ToString();
-                }
-            }
+            return items.Select(GetCellContent)
+                .Where(content => content != null)
+                .Select(content => content.ToString());
         }
 
         #region INotifyPropertyChanged Members

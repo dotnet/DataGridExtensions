@@ -18,7 +18,7 @@ namespace DataGridExtensions
         /// Initializes a new instance of the <see cref="DataGridFilteringEventArgs"/> class.
         /// </summary>
         /// <param name="columns">The additional columns that will be filtered.</param>
-        public DataGridFilteringEventArgs(DataGridColumn[] columns)
+        public DataGridFilteringEventArgs(ICollection<DataGridColumn> columns)
         {
             this.Columns = columns;
         }
@@ -26,7 +26,7 @@ namespace DataGridExtensions
         /// <summary>
         /// Gets the additional columns that will be filtered.
         /// </summary>
-        public IEnumerable<DataGridColumn> Columns
+        public ICollection<DataGridColumn> Columns
         {
             get;
             private set;

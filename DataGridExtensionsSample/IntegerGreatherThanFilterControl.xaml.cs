@@ -32,14 +32,7 @@ namespace DataGridExtensionsSample
             var text = textBox.Text;
             int threshold;
 
-            if (!int.TryParse(text, out threshold))
-            {
-                Filter = null;
-            }
-            else
-            {
-                Filter = new ContentFilter(threshold);
-            }
+            this.Filter = !int.TryParse(text, out threshold) ? null : new ContentFilter(threshold);
         }
 
         public IContentFilter Filter
@@ -55,7 +48,7 @@ namespace DataGridExtensionsSample
 
         class ContentFilter : IContentFilter
         {
-            int threshold;
+            readonly int threshold;
 
             public ContentFilter(int threshold)
             {
@@ -64,9 +57,12 @@ namespace DataGridExtensionsSample
 
             public bool IsMatch(object value)
             {
+                if (value == null)
+                    return false;
+
                 int i;
 
-                return int.TryParse(value.ToString(), out i) && (i > threshold);
+                return int.TryParse(value.ToString(), out i) && (i > this.threshold);
             }
         }
     }

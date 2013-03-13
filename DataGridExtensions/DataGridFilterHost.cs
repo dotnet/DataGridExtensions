@@ -96,27 +96,27 @@ namespace DataGridExtensions
         /// </summary>
         internal IContentFilter CreateContentFilter(object content)
         {
-            return DataGridFilter.GetContentFilterFactory(dataGrid).Create(content);
+            return this.dataGrid.GetContentFilterFactory().Create(content);
         }
 
         private void Columns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if ((e != null) && (e.NewItems != null))
+            if ((e == null) || (e.NewItems == null))
+                return;
+
+            if (!this.dataGrid.GetIsAutoFilterEnabled())
+                return;
+
+            var filteredColumnsWithEmptyHeaderTemplate = e.NewItems.Cast<DataGridColumn>().Where(column => column.GetIsFilterVisible() && (column.HeaderTemplate == null)).ToArray();
+
+            if (!filteredColumnsWithEmptyHeaderTemplate.Any())
+                return;
+
+            var headerTemplate = (DataTemplate)this.dataGrid.FindResource(DataGridFilter.ColumnHeaderTemplateKey);
+
+            foreach (var column in filteredColumnsWithEmptyHeaderTemplate)
             {
-                if (DataGridFilter.GetIsAutoFilterEnabled(dataGrid))
-                {
-                    foreach (DataGridColumn column in e.NewItems)
-                    {
-                        if (column.GetIsFilterVisible())
-                        {
-                            var originalHeaderTemplate = column.HeaderTemplate;
-                            if (originalHeaderTemplate == null)
-                            {
-                                column.HeaderTemplate = (DataTemplate)dataGrid.FindResource(DataGridFilter.ColumnHeaderTemplateKey);
-                            }
-                        }
-                    }
-                }
+                column.HeaderTemplate = headerTemplate;
             }
         }
 

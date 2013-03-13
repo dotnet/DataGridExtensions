@@ -25,7 +25,6 @@ namespace DataGridExtensionsSample
             InitializeComponent();
         }
 
-
         public double Minimum
         {
             get { return (double)GetValue(MinimumProperty); }
@@ -34,10 +33,8 @@ namespace DataGridExtensionsSample
         /// <summary>
         /// Identifies the Minimum dependency property
         /// </summary>
-        public static readonly DependencyProperty MinimumProperty =
-            DependencyProperty.Register("Minimum", typeof(double), typeof(FilterWithPopupControl)
-                , new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault
-                    , new PropertyChangedCallback((sender, e) => ((FilterWithPopupControl)sender).Range_Changed())));
+        public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register("Minimum", typeof(double), typeof(FilterWithPopupControl)
+                , new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (sender, e) => ((FilterWithPopupControl)sender).Range_Changed()));
 
         public double Maximum
         {
@@ -47,25 +44,15 @@ namespace DataGridExtensionsSample
         /// <summary>
         /// Identifies the Maximum dependency property
         /// </summary>
-        public static readonly DependencyProperty MaximumProperty =
-            DependencyProperty.Register("Maximum", typeof(double), typeof(FilterWithPopupControl)
-                , new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault
-                    , new PropertyChangedCallback((sender, e) => ((FilterWithPopupControl)sender).Range_Changed())));
+        public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register("Maximum", typeof(double), typeof(FilterWithPopupControl)
+                , new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (sender, e) => ((FilterWithPopupControl)sender).Range_Changed()));
 
         
         private void Range_Changed()
         {
-            if (Maximum > Minimum)
-            {
-                Filter = new ContentFilter(Minimum, Maximum);
-            }
-            else
-            {
-                Filter = null;
-            }
+            this.Filter = this.Maximum > this.Minimum ? new ContentFilter(this.Minimum, this.Maximum) : null;
         }
 
-        
         public IContentFilter Filter
         {
             get { return (IContentFilter)GetValue(FilterProperty); }
@@ -80,7 +67,8 @@ namespace DataGridExtensionsSample
 
         class ContentFilter : IContentFilter
         {
-            private double min, max;
+            private readonly double min;
+            private readonly double max;
 
             public ContentFilter(double min, double max)
             {
@@ -90,6 +78,9 @@ namespace DataGridExtensionsSample
 
             public bool IsMatch(object value)
             {
+                if (value == null)
+                    return false;
+
                 double number;
 
                 if (!double.TryParse(value.ToString(), out number))

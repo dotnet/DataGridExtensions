@@ -15,14 +15,14 @@ namespace DataGridExtensions
         /// <summary>
         /// Gets if the default filters are atomatically attached to each column.
         /// </summary>
-        public static bool GetIsAutoFilterEnabled(DataGrid obj)
+        public static bool GetIsAutoFilterEnabled(this DataGrid obj)
         {
             return (bool)obj.GetValue(IsAutoFilterEnabledProperty);
         }
         /// <summary>
         /// Sets if the default filters are atomatically attached to each column. Set to false if you want to control filters by code.
         /// </summary>
-        public static void SetIsAutoFilterEnabled(DataGrid obj, bool value)
+        public static void SetIsAutoFilterEnabled(this DataGrid obj, bool value)
         {
             obj.SetValue(IsAutoFilterEnabledProperty, value);
         }
