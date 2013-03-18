@@ -7,6 +7,8 @@ using DataGridExtensions;
 
 namespace DataGridExtensionsSample
 {
+    using System.Windows.Threading;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -39,10 +41,26 @@ namespace DataGridExtensionsSample
             }
             else if ((e.PropertyType != typeof(bool)) && e.PropertyType.IsPrimitive)
             {
-                // Hide the filter for all other primitive data types except bool. 
+                // Hide the filter for all other primitive data types except bool.
                 // Here we will hide the filter for the double DataItem.Probability.
                 e.Column.SetIsFilterVisible(false);
             }
+        }
+
+        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            // must defer action, filters not yet available in OnLoaded.
+            Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() =>
+            {
+                // Sample to manipulate the filter values by code.
+                var column = grid1.Columns[0];
+
+                var control = grid1.GetFilter().FilterColumnControls.FirstOrDefault(c => c.Column.Equals(column));
+                if (control != null)
+                {
+                    control.Filter = "True";
+                }
+            }));
         }
     }
 }

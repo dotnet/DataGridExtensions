@@ -9,6 +9,8 @@ using System.Windows.Threading;
 
 namespace DataGridExtensions
 {
+    using System.Collections.ObjectModel;
+
     /// <summary>
     /// This class hosts all filter columns and handles the filter changes on the data grid level.
     /// This class will be attached to the DataGrid.
@@ -22,7 +24,7 @@ namespace DataGridExtensions
         /// <summary>
         /// Filter information about each column.
         /// </summary>
-        private readonly List<DataGridFilterColumnControl> filterColumns = new List<DataGridFilterColumnControl>();
+        private readonly List<DataGridFilterColumnControl> filterColumnControls = new List<DataGridFilterColumnControl>();
         /// <summary>
         /// Timer to defer evaluation of the filter until user has stopped typing.
         /// </summary>
@@ -61,8 +63,19 @@ namespace DataGridExtensions
         /// </summary>
         public void Clear()
         {
-            filterColumns.ForEach(filter => filter.Filter = null);
+            filterColumnControls.ForEach(filter => filter.Filter = null);
             EvaluateFilter();
+        }
+
+        /// <summary>
+        /// Gets a the active filter column controls for this data grid.
+        /// </summary>
+        public IList<DataGridFilterColumnControl> FilterColumnControls
+        {
+            get
+            {
+                return new ReadOnlyCollection<DataGridFilterColumnControl>(filterColumnControls);
+            }
         }
 
         /// <summary>
@@ -80,7 +93,7 @@ namespace DataGridExtensions
         /// <param name="filterColumn"></param>
         internal void AddColumn(DataGridFilterColumnControl filterColumn)
         {
-            filterColumns.Add(filterColumn);
+            filterColumnControls.Add(filterColumn);
         }
 
         /// <summary>
@@ -88,7 +101,7 @@ namespace DataGridExtensions
         /// </summary>
         internal void RemoveColumn(DataGridFilterColumnControl filterColumn)
         {
-            filterColumns.Remove(filterColumn);
+            filterColumnControls.Remove(filterColumn);
         }
 
         /// <summary>
@@ -134,7 +147,7 @@ namespace DataGridExtensions
             var collectionView = CollectionViewSource.GetDefaultView(itemsSource);
 
             // Collect all active filters of all known columns.
-            var filters = filterColumns.Where(column => column.IsFiltered).ToArray();
+            var filters = filterColumnControls.Where(column => column.IsFiltered).ToArray();
 
             if (Filtering != null)
             {
@@ -168,7 +181,7 @@ namespace DataGridExtensions
             }
 
             // Notify all filters about the change of the collection view.
-            filterColumns.ForEach(filter => filter.ValuesUpdated());
+            filterColumnControls.ForEach(filter => filter.ValuesUpdated());
         }
     }
 }

@@ -152,7 +152,7 @@ namespace DataGridExtensions
         /// Returns a flag indicating whether this column has some filter condition to evaluate or not. 
         /// If there is no filter condition we don't need to invoke this filter.
         /// </summary>
-        internal bool IsFiltered
+        public bool IsFiltered
         {
             get
             {
@@ -186,7 +186,10 @@ namespace DataGridExtensions
             OnPropertyChanged("Values");
         }
 
-        internal DataGridColumn Column
+        /// <summary>
+        /// Gets the column this control is hosting the filter for.
+        /// </summary>
+        public DataGridColumn Column
         {
             get
             {

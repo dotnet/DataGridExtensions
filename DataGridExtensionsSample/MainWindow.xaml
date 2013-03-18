@@ -5,6 +5,7 @@
         xmlns:src="clr-namespace:DataGridExtensionsSample"
         xmlns:dgx="clr-namespace:DataGridExtensions;assembly=DataGridExtensions"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+        Loaded="MainWindow_OnLoaded"
         Title="DataGrid Extensions Sample">
   <Window.Resources>
 
@@ -32,7 +33,7 @@
             <Run>Just set the IsAutoFilterEnabled property to True, and get the simple but efficient default filter.</Run>
           </TextBlock>
 
-          <DataGrid ItemsSource="{Binding Items}" dgx:DataGridFilter.IsAutoFilterEnabled="True"/>
+          <DataGrid Name="grid1" ItemsSource="{Binding Items}" dgx:DataGridFilter.IsAutoFilterEnabled="True"/>
         </DockPanel>
       </TabItem>
 
