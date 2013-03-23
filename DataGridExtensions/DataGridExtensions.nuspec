@@ -14,7 +14,4 @@
         <copyright>© 2013 tom-englert.de</copyright>
         <tags>DGX DataGrid Filter</tags>
   </metadata>
-    <!--<files>
-      <file src="bin\release\DataGridExtensions.XML" target="lib\Net40\DataGridExtensions.XML" />
-    </files>-->
 </package>
