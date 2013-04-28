@@ -81,8 +81,13 @@ namespace DataGridExtensions
 
         void self_Unloaded(object sender, RoutedEventArgs e)
         {
-            // Detach from host.
-            filterHost.RemoveColumn(this);
+            // Detach from host. 
+            // Must check for null,.unloaded event might be raised even if no loaded event has been raised before!
+            if (filterHost != null)
+            {
+                filterHost.RemoveColumn(this);
+            }
+
             // Clear all bindings generatend during load. 
             BindingOperations.ClearBinding(this, VisibilityProperty);
             BindingOperations.ClearBinding(this, TemplateProperty);
