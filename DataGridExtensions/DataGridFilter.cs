@@ -37,8 +37,8 @@ namespace DataGridExtensions
             var dataGrid = sender as DataGrid;
             if (dataGrid != null)
             {
-                // Force creation of the host.
-                dataGrid.GetFilter();
+                // Force creation of the host and show or hide the controls.
+                dataGrid.GetFilter().Enable((bool)e.NewValue);
             }
         }
 

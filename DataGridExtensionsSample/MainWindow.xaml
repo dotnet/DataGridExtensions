@@ -5,7 +5,7 @@
         xmlns:src="clr-namespace:DataGridExtensionsSample"
         xmlns:dgx="clr-namespace:DataGridExtensions;assembly=DataGridExtensions"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
-        Loaded="MainWindow_OnLoaded"
+        Loaded="MainWindow_OnLoaded" TextOptions.TextFormattingMode="Display" UseLayoutRounding="True"
         Title="DataGrid Extensions Sample">
   <Window.Resources>
 
@@ -20,6 +20,11 @@
     <ControlTemplate x:Key="FilterWithPopup">
       <src:FilterWithPopupControl Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}"/>
     </ControlTemplate>
+    
+    <Style TargetType="DataGrid">
+      <Setter Property="HorizontalGridLinesBrush" Value="LightGray"/>
+      <Setter Property="VerticalGridLinesBrush" Value="LightGray"/>
+    </Style>
 
   </Window.Resources>
 
@@ -28,12 +33,15 @@
 
       <TabItem Header="Basic usage">
         <DockPanel>
-          <TextBlock DockPanel.Dock="Top" Margin="10" TextWrapping="WrapWithOverflow">
-            <Run>This tab shows the very basic usage.</Run><LineBreak/>
-            <Run>Just set the IsAutoFilterEnabled property to True, and get the simple but efficient default filter.</Run>
-          </TextBlock>
-
-          <DataGrid Name="grid1" ItemsSource="{Binding Items}" dgx:DataGridFilter.IsAutoFilterEnabled="True"/>
+          <StackPanel Margin="10" DockPanel.Dock="Top">
+            <TextBlock TextWrapping="WrapWithOverflow">
+              <Run>This tab shows the very basic usage.</Run><LineBreak/>
+              <Run>Just set the IsAutoFilterEnabled property to True, and get the simple but efficient default filter.</Run>
+            </TextBlock>
+            <Decorator Height="10"/>
+            <CheckBox x:Name="isFilterEnabled" DockPanel.Dock="Top" IsChecked="True" Content="Enable filters"/>
+          </StackPanel>
+          <DataGrid Name="grid1" ItemsSource="{Binding Items}" dgx:DataGridFilter.IsAutoFilterEnabled="{Binding Path=IsChecked, ElementName=isFilterEnabled}"/>
         </DockPanel>
       </TabItem>
 

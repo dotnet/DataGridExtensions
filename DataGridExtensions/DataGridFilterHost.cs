@@ -58,6 +58,7 @@ namespace DataGridExtensions
         /// </summary>
         public event EventHandler<DataGridFilteringEventArgs> Filtering;
 
+
         /// <summary>
         /// Clear all existing filter conditions.
         /// </summary>
@@ -76,6 +77,16 @@ namespace DataGridExtensions
             {
                 return new ReadOnlyCollection<DataGridFilterColumnControl>(filterColumnControls);
             }
+        }
+
+        /// <summary>
+        /// Enables filtering by showing or hiding the filter contols.
+        /// </summary>
+        /// <param name="value">if set to <c>true</c>, filters controls are visible and filtering is enabled.</param>
+        internal void Enable(bool value)
+        {
+            filterColumnControls.ForEach(control => control.Visibility = value ? Visibility.Visible : Visibility.Hidden);
+            EvaluateFilter();
         }
 
         /// <summary>
@@ -147,7 +158,7 @@ namespace DataGridExtensions
             var collectionView = CollectionViewSource.GetDefaultView(itemsSource);
 
             // Collect all active filters of all known columns.
-            var filters = filterColumnControls.Where(column => column.IsFiltered).ToArray();
+            var filters = filterColumnControls.Where(column => column.IsVisible && column.IsFiltered).ToArray();
 
             if (Filtering != null)
             {
