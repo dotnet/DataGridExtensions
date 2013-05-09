@@ -151,11 +151,7 @@ namespace DataGridExtensions
         {
             deferFilterEvaluationTimer.Stop();
 
-            // Get the collection view of the grids ItemsSource
-            var itemsSource = dataGrid.ItemsSource;
-            if (itemsSource == null)
-                return;
-            var collectionView = CollectionViewSource.GetDefaultView(itemsSource);
+            var collectionView = dataGrid.Items;
 
             // Collect all active filters of all known columns.
             var filters = filterColumnControls.Where(column => column.IsVisible && column.IsFiltered).ToArray();

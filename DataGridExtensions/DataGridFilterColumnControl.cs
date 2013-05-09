@@ -64,8 +64,9 @@ namespace DataGridExtensions
 
                 // Find our host and attach oursef.
                 filterHost = dataGrid.GetFilter();
-                filterHost.AddColumn(this);
             }
+
+            filterHost.AddColumn(this);
 
             // Must set a non-null empty template here, else we won't get the coerce value callback when the columns attached property is null!
             Template = EmptyControlTemplate;
