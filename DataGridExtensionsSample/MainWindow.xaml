@@ -66,7 +66,7 @@
             <Run>This tab shows how to customize the filters in XAML when using explicit generated columns. Read the comments in the XAML for details.</Run><LineBreak/>
             <Run>Overrides the icon template to show an orange filter symbol.</Run>
           </TextBlock>
-          <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="False" dgx:DataGridFilter.IsAutoFilterEnabled="True">
+          <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="False" dgx:DataGridFilter.IsAutoFilterEnabled="True" dgx:Tools.ApplyInitialSorting="True">
             <DataGrid.Resources>
 
               <!-- Override the filter icon used in the default templates with an orange symbol; active for this grid only -->
@@ -95,7 +95,7 @@
               <!-- Use the integer filter for the integer column. -->
               <DataGridTextColumn Header="Integer/Custom" Binding="{Binding Index, Mode=OneWay}" dgx:DataGridFilterColumn.Template="{StaticResource IntegerFilter}"/>
               <!-- Hide the filter for this column. -->
-              <DataGridTextColumn Header="Text/No Filter" Binding="{Binding Column1, Mode=OneWay}" dgx:DataGridFilterColumn.IsFilterVisible="False"/>
+              <DataGridTextColumn Header="Text/No Filter" Binding="{Binding Column1, Mode=OneWay}" dgx:DataGridFilterColumn.IsFilterVisible="False" SortDirection="Descending"/>
               <!-- Use the default filter for this column. -->
               <DataGridTextColumn Header="Text/Text" Binding="{Binding Column2, Mode=OneWay}"/>
               <!-- Use a special filter using a toggle button with a popup to enter more than one condition. -->
