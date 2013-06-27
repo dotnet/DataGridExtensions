@@ -46,7 +46,7 @@ namespace DataGridExtensions
                 dataGrid.Loaded -= dataGrid_Loaded;
         }
 
-        static void dataGrid_Loaded(object sender, RoutedEventArgs e)
+        private static void dataGrid_Loaded(object sender, RoutedEventArgs e)
         {
             var dataGrid = sender as DataGrid;
             if (dataGrid == null)

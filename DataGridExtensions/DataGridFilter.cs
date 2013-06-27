@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 
 namespace DataGridExtensions
 {
@@ -140,17 +139,6 @@ namespace DataGridExtensions
             get
             {
                 return new ComponentResourceKey(typeof(DataGridFilter), typeof(DataGridColumn));
-            }
-        }
-
-        /// <summary>
-        /// Default style applied to the column header.
-        /// </summary>
-        public static ResourceKey DataGridColumnHeaderDefaultStyleKey
-        {
-            get
-            {
-                return new ComponentResourceKey(typeof(DataGridFilter), typeof(DataGridColumnHeader));
             }
         }
 

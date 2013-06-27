@@ -7,6 +7,7 @@ using DataGridExtensions;
 
 namespace DataGridExtensionsSample
 {
+    using System.Diagnostics;
     using System.Windows.Threading;
 
     /// <summary>
@@ -19,6 +20,23 @@ namespace DataGridExtensionsSample
         public MainWindow()
         {
             InitializeComponent();
+
+            // Sample usage of the filtering event
+            grid1.GetFilter().Filtering += Grid1_Filtering;
+        }
+
+        void Grid1_Filtering(object sender, DataGridFilteringEventArgs e)
+        {
+            // Here we could prepare some data or even cancel the filtering process.
+
+            Dispatcher.BeginInvoke(new Action(Grid1_Filtered));
+        }
+
+        void Grid1_Filtered()
+        {
+            // Here we could show some information about the result of the filtering.
+
+            Trace.WriteLine(grid1.Items.Count);
         }
 
         /// <summary>
@@ -62,5 +80,7 @@ namespace DataGridExtensionsSample
                 }
             }));
         }
+
+
     }
 }

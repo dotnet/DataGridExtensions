@@ -4,12 +4,12 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Threading;
 
 namespace DataGridExtensions
 {
     using System.Collections.ObjectModel;
+    using System.Windows.Controls.Primitives;
 
     /// <summary>
     /// This class hosts all filter columns and handles the filter changes on the data grid level.
@@ -49,7 +49,11 @@ namespace DataGridExtensions
             if (this.dataGrid.ColumnHeaderStyle == null)
             {
                 // Assign a default style that changes HorizontalContentAlignment to "Stretch", so our filter symbol will appear on the right edge of the column.
-                this.dataGrid.ColumnHeaderStyle = (Style)dataGrid.FindResource(DataGridFilter.DataGridColumnHeaderDefaultStyleKey);
+                var baseStyle = (Style)dataGrid.FindResource(typeof(DataGridColumnHeader));
+                var newStyle = new Style(typeof(DataGridColumnHeader), baseStyle);
+                newStyle.Setters.Add(new Setter(Control.HorizontalContentAlignmentProperty, HorizontalAlignment.Stretch));
+
+                this.dataGrid.ColumnHeaderStyle = newStyle;
             }
         }
 
@@ -184,7 +188,7 @@ namespace DataGridExtensions
             }
             else
             {
-                collectionView.Filter = (item) => filters.All(filter => filter.Matches(item));
+                collectionView.Filter = item => filters.All(filter => filter.Matches(item));
             }
 
             // Notify all filters about the change of the collection view.
