@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace DataGridExtensions
+﻿namespace DataGridExtensions
 {
     using System.ComponentModel;
     using System.Windows;
     using System.Windows.Controls;
 
+    /// <summary>
+    /// Some usefull tools for data grids.
+    /// </summary>
     public static class Tools
     {
         /// <summary>
