@@ -28,7 +28,7 @@ namespace DataGridExtensions
         /// <summary>
         /// Timer to defer evaluation of the filter until user has stopped typing.
         /// </summary>
-        private readonly DispatcherTimer deferFilterEvaluationTimer;
+        private DispatcherTimer deferFilterEvaluationTimer;
         /// <summary>
         /// The columns that we are currently filtering.
         /// </summary>
@@ -44,17 +44,18 @@ namespace DataGridExtensions
                 throw new ArgumentNullException("dataGrid");
 
             this.dataGrid = dataGrid;
-            this.deferFilterEvaluationTimer = new DispatcherTimer(TimeSpan.FromSeconds(0.5), DispatcherPriority.Input, (_, __) => EvaluateFilter(), Dispatcher.CurrentDispatcher);
-            this.dataGrid.Columns.CollectionChanged += Columns_CollectionChanged;
-            if (this.dataGrid.ColumnHeaderStyle == null)
-            {
-                // Assign a default style that changes HorizontalContentAlignment to "Stretch", so our filter symbol will appear on the right edge of the column.
-                var baseStyle = (Style)dataGrid.FindResource(typeof(DataGridColumnHeader));
-                var newStyle = new Style(typeof(DataGridColumnHeader), baseStyle);
-                newStyle.Setters.Add(new Setter(Control.HorizontalContentAlignmentProperty, HorizontalAlignment.Stretch));
 
-                this.dataGrid.ColumnHeaderStyle = newStyle;
-            }
+            this.dataGrid.Columns.CollectionChanged += Columns_CollectionChanged;
+
+            if (this.dataGrid.ColumnHeaderStyle != null) 
+                return;
+
+            // Assign a default style that changes HorizontalContentAlignment to "Stretch", so our filter symbol will appear on the right edge of the column.
+            var baseStyle = (Style)dataGrid.FindResource(typeof(DataGridColumnHeader));
+            var newStyle = new Style(typeof(DataGridColumnHeader), baseStyle);
+            newStyle.Setters.Add(new Setter(Control.HorizontalContentAlignmentProperty, HorizontalAlignment.Stretch));
+
+            this.dataGrid.ColumnHeaderStyle = newStyle;
         }
 
         /// <summary>
@@ -99,6 +100,12 @@ namespace DataGridExtensions
         /// </summary>
         internal void FilterChanged()
         {
+            if (deferFilterEvaluationTimer == null)
+            {
+                var throttleDelay = dataGrid.GetFilterEvaluationDelay();
+                deferFilterEvaluationTimer = new DispatcherTimer(throttleDelay, DispatcherPriority.Input, (_, __) => EvaluateFilter(), Dispatcher.CurrentDispatcher);
+            }
+
             deferFilterEvaluationTimer.Restart();
         }
 
@@ -153,7 +160,8 @@ namespace DataGridExtensions
         /// </summary>
         private void EvaluateFilter()
         {
-            deferFilterEvaluationTimer.Stop();
+            if (deferFilterEvaluationTimer != null)
+                deferFilterEvaluationTimer.Stop();
 
             var collectionView = dataGrid.Items;
 

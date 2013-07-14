@@ -66,7 +66,7 @@
             <Run>This tab shows how to customize the filters in XAML when using explicit generated columns. Read the comments in the XAML for details.</Run><LineBreak/>
             <Run>Overrides the icon template to show an orange filter symbol.</Run>
           </TextBlock>
-          <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="False" dgx:DataGridFilter.IsAutoFilterEnabled="True" dgx:Tools.ApplyInitialSorting="True">
+          <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="False" dgx:DataGridFilter.IsAutoFilterEnabled="True" dgx:Tools.ApplyInitialSorting="True" dgx:DataGridFilter.FilterEvaluationDelay="0:0:0">
             <DataGrid.Resources>
 
               <!-- Override the filter icon used in the default templates with an orange symbol; active for this grid only -->

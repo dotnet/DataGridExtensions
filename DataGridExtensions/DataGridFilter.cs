@@ -73,7 +73,7 @@ namespace DataGridExtensions
 
         #region ContentFilterFactory attached property
 
-        private static readonly IContentFilterFactory defaultContentFilterFactory = new SimpleContentFilterFactory(StringComparison.CurrentCultureIgnoreCase);
+        private static readonly IContentFilterFactory DefaultContentFilterFactory = new SimpleContentFilterFactory(StringComparison.CurrentCultureIgnoreCase);
 
         /// <summary>
         /// Gets the content filter factory for the data grid filter.
@@ -97,13 +97,42 @@ namespace DataGridExtensions
         /// Identifies the ContentFilterFactory dependency property
         /// </summary>
         public static readonly DependencyProperty ContentFilterFactoryProperty =
-            DependencyProperty.RegisterAttached("ContentFilterFactory", typeof(IContentFilterFactory), typeof(DataGridFilter), new UIPropertyMetadata(defaultContentFilterFactory, null, ContentFilterFactory_CoerceValue));
+            DependencyProperty.RegisterAttached("ContentFilterFactory", typeof(IContentFilterFactory), typeof(DataGridFilter), new UIPropertyMetadata(DefaultContentFilterFactory, null, ContentFilterFactory_CoerceValue));
 
         private static object ContentFilterFactory_CoerceValue(DependencyObject sender, object value)
         {
             // Ensure non-null content filter.
-            return value ?? defaultContentFilterFactory;
+            return value ?? DefaultContentFilterFactory;
         }
+
+        #endregion
+
+        #region Delay of the filter evaluation throttle.
+
+        /// <summary>
+        /// Gets the delay that is used to throttle filter changes before the filter is applied.
+        /// </summary>
+        /// <param name="obj">The data grid</param>
+        /// <returns>The throttle delay.</returns>
+        public static TimeSpan GetFilterEvaluationDelay(this DataGrid obj)
+        {
+            return (TimeSpan) obj.GetValue(FilterEvaluationDelayProperty);
+        }
+
+        /// <summary>
+        /// Sets the delay that is used to throttle filter changes before the filter is applied.
+        /// </summary>
+        /// <param name="obj">The data grid</param>
+        /// <param name="value">The new throttle delay.</param>
+        public static void SetFilterEvaluationDelay(this DataGrid obj, TimeSpan value)
+        {
+            obj.SetValue(FilterEvaluationDelayProperty, value);
+        }
+        /// <summary>
+        /// Identifies the FilterEvaluationDelay dependency property
+        /// </summary>
+        public static readonly DependencyProperty FilterEvaluationDelayProperty =
+            DependencyProperty.RegisterAttached("FilterEvaluationDelay", typeof(TimeSpan), typeof(DataGridFilter), new UIPropertyMetadata(TimeSpan.FromSeconds(0.5)));
 
         #endregion
 
