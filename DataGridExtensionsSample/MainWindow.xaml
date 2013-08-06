@@ -55,8 +55,15 @@
           <DataGrid ItemsSource="{Binding Items}"
               AutoGeneratingColumn="DataGrid_AutoGeneratingColumn"
               dgx:DataGridFilter.ContentFilterFactory="{StaticResource RegexContentFilterFactory}"
-              dgx:DataGridFilter.IsAutoFilterEnabled="True"
-              />
+              dgx:DataGridFilter.IsAutoFilterEnabled="True">
+            <DataGrid.Resources>
+              <!-- Override the filter icon used in the default templates with a fat orange symbol; active for this grid only -->
+              <ControlTemplate x:Key="{x:Static dgx:DataGridFilter.IconTemplateKey}">
+                <Path Data="M0,0 L10,0 7,5 7,9 3,9 3,5 Z" Fill="Orange" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,0"/>
+              </ControlTemplate>
+              </DataGrid.Resources>
+
+          </DataGrid>
         </DockPanel>
       </TabItem>
 
@@ -68,12 +75,16 @@
           </TextBlock>
           <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="False" dgx:DataGridFilter.IsAutoFilterEnabled="True" dgx:Tools.ApplyInitialSorting="True" dgx:DataGridFilter.FilterEvaluationDelay="0:0:0">
             <DataGrid.Resources>
-
-              <!-- Override the filter icon used in the default templates with an orange symbol; active for this grid only -->
-              <ControlTemplate x:Key="{x:Static dgx:DataGridFilter.IconTemplateKey}">
-                <Path Data="M0,0 L10,0 6,4 6,9 4,9 4,4 Z" Fill="Orange" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,0"/>
-              </ControlTemplate>
-
+              <!-- Override default icon style to have a blue icon that changes to red when the column header is hovered. -->
+              <Style TargetType="Control" x:Key="{x:Static dgx:DataGridFilter.IconStyleKey}" BasedOn="{StaticResource {x:Static dgx:DataGridFilter.IconStyleKey}}">
+                <Setter Property="Foreground" Value="Blue"/>
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridColumnHeader}}" Value="True">
+                    <Setter Property="Foreground" Value="Red"/>
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+              
               <DataTemplate x:Key="CustomHeaderWithLeftAlignedSearch">
                 <DockPanel>
                   <!-- The control to host the filter UI for this column -->

@@ -7,16 +7,20 @@
       <Grid>
         <ToggleButton x:Name="button">
           <ToggleButton.Style>
-              <Style TargetType="Control">
-                <Setter Property="Background" Value="Red"/>
-                <Style.Triggers>
-                  <DataTrigger Binding="{Binding Path=Filter, ElementName=control}" Value="{x:Null}">
-                    <Setter Property="Background" Value="{x:Null}"/>
-                  </DataTrigger>
-                </Style.Triggers>
-              </Style>
+            <Style TargetType="Control">
+              <!-- Only show the button if the filter is active or if the mouse is over the column header -->
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Filter, ElementName=control}" Value="{x:Null}">
+                  <Setter Property="Visibility" Value="Hidden"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridColumnHeader}}" Value="True">
+                  <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
           </ToggleButton.Style>
-          <Control Style="{DynamicResource {x:Static dgx:DataGridFilter.IconStyleKey}}"/>
+          <!-- Reuse the standard icon, but change color to green -->
+          <Control Style="{DynamicResource {x:Static dgx:DataGridFilter.IconStyleKey}}" Foreground="Green"/>
         </ToggleButton>
         <Popup x:Name="popup" IsOpen="{Binding Path=IsChecked, ElementName=button, Mode=TwoWay}" 
                AllowsTransparency="True"
