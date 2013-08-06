@@ -1,0 +1,19 @@
+﻿1.0.10.0
+* Make the filter symbol more flexible and extend the samples.
+1.0.9.0
+* WI1051: Make the filter evaluation throttle delay configurable.
+1.0.8.0
+* WI1039: Custom default column header style is ignored.
+1.0.7.0
+* New feature: Apply initial sorting.
+1.0.6.0
+* WI989: Filtering is broken after unload/load of the data grid.
+1.0.5.0
+* WI978: It should be possible to enable and disable filters at run time.
+1.0.4.0
+* Fix WI964: Possible null reference exception in DataGridFilterColumnControl.
+1.0.3.0
+* Fix: binaries were built from outdated source.
+1.0.2.0
+* Fix WI896: IContentFilter.IsMatch should be called even if cell content is null.
+* Add some plublic accessors so it's possible to manipulate filters by code.

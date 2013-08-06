@@ -80,6 +80,9 @@
     <None Include="DataGridExtensions.nuspec" />
     <None Include="DataGridExtensions.snk" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ReleaseNotes.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if "$(ConfigurationName)"=="Release" nuget pack "$(ProjectPath)"
