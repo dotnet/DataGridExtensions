@@ -35,7 +35,7 @@ namespace DataGridExtensions
         private DataGridColumn[] filteredColumns = new DataGridColumn[0];
 
         /// <summary>
-        /// Create a new filter for the given data grid.
+        /// Create a new filter host for the given data grid.
         /// </summary>
         /// <param name="dataGrid">The data grid to filter.</param>
         internal DataGridFilterHost(DataGrid dataGrid)
@@ -45,9 +45,9 @@ namespace DataGridExtensions
 
             this.dataGrid = dataGrid;
 
-            this.dataGrid.Columns.CollectionChanged += Columns_CollectionChanged;
+            dataGrid.Columns.CollectionChanged += Columns_CollectionChanged;
 
-            if (this.dataGrid.ColumnHeaderStyle != null) 
+            if (dataGrid.ColumnHeaderStyle != null)
                 return;
 
             // Assign a default style that changes HorizontalContentAlignment to "Stretch", so our filter symbol will appear on the right edge of the column.
@@ -55,7 +55,7 @@ namespace DataGridExtensions
             var newStyle = new Style(typeof(DataGridColumnHeader), baseStyle);
             newStyle.Setters.Add(new Setter(Control.HorizontalContentAlignmentProperty, HorizontalAlignment.Stretch));
 
-            this.dataGrid.ColumnHeaderStyle = newStyle;
+            dataGrid.ColumnHeaderStyle = newStyle;
         }
 
         /// <summary>
@@ -85,6 +85,17 @@ namespace DataGridExtensions
         }
 
         /// <summary>
+        /// The data grid this filter is attached to.
+        /// </summary>
+        public DataGrid DataGrid
+        {
+            get
+            {
+                return dataGrid;
+            }
+        }
+
+        /// <summary>
         /// Enables filtering by showing or hiding the filter contols.
         /// </summary>
         /// <param name="value">if set to <c>true</c>, filters controls are visible and filtering is enabled.</param>
@@ -100,6 +111,9 @@ namespace DataGridExtensions
         /// </summary>
         internal void FilterChanged()
         {
+            // Ensure that no cell is in editing state, this would cause an exception when trying to change the filter!
+            dataGrid.CommitEdit();
+
             if (deferFilterEvaluationTimer == null)
             {
                 var throttleDelay = dataGrid.GetFilterEvaluationDelay();
@@ -131,7 +145,7 @@ namespace DataGridExtensions
         /// </summary>
         internal IContentFilter CreateContentFilter(object content)
         {
-            return this.dataGrid.GetContentFilterFactory().Create(content);
+            return dataGrid.GetContentFilterFactory().Create(content);
         }
 
         private void Columns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -179,7 +193,6 @@ namespace DataGridExtensions
                     var args = new DataGridFilteringEventArgs(newColumns);
                     Filtering(dataGrid, args);
 
-
                     if (args.Cancel)
                     {
                         return;
@@ -189,18 +202,28 @@ namespace DataGridExtensions
                 filteredColumns = columns;
             }
 
-            // Apply filter to collection view
-            if (!filters.Any())
+            try
             {
-                collectionView.Filter = null;
-            }
-            else
-            {
-                collectionView.Filter = item => filters.All(filter => filter.Matches(item));
-            }
+                // Apply filter to collection view
+                if (!filters.Any())
+                {
+                    collectionView.Filter = null;
+                }
+                else
+                {
+                    collectionView.Filter = item => filters.All(filter => filter.Matches(item));
+                }
 
-            // Notify all filters about the change of the collection view.
-            filterColumnControls.ForEach(filter => filter.ValuesUpdated());
+                // Notify all filters about the change of the collection view.
+                filterColumnControls.ForEach(filter => filter.ValuesUpdated());
+            }
+            catch (InvalidOperationException)
+            {
+                // InvalidOperation Exception: "'Filter' is not allowed during an AddNew or EditItem transaction."
+                // Grid seems to be still in editing mode, even though we have called DataGrid.CommitEdit().
+                // Found no way to fix this by code, but after changing the filter another time by typing text it's OK again! 
+                // Very strange!
+            }
         }
     }
 }

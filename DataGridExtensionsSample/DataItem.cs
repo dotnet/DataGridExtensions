@@ -18,8 +18,8 @@ namespace DataGridExtensionsSample
 
         public bool Flag { get; private set; }
         public int Index { get; private set; }
-        public string Column1 { get; private set; }
-        public string Column2 { get; private set; }
+        public string Column1 { get; set; }
+        public string Column2 { get; set; }
         public double Probability { get; private set; }
     }
 }

@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-
-namespace DataGridExtensions
+﻿namespace DataGridExtensions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Linq;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Controls.Primitives;
+    using System.Windows.Data;
+
     /// <summary>
     /// This class is the control hosting all information needed for filtering of one column.
     /// Filtering is enabled by simply adding this control to the header template of the DataGridColumn.
@@ -46,7 +46,7 @@ namespace DataGridExtensions
             Unloaded += self_Unloaded;
 
             Focusable = false;
-            this.DataContext = this;
+            DataContext = this;
         }
 
         void self_Loaded(object sender, RoutedEventArgs e)
@@ -82,14 +82,14 @@ namespace DataGridExtensions
 
         void self_Unloaded(object sender, RoutedEventArgs e)
         {
-            // Detach from host. 
-            // Must check for null,.unloaded event might be raised even if no loaded event has been raised before!
+            // Detach from host.
+            // Must check for null, unloaded event might be raised even if no loaded event has been raised before!
             if (filterHost != null)
             {
                 filterHost.RemoveColumn(this);
             }
 
-            // Clear all bindings generatend during load. 
+            // Clear all bindings generatend during load.
             BindingOperations.ClearBinding(this, VisibilityProperty);
             BindingOperations.ClearBinding(this, TemplateProperty);
         }
@@ -97,7 +97,7 @@ namespace DataGridExtensions
         #region Filter dependency property
 
         /// <summary>
-        /// The user provided filter (IFilter) or content (usually a string) used to filter this column. 
+        /// The user provided filter (IFilter) or content (usually a string) used to filter this column.
         /// If the filter object implements IFilter, it will be used directly as the filter,
         /// else the filter object will be passed to the content filter.
         /// </summary>
@@ -110,7 +110,7 @@ namespace DataGridExtensions
         /// Identifies the Filter dependency property
         /// </summary>
         public static readonly DependencyProperty FilterProperty =
-            DependencyProperty.Register("Filter", typeof(object), typeof(DataGridFilterColumnControl), new UIPropertyMetadata(null, new PropertyChangedCallback((sender, e) => ((DataGridFilterColumnControl)sender).Filter_Changed(e.NewValue))));
+            DependencyProperty.Register("Filter", typeof(object), typeof(DataGridFilterColumnControl), new UIPropertyMetadata(null, (sender, e) => ((DataGridFilterColumnControl)sender).Filter_Changed(e.NewValue)));
 
         private void Filter_Changed(object newValue)
         {
@@ -143,19 +143,19 @@ namespace DataGridExtensions
         }
 
         /// <summary>
-        /// Returns all distinct visible (filtered) values of this column as string. 
+        /// Returns all distinct visible (filtered) values of this column as string.
         /// This can be used to e.g. feed the ItemsSource of an AutoCompleteBox to give a hint to the user what to enter.
         /// </summary>
         public IEnumerable<string> Values
         {
             get
             {
-                return InternalValues().Distinct();
+                return InternalValues().Distinct().ToArray();
             }
         }
 
         /// <summary>
-        /// Returns a flag indicating whether this column has some filter condition to evaluate or not. 
+        /// Returns a flag indicating whether this column has some filter condition to evaluate or not.
         /// If there is no filter condition we don't need to invoke this filter.
         /// </summary>
         public bool IsFiltered
@@ -183,7 +183,7 @@ namespace DataGridExtensions
         }
 
         /// <summary>
-        /// Notification of the filter that the content of the values might have changed. 
+        /// Notification of the filter that the content of the values might have changed.
         /// </summary>
         internal void ValuesUpdated()
         {
@@ -210,7 +210,7 @@ namespace DataGridExtensions
             DependencyProperty.Register("CellValue", typeof(object), typeof(DataGridFilterColumnControl));
 
         /// <summary>
-        /// Examines the property path and returns the objects value for this column. 
+        /// Examines the property path and returns the objects value for this column.
         /// Filtering is applied on the SortMemberPath, this is the path used to create the binding.
         /// </summary>
         private object GetCellContent(object item)
