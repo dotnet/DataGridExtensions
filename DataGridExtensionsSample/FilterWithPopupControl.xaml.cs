@@ -1,24 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using DataGridExtensions;
-
-namespace DataGridExtensionsSample
+﻿namespace DataGridExtensionsSample
 {
+    using System.Windows;
+
+    using DataGridExtensions;
+
     /// <summary>
     /// Interaction logic for FilterWithPopupControl.xaml
     /// </summary>
-    public partial class FilterWithPopupControl : Control
+    public partial class FilterWithPopupControl
     {
         public FilterWithPopupControl()
         {
@@ -47,10 +36,10 @@ namespace DataGridExtensionsSample
         public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register("Maximum", typeof(double), typeof(FilterWithPopupControl)
                 , new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (sender, e) => ((FilterWithPopupControl)sender).Range_Changed()));
 
-        
+
         private void Range_Changed()
         {
-            this.Filter = this.Maximum > this.Minimum ? new ContentFilter(this.Minimum, this.Maximum) : null;
+            Filter = Maximum > Minimum ? new ContentFilter(Minimum, Maximum) : null;
         }
 
         public IContentFilter Filter
@@ -62,8 +51,18 @@ namespace DataGridExtensionsSample
         /// Identifies the Filter dependency property
         /// </summary>
         public static readonly DependencyProperty FilterProperty =
-            DependencyProperty.Register("Filter", typeof(IContentFilter), typeof(FilterWithPopupControl), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+            DependencyProperty.Register("Filter", typeof(IContentFilter), typeof(FilterWithPopupControl), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (sender, e) => ((FilterWithPopupControl)sender).Filter_Changed()));
 
+
+        private void Filter_Changed()
+        {
+            var filter = Filter as ContentFilter;
+            if (filter == null)
+                return;
+
+            Minimum = filter.Min;
+            Maximum = filter.Max;
+        }
 
         class ContentFilter : IContentFilter
         {
@@ -74,6 +73,22 @@ namespace DataGridExtensionsSample
             {
                 this.min = min;
                 this.max = max;
+            }
+
+            public double Min
+            {
+                get
+                {
+                    return min;
+                }
+            }
+
+            public double Max
+            {
+                get
+                {
+                    return max;
+                }
             }
 
             public bool IsMatch(object value)
