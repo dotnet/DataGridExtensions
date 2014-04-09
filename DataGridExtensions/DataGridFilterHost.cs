@@ -138,6 +138,7 @@ namespace DataGridExtensions
         internal void RemoveColumn(DataGridFilterColumnControl filterColumn)
         {
             filterColumnControls.Remove(filterColumn);
+            FilterChanged();
         }
 
         /// <summary>

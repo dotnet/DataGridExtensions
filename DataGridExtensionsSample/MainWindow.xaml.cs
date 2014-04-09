@@ -7,13 +7,15 @@ using DataGridExtensions;
 
 namespace DataGridExtensionsSample
 {
+    using System.Collections.ObjectModel;
+    using System.ComponentModel;
     using System.Diagnostics;
     using System.Windows.Threading;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private Random rand = new Random();
 
@@ -81,6 +83,15 @@ namespace DataGridExtensionsSample
             }));
         }
 
+        private void Reload_Click(object sender, RoutedEventArgs e)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs("Items"));
+            }
+        }
 
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

@@ -20,7 +20,7 @@
     <ControlTemplate x:Key="FilterWithPopup">
       <src:FilterWithPopupControl Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}"/>
     </ControlTemplate>
-    
+
     <Style TargetType="DataGrid">
       <Setter Property="HorizontalGridLinesBrush" Value="LightGray"/>
       <Setter Property="VerticalGridLinesBrush" Value="LightGray"/>
@@ -29,6 +29,8 @@
   </Window.Resources>
 
   <Grid>
+    <Button Content="Reload data" VerticalAlignment="Top" HorizontalAlignment="Right" Click="Reload_Click"/>
+
     <TabControl>
 
       <TabItem Header="Basic usage">
@@ -84,7 +86,7 @@
                   </DataTrigger>
                 </Style.Triggers>
               </Style>
-              
+
               <DataTemplate x:Key="CustomHeaderWithLeftAlignedSearch">
                 <DockPanel>
                   <!-- The control to host the filter UI for this column -->
@@ -99,7 +101,7 @@
             </DataGrid.Resources>
 
             <DataGrid.Columns>
-              <!-- Use a check box column for the boolean property "Flag" but override the column data type to use the default text filter template; also 
+              <!-- Use a check box column for the boolean property "Flag" but override the column data type to use the default text filter template; also
                   overrides the HeaderTemplate to show customization of the filter control. -->
               <DataGridCheckBoxColumn Header="Bool/Text" HeaderTemplate="{StaticResource ResourceKey=CustomHeaderWithLeftAlignedSearch}"
                 Binding="{Binding Path=Flag, Mode=OneWay}" dgx:DataGridFilterColumn.Template="{StaticResource {x:Static dgx:DataGridFilter.TextColumnFilterTemplateKey}}"/>
