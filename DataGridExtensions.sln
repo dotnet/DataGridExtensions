@@ -1,9 +1,16 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataGridExtensions", "DataGridExtensions\DataGridExtensions.csproj", "{393C28BB-DB90-40E8-B1A3-741D8B99BA39}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataGridExtensionsSample", "DataGridExtensionsSample\DataGridExtensionsSample.csproj", "{977C4FEE-4F44-4F64-803B-3F7350F3A487}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DB86BFBB-CA2E-425D-BA83-9ABA746813EC}"
+	ProjectSection(SolutionItems) = preProject
+		DataGridExtensions\ReleaseNotes.txt = DataGridExtensions\ReleaseNotes.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
