@@ -78,6 +78,9 @@
 
             var templatePropertyPath = new PropertyPath("Column.(0)", DataGridFilterColumn.TemplateProperty);
             BindingOperations.SetBinding(this, TemplateProperty, new Binding() { Path = templatePropertyPath, Source = columnHeader, Mode = BindingMode.OneWay });
+
+            var filterPropertyPath = new PropertyPath("Column.(0)", DataGridFilterColumn.FilterProperty);
+            BindingOperations.SetBinding(this, FilterProperty, new Binding() { Path = filterPropertyPath, Source = columnHeader, Mode = BindingMode.TwoWay });
         }
 
         void self_Unloaded(object sender, RoutedEventArgs e)
@@ -92,6 +95,7 @@
             // Clear all bindings generatend during load.
             BindingOperations.ClearBinding(this, VisibilityProperty);
             BindingOperations.ClearBinding(this, TemplateProperty);
+            BindingOperations.ClearBinding(this, FilterProperty);
         }
 
         #region Filter dependency property
@@ -103,7 +107,7 @@
         /// </summary>
         public object Filter
         {
-            get { return (object)GetValue(FilterProperty); }
+            get { return GetValue(FilterProperty); }
             set { SetValue(FilterProperty, value); }
         }
         /// <summary>

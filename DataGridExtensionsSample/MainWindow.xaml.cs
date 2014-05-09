@@ -73,13 +73,8 @@ namespace DataGridExtensionsSample
             Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() =>
             {
                 // Sample to manipulate the filter values by code.
-                var column = grid1.Columns[0];
-
-                var control = grid1.GetFilter().FilterColumnControls.FirstOrDefault(c => c.Column.Equals(column));
-                if (control != null)
-                {
-                    control.Filter = "True";
-                }
+                grid1.Columns[0].SetFilter("True");
+                grid1.Columns[2].SetFilter("3");
             }));
         }
 

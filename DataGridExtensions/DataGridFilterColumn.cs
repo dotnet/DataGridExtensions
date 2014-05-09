@@ -68,5 +68,29 @@ namespace DataGridExtensions
             DependencyProperty.RegisterAttached("Template", typeof(ControlTemplate), typeof(DataGridFilterColumn));
 
         #endregion
+
+        #region Filter attached property
+
+        /// <summary>
+        /// Gets the filter expression of the column.
+        /// </summary>
+        public static object GetFilter(this DataGridColumn column)
+        {
+            return column.GetValue(FilterProperty);
+        }
+        /// <summary>
+        /// Sets the filter expression of the column.
+        /// </summary>
+        public static void SetFilter(this DataGridColumn column, object value)
+        {
+            column.SetValue(FilterProperty, value);
+        }
+        /// <summary>
+        /// Identifies the Filter dependency property
+        /// </summary>
+        public static readonly DependencyProperty FilterProperty =
+            DependencyProperty.RegisterAttached("Filter", typeof(object), typeof(DataGridFilterColumn));
+
+        #endregion
     }
 }
