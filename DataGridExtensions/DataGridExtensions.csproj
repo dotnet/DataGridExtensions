@@ -63,6 +63,7 @@
     <Compile Include="DataGridFilterColumnControl.cs" />
     <Compile Include="DataGridFilteringEventArgs.cs" />
     <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="GroupStyleBinding.cs" />
     <Compile Include="IContentFilter.cs" />
     <Compile Include="IContentFilterFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
