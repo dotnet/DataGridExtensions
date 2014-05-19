@@ -29,7 +29,7 @@
             obj.SetValue(GroupStyleProperty, value);
         }
         /// <summary>
-        /// Defines the group style dependency property.
+        /// Identifies the GroupStyle attached property.
         /// </summary>
         public static readonly DependencyProperty GroupStyleProperty =
             DependencyProperty.RegisterAttached("GroupStyle", typeof(GroupStyle), typeof(GroupStyleBinding), new FrameworkPropertyMetadata(GroupStyle_Changed));

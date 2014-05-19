@@ -1,9 +1,11 @@
-﻿1.0.13.0
-* Simplify access to filter by code
+﻿1.0.14.0
+* Add the GroupStyleBinding helper class.
+1.0.13.0
+* Simplify access to filter by code.
 1.0.12.0
-* Fix WI1245: Loss of filter text when loading data
+* Fix WI1245: Loss of filter text when loading data.
 1.0.11.0
-* Fix WI1109: InvalidOperation Exception: "'Filter' is not allowed during an AddNew or EditItem transaction."
+* Fix WI1109: InvalidOperation Exception: "'Filter' is not allowed during an AddNew or EditItem transaction.".
 1.0.10.0
 * Make the filter symbol more flexible and extend the samples.
 1.0.9.0
