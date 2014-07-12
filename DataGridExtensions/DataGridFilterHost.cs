@@ -20,19 +20,21 @@ namespace DataGridExtensions
         /// <summary>
         /// The data grid this filter is attached to.
         /// </summary>
-        private readonly DataGrid dataGrid;
+        private readonly DataGrid _dataGrid;
         /// <summary>
         /// Filter information about each column.
         /// </summary>
-        private readonly List<DataGridFilterColumnControl> filterColumnControls = new List<DataGridFilterColumnControl>();
+        private readonly List<DataGridFilterColumnControl> _filterColumnControls = new List<DataGridFilterColumnControl>();
         /// <summary>
         /// Timer to defer evaluation of the filter until user has stopped typing.
         /// </summary>
-        private DispatcherTimer deferFilterEvaluationTimer;
+        private DispatcherTimer _deferFilterEvaluationTimer;
         /// <summary>
         /// The columns that we are currently filtering.
         /// </summary>
-        private DataGridColumn[] filteredColumns = new DataGridColumn[0];
+        private DataGridColumn[] _filteredColumns = new DataGridColumn[0];
+
+        private bool _includeSelectedItemInFilter;
 
         /// <summary>
         /// Create a new filter host for the given data grid.
@@ -43,7 +45,7 @@ namespace DataGridExtensions
             if (dataGrid == null)
                 throw new ArgumentNullException("dataGrid");
 
-            this.dataGrid = dataGrid;
+            _dataGrid = dataGrid;
 
             dataGrid.Columns.CollectionChanged += Columns_CollectionChanged;
 
@@ -63,13 +65,18 @@ namespace DataGridExtensions
         /// </summary>
         public event EventHandler<DataGridFilteringEventArgs> Filtering;
 
+        /// <summary>
+        /// Occurs when any filter has changed.
+        /// </summary>
+        public event EventHandler FilterChanged;
+
 
         /// <summary>
         /// Clear all existing filter conditions.
         /// </summary>
         public void Clear()
         {
-            filterColumnControls.ForEach(filter => filter.Filter = null);
+            _filterColumnControls.ForEach(filter => filter.Filter = null);
             EvaluateFilter();
         }
 
@@ -80,7 +87,7 @@ namespace DataGridExtensions
         {
             get
             {
-                return new ReadOnlyCollection<DataGridFilterColumnControl>(filterColumnControls);
+                return new ReadOnlyCollection<DataGridFilterColumnControl>(_filterColumnControls);
             }
         }
 
@@ -91,7 +98,7 @@ namespace DataGridExtensions
         {
             get
             {
-                return dataGrid;
+                return _dataGrid;
             }
         }
 
@@ -101,7 +108,7 @@ namespace DataGridExtensions
         /// <param name="value">if set to <c>true</c>, filters controls are visible and filtering is enabled.</param>
         internal void Enable(bool value)
         {
-            filterColumnControls.ForEach(control => control.Visibility = value ? Visibility.Visible : Visibility.Hidden);
+            _filterColumnControls.ForEach(control => control.Visibility = value ? Visibility.Visible : Visibility.Hidden);
             EvaluateFilter();
         }
 
@@ -109,18 +116,18 @@ namespace DataGridExtensions
         /// When any filter condition has changed restart the evaluation timer to defer
         /// the evaluation until the user has stopped typing.
         /// </summary>
-        internal void FilterChanged()
+        internal void OnFilterChanged()
         {
             // Ensure that no cell is in editing state, this would cause an exception when trying to change the filter!
-            dataGrid.CommitEdit();
+            _dataGrid.CommitEdit();
 
-            if (deferFilterEvaluationTimer == null)
+            if (_deferFilterEvaluationTimer == null)
             {
-                var throttleDelay = dataGrid.GetFilterEvaluationDelay();
-                deferFilterEvaluationTimer = new DispatcherTimer(throttleDelay, DispatcherPriority.Input, (_, __) => EvaluateFilter(), Dispatcher.CurrentDispatcher);
+                var throttleDelay = _dataGrid.GetFilterEvaluationDelay();
+                _deferFilterEvaluationTimer = new DispatcherTimer(throttleDelay, DispatcherPriority.Input, (_, __) => EvaluateFilter(), Dispatcher.CurrentDispatcher);
             }
 
-            deferFilterEvaluationTimer.Restart();
+            _deferFilterEvaluationTimer.Restart();
         }
 
         /// <summary>
@@ -129,7 +136,7 @@ namespace DataGridExtensions
         /// <param name="filterColumn"></param>
         internal void AddColumn(DataGridFilterColumnControl filterColumn)
         {
-            filterColumnControls.Add(filterColumn);
+            _filterColumnControls.Add(filterColumn);
         }
 
         /// <summary>
@@ -137,8 +144,8 @@ namespace DataGridExtensions
         /// </summary>
         internal void RemoveColumn(DataGridFilterColumnControl filterColumn)
         {
-            filterColumnControls.Remove(filterColumn);
-            FilterChanged();
+            _filterColumnControls.Remove(filterColumn);
+            OnFilterChanged();
         }
 
         /// <summary>
@@ -146,7 +153,7 @@ namespace DataGridExtensions
         /// </summary>
         internal IContentFilter CreateContentFilter(object content)
         {
-            return dataGrid.GetContentFilterFactory().Create(content);
+            return _dataGrid.GetContentFilterFactory().Create(content);
         }
 
         private void Columns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -154,7 +161,7 @@ namespace DataGridExtensions
             if ((e == null) || (e.NewItems == null))
                 return;
 
-            if (!this.dataGrid.GetIsAutoFilterEnabled())
+            if (!this._dataGrid.GetIsAutoFilterEnabled())
                 return;
 
             var filteredColumnsWithEmptyHeaderTemplate = e.NewItems.Cast<DataGridColumn>().Where(column => column.GetIsFilterVisible() && (column.HeaderTemplate == null)).ToArray();
@@ -162,7 +169,7 @@ namespace DataGridExtensions
             if (!filteredColumnsWithEmptyHeaderTemplate.Any())
                 return;
 
-            var headerTemplate = (DataTemplate)this.dataGrid.FindResource(DataGridFilter.ColumnHeaderTemplateKey);
+            var headerTemplate = (DataTemplate)this._dataGrid.FindResource(DataGridFilter.ColumnHeaderTemplateKey);
 
             foreach (var column in filteredColumnsWithEmptyHeaderTemplate)
             {
@@ -175,24 +182,24 @@ namespace DataGridExtensions
         /// </summary>
         private void EvaluateFilter()
         {
-            if (deferFilterEvaluationTimer != null)
-                deferFilterEvaluationTimer.Stop();
+            if (_deferFilterEvaluationTimer != null)
+                _deferFilterEvaluationTimer.Stop();
 
-            var collectionView = dataGrid.Items;
+            var collectionView = _dataGrid.Items;
 
             // Collect all active filters of all known columns.
-            var filters = filterColumnControls.Where(column => column.IsVisible && column.IsFiltered).ToArray();
+            var filters = _filterColumnControls.Where(column => column.IsVisible && column.IsFiltered).ToArray();
 
             if (Filtering != null)
             {
                 // Notify client about additional columns being filtered.
                 var columns = filters.Select(filter => filter.Column).Where(column => column != null).ToArray();
-                var newColumns = columns.Except(filteredColumns).ToArray();
+                var newColumns = columns.Except(_filteredColumns).ToArray();
 
                 if (newColumns.Length > 0)
                 {
                     var args = new DataGridFilteringEventArgs(newColumns);
-                    Filtering(dataGrid, args);
+                    Filtering(_dataGrid, args);
 
                     if (args.Cancel)
                     {
@@ -200,7 +207,12 @@ namespace DataGridExtensions
                     }
                 }
 
-                filteredColumns = columns;
+                _filteredColumns = columns;
+            }
+
+            if (FilterChanged != null)
+            {
+                FilterChanged(this, EventArgs.Empty);
             }
 
             try
@@ -212,19 +224,32 @@ namespace DataGridExtensions
                 }
                 else
                 {
-                    collectionView.Filter = item => filters.All(filter => filter.Matches(item));
+                    if (_includeSelectedItemInFilter)
+                    {
+                        collectionView.Filter = item => (_dataGrid.SelectedItem == item) || filters.All(filter => filter.Matches(item));
+                    }
+                    else
+                    {
+                        collectionView.Filter = item => filters.All(filter => filter.Matches(item));
+                    }
                 }
 
                 // Notify all filters about the change of the collection view.
-                filterColumnControls.ForEach(filter => filter.ValuesUpdated());
+                _filterColumnControls.ForEach(filter => filter.ValuesUpdated());
             }
             catch (InvalidOperationException)
             {
                 // InvalidOperation Exception: "'Filter' is not allowed during an AddNew or EditItem transaction."
                 // Grid seems to be still in editing mode, even though we have called DataGrid.CommitEdit().
-                // Found no way to fix this by code, but after changing the filter another time by typing text it's OK again! 
+                // Found no way to fix this by code, but after changing the filter another time by typing text it's OK again!
                 // Very strange!
             }
+        }
+
+        internal void SetIncludeSelectedItemInFilter(bool newValue)
+        {
+            _includeSelectedItemInFilter = newValue;
+            OnFilterChanged();
         }
     }
 }

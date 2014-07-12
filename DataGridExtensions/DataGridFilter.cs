@@ -29,7 +29,7 @@ namespace DataGridExtensions
         /// Identifies the IsAutoFilterEnabled dependency property
         /// </summary>
         public static readonly DependencyProperty IsAutoFilterEnabledProperty =
-            DependencyProperty.RegisterAttached("IsAutoFilterEnabled", typeof(bool), typeof(DataGridFilter), new UIPropertyMetadata(false, IsAutoFilterEnabled_Changed));
+            DependencyProperty.RegisterAttached("IsAutoFilterEnabled", typeof(bool), typeof(DataGridFilter), new FrameworkPropertyMetadata(false, IsAutoFilterEnabled_Changed));
 
         private static void IsAutoFilterEnabled_Changed(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
@@ -133,6 +133,44 @@ namespace DataGridExtensions
         /// </summary>
         public static readonly DependencyProperty FilterEvaluationDelayProperty =
             DependencyProperty.RegisterAttached("FilterEvaluationDelay", typeof(TimeSpan), typeof(DataGridFilter), new UIPropertyMetadata(TimeSpan.FromSeconds(0.5)));
+
+        #endregion
+
+        #region IncludeSelectedItemInFilter attached property
+
+        /// <summary>
+        /// Gets a value indicating if the selected item should be included in the filtered view, no matter if it matches the filter or not.
+        /// </summary>
+        /// <param name="obj">The data grid.</param>
+        public static bool GetIncludeSelectedItemInFilter(this DataGrid obj)
+        {
+            return (bool)obj.GetValue(IncludeSelectedItemInFilterProperty);
+        }
+
+        /// <summary>
+        /// Sets a value indicating if the selected item should be included in the filtered view, no matter if it matches the filter or not.
+        /// </summary>
+        /// <param name="obj">The data grid.</param>
+        /// <param name="value">if set to <c>true</c> the selected item will always be visible in the grid, no matter if it matches the filter or not.</param>
+        public static void SetIncludeSelectedItemInFilter(this DataGrid obj, bool value)
+        {
+            obj.SetValue(IncludeSelectedItemInFilterProperty, value);
+        }
+        /// <summary>
+        /// Identifies the IncludeSelectedItemInFilter dependency property
+        /// </summary>
+        public static readonly DependencyProperty IncludeSelectedItemInFilterProperty =
+            DependencyProperty.RegisterAttached("IncludeSelectedItemInFilter", typeof(bool), typeof(DataGridFilter), new FrameworkPropertyMetadata(false, IncludeSelectedItemInFilter_Changed));
+
+        private static void IncludeSelectedItemInFilter_Changed(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            var dataGrid = sender as DataGrid;
+            if (dataGrid != null)
+            {
+                // Force creation of the host and show or hide the controls.
+                dataGrid.GetFilter().SetIncludeSelectedItemInFilter((bool)e.NewValue);
+            }
+        }
 
         #endregion
 

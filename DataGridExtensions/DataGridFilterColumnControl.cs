@@ -121,7 +121,7 @@
             // Update the effective filter. If the filter is provided as content, the content filter will be recreated when needed.
             activeFilter = newValue as IContentFilter;
             // Notify the filter to update the view.
-            filterHost.FilterChanged();
+            filterHost.OnFilterChanged();
         }
 
         #endregion
