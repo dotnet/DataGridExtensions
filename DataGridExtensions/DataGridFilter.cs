@@ -46,7 +46,7 @@ namespace DataGridExtensions
         #region Filter attached property
 
         /// <summary>
-        /// Filter attached property to attach the DataGridFilterHost instance to the owning DataGrid. 
+        /// Filter attached property to attach the DataGridFilterHost instance to the owning DataGrid.
         /// This property is only used by code and is not accessible from XAML.
         /// </summary>
         public static DataGridFilterHost GetFilter(this DataGrid dataGrid)
@@ -63,7 +63,7 @@ namespace DataGridExtensions
             return value;
         }
         /// <summary>
-        /// Identifies the Filters dependency property. 
+        /// Identifies the Filters dependency property.
         /// This property definition is private, so it's only accessible by code and can't be messed up by invalid bindings.
         /// </summary>
         private static readonly DependencyProperty FilterProperty =
@@ -136,48 +136,10 @@ namespace DataGridExtensions
 
         #endregion
 
-        #region IncludeSelectedItemInFilter attached property
-
-        /// <summary>
-        /// Gets a value indicating if the selected item should be included in the filtered view, no matter if it matches the filter or not.
-        /// </summary>
-        /// <param name="obj">The data grid.</param>
-        public static bool GetIncludeSelectedItemInFilter(this DataGrid obj)
-        {
-            return (bool)obj.GetValue(IncludeSelectedItemInFilterProperty);
-        }
-
-        /// <summary>
-        /// Sets a value indicating if the selected item should be included in the filtered view, no matter if it matches the filter or not.
-        /// </summary>
-        /// <param name="obj">The data grid.</param>
-        /// <param name="value">if set to <c>true</c> the selected item will always be visible in the grid, no matter if it matches the filter or not.</param>
-        public static void SetIncludeSelectedItemInFilter(this DataGrid obj, bool value)
-        {
-            obj.SetValue(IncludeSelectedItemInFilterProperty, value);
-        }
-        /// <summary>
-        /// Identifies the IncludeSelectedItemInFilter dependency property
-        /// </summary>
-        public static readonly DependencyProperty IncludeSelectedItemInFilterProperty =
-            DependencyProperty.RegisterAttached("IncludeSelectedItemInFilter", typeof(bool), typeof(DataGridFilter), new FrameworkPropertyMetadata(false, IncludeSelectedItemInFilter_Changed));
-
-        private static void IncludeSelectedItemInFilter_Changed(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            var dataGrid = sender as DataGrid;
-            if (dataGrid != null)
-            {
-                // Force creation of the host and show or hide the controls.
-                dataGrid.GetFilter().SetIncludeSelectedItemInFilter((bool)e.NewValue);
-            }
-        }
-
-        #endregion
-
         #region Resource keys
 
         /// <summary>
-        /// Template for the filter on a colum represented by a DataGridTextColumn. 
+        /// Template for the filter on a colum represented by a DataGridTextColumn.
         /// </summary>
         public static ResourceKey TextColumnFilterTemplateKey
         {
@@ -197,7 +159,7 @@ namespace DataGridExtensions
                 return new ComponentResourceKey(typeof(DataGridFilter), typeof(DataGridCheckBoxColumn));
             }
         }
-        
+
         /// <summary>
         /// Template for the whole column header.
         /// </summary>

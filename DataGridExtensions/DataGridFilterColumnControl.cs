@@ -21,15 +21,15 @@
         /// <summary>
         /// The column header of the column we are filtering. This control must be a child element of the column header.
         /// </summary>
-        private DataGridColumnHeader columnHeader;
+        private DataGridColumnHeader _columnHeader;
         /// <summary>
         /// The filter we belong to.
         /// </summary>
-        private DataGridFilterHost filterHost;
+        private DataGridFilterHost _filterHost;
         /// <summary>
         /// The active filter for this column.
         /// </summary>
-        private IContentFilter activeFilter;
+        private IContentFilter _activeFilter;
 
         static DataGridFilterColumnControl()
         {
@@ -51,22 +51,25 @@
 
         void self_Loaded(object sender, RoutedEventArgs e)
         {
-            if (filterHost == null)
+            if (_filterHost == null)
             {
                 // Find the ancestor column header and data grid controls.
-                columnHeader = this.FindAncestorOrSelf<DataGridColumnHeader>();
-                if (columnHeader == null)
+                _columnHeader = this.FindAncestorOrSelf<DataGridColumnHeader>();
+                if (_columnHeader == null)
                     throw new InvalidOperationException("DataGridFilterColumnControl must be a child element of a DataGridColumnHeader.");
 
-                var dataGrid = columnHeader.FindAncestorOrSelf<DataGrid>();
+                var dataGrid = _columnHeader.FindAncestorOrSelf<DataGrid>();
                 if (dataGrid == null)
                     throw new InvalidOperationException("DataGridColumnHeader must be a child element of a DataGrid");
 
                 // Find our host and attach oursef.
-                filterHost = dataGrid.GetFilter();
+                _filterHost = dataGrid.GetFilter();
+
+                dataGrid.SourceUpdated += DataGrid_SourceOrTargetUpdated;
+                dataGrid.TargetUpdated += DataGrid_SourceOrTargetUpdated;
             }
 
-            filterHost.AddColumn(this);
+            _filterHost.AddColumn(this);
 
             // Must set a non-null empty template here, else we won't get the coerce value callback when the columns attached property is null!
             Template = EmptyControlTemplate;
@@ -74,22 +77,30 @@
             // Bind our IsFilterVisible and Template properties to the corresponding properties attached to the
             // DataGridColumnHeader.Column property. Use binding instead of simple assignment since columnHeader.Column is still null at this point.
             var isFilterVisiblePropertyPath = new PropertyPath("Column.(0)", DataGridFilterColumn.IsFilterVisibleProperty);
-            BindingOperations.SetBinding(this, VisibilityProperty, new Binding() { Path = isFilterVisiblePropertyPath, Source = columnHeader, Mode = BindingMode.OneWay, Converter = BooleanToVisibilityConverter });
+            BindingOperations.SetBinding(this, VisibilityProperty, new Binding() { Path = isFilterVisiblePropertyPath, Source = _columnHeader, Mode = BindingMode.OneWay, Converter = BooleanToVisibilityConverter });
 
             var templatePropertyPath = new PropertyPath("Column.(0)", DataGridFilterColumn.TemplateProperty);
-            BindingOperations.SetBinding(this, TemplateProperty, new Binding() { Path = templatePropertyPath, Source = columnHeader, Mode = BindingMode.OneWay });
+            BindingOperations.SetBinding(this, TemplateProperty, new Binding() { Path = templatePropertyPath, Source = _columnHeader, Mode = BindingMode.OneWay });
 
             var filterPropertyPath = new PropertyPath("Column.(0)", DataGridFilterColumn.FilterProperty);
-            BindingOperations.SetBinding(this, FilterProperty, new Binding() { Path = filterPropertyPath, Source = columnHeader, Mode = BindingMode.TwoWay });
+            BindingOperations.SetBinding(this, FilterProperty, new Binding() { Path = filterPropertyPath, Source = _columnHeader, Mode = BindingMode.TwoWay });
+        }
+
+        void DataGrid_SourceOrTargetUpdated(object sender, DataTransferEventArgs e)
+        {
+            if (e.Property == ItemsControl.ItemsSourceProperty)
+            {
+                OnPropertyChanged("SourceValues");
+            }
         }
 
         void self_Unloaded(object sender, RoutedEventArgs e)
         {
             // Detach from host.
             // Must check for null, unloaded event might be raised even if no loaded event has been raised before!
-            if (filterHost != null)
+            if (_filterHost != null)
             {
-                filterHost.RemoveColumn(this);
+                _filterHost.RemoveColumn(this);
             }
 
             // Clear all bindings generatend during load.
@@ -119,31 +130,31 @@
         private void Filter_Changed(object newValue)
         {
             // Update the effective filter. If the filter is provided as content, the content filter will be recreated when needed.
-            activeFilter = newValue as IContentFilter;
+            _activeFilter = newValue as IContentFilter;
             // Notify the filter to update the view.
-            filterHost.OnFilterChanged();
+            _filterHost.OnFilterChanged();
         }
 
         #endregion
 
         private static object Template_CoerceValue(DependencyObject sender, object baseValue)
         {
-            if (baseValue == null)
+            if (baseValue != null)
+                return baseValue;
+
+            var control = sender as DataGridFilterColumnControl;
+            if (control == null)
+                return null;
+
+            // Just resolved the binding to the template property attached to the column, and the value has not been set on the column:
+            // => try to find the default template based on the columns type.
+            var column = control._columnHeader.Column;
+            if (column != null)
             {
-                var control = sender as DataGridFilterColumnControl;
-                if (control != null)
-                {
-                    // Just resolved the binding to the template property attached to the column, and the value has not been set on the column:
-                    // => try to find the default template based on the columns type.
-                    var column = control.columnHeader.Column;
-                    if (column != null)
-                    {
-                        return control.TryFindResource(new ComponentResourceKey(typeof(DataGridFilter), column.GetType())) as ControlTemplate;
-                    }
-                }
+                return control.TryFindResource(new ComponentResourceKey(typeof(DataGridFilter), column.GetType())) as ControlTemplate;
             }
 
-            return baseValue;
+            return null;
         }
 
         /// <summary>
@@ -159,6 +170,18 @@
         }
 
         /// <summary>
+        /// Returns all distinct source values of this column as string.
+        /// This can be used to e.g. feed the ItemsSource of an Excel-like autofilter.
+        /// </summary>
+        public IEnumerable<string> SourceValues
+        {
+            get
+            {
+                return InternalSourceValues().Distinct().ToArray();
+            }
+        }
+
+        /// <summary>
         /// Returns a flag indicating whether this column has some filter condition to evaluate or not.
         /// If there is no filter condition we don't need to invoke this filter.
         /// </summary>
@@ -166,7 +189,7 @@
         {
             get
             {
-                return (Filter != null) && !string.IsNullOrWhiteSpace(Filter.ToString()) && (this.columnHeader.Column != null);
+                return (Filter != null) && !string.IsNullOrWhiteSpace(Filter.ToString()) && (_columnHeader.Column != null);
             }
         }
 
@@ -178,12 +201,12 @@
             if (Filter == null)
                 return true;
 
-            if (activeFilter == null)
+            if (_activeFilter == null)
             {
-                activeFilter = filterHost.CreateContentFilter(Filter);
+                _activeFilter = _filterHost.CreateContentFilter(Filter);
             }
 
-            return activeFilter.IsMatch(GetCellContent(item));
+            return _activeFilter.IsMatch(GetCellContent(item));
         }
 
         /// <summary>
@@ -203,7 +226,7 @@
         {
             get
             {
-                return columnHeader.Column;
+                return _columnHeader.Column;
             }
         }
 
@@ -219,7 +242,7 @@
         /// </summary>
         private object GetCellContent(object item)
         {
-            var column = columnHeader.Column;
+            var column = _columnHeader.Column;
             if (column == null)
                 return null;
 
@@ -239,8 +262,27 @@
         /// </summary>
         private IEnumerable<string> InternalValues()
         {
-            var dataGrid = columnHeader.FindAncestorOrSelf<DataGrid>();
+            if (_columnHeader == null)
+                return Enumerable.Empty<string>();
+
+            var dataGrid = _columnHeader.FindAncestorOrSelf<DataGrid>();
             var items = dataGrid.Items.Cast<object>();
+
+            return items.Select(GetCellContent)
+                .Where(content => content != null)
+                .Select(content => content.ToString());
+        }
+
+        /// <summary>
+        /// Gets the cell content of all list items for this column.
+        /// </summary>
+        private IEnumerable<string> InternalSourceValues()
+        {
+            if (_columnHeader == null)
+                return Enumerable.Empty<string>();
+
+            var dataGrid = _columnHeader.FindAncestorOrSelf<DataGrid>();
+            var items = dataGrid.ItemsSource.Cast<object>();
 
             return items.Select(GetCellContent)
                 .Where(content => content != null)

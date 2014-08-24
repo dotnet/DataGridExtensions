@@ -42,15 +42,11 @@
             <Decorator Height="10" />
             <StackPanel Orientation="Horizontal">
               <CheckBox x:Name="isFilterEnabled" DockPanel.Dock="Top" IsChecked="True" Content="Enable filters" />
-              <Decorator Width="10" />
-              <CheckBox x:Name="includeSelectedItem" DockPanel.Dock="Top"
-                        Content="Include selected item in filter" />
             </StackPanel>
           </StackPanel>
           <DataGrid Name="grid1"
                     ItemsSource="{Binding Items}"
-                    dgx:DataGridFilter.IsAutoFilterEnabled="{Binding Path=IsChecked, ElementName=isFilterEnabled}"
-                    dgx:DataGridFilter.IncludeSelectedItemInFilter="{Binding Path=IsChecked, ElementName=includeSelectedItem}" />
+                    dgx:DataGridFilter.IsAutoFilterEnabled="{Binding Path=IsChecked, ElementName=isFilterEnabled}"/>
         </DockPanel>
       </TabItem>
 

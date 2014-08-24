@@ -34,8 +34,6 @@ namespace DataGridExtensions
         /// </summary>
         private DataGridColumn[] _filteredColumns = new DataGridColumn[0];
 
-        private bool _includeSelectedItemInFilter;
-
         /// <summary>
         /// Create a new filter host for the given data grid.
         /// </summary>
@@ -161,7 +159,7 @@ namespace DataGridExtensions
             if ((e == null) || (e.NewItems == null))
                 return;
 
-            if (!this._dataGrid.GetIsAutoFilterEnabled())
+            if (!_dataGrid.GetIsAutoFilterEnabled())
                 return;
 
             var filteredColumnsWithEmptyHeaderTemplate = e.NewItems.Cast<DataGridColumn>().Where(column => column.GetIsFilterVisible() && (column.HeaderTemplate == null)).ToArray();
@@ -224,14 +222,7 @@ namespace DataGridExtensions
                 }
                 else
                 {
-                    if (_includeSelectedItemInFilter)
-                    {
-                        collectionView.Filter = item => (_dataGrid.SelectedItem == item) || filters.All(filter => filter.Matches(item));
-                    }
-                    else
-                    {
-                        collectionView.Filter = item => filters.All(filter => filter.Matches(item));
-                    }
+                    collectionView.Filter = item => filters.All(filter => filter.Matches(item));
                 }
 
                 // Notify all filters about the change of the collection view.
@@ -244,12 +235,6 @@ namespace DataGridExtensions
                 // Found no way to fix this by code, but after changing the filter another time by typing text it's OK again!
                 // Very strange!
             }
-        }
-
-        internal void SetIncludeSelectedItemInFilter(bool newValue)
-        {
-            _includeSelectedItemInFilter = newValue;
-            OnFilterChanged();
         }
     }
 }
