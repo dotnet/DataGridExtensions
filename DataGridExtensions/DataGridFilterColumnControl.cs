@@ -298,7 +298,7 @@
         /// </summary>
         protected IEnumerable<string> InternalSourceValues()
         {
-            if (DataGrid == null)
+            if ((DataGrid == null) || (DataGrid.ItemsSource == null))
                 return Enumerable.Empty<string>();
 
             var items = DataGrid.ItemsSource.Cast<object>();
