@@ -33,6 +33,10 @@ namespace DataGridExtensions
         /// The columns that we are currently filtering.
         /// </summary>
         private DataGridColumn[] _filteredColumns = new DataGridColumn[0];
+        /// <summary>
+        /// Flag indicating if filtering is currently enabled.
+        /// </summary>
+        private bool _isFilteringEnabled;
 
         /// <summary>
         /// Create a new filter host for the given data grid.
@@ -106,6 +110,7 @@ namespace DataGridExtensions
         /// <param name="value">if set to <c>true</c>, filters controls are visible and filtering is enabled.</param>
         internal void Enable(bool value)
         {
+            _isFilteringEnabled = value;
             _filterColumnControls.ForEach(control => control.Visibility = value ? Visibility.Visible : Visibility.Hidden);
             EvaluateFilter();
         }
@@ -116,6 +121,9 @@ namespace DataGridExtensions
         /// </summary>
         internal void OnFilterChanged()
         {
+            if (!_isFilteringEnabled)
+                return;
+
             // Ensure that no cell is in editing state, this would cause an exception when trying to change the filter!
             _dataGrid.CommitEdit();
 
@@ -134,6 +142,7 @@ namespace DataGridExtensions
         /// <param name="filterColumn"></param>
         internal void AddColumn(DataGridFilterColumnControl filterColumn)
         {
+            filterColumn.Visibility = _isFilteringEnabled ? Visibility.Visible : Visibility.Hidden;
             _filterColumnControls.Add(filterColumn);
         }
 
@@ -159,15 +168,15 @@ namespace DataGridExtensions
             if ((e == null) || (e.NewItems == null))
                 return;
 
-            if (!_dataGrid.GetIsAutoFilterEnabled())
-                return;
-
-            var filteredColumnsWithEmptyHeaderTemplate = e.NewItems.Cast<DataGridColumn>().Where(column => column.GetIsFilterVisible() && (column.HeaderTemplate == null)).ToArray();
+            var filteredColumnsWithEmptyHeaderTemplate = e.NewItems
+                .Cast<DataGridColumn>()
+                .Where(column => column.GetIsFilterVisible() && (column.HeaderTemplate == null))
+                .ToArray();
 
             if (!filteredColumnsWithEmptyHeaderTemplate.Any())
                 return;
 
-            var headerTemplate = (DataTemplate)this._dataGrid.FindResource(DataGridFilter.ColumnHeaderTemplateKey);
+            var headerTemplate = (DataTemplate)_dataGrid.FindResource(DataGridFilter.ColumnHeaderTemplateKey);
 
             foreach (var column in filteredColumnsWithEmptyHeaderTemplate)
             {

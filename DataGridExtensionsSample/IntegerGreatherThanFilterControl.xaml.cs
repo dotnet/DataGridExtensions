@@ -1,25 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using DataGridExtensions;
-using System.Globalization;
-
-namespace DataGridExtensionsSample
+﻿namespace DataGridExtensionsSample
 {
+    using System.Windows;
+    using System.Windows.Controls;
+    using DataGridExtensions;
+
     /// <summary>
     /// Interaction logic for IntegerGreatherThanFilterControl.xaml
     /// </summary>
-    public partial class IntegerGreatherThanFilterControl : Control
+    public partial class IntegerGreatherThanFilterControl
     {
         public IntegerGreatherThanFilterControl()
         {
@@ -32,7 +20,7 @@ namespace DataGridExtensionsSample
             var text = textBox.Text;
             int threshold;
 
-            this.Filter = !int.TryParse(text, out threshold) ? null : new ContentFilter(threshold);
+            Filter = !int.TryParse(text, out threshold) ? null : new ContentFilter(threshold);
         }
 
         public IContentFilter Filter
@@ -48,11 +36,11 @@ namespace DataGridExtensionsSample
 
         class ContentFilter : IContentFilter
         {
-            readonly int threshold;
+            readonly int _threshold;
 
             public ContentFilter(int threshold)
             {
-                this.threshold = threshold;
+                _threshold = threshold;
             }
 
             public bool IsMatch(object value)
@@ -62,7 +50,7 @@ namespace DataGridExtensionsSample
 
                 int i;
 
-                return int.TryParse(value.ToString(), out i) && (i > this.threshold);
+                return int.TryParse(value.ToString(), out i) && (i > _threshold);
             }
         }
     }

@@ -20,7 +20,7 @@ namespace DataGridExtensions
         /// <param name="columns">The additional columns that will be filtered.</param>
         public DataGridFilteringEventArgs(ICollection<DataGridColumn> columns)
         {
-            this.Columns = columns;
+            Columns = columns;
         }
 
         /// <summary>

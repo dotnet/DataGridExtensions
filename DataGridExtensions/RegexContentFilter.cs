@@ -71,7 +71,7 @@ namespace DataGridExtensions
         /// <param name="regexOptions">The regex options.</param>
         public RegexContentFilterFactory(RegexOptions regexOptions)
         {
-            this.RegexOptions = regexOptions;
+            RegexOptions = regexOptions;
         }
 
         /// <summary>

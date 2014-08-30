@@ -57,7 +57,7 @@ namespace DataGridExtensionsSample
             // Use the integer filter for the integer column.
             if (e.PropertyType == typeof(int))
             {
-                e.Column.SetTemplate((ControlTemplate)this.FindResource("IntegerFilter"));
+                e.Column.SetTemplate((ControlTemplate)FindResource("IntegerFilter"));
             }
             else if ((e.PropertyType != typeof(bool)) && e.PropertyType.IsPrimitive)
             {

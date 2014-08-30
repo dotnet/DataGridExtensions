@@ -29,7 +29,7 @@ namespace DataGridExtensions
             if (column == null)
                 throw new ArgumentNullException("column");
 
-            column.SetValue(DataGridFilterColumn.IsFilterVisibleProperty, value);
+            column.SetValue(IsFilterVisibleProperty, value);
         }
         /// <summary>
         /// Identifies the IsFilterVisible dependency property

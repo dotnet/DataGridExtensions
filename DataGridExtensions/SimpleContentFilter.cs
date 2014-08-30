@@ -10,8 +10,8 @@ namespace DataGridExtensions
     /// </summary>
     public class SimpleContentFilter : IContentFilter
     {
-        private readonly string content;
-        private readonly StringComparison stringComparison;
+        private readonly string _content;
+        private readonly StringComparison _stringComparison;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleContentFilter"/> class.
@@ -20,8 +20,8 @@ namespace DataGridExtensions
         /// <param name="stringComparison">The string comparison.</param>
         public SimpleContentFilter(string content, StringComparison stringComparison)
         {
-            this.content = content;
-            this.stringComparison = stringComparison;
+            _content = content;
+            _stringComparison = stringComparison;
         }
 
         #region IFilter Members
@@ -38,7 +38,7 @@ namespace DataGridExtensions
             if (value == null)
                 return false;
 
-            return value.ToString().IndexOf(content, stringComparison) >= 0;
+            return value.ToString().IndexOf(_content, _stringComparison) >= 0;
         }
 
         #endregion
@@ -63,7 +63,7 @@ namespace DataGridExtensions
         /// <param name="stringComparison">The string comparison to use.</param>
         public SimpleContentFilterFactory(StringComparison stringComparison)
         {
-            this.StringComparison = stringComparison;
+            StringComparison = stringComparison;
         }
 
         /// <summary>

@@ -66,20 +66,20 @@
 
         class ContentFilter : IContentFilter
         {
-            private readonly double min;
-            private readonly double max;
+            private readonly double _min;
+            private readonly double _max;
 
             public ContentFilter(double min, double max)
             {
-                this.min = min;
-                this.max = max;
+                _min = min;
+                _max = max;
             }
 
             public double Min
             {
                 get
                 {
-                    return min;
+                    return _min;
                 }
             }
 
@@ -87,7 +87,7 @@
             {
                 get
                 {
-                    return max;
+                    return _max;
                 }
             }
 
@@ -103,7 +103,7 @@
                     return false;
                 }
 
-                return (number >= min) && (number <= max);
+                return (number >= _min) && (number <= _max);
             }
         }
 
