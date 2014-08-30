@@ -1,4 +1,7 @@
-﻿1.0.14.0
+﻿1.0.15.0
+* DataGrid.Items.Filter must not be touched when filtering is disabled.
+* Add a SourceValues property to DataGridFilterColumnsControl to support specialized filters with extended selection capabilities.
+1.0.14.0
 * Add the GroupStyleBinding helper class.
 1.0.13.0
 * Simplify access to filter by code.
