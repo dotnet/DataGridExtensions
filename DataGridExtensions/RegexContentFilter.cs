@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-
-namespace DataGridExtensions
+﻿namespace DataGridExtensions
 {
+    using System;
+    using System.Text.RegularExpressions;
+
     /// <summary>
     /// A content filter using the content as a regular expression to match the string representation of the value.
     /// </summary>
     public class RegexContentFilter : IContentFilter
     {
-        readonly Regex filterRegex;
+        readonly Regex _filterRegex;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RegexContentFilter"/> class.
@@ -22,7 +19,7 @@ namespace DataGridExtensions
         {
             try
             {
-                filterRegex = new Regex(expression, regexOptions);
+                _filterRegex = new Regex(expression, regexOptions);
             }
             catch (ArgumentException)
             {
@@ -41,12 +38,12 @@ namespace DataGridExtensions
         /// </returns>
         public bool IsMatch(object value)
         {
-            if (filterRegex == null)
+            if (_filterRegex == null)
                 return true;
             if (value == null)
                 return false;
 
-            return filterRegex.IsMatch(value.ToString());
+            return _filterRegex.IsMatch(value.ToString());
         }
 
         #endregion

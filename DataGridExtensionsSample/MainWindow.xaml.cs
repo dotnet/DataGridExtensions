@@ -17,14 +17,14 @@ namespace DataGridExtensionsSample
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        private Random rand = new Random();
+        private Random _rand = new Random();
 
         public MainWindow()
         {
             InitializeComponent();
 
             // Sample usage of the filtering event
-            grid1.GetFilter().Filtering += Grid1_Filtering;
+            Grid1.GetFilter().Filtering += Grid1_Filtering;
         }
 
         void Grid1_Filtering(object sender, DataGridFilteringEventArgs e)
@@ -38,7 +38,7 @@ namespace DataGridExtensionsSample
         {
             // Here we could show some information about the result of the filtering.
 
-            Trace.WriteLine(grid1.Items.Count);
+            Trace.WriteLine(Grid1.Items.Count);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace DataGridExtensionsSample
         {
             get
             {
-                return Enumerable.Range(0, 100).Select(index => new DataItem(rand, index)).ToArray();
+                return Enumerable.Range(0, 100).Select(index => new DataItem(_rand, index)).ToArray();
             }
         }
 
@@ -73,8 +73,8 @@ namespace DataGridExtensionsSample
             Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() =>
             {
                 // Sample to manipulate the filter values by code.
-                grid1.Columns[0].SetFilter("True");
-                grid1.Columns[2].SetFilter("3");
+                Grid1.Columns[0].SetFilter("True");
+                Grid1.Columns[2].SetFilter("3");
             }));
         }
 

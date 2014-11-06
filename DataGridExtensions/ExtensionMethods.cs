@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Threading;
-using System.Windows;
-using System.Windows.Media;
-
-namespace DataGridExtensions
+﻿namespace DataGridExtensions
 {
+    using System;
+    using System.Windows;
+    using System.Windows.Media;
+    using System.Windows.Threading;
+
     internal static partial class ExtensionMethods
     {
         /// <summary>
@@ -39,6 +36,31 @@ namespace DataGridExtensions
 
             return null;
         }
-    }
 
+        /// <summary>
+        /// Shortcut to <see cref="System.Windows.Threading.Dispatcher.BeginInvoke(Delegate, Object[])"/>
+        /// </summary>
+        public static void BeginInvoke(this DispatcherObject self, Action action)
+        {
+            if (self == null)
+                throw new ArgumentNullException("self");
+            if (action == null)
+                throw new ArgumentNullException("action");
+
+            self.Dispatcher.BeginInvoke(action);
+        }
+
+        /// <summary>
+        /// Shortcut to <see cref="System.Windows.Threading.Dispatcher.BeginInvoke(DispatcherPriority, Delegate)"/>
+        /// </summary>
+        public static void BeginInvoke(this DispatcherObject self, DispatcherPriority priority, Action action)
+        {
+            if (self == null)
+                throw new ArgumentNullException("self");
+            if (action == null)
+                throw new ArgumentNullException("action");
+
+            self.Dispatcher.BeginInvoke(priority, action);
+        }
+    }
 }

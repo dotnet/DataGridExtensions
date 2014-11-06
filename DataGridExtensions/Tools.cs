@@ -1,6 +1,6 @@
 ﻿namespace DataGridExtensions
 {
-    using System.ComponentModel;
+    using System;
     using System.Windows;
     using System.Windows.Controls;
 
@@ -9,6 +9,8 @@
     /// </summary>
     public static class Tools
     {
+        #region Initial sorting
+
         /// <summary>
         /// Gets the flag to enable the 'apply initial sorting' feature.
         /// </summary>
@@ -30,33 +32,37 @@
         /// Identifies the ApplyInitialSorting dependency property
         /// </summary>
         public static readonly DependencyProperty ApplyInitialSortingProperty =
-            DependencyProperty.RegisterAttached("ApplyInitialSorting", typeof(bool), typeof(Tools), new UIPropertyMetadata(false, ApplyInitialSorting_Changed));
+            DependencyProperty.RegisterAttached("ApplyInitialSorting", typeof(bool), typeof(Tools), new UIPropertyMetadata(false, ApplyInitialSorting.IsEnabled_Changed));
 
-        private static void ApplyInitialSorting_Changed(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        #endregion
+
+        #region Additional events
+        /// <summary>
+        /// Gets additional events for a data grid.
+        /// </summary>
+        /// <param name="dataGrid">The data grid.</param>
+        /// <returns>The event provider.</returns>
+        public static IDataGridEventsProvider GetAdditionalEvents(this DataGrid dataGrid)
         {
-            var dataGrid = sender as DataGrid;
             if (dataGrid == null)
-                return;
+                throw new ArgumentNullException("dataGrid");
 
-            if ((bool)e.NewValue)
-                dataGrid.Loaded += dataGrid_Loaded;
-            else
-                dataGrid.Loaded -= dataGrid_Loaded;
+            var eventsProvider = dataGrid.GetValue(DataGridEventsProviderProperty) as IDataGridEventsProvider;
+            if (eventsProvider == null)
+            {
+                eventsProvider = new DataGridEventsProvider(dataGrid);
+                dataGrid.SetValue(DataGridEventsProviderProperty, eventsProvider);
+            }
+
+            return eventsProvider;
         }
 
-        private static void dataGrid_Loaded(object sender, RoutedEventArgs e)
-        {
-            var dataGrid = sender as DataGrid;
-            if (dataGrid == null)
-                return;
+        /// <summary>
+        /// Identifies the DataGridEventsProvider dependency property
+        /// </summary>
+        private static readonly DependencyProperty DataGridEventsProviderProperty =
+            DependencyProperty.RegisterAttached("DataGridEventsProvider", typeof(IDataGridEventsProvider), typeof(Tools));
 
-            foreach (var column in dataGrid.Columns)
-            {
-                if ((column != null) && (column.SortDirection.HasValue) && !string.IsNullOrEmpty(column.SortMemberPath))
-                {
-                    dataGrid.Items.SortDescriptions.Add(new SortDescription(column.SortMemberPath, column.SortDirection.Value));
-                }
-            } 
-        }            
+        #endregion
     }
 }

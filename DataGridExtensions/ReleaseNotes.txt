@@ -1,4 +1,9 @@
-﻿1.0.15.0
+﻿1.0.16.0
+* Added BeginEditOnCtrlEnterBehavior
+* Added DisableTargetWhileEditingBehavior
+* Added ExtendedStarSizeBehavior
+* Added extended events
+1.0.15.0
 * DataGrid.Items.Filter must not be touched when filtering is disabled.
 * Add a SourceValues property to DataGridFilterColumnsControl to support specialized filters with extended selection capabilities.
 1.0.14.0

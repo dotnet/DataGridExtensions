@@ -2,7 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:src="clr-namespace:DataGridExtensionsSample"
-        xmlns:dgx="clr-namespace:DataGridExtensions;assembly=DataGridExtensions"
+        xmlns:dgx="urn:tom-englert.de/DataGridExtensions"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
         Loaded="MainWindow_OnLoaded" TextOptions.TextFormattingMode="Display" UseLayoutRounding="True"
         Title="DataGrid Extensions Sample">
@@ -28,7 +29,7 @@
   </Window.Resources>
 
   <Grid>
-    <Button Content="Reload data" VerticalAlignment="Top" HorizontalAlignment="Right" Click="Reload_Click" />
+    <Button x:Name="ReloadButton" Content="Reload data" VerticalAlignment="Top" HorizontalAlignment="Right" Click="Reload_Click" />
 
     <TabControl>
 
@@ -41,12 +42,12 @@
             </TextBlock>
             <Decorator Height="10" />
             <StackPanel Orientation="Horizontal">
-              <CheckBox x:Name="isFilterEnabled" DockPanel.Dock="Top" IsChecked="True" Content="Enable filters" />
+              <CheckBox x:Name="IsFilterEnabled" DockPanel.Dock="Top" IsChecked="True" Content="Enable filters" />
             </StackPanel>
           </StackPanel>
-          <DataGrid Name="grid1"
+          <DataGrid Name="Grid1"
                     ItemsSource="{Binding Items}"
-                    dgx:DataGridFilter.IsAutoFilterEnabled="{Binding Path=IsChecked, ElementName=isFilterEnabled}"/>
+                    dgx:DataGridFilter.IsAutoFilterEnabled="{Binding Path=IsChecked, ElementName=IsFilterEnabled}"/>
         </DockPanel>
       </TabItem>
 
@@ -68,6 +69,11 @@
               </ControlTemplate>
             </DataGrid.Resources>
 
+            <i:Interaction.Behaviors>
+              <dgx:BeginEditOnCtrlEnterBehavior/>
+              <dgx:DisableTargetWhileEditingBehavior Target="{Binding ElementName=ReloadButton}"/>
+            </i:Interaction.Behaviors>
+
           </DataGrid>
         </DockPanel>
       </TabItem>
@@ -82,6 +88,10 @@
                     dgx:DataGridFilter.IsAutoFilterEnabled="True"
                     dgx:Tools.ApplyInitialSorting="True"
                     dgx:DataGridFilter.FilterEvaluationDelay="0:0:0">
+            <i:Interaction.Behaviors>
+              <dgx:ExtendedColumnStarSizeBehavior/>
+            </i:Interaction.Behaviors>
+
             <DataGrid.Resources>
               <!-- Override default icon style to have a blue icon that changes to red when the column header is hovered. -->
               <Style TargetType="Control" x:Key="{x:Static dgx:DataGridFilter.IconStyleKey}" BasedOn="{StaticResource {x:Static dgx:DataGridFilter.IconStyleKey}}">
@@ -114,15 +124,15 @@
                                       Binding="{Binding Path=Flag, Mode=OneWay}"
                                       dgx:DataGridFilterColumn.Template="{StaticResource {x:Static dgx:DataGridFilter.TextColumnFilterTemplateKey}}" />
               <!-- Use the integer filter for the integer column. -->
-              <DataGridTextColumn Header="Integer/Custom" Binding="{Binding Index, Mode=OneWay}"
+              <DataGridTextColumn Header="Integer/Custom" Binding="{Binding Index, Mode=OneWay}" Width="*"
                                   dgx:DataGridFilterColumn.Template="{StaticResource IntegerFilter}" />
               <!-- Hide the filter for this column. -->
-              <DataGridTextColumn Header="Text/No Filter" Binding="{Binding Column1, Mode=OneWay}"
+              <DataGridTextColumn Header="Text/No Filter" Binding="{Binding Column1, Mode=OneWay}" Width="*"
                                   dgx:DataGridFilterColumn.IsFilterVisible="False" SortDirection="Descending" />
               <!-- Use the default filter for this column. -->
-              <DataGridTextColumn Header="Text/Text" Binding="{Binding Column2, Mode=OneWay}" />
+              <DataGridTextColumn Header="Text/Text" Binding="{Binding Column2, Mode=OneWay}" Width="*"/>
               <!-- Use a special filter using a toggle button with a popup to enter more than one condition. -->
-              <DataGridTextColumn Header="Double/Custom" Binding="{Binding Probability, Mode=OneWay}"
+              <DataGridTextColumn Header="Double/Custom" Binding="{Binding Probability, Mode=OneWay}" Width="*"
                                   dgx:DataGridFilterColumn.Template="{StaticResource FilterWithPopup}" />
             </DataGrid.Columns>
           </DataGrid>

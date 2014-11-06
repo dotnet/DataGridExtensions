@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Markup;
 
 [assembly: AssemblyTitle("Data Grid Extensions")]
 [assembly: AssemblyDescription("")]
@@ -15,5 +16,8 @@ using System.Windows;
 [assembly: ComVisible(false)]
 [assembly: Guid("26c621e5-4dac-4f34-b534-9bb334d6380b")]
 [assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
-[assembly: AssemblyVersion("1.0.15.0")]
-[assembly: AssemblyFileVersion("1.0.15.0")]
+[assembly: AssemblyVersion("1.0.16.0")]
+[assembly: AssemblyFileVersion("1.0.16.0")]
+
+[assembly: XmlnsDefinition("urn:tom-englert.de/DataGridExtensions", "DataGridExtensions")]
+[assembly: XmlnsDefinition("urn:tom-englert.de/DataGridExtensions", "DataGridExtensions.Behaviors")]
