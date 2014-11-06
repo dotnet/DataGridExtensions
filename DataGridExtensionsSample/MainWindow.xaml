@@ -89,7 +89,7 @@
                     dgx:Tools.ApplyInitialSorting="True"
                     dgx:DataGridFilter.FilterEvaluationDelay="0:0:0">
             <i:Interaction.Behaviors>
-              <dgx:ExtendedColumnStarSizeBehavior/>
+              <dgx:ExtendedStarSizeBehavior/>
             </i:Interaction.Behaviors>
 
             <DataGrid.Resources>
