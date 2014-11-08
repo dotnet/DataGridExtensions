@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace DataGridExtensions
+﻿namespace DataGridExtensions
 {
+    using System;
+    using System.Diagnostics.Contracts;
+
     /// <summary>
     /// A content filter using a simple "contains" string comparison to match the content and the value.
     /// </summary>
@@ -20,6 +18,8 @@ namespace DataGridExtensions
         /// <param name="stringComparison">The string comparison.</param>
         public SimpleContentFilter(string content, StringComparison stringComparison)
         {
+            Contract.Requires(content != null);
+
             _content = content;
             _stringComparison = stringComparison;
         }
@@ -42,6 +42,13 @@ namespace DataGridExtensions
         }
 
         #endregion
+
+        [ContractInvariantMethod]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Required for code contracts.")]
+        private void ObjectInvariant()
+        {
+            Contract.Invariant(_content != null);
+        }
     }
 
     /// <summary>

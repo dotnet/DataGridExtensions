@@ -1,9 +1,10 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-
-namespace DataGridExtensions
+﻿namespace DataGridExtensions
 {
+    using System;
+    using System.Diagnostics.Contracts;
+    using System.Windows;
+    using System.Windows.Controls;
+
     /// <summary>
     /// Defines the attached properties that can be set on the data grid column level.
     /// </summary>
@@ -46,8 +47,7 @@ namespace DataGridExtensions
         /// </summary>
         public static ControlTemplate GetTemplate(this DataGridColumn column)
         {
-            if (column == null)
-                throw new ArgumentNullException("column");
+            Contract.Requires(column != null);
 
             return (ControlTemplate)column.GetValue(TemplateProperty);
         }
@@ -56,8 +56,7 @@ namespace DataGridExtensions
         /// </summary>
         public static void SetTemplate(this DataGridColumn column, ControlTemplate value)
         {
-            if (column == null)
-                throw new ArgumentNullException("column");
+            Contract.Requires(column != null);
 
             column.SetValue(TemplateProperty, value);
         }
@@ -76,6 +75,8 @@ namespace DataGridExtensions
         /// </summary>
         public static object GetFilter(this DataGridColumn column)
         {
+            Contract.Requires(column != null);
+
             return column.GetValue(FilterProperty);
         }
         /// <summary>
@@ -83,6 +84,8 @@ namespace DataGridExtensions
         /// </summary>
         public static void SetFilter(this DataGridColumn column, object value)
         {
+            Contract.Requires(column != null);
+
             column.SetValue(FilterProperty, value);
         }
         /// <summary>

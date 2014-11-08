@@ -1,9 +1,10 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-
-namespace DataGridExtensions
+﻿namespace DataGridExtensions
 {
+    using System;
+    using System.Diagnostics.Contracts;
+    using System.Windows;
+    using System.Windows.Controls;
+
     /// <summary>
     /// Defines the attached properties that can be set on the data grid level.
     /// </summary>
@@ -16,6 +17,8 @@ namespace DataGridExtensions
         /// </summary>
         public static bool GetIsAutoFilterEnabled(this DataGrid obj)
         {
+            Contract.Requires(obj != null);
+
             return (bool)obj.GetValue(IsAutoFilterEnabledProperty);
         }
         /// <summary>
@@ -23,6 +26,8 @@ namespace DataGridExtensions
         /// </summary>
         public static void SetIsAutoFilterEnabled(this DataGrid obj, bool value)
         {
+            Contract.Requires(obj != null);
+
             obj.SetValue(IsAutoFilterEnabledProperty, value);
         }
         /// <summary>
@@ -37,7 +42,7 @@ namespace DataGridExtensions
             if (dataGrid != null)
             {
                 // Force creation of the host and show or hide the controls.
-                dataGrid.GetFilter().Enable((bool)e.NewValue);
+                dataGrid.GetFilter().Enable(true.Equals(e.NewValue));
             }
         }
 
@@ -51,8 +56,8 @@ namespace DataGridExtensions
         /// </summary>
         public static DataGridFilterHost GetFilter(this DataGrid dataGrid)
         {
-            if (dataGrid == null)
-                throw new ArgumentNullException("dataGrid");
+            Contract.Requires(dataGrid != null);
+            Contract.Ensures(Contract.Result<DataGridFilterHost>() != null);
 
             var value = (DataGridFilterHost)dataGrid.GetValue(FilterProperty);
             if (value == null)
@@ -80,8 +85,9 @@ namespace DataGridExtensions
         /// </summary>
         public static IContentFilterFactory GetContentFilterFactory(this DataGrid dataGrid)
         {
-            if (dataGrid == null)
-                throw new ArgumentNullException("dataGrid");
+            Contract.Requires(dataGrid != null);
+            Contract.Ensures(Contract.Result<IContentFilterFactory>() != null);
+
             return (IContentFilterFactory)dataGrid.GetValue(ContentFilterFactoryProperty);
         }
         /// <summary>
@@ -116,6 +122,8 @@ namespace DataGridExtensions
         /// <returns>The throttle delay.</returns>
         public static TimeSpan GetFilterEvaluationDelay(this DataGrid obj)
         {
+            Contract.Requires(obj != null);
+
             return (TimeSpan) obj.GetValue(FilterEvaluationDelayProperty);
         }
 
@@ -126,6 +134,8 @@ namespace DataGridExtensions
         /// <param name="value">The new throttle delay.</param>
         public static void SetFilterEvaluationDelay(this DataGrid obj, TimeSpan value)
         {
+            Contract.Requires(obj != null);
+
             obj.SetValue(FilterEvaluationDelayProperty, value);
         }
         /// <summary>
@@ -145,6 +155,8 @@ namespace DataGridExtensions
         {
             get
             {
+                Contract.Ensures(Contract.Result<ResourceKey>() != null);
+
                 return new ComponentResourceKey(typeof(DataGridFilter), typeof(DataGridTextColumn));
             }
         }
@@ -156,6 +168,8 @@ namespace DataGridExtensions
         {
             get
             {
+                Contract.Ensures(Contract.Result<ResourceKey>() != null);
+
                 return new ComponentResourceKey(typeof(DataGridFilter), typeof(DataGridCheckBoxColumn));
             }
         }
@@ -167,6 +181,8 @@ namespace DataGridExtensions
         {
             get
             {
+                Contract.Ensures(Contract.Result<ResourceKey>() != null);
+
                 return new ComponentResourceKey(typeof(DataGridFilter), typeof(DataGridColumn));
             }
         }
@@ -178,6 +194,8 @@ namespace DataGridExtensions
         {
             get
             {
+                Contract.Ensures(Contract.Result<ResourceKey>() != null);
+
                 return new ComponentResourceKey(typeof(DataGridFilter), "IconTemplate");
             }
         }
@@ -189,6 +207,8 @@ namespace DataGridExtensions
         {
             get
             {
+                Contract.Ensures(Contract.Result<ResourceKey>() != null);
+
                 return new ComponentResourceKey(typeof(DataGridFilter), "IconStyle");
             }
         }
@@ -200,6 +220,8 @@ namespace DataGridExtensions
         {
             get
             {
+                Contract.Ensures(Contract.Result<ResourceKey>() != null);
+
                 return new ComponentResourceKey(typeof(DataGridFilter), "ColumnHeaderSearchCheckBoxStyle");
             }
         }
@@ -211,6 +233,8 @@ namespace DataGridExtensions
         {
             get
             {
+                Contract.Ensures(Contract.Result<ResourceKey>() != null);
+
                 return new ComponentResourceKey(typeof(DataGridFilter), "ColumnHeaderSearchTextBoxStyle");
             }
         }

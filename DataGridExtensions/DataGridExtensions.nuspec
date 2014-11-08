@@ -13,5 +13,15 @@
         <summary>Modular extensions for the DataGrid control.</summary>
         <copyright>© 2012-2014 tom-englert.de</copyright>
         <tags>DGX DataGrid Filter</tags>
+    <references>
+      <reference file="DataGridExtensions.dll" />
+      <reference file="System.Windows.Interactivity.dll" />
+    </references>
   </metadata>
+  <files>
+    <file src="bin\Release\System.Windows.Interactivity.dll" target="lib\net40-Client" />
+    <file src="bin\Release\System.Windows.Interactivity.xml" target="lib\net40-Client"/>
+    <file src="bin\Release\CodeContracts\*.dll" target="lib\net40-Client\CodeContracts" />
+    <file src="bin\Release\*.pdb" target="lib\net40-Client" />
+  </files>
 </package>

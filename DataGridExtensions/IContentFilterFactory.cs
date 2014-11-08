@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace DataGridExtensions
+﻿namespace DataGridExtensions
 {
+    using System.Diagnostics.Contracts;
+
     /// <summary>
     /// Interface to be implemented by a content filter factory.
     /// </summary>
-    public interface IContentFilterFactory
+    public partial interface IContentFilterFactory
     {
         /// <summary>
         /// Creates the content filter for the specified content.
@@ -17,4 +14,22 @@ namespace DataGridExtensions
         /// <returns>The new filter.</returns>
         IContentFilter Create(object content);
     }
+
+    #region IContentFilterFactory contract binding
+    [ContractClass(typeof(ContentFilterFactoryContract))]
+    public partial interface IContentFilterFactory
+    {
+    }
+
+    [ContractClassFor(typeof(IContentFilterFactory))]
+    abstract class ContentFilterFactoryContract : IContentFilterFactory
+    {
+        public IContentFilter Create(object content)
+        {
+            Contract.Ensures(Contract.Result<IContentFilter>() != null);
+
+            throw new System.NotImplementedException();
+        }
+    }
+    #endregion
 }

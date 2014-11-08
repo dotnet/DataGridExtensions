@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.ComponentModel;
+    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
@@ -31,7 +32,7 @@
         /// <summary>
         /// The resrouce key for the default column header gripper tool tip style.
         /// </summary>
-        public static ResourceKey ColumnHeaderGripperToolTipStyleKey = new ComponentResourceKey(typeof(ExtendedStarSizeBehavior), "ColumnHeaderGripperToolTipStyle");
+        public static readonly ResourceKey ColumnHeaderGripperToolTipStyleKey = new ComponentResourceKey(typeof(ExtendedStarSizeBehavior), "ColumnHeaderGripperToolTipStyle");
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExtendedStarSizeBehavior"/> class.
@@ -55,15 +56,19 @@
         public static readonly DependencyProperty ColumnHeaderGripperToolTipStyleProperty =
             DependencyProperty.Register("ColumnHeaderGripperToolTipStyle", typeof(Style), typeof(ExtendedStarSizeBehavior));
 
+        /// <summary>
+        /// Called after the behavior is attached to an AssociatedObject.
+        /// </summary>
+        /// <remarks>
+        /// Override this to hook up functionality to the AssociatedObject.
+        /// </remarks>
         protected override void OnAttached()
         {
             base.OnAttached();
+            
+            var dataGrid = AssociatedObject;
+            Contract.Assume(dataGrid != null);
 
-            Attach(AssociatedObject);
-        }
-
-        private void Attach(DataGrid dataGrid)
-        {
             dataGrid.Loaded += DataGrid_Loaded;
             dataGrid.Unloaded += DataGrid_Unloaded;
         }
@@ -77,7 +82,9 @@
 
         private void DataGrid_Loaded(DataGrid dataGrid)
         {
-            _scrollViewer = dataGrid.Template.FindName("DG_ScrollViewer", dataGrid) as ScrollViewer;
+            Contract.Requires(dataGrid != null);
+
+            _scrollViewer = dataGrid.Template.Maybe().Return(t => t.FindName("DG_ScrollViewer", dataGrid) as ScrollViewer);
             if (_scrollViewer == null)
                 return;
 
@@ -96,9 +103,15 @@
 
         private void DataGrid_Unloaded(object sender, RoutedEventArgs e)
         {
+            Contract.Requires(sender != null);
+
             var dataGrid = (DataGrid)sender;
 
-            ViewportWidthPropertyDescriptor.RemoveValueChanged(_scrollViewer, ScrollViewer_ViewportWidthChanged);
+            var scrollViewer = _scrollViewer;
+            if (scrollViewer == null)
+                return;
+
+            ViewportWidthPropertyDescriptor.RemoveValueChanged(scrollViewer, ScrollViewer_ViewportWidthChanged);
 
             var dataGridEvents = dataGrid.GetAdditionalEvents();
 
@@ -115,7 +128,11 @@
 
         private void Columns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            HijackStarSizeColumnsInfo(AssociatedObject);
+            var dataGrid = AssociatedObject;
+            if (dataGrid == null)
+                return;
+
+            HijackStarSizeColumnsInfo(dataGrid);
             _updateColumnGripperToolTipVisibilityThrottle.Tick();
         }
 
@@ -133,6 +150,8 @@
         private void DataGrid_ColumnActualWidthChanged(object sender, DataGridColumnEventArgs e)
         {
             var dataGrid = (DataGrid)sender;
+            if (dataGrid == null)
+                return;
 
             if (_changingGridSizeCounter > 0)
                 return;
@@ -144,12 +163,16 @@
 
         private void DataGrid_ColumnVisibilityChanged(object sender, EventArgs e)
         {
+            Contract.Requires(sender != null);
+
             UpdateColumnWidths((DataGrid)sender, null);
             _updateColumnGripperToolTipVisibilityThrottle.Tick();
         }
 
         private void UpdateColumnWidths(DataGrid dataGrid, DataGridColumn modifiedColum)
         {
+            Contract.Requires(dataGrid != null);
+
             var dataGridColumns = dataGrid.Columns
                 .OrderBy(c => c.DisplayIndex)
                 .Skip(dataGrid.FrozenColumnCount)
@@ -187,6 +210,13 @@
 
         private void DistributeAvailableSize(DataGrid dataGrid, DataGridColumn[] dataGridColumns, DataGridColumn modifiedColum)
         {
+            Contract.Requires(dataGrid != null);
+            Contract.Requires(dataGridColumns != null);
+
+            var scrollViewer = _scrollViewer;
+            if (scrollViewer == null)
+                return;
+
             var startColumnIndex = (modifiedColum != null) ? modifiedColum.DisplayIndex : 0;
 
             Func<DataGridColumn, bool> isFixedColumn = c => (GetStarSize(c) <= double.Epsilon) || (c.DisplayIndex <= startColumnIndex);
@@ -202,7 +232,7 @@
                 .Select(c => c.ActualWidth)
                 .Sum();
 
-            var availableWidth = _scrollViewer.ViewportWidth - dataGrid.CellsPanelHorizontalOffset;
+            var availableWidth = scrollViewer.ViewportWidth - dataGrid.CellsPanelHorizontalOffset;
             var nonFrozenColumnsOffset = dataGrid.NonFrozenColumnsViewportHorizontalOffset;
             var spaceAvailable = availableWidth - nonFrozenColumnsOffset - fixedColumsWidth;
 
@@ -221,6 +251,8 @@
 
         private static void HijackStarSizeColumnsInfo(DataGrid dataGrid)
         {
+            Contract.Requires(dataGrid != null);
+
             foreach (var column in dataGrid.Columns)
             {
                 var width = column.Width;
@@ -260,7 +292,12 @@
 
         private void InjectColumnHeaderStyle(DataGrid dataGrid)
         {
+            Contract.Requires(dataGrid != null);
+
             var baseStyle = dataGrid.ColumnHeaderStyle ?? (Style)dataGrid.FindResource(typeof(DataGridColumnHeader));
+            
+            Contract.Assume(baseStyle != null);
+
             if (baseStyle.Setters.OfType<Setter>().Any(setter => setter.Property == ColumnHeaderGripperExtenderProperty))
                 return;
 
@@ -271,6 +308,8 @@
 
         private static double GetStarSize(DataGridColumn column)
         {
+            Contract.Requires(column != null);
+
             return (double)column.GetValue(StarSizeProperty);
         }
 
@@ -309,7 +348,9 @@
 
         private void ApplyGripperToolTip(DataGridColumnHeader columnHeader, string gripperName, DependencyProperty toolTipProperty)
         {
-            var gripper = columnHeader.Template.FindName(gripperName, columnHeader) as Thumb;
+            Contract.Requires(columnHeader != null);
+
+            var gripper = columnHeader.Template.Maybe().Return(t => t.FindName(gripperName, columnHeader) as Thumb);
             if (gripper == null)
                 return;
 
@@ -325,5 +366,13 @@
 
             _updateColumnGripperToolTipVisibilityThrottle.Tick();
         }
+
+        [ContractInvariantMethod]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Required for code contracts.")]
+        private void ObjectInvariant()
+        {
+            Contract.Invariant(_updateColumnGripperToolTipVisibilityThrottle != null);
+        }
+
     }
 }

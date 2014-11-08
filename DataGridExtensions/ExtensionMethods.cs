@@ -1,11 +1,12 @@
 ﻿namespace DataGridExtensions
 {
     using System;
+    using System.Diagnostics.Contracts;
     using System.Windows;
     using System.Windows.Media;
     using System.Windows.Threading;
 
-    internal static partial class ExtensionMethods
+    internal static class ExtensionMethods
     {
         /// <summary>
         /// Restarts the specified timer.
@@ -13,6 +14,8 @@
         /// <param name="timer">The timer.</param>
         internal static void Restart(this DispatcherTimer timer)
         {
+            Contract.Requires(timer != null);
+
             timer.Stop();
             timer.Start();
         }

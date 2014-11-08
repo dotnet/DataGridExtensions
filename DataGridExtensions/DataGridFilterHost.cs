@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Threading;
-
-namespace DataGridExtensions
+﻿namespace DataGridExtensions
 {
+    using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Collections.Specialized;
+    using System.Diagnostics.Contracts;
+    using System.Linq;
+    using System.Windows;
+    using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
+    using System.Windows.Threading;
 
     /// <summary>
     /// This class hosts all filter columns and handles the filter changes on the data grid level.
@@ -44,8 +44,7 @@ namespace DataGridExtensions
         /// <param name="dataGrid">The data grid to filter.</param>
         internal DataGridFilterHost(DataGrid dataGrid)
         {
-            if (dataGrid == null)
-                throw new ArgumentNullException("dataGrid");
+            Contract.Requires(dataGrid != null);
 
             _dataGrid = dataGrid;
 
@@ -89,6 +88,8 @@ namespace DataGridExtensions
         {
             get
             {
+                Contract.Ensures(Contract.Result<IList<DataGridFilterColumnControl>>() != null);
+
                 return new ReadOnlyCollection<DataGridFilterColumnControl>(_filterColumnControls);
             }
         }
@@ -142,6 +143,8 @@ namespace DataGridExtensions
         /// <param name="filterColumn"></param>
         internal void AddColumn(DataGridFilterColumnControl filterColumn)
         {
+            Contract.Requires(filterColumn != null);
+
             filterColumn.Visibility = _isFilteringEnabled ? Visibility.Visible : Visibility.Hidden;
             _filterColumnControls.Add(filterColumn);
         }
@@ -151,6 +154,8 @@ namespace DataGridExtensions
         /// </summary>
         internal void RemoveColumn(DataGridFilterColumnControl filterColumn)
         {
+            Contract.Requires(filterColumn != null);
+
             _filterColumnControls.Remove(filterColumn);
             OnFilterChanged();
         }
@@ -160,12 +165,14 @@ namespace DataGridExtensions
         /// </summary>
         internal IContentFilter CreateContentFilter(object content)
         {
+            Contract.Ensures(Contract.Result<IContentFilter>() != null);
+
             return _dataGrid.GetContentFilterFactory().Create(content);
         }
 
         private void Columns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if ((e == null) || (e.NewItems == null))
+            if (e.NewItems == null)
                 return;
 
             var filteredColumnsWithEmptyHeaderTemplate = e.NewItems
@@ -180,6 +187,8 @@ namespace DataGridExtensions
 
             foreach (var column in filteredColumnsWithEmptyHeaderTemplate)
             {
+                Contract.Assume(column != null);
+
                 column.HeaderTemplate = headerTemplate;
             }
         }
@@ -245,5 +254,14 @@ namespace DataGridExtensions
                 // Very strange!
             }
         }
+
+        [ContractInvariantMethod]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Required for code contracts.")]
+        private void ObjectInvariant()
+        {
+            Contract.Invariant(_dataGrid != null);
+            Contract.Invariant(_filterColumnControls != null);
+        }
+
     }
 }

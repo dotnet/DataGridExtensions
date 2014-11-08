@@ -1,9 +1,11 @@
 ﻿namespace DataGridExtensions
 {
     using System.Collections;
+    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
+    using DataGridExtensions.Framework;
 
     /// <summary>
     /// Helper class to support binding to the group style from within a style setter.
@@ -17,6 +19,8 @@
         /// <returns>The group style.</returns>
         public static GroupStyle GetGroupStyle(DependencyObject obj)
         {
+            Contract.Requires(obj != null);
+
             return (GroupStyle)obj.GetValue(GroupStyleProperty);
         }
         /// <summary>
@@ -26,6 +30,8 @@
         /// <param name="value">The value.</param>
         public static void SetGroupStyle(DependencyObject obj, GroupStyle value)
         {
+            Contract.Requires(obj != null);
+
             obj.SetValue(GroupStyleProperty, value);
         }
         /// <summary>
@@ -36,16 +42,19 @@
 
         private static void GroupStyle_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var itemsControl = d as ItemsControl;
-            if (itemsControl == null)
+            var groupStyle = d.Maybe()
+                .Select(i => i as ItemsControl)
+                .Return(i => i.GroupStyle);
+
+            if (groupStyle == null)
                 return;
 
-            itemsControl.GroupStyle.Clear();
+            groupStyle.Clear();
 
-            var groupStyle = e.NewValue as GroupStyle;
-            if (groupStyle != null)
+            var newGroupStyle = e.NewValue as GroupStyle;
+            if (newGroupStyle != null)
             {
-                itemsControl.GroupStyle.Add(groupStyle);
+                groupStyle.Add(newGroupStyle);
                 return;
             }
 
@@ -54,7 +63,7 @@
             {
                 foreach (var item in groupStyles.OfType<GroupStyle>())
                 {
-                    itemsControl.GroupStyle.Add(item);
+                    groupStyle.Add(item);
                 }
             }
         }

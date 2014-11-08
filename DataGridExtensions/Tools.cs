@@ -1,6 +1,6 @@
 ﻿namespace DataGridExtensions
 {
-    using System;
+    using System.Diagnostics.Contracts;
     using System.Windows;
     using System.Windows.Controls;
 
@@ -17,6 +17,8 @@
         /// <param name="dataGrid">The data grid.</param>
         public static bool GetApplyInitialSorting(this DataGrid dataGrid)
         {
+            Contract.Requires(dataGrid != null);
+
             return (bool)dataGrid.GetValue(ApplyInitialSortingProperty);
         }
         /// <summary>
@@ -26,6 +28,8 @@
         /// <param name="value">if set to <c>true</c> the initial sorting will be appied.</param>
         public static void SetApplyInitialSorting(this DataGrid dataGrid, bool value)
         {
+            Contract.Requires(dataGrid != null);
+
             dataGrid.SetValue(ApplyInitialSortingProperty, value);
         }
         /// <summary>
@@ -44,8 +48,8 @@
         /// <returns>The event provider.</returns>
         public static IDataGridEventsProvider GetAdditionalEvents(this DataGrid dataGrid)
         {
-            if (dataGrid == null)
-                throw new ArgumentNullException("dataGrid");
+            Contract.Requires(dataGrid != null);
+            Contract.Ensures(Contract.Result<IDataGridEventsProvider>() != null);
 
             var eventsProvider = dataGrid.GetValue(DataGridEventsProviderProperty) as IDataGridEventsProvider;
             if (eventsProvider == null)

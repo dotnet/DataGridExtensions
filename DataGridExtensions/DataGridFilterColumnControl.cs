@@ -3,11 +3,13 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
     using System.Windows.Data;
+    using DataGridExtensions.Framework;
 
     /// <summary>
     /// This class is the control hosting all information needed for filtering of one column.
@@ -26,6 +28,7 @@
         static DataGridFilterColumnControl()
         {
             var templatePropertyDescriptor = DependencyPropertyDescriptor.FromProperty(TemplateProperty, typeof(Control));
+            Contract.Assume(templatePropertyDescriptor != null);
             templatePropertyDescriptor.DesignerCoerceValueCallback = Template_CoerceValue;
         }
 
@@ -128,7 +131,10 @@
             // Update the effective filter. If the filter is provided as content, the content filter will be recreated when needed.
             _activeFilter = newValue as IContentFilter;
             // Notify the filter to update the view.
-            FilterHost.OnFilterChanged();
+            var filterHost = FilterHost;
+            if (filterHost == null)
+                return;
+            filterHost.OnFilterChanged();
         }
 
         private static object Template_CoerceValue(DependencyObject sender, object baseValue)
@@ -142,7 +148,10 @@
 
             // Just resolved the binding to the template property attached to the column, and the value has not been set on the column:
             // => try to find the default template based on the columns type.
-            var column = control.ColumnHeader.Column;
+            var column = control.Maybe()
+                .Select(c => c.ColumnHeader)
+                .Return (h => h.Column);
+
             if (column != null)
             {
                 return control.TryFindResource(new ComponentResourceKey(typeof(DataGridFilter), column.GetType())) as ControlTemplate;
@@ -159,6 +168,8 @@
         {
             get
             {
+                Contract.Ensures(Contract.Result<IEnumerable<string>>() != null);
+
                 return InternalValues().Distinct().ToArray();
             }
         }
@@ -171,6 +182,8 @@
         {
             get
             {
+                Contract.Ensures(Contract.Result<IEnumerable<string>>() != null);
+
                 return InternalSourceValues().Distinct().ToArray();
             }
         }
@@ -183,7 +196,7 @@
         {
             get
             {
-                return (Filter != null) && !string.IsNullOrWhiteSpace(Filter.ToString()) && (ColumnHeader.Column != null);
+                return (Filter != null) && !string.IsNullOrWhiteSpace(Filter.ToString()) && (ColumnHeader != null) && (ColumnHeader.Column != null);
             }
         }
 
@@ -192,7 +205,7 @@
         /// </summary>
         internal bool Matches(object item)
         {
-            if (Filter == null)
+            if ((Filter == null) || (FilterHost == null))
                 return true;
 
             if (_activeFilter == null)
@@ -263,7 +276,11 @@
         /// </summary>
         protected object GetCellContent(object item)
         {
-            var column = ColumnHeader.Column;
+            var columnHeader = ColumnHeader;
+            if (columnHeader == null)
+                return null;
+
+            var column = columnHeader.Column;
             if (column == null)
                 return null;
 
@@ -283,6 +300,8 @@
         /// </summary>
         protected IEnumerable<string> InternalValues()
         {
+            Contract.Ensures(Contract.Result<IEnumerable<string>>() != null);
+
             if (DataGrid == null)
                 return Enumerable.Empty<string>();
 
@@ -298,6 +317,8 @@
         /// </summary>
         protected IEnumerable<string> InternalSourceValues()
         {
+            Contract.Ensures(Contract.Result<IEnumerable<string>>() != null);
+
             if ((DataGrid == null) || (DataGrid.ItemsSource == null))
                 return Enumerable.Empty<string>();
 
@@ -329,5 +350,13 @@
         public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion
+
+        [ContractInvariantMethod]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Required for code contracts.")]
+        private void ObjectInvariant()
+        {
+            Contract.Invariant((FilterHost == null) || (DataGrid != null));
+        }
+
     }
 }

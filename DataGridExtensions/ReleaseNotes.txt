@@ -1,4 +1,6 @@
-﻿1.0.16.0
+﻿1.0.17.0
+* Using CodeContracts.
+1.0.16.0
 * Added BeginEditOnCtrlEnterBehavior
 * Added DisableTargetWhileEditingBehavior
 * Added ExtendedStarSizeBehavior

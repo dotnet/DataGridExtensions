@@ -1,5 +1,6 @@
 ﻿namespace DataGridExtensions.Behaviors
 {
+    using System.Diagnostics.Contracts;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Interactivity;
@@ -24,20 +25,38 @@
         public static readonly DependencyProperty TargetProperty =
             DependencyProperty.Register("Target", typeof (UIElement), typeof (DisableTargetWhileEditingBehavior));
 
+        /// <summary>
+        /// Called after the behavior is attached to an AssociatedObject.
+        /// </summary>
+        /// <remarks>
+        /// Override this to hook up functionality to the AssociatedObject.
+        /// </remarks>
         protected override void OnAttached()
         {
             base.OnAttached();
 
-            AssociatedObject.PreparingCellForEdit += DataGrid_PreparingCellForEdit;
-            AssociatedObject.CellEditEnding += DataGrid_CellEditEnding;
+            var dataGrid = AssociatedObject;
+            Contract.Assume(dataGrid != null);
+
+            dataGrid.PreparingCellForEdit += DataGrid_PreparingCellForEdit;
+            dataGrid.CellEditEnding += DataGrid_CellEditEnding;
         }
 
+        /// <summary>
+        /// Called when the behavior is being detached from its AssociatedObject, but before it has actually occurred.
+        /// </summary>
+        /// <remarks>
+        /// Override this to unhook functionality from the AssociatedObject.
+        /// </remarks>
         protected override void OnDetaching()
         {
             base.OnDetaching();
 
-            AssociatedObject.PreparingCellForEdit -= DataGrid_PreparingCellForEdit;
-            AssociatedObject.CellEditEnding -= DataGrid_CellEditEnding;
+            var dataGrid = AssociatedObject;
+            Contract.Assume(dataGrid != null);
+
+            dataGrid.PreparingCellForEdit -= DataGrid_PreparingCellForEdit;
+            dataGrid.CellEditEnding -= DataGrid_CellEditEnding;
         }
 
         private void DataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)

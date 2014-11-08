@@ -12,7 +12,7 @@
             if (dataGrid == null)
                 return;
 
-            if ((bool)e.NewValue)
+            if (true.Equals(e.NewValue))
                 dataGrid.Loaded += DataGrid_Loaded;
             else
                 dataGrid.Loaded -= DataGrid_Loaded;

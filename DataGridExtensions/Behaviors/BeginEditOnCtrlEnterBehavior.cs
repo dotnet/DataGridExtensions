@@ -1,5 +1,6 @@
 ﻿namespace DataGridExtensions.Behaviors
 {
+    using System.Diagnostics.Contracts;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
@@ -10,18 +11,36 @@
     /// </summary>
     public class BeginEditOnCtrlEnterBehavior : Behavior<DataGrid>
     {
+        /// <summary>
+        /// Called after the behavior is attached to an AssociatedObject.
+        /// </summary>
+        /// <remarks>
+        /// Override this to hook up functionality to the AssociatedObject.
+        /// </remarks>
         protected override void OnAttached()
         {
             base.OnAttached();
 
-            AssociatedObject.PreviewKeyDown += DataGrid_PreviewKeyDown;
+            var dataGrid = AssociatedObject;
+            Contract.Assume(dataGrid != null);
+
+            dataGrid.PreviewKeyDown += DataGrid_PreviewKeyDown;
         }
 
+        /// <summary>
+        /// Called when the behavior is being detached from its AssociatedObject, but before it has actually occurred.
+        /// </summary>
+        /// <remarks>
+        /// Override this to unhook functionality from the AssociatedObject.
+        /// </remarks>
         protected override void OnDetaching()
         {
             base.OnDetaching();
 
-            AssociatedObject.PreviewKeyDown -= DataGrid_PreviewKeyDown;
+            var dataGrid = AssociatedObject;
+            Contract.Assume(dataGrid != null);
+
+            dataGrid.PreviewKeyDown -= DataGrid_PreviewKeyDown;
         }
 
         private static void DataGrid_PreviewKeyDown(object sender, KeyEventArgs e)
