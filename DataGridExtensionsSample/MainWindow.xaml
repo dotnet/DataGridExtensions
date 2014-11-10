@@ -70,6 +70,7 @@
             </DataGrid.Resources>
 
             <i:Interaction.Behaviors>
+              <dgx:ExtendedStarSizeBehavior/>
               <dgx:BeginEditOnCtrlEnterBehavior/>
               <dgx:DisableTargetWhileEditingBehavior Target="{Binding ElementName=ReloadButton}"/>
             </i:Interaction.Behaviors>

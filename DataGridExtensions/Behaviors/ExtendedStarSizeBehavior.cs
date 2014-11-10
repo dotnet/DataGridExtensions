@@ -16,7 +16,7 @@
     using DataGridExtensions.Framework;
 
     /// <summary>
-    /// Extended start size column behavior. Allows columns to get larger than the client area, but not smaller. 
+    /// Extended start size column behavior. Allows columns to get larger than the client area, but not smaller.
     /// The Resizing behavior can be modified using Ctrl or Shift keys: Ctrl resizes all columns to the right proportionally, Shift fits all columns to the right into the client area.
     /// A tool tip can be attached to the column headers resizing grippers to help the user with these features.
     /// </summary>
@@ -65,7 +65,7 @@
         protected override void OnAttached()
         {
             base.OnAttached();
-            
+
             var dataGrid = AssociatedObject;
             Contract.Assume(dataGrid != null);
 
@@ -98,6 +98,7 @@
             dataGridEvents.ColumnDisplayIndexChanged += DataGrid_ColumnDisplayIndexChanged;
 
             HijackStarSizeColumnsInfo(dataGrid);
+            UpdateColumnWidths(dataGrid, null, true);
             InjectColumnHeaderStyle(dataGrid);
         }
 
@@ -133,6 +134,7 @@
                 return;
 
             HijackStarSizeColumnsInfo(dataGrid);
+            UpdateColumnWidths(dataGrid, null, e.Action == NotifyCollectionChangedAction.Add);
             _updateColumnGripperToolTipVisibilityThrottle.Tick();
         }
 
@@ -142,7 +144,7 @@
 
             AssociatedObject.BeginInvoke(() =>
             {
-                UpdateColumnWidths(AssociatedObject, null);
+                UpdateColumnWidths(AssociatedObject, null, false);
                 _changingGridSizeCounter -= 1;
             });
         }
@@ -157,7 +159,7 @@
                 return;
 
             _changingGridSizeCounter += 1;
-            UpdateColumnWidths(dataGrid, e.Column);
+            UpdateColumnWidths(dataGrid, e.Column, false);
             _changingGridSizeCounter -= 1;
         }
 
@@ -165,11 +167,11 @@
         {
             Contract.Requires(sender != null);
 
-            UpdateColumnWidths((DataGrid)sender, null);
+            UpdateColumnWidths((DataGrid)sender, null, true);
             _updateColumnGripperToolTipVisibilityThrottle.Tick();
         }
 
-        private void UpdateColumnWidths(DataGrid dataGrid, DataGridColumn modifiedColum)
+        private void UpdateColumnWidths(DataGrid dataGrid, DataGridColumn modifiedColum, bool resetStarSize)
         {
             Contract.Requires(dataGrid != null);
 
@@ -182,7 +184,7 @@
             if (ApplyStarSize(dataGridColumns, modifiedColum))
                 return;
 
-            DistributeAvailableSize(dataGrid, dataGridColumns, modifiedColum);
+            DistributeAvailableSize(dataGrid, dataGridColumns, modifiedColum, resetStarSize);
         }
 
         private static bool ApplyStarSize(IEnumerable<DataGridColumn> dataGridColumns, DataGridColumn modifiedColum)
@@ -208,7 +210,7 @@
             return true;
         }
 
-        private void DistributeAvailableSize(DataGrid dataGrid, DataGridColumn[] dataGridColumns, DataGridColumn modifiedColum)
+        private void DistributeAvailableSize(DataGrid dataGrid, DataGridColumn[] dataGridColumns, DataGridColumn modifiedColum, bool resetStarSize)
         {
             Contract.Requires(dataGrid != null);
             Contract.Requires(dataGridColumns != null);
@@ -227,16 +229,22 @@
                 .Select(c => c.ActualWidth)
                 .Sum();
 
+            Func<DataGridColumn, double> GetEffectiveColumnSize;
+            if (resetStarSize)
+                GetEffectiveColumnSize = GetStarSize;
+            else
+                GetEffectiveColumnSize = GetActualWidth;
+
             var variableColumnWidths = dataGridColumns
                 .Where(isVariableColumn)
-                .Select(c => c.ActualWidth)
+                .Select(GetEffectiveColumnSize)
                 .Sum();
 
             var availableWidth = scrollViewer.ViewportWidth - dataGrid.CellsPanelHorizontalOffset;
             var nonFrozenColumnsOffset = dataGrid.NonFrozenColumnsViewportHorizontalOffset;
             var spaceAvailable = availableWidth - nonFrozenColumnsOffset - fixedColumsWidth;
 
-            var allowShrink = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+            bool allowShrink = resetStarSize || Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
 
             if ((!(variableColumnWidths < spaceAvailable)) && !allowShrink)
                 return;
@@ -245,7 +253,7 @@
 
             foreach (var column in dataGridColumns.Where(isVariableColumn))
             {
-                column.Width = column.ActualWidth * factor;
+                column.Width = GetEffectiveColumnSize(column) * factor;
             }
         }
 
@@ -295,7 +303,7 @@
             Contract.Requires(dataGrid != null);
 
             var baseStyle = dataGrid.ColumnHeaderStyle ?? (Style)dataGrid.FindResource(typeof(DataGridColumnHeader));
-            
+
             Contract.Assume(baseStyle != null);
 
             if (baseStyle.Setters.OfType<Setter>().Any(setter => setter.Property == ColumnHeaderGripperExtenderProperty))
@@ -304,6 +312,13 @@
             var newStyle = new Style(typeof(DataGridColumnHeader), baseStyle);
             newStyle.Setters.Add(new Setter(ColumnHeaderGripperExtenderProperty, this));
             dataGrid.ColumnHeaderStyle = newStyle;
+        }
+
+        private static double GetActualWidth(DataGridColumn column)
+        {
+            Contract.Requires(column != null);
+
+            return (double)column.ActualWidth;
         }
 
         private static double GetStarSize(DataGridColumn column)
@@ -354,7 +369,11 @@
             if (gripper == null)
                 return;
 
-            var style = ColumnHeaderGripperToolTipStyle ?? AssociatedObject.FindResource(ColumnHeaderGripperToolTipStyleKey) as Style;
+            var dataGrid = AssociatedObject;
+            if (dataGrid == null)
+                return;
+
+            var style = ColumnHeaderGripperToolTipStyle ?? dataGrid.FindResource(ColumnHeaderGripperToolTipStyleKey) as Style;
 
             var toolTip = new ToolTip { Style = style };
 
