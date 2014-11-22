@@ -28,6 +28,7 @@
 
         private int _changingGridSizeCounter;
         private ScrollViewer _scrollViewer;
+        private bool _columnsAreFitWithinViewPort;
 
         /// <summary>
         /// The resrouce key for the default column header gripper tool tip style.
@@ -98,7 +99,7 @@
             dataGridEvents.ColumnDisplayIndexChanged += DataGrid_ColumnDisplayIndexChanged;
 
             HijackStarSizeColumnsInfo(dataGrid);
-            UpdateColumnWidths(dataGrid, null, true);
+            UpdateColumnWidths(dataGrid, null, UpdateMode.ResetStarSize);
             InjectColumnHeaderStyle(dataGrid);
         }
 
@@ -134,7 +135,7 @@
                 return;
 
             HijackStarSizeColumnsInfo(dataGrid);
-            UpdateColumnWidths(dataGrid, null, e.Action == NotifyCollectionChangedAction.Add);
+            UpdateColumnWidths(dataGrid, null, (e.Action == NotifyCollectionChangedAction.Add) ? UpdateMode.ResetStarSize : UpdateMode.Default);
             _updateColumnGripperToolTipVisibilityThrottle.Tick();
         }
 
@@ -144,7 +145,7 @@
 
             AssociatedObject.BeginInvoke(() =>
             {
-                UpdateColumnWidths(AssociatedObject, null, false);
+                UpdateColumnWidths(AssociatedObject, null, UpdateMode.KeepFit);
                 _changingGridSizeCounter -= 1;
             });
         }
@@ -159,7 +160,7 @@
                 return;
 
             _changingGridSizeCounter += 1;
-            UpdateColumnWidths(dataGrid, e.Column, false);
+            UpdateColumnWidths(dataGrid, e.Column, UpdateMode.Default);
             _changingGridSizeCounter -= 1;
         }
 
@@ -167,11 +168,11 @@
         {
             Contract.Requires(sender != null);
 
-            UpdateColumnWidths((DataGrid)sender, null, true);
+            UpdateColumnWidths((DataGrid)sender, null, UpdateMode.ResetStarSize);
             _updateColumnGripperToolTipVisibilityThrottle.Tick();
         }
 
-        private void UpdateColumnWidths(DataGrid dataGrid, DataGridColumn modifiedColum, bool resetStarSize)
+        private void UpdateColumnWidths(DataGrid dataGrid, DataGridColumn modifiedColum, UpdateMode updateMode)
         {
             Contract.Requires(dataGrid != null);
 
@@ -181,10 +182,7 @@
                 .Where(c => (c.Visibility == Visibility.Visible))
                 .ToArray();
 
-            if (ApplyStarSize(dataGridColumns, modifiedColum))
-                return;
-
-            DistributeAvailableSize(dataGrid, dataGridColumns, modifiedColum, resetStarSize);
+            _columnsAreFitWithinViewPort = !ApplyStarSize(dataGridColumns, modifiedColum) && DistributeAvailableSize(dataGrid, dataGridColumns, modifiedColum, updateMode);
         }
 
         private static bool ApplyStarSize(IEnumerable<DataGridColumn> dataGridColumns, DataGridColumn modifiedColum)
@@ -210,51 +208,52 @@
             return true;
         }
 
-        private void DistributeAvailableSize(DataGrid dataGrid, DataGridColumn[] dataGridColumns, DataGridColumn modifiedColum, bool resetStarSize)
+        private bool DistributeAvailableSize(DataGrid dataGrid, DataGridColumn[] dataGridColumns, DataGridColumn modifiedColum, UpdateMode updateMode)
         {
             Contract.Requires(dataGrid != null);
             Contract.Requires(dataGridColumns != null);
 
             var scrollViewer = _scrollViewer;
             if (scrollViewer == null)
-                return;
+                return false;
 
             var startColumnIndex = (modifiedColum != null) ? modifiedColum.DisplayIndex : 0;
 
             Func<DataGridColumn, bool> isFixedColumn = c => (GetStarSize(c) <= double.Epsilon) || (c.DisplayIndex <= startColumnIndex);
             Func<DataGridColumn, bool> isVariableColumn = c => !isFixedColumn(c);
 
-            var fixedColumsWidth = dataGridColumns
+            var fixedColumnsWidth = dataGridColumns
                 .Where(isFixedColumn)
                 .Select(c => c.ActualWidth)
                 .Sum();
 
-            Func<DataGridColumn, double> GetEffectiveColumnSize;
-            if (resetStarSize)
-                GetEffectiveColumnSize = GetStarSize;
-            else
-                GetEffectiveColumnSize = GetActualWidth;
+            var getEffectiveColumnSize = (updateMode == UpdateMode.ResetStarSize) ? (Func<DataGridColumn, double>)GetStarSize : GetActualWidth;
 
             var variableColumnWidths = dataGridColumns
                 .Where(isVariableColumn)
-                .Select(GetEffectiveColumnSize)
+                .Select(getEffectiveColumnSize)
                 .Sum();
 
             var availableWidth = scrollViewer.ViewportWidth - dataGrid.CellsPanelHorizontalOffset;
             var nonFrozenColumnsOffset = dataGrid.NonFrozenColumnsViewportHorizontalOffset;
-            var spaceAvailable = availableWidth - nonFrozenColumnsOffset - fixedColumsWidth;
+            var spaceAvailable = availableWidth - nonFrozenColumnsOffset - fixedColumnsWidth;
 
-            bool allowShrink = resetStarSize || Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+            var allowShrink = (updateMode == UpdateMode.ResetStarSize)
+                || ((updateMode == UpdateMode.KeepFit) && _columnsAreFitWithinViewPort) 
+                || Keyboard.IsKeyDown(Key.LeftShift) 
+                || Keyboard.IsKeyDown(Key.RightShift);
 
             if ((!(variableColumnWidths < spaceAvailable)) && !allowShrink)
-                return;
+                return false;
 
             var factor = spaceAvailable / variableColumnWidths;
 
             foreach (var column in dataGridColumns.Where(isVariableColumn))
             {
-                column.Width = GetEffectiveColumnSize(column) * factor;
+                column.Width = getEffectiveColumnSize(column) * factor;
             }
+
+            return true;
         }
 
         private static void HijackStarSizeColumnsInfo(DataGrid dataGrid)
@@ -386,12 +385,18 @@
             _updateColumnGripperToolTipVisibilityThrottle.Tick();
         }
 
+        private enum UpdateMode
+        {
+            Default,
+            KeepFit,
+            ResetStarSize
+        }
+
         [ContractInvariantMethod]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Required for code contracts.")]
         private void ObjectInvariant()
         {
             Contract.Invariant(_updateColumnGripperToolTipVisibilityThrottle != null);
         }
-
     }
 }
