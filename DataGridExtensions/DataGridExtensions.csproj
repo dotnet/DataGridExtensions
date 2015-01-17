@@ -188,7 +188,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if "$(ConfigurationName)"=="Release" nuget pack "$(ProjectPath)"
+    <PostBuildEvent>if not "$(ConfigurationName)"=="Release" goto :eof
+nuget pack "$(ProjectPath)" -IncludeReferencedProjects -Prop Configuration=$(ConfigurationName)
+xcopy /R /Y /I "$(TargetDir)*.nupkg" "$(SolutionDir)..\NugetPackages\"
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

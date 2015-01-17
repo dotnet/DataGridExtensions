@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <description>This package contains useful extensions for the MS DataGrid (System.Windows.Controls.DataGrid).&#10;The current version supports the following features:&#10;&#10;Add filtering capabilities to the DataGrid.&#10;Correctly apply initial sorting criteria.&#10; - Easy to use&#10; - Easy to customize&#10; - Attaches to the existing DataGrid</description>
         <summary>Modular extensions for the DataGrid control.</summary>
-        <copyright>© 2012-2014 tom-englert.de</copyright>
+        <copyright>© 2012-2015 tom-englert.de</copyright>
         <tags>DGX DataGrid Filter</tags>
     <references>
       <reference file="DataGridExtensions.dll" />
