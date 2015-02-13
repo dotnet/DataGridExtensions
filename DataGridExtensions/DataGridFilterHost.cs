@@ -106,7 +106,7 @@
         }
 
         /// <summary>
-        /// Enables filtering by showing or hiding the filter contols.
+        /// Enables filtering by showing or hiding the filter controls.
         /// </summary>
         /// <param name="value">if set to <c>true</c>, filters controls are visible and filtering is enabled.</param>
         internal void Enable(bool value)
@@ -138,7 +138,7 @@
         }
 
         /// <summary>
-        /// Adds a new collumn.
+        /// Adds a new column.
         /// </summary>
         /// <param name="filterColumn"></param>
         internal void AddColumn(DataGridFilterColumnControl filterColumn)
@@ -262,6 +262,5 @@
             Contract.Invariant(_dataGrid != null);
             Contract.Invariant(_filterColumnControls != null);
         }
-
     }
 }
