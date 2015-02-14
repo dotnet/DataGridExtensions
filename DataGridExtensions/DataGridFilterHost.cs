@@ -37,6 +37,10 @@
         /// Flag indicating if filtering is currently enabled.
         /// </summary>
         private bool _isFilteringEnabled;
+        /// <summary>
+        /// A global filter that is applied in addition to the column filters.
+        /// </summary>
+        private Predicate<object> _globalFilter;
 
         /// <summary>
         /// Create a new filter host for the given data grid.
@@ -193,6 +197,14 @@
             }
         }
 
+        internal void SetGlobalFilter(Predicate<object> globalFilter)
+        {
+            _globalFilter = globalFilter;
+
+            OnFilterChanged();
+        }
+
+
         /// <summary>
         /// Evaluates the current filters and applies the filtering to the collection view of the items control.
         /// </summary>
@@ -236,11 +248,15 @@
                 // Apply filter to collection view
                 if (!filters.Any())
                 {
-                    collectionView.Filter = null;
+                    collectionView.Filter = _globalFilter;
+                }
+                else if (_globalFilter == null)
+                {
+                    collectionView.Filter = item => filters.All(filter => filter.Matches(item));
                 }
                 else
                 {
-                    collectionView.Filter = item => filters.All(filter => filter.Matches(item));
+                    collectionView.Filter = item => _globalFilter(item) && filters.All(filter => filter.Matches(item));
                 }
 
                 // Notify all filters about the change of the collection view.

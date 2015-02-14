@@ -190,7 +190,7 @@
   <PropertyGroup>
     <PostBuildEvent>if not "$(ConfigurationName)"=="Release" goto :eof
 nuget pack "$(ProjectPath)" -IncludeReferencedProjects -Prop Configuration=$(ConfigurationName)
-xcopy /R /Y /I "$(TargetDir)*.nupkg" "$(SolutionDir)..\NugetPackages\"
+xcopy /R /Y /I "$(TargetDir)*.nupkg" "$(SolutionDir)Deploy\"
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

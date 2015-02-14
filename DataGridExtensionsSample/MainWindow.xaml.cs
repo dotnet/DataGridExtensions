@@ -7,7 +7,6 @@ using DataGridExtensions;
 
 namespace DataGridExtensionsSample
 {
-    using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Windows.Threading;
@@ -15,7 +14,7 @@ namespace DataGridExtensionsSample
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    public partial class MainWindow : INotifyPropertyChanged
     {
         private Random _rand = new Random();
 
@@ -25,6 +24,8 @@ namespace DataGridExtensionsSample
 
             // Sample usage of the filtering event
             Grid1.GetFilter().Filtering += Grid1_Filtering;
+
+            ExternalFilter = item => ((DataItem)item).Column1.Contains("7");
         }
 
         void Grid1_Filtering(object sender, DataGridFilteringEventArgs e)
@@ -51,6 +52,14 @@ namespace DataGridExtensionsSample
                 return Enumerable.Range(0, 100).Select(index => new DataItem(_rand, index)).ToArray();
             }
         }
+
+        public Predicate<object> ExternalFilter
+        {
+            get { return (Predicate<object>)GetValue(ExternalFilterProperty); }
+            set { SetValue(ExternalFilterProperty, value); }
+        }
+        public static readonly DependencyProperty ExternalFilterProperty = DependencyProperty.Register("ExternalFilter", typeof(Predicate<object>), typeof(MainWindow));
+
 
         private void DataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {

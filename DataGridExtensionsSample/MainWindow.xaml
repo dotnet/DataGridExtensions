@@ -86,6 +86,7 @@
             <Run>Overrides the icon template to show an orange filter symbol.</Run>
           </TextBlock>
           <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="False"
+                    dgx:DataGridFilter.GlobalFilter="{Binding ExternalFilter}"
                     dgx:DataGridFilter.IsAutoFilterEnabled="True"
                     dgx:Tools.ApplyInitialSorting="True"
                     dgx:DataGridFilter.FilterEvaluationDelay="0:0:0">
