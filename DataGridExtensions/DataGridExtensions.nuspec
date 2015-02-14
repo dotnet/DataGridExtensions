@@ -15,12 +15,9 @@
         <tags>DGX DataGrid Filter</tags>
     <references>
       <reference file="DataGridExtensions.dll" />
-      <reference file="System.Windows.Interactivity.dll" />
     </references>
   </metadata>
   <files>
-    <file src="bin\Release\System.Windows.Interactivity.dll" target="lib\net40-Client" />
-    <file src="bin\Release\System.Windows.Interactivity.xml" target="lib\net40-Client"/>
     <file src="bin\Release\CodeContracts\*.dll" target="lib\net40-Client\CodeContracts" />
     <file src="bin\Release\*.pdb" target="lib\net40-Client" />
   </files>

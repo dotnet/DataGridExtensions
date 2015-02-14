@@ -1,4 +1,8 @@
-﻿1.0.19.0
+﻿1.0.20.0
+* WI1427: Combining Data Grid Extensions filters with other filtering: Expose a global filter.
+1.0.19.0
+* Improve extended star size behavior.
+1.0.19.0
 * Improve extended star size behavior.
 1.0.18.0
 1.0.17.0
