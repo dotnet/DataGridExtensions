@@ -13,8 +13,9 @@
         #region IsAutoFilterEnabled attached property
 
         /// <summary>
-        /// Gets if the default filters are atomatically attached to each column.
+        /// Gets if the default filters are automatically attached to each column.
         /// </summary>
+        [AttachedPropertyBrowsableForType(typeof(DataGrid))]
         public static bool GetIsAutoFilterEnabled(this DataGrid obj)
         {
             Contract.Requires(obj != null);
@@ -22,7 +23,7 @@
             return (bool)obj.GetValue(IsAutoFilterEnabledProperty);
         }
         /// <summary>
-        /// Sets if the default filters are atomatically attached to each column. Set to false if you want to control filters by code.
+        /// Sets if the default filters are automatically attached to each column. Set to false if you want to control filters by code.
         /// </summary>
         public static void SetIsAutoFilterEnabled(this DataGrid obj, bool value)
         {
@@ -54,6 +55,7 @@
         /// Filter attached property to attach the DataGridFilterHost instance to the owning DataGrid.
         /// This property is only used by code and is not accessible from XAML.
         /// </summary>
+
         public static DataGridFilterHost GetFilter(this DataGrid dataGrid)
         {
             Contract.Requires(dataGrid != null);
@@ -83,6 +85,7 @@
         /// <summary>
         /// Gets the content filter factory for the data grid filter.
         /// </summary>
+        [AttachedPropertyBrowsableForType(typeof(DataGrid))]
         public static IContentFilterFactory GetContentFilterFactory(this DataGrid dataGrid)
         {
             Contract.Requires(dataGrid != null);
@@ -146,10 +149,45 @@
 
         #endregion
 
+        /// <summary>
+        /// Gets the value of the <see cref="P:DataGridExtensions.GlobalFilter"/> attached property from a given <see cref="DataGrid"/>.
+        /// </summary>
+        /// <param name="obj">The <see cref="DataGrid"/> from which to read the property value.</param>
+        /// <returns>the value of the <see cref="P:DataGridExtensions.GlobalFilter"/> attached property.</returns>
+        [AttachedPropertyBrowsableForType(typeof(DataGrid))]
+        public static Predicate<object> GetGlobalFilter(DataGrid obj)
+        {
+            return (Predicate<object>)obj.GetValue(GlobalFilterProperty);
+        }
+        /// <summary>
+        /// Sets the value of the <see cref="P:DataGridExtensions.GlobalFilter" /> attached property to a given <see cref="DataGrid" />.
+        /// </summary>
+        /// <param name="obj">The <see cref="DataGrid" /> on which to set the property value.</param>
+        /// <param name="value">The property value to set.</param>
+        public static void SetGlobalFilter(DataGrid obj, Predicate<object> value)
+        {
+            obj.SetValue(GlobalFilterProperty, value);
+        }
+        /// <summary>
+        /// Identifies the <see cref="P:DataGridExtensions.GlobalFilter"/> dependency property.
+        /// </summary>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Allows to specify a global filter that is applied to the items in addition to the column filters.
+        /// </summary>
+        /// </AttachedPropertyComments>
+        public static readonly DependencyProperty GlobalFilterProperty =
+            DependencyProperty.RegisterAttached("GlobalFilter", typeof(Predicate<object>), typeof(DataGridFilter), new FrameworkPropertyMetadata(GlobalFilter_Changed));
+
+        private static void GlobalFilter_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((DataGrid) d).GetFilter().SetGlobalFilter((Predicate<object>) e.NewValue);
+        }
+
         #region Resource keys
 
         /// <summary>
-        /// Template for the filter on a colum represented by a DataGridTextColumn.
+        /// Template for the filter on a column represented by a DataGridTextColumn.
         /// </summary>
         public static ResourceKey TextColumnFilterTemplateKey
         {
@@ -162,7 +200,7 @@
         }
 
         /// <summary>
-        /// Template for the filter on a colum represented by a DataGridCheckBoxColumn.
+        /// Template for the filter on a column represented by a DataGridCheckBoxColumn.
         /// </summary>
         public static ResourceKey CheckBoxColumnFilterTemplateKey
         {
