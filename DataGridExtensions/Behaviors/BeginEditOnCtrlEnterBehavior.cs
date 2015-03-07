@@ -45,6 +45,8 @@
 
         private static void DataGrid_PreviewKeyDown(object sender, KeyEventArgs e)
         {
+            Contract.Requires(sender != null);
+
             var dependencyObject = e.OriginalSource as DependencyObject;
 
             if (IsChildOfEditingElement(dependencyObject))

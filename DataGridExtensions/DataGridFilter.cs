@@ -157,6 +157,8 @@
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
         public static Predicate<object> GetGlobalFilter(DataGrid obj)
         {
+            Contract.Requires(obj != null);
+
             return (Predicate<object>)obj.GetValue(GlobalFilterProperty);
         }
         /// <summary>
@@ -166,6 +168,8 @@
         /// <param name="value">The property value to set.</param>
         public static void SetGlobalFilter(DataGrid obj, Predicate<object> value)
         {
+            Contract.Requires(obj != null);
+
             obj.SetValue(GlobalFilterProperty, value);
         }
         /// <summary>

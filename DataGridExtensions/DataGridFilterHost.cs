@@ -9,6 +9,7 @@
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
+    using System.Windows.Input;
     using System.Windows.Threading;
 
     /// <summary>
@@ -53,6 +54,7 @@
             _dataGrid = dataGrid;
 
             dataGrid.Columns.CollectionChanged += Columns_CollectionChanged;
+            dataGrid.Loaded += DataGrid_Loaded;
 
             if (dataGrid.ColumnHeaderStyle != null)
                 return;
@@ -172,6 +174,26 @@
             Contract.Ensures(Contract.Result<IContentFilter>() != null);
 
             return _dataGrid.GetContentFilterFactory().Create(content);
+        }
+
+        private void DataGrid_Loaded(object sender, RoutedEventArgs e)
+        {
+            // To improve keyboard navigation we should not step into the headers filter controls with the TAB key, 
+            // but only with navigation keys.
+
+            var scrollViewer = DataGrid.Template.FindName("DG_ScrollViewer", DataGrid) as ScrollViewer;
+            if (scrollViewer == null)
+                return;
+
+            var controlTemplate = scrollViewer.Template;
+            if (controlTemplate == null)
+                return;
+
+            var headersPresenter = (FrameworkElement)controlTemplate.FindName("PART_ColumnHeadersPresenter", scrollViewer);
+            if (headersPresenter == null)
+                return;
+
+            headersPresenter.SetValue(KeyboardNavigation.TabNavigationProperty, KeyboardNavigationMode.None);
         }
 
         private void Columns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
