@@ -5,7 +5,7 @@
     using System.Windows.Controls;
 
     /// <summary>
-    /// Some usefull tools for data grids.
+    /// Some useful tools for data grids.
     /// </summary>
     public static class Tools
     {

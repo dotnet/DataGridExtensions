@@ -19,6 +19,5 @@
   </metadata>
   <files>
     <file src="bin\Release\CodeContracts\*.dll" target="lib\net40-Client\CodeContracts" />
-    <file src="bin\Release\*.pdb" target="lib\net40-Client" />
   </files>
 </package>
