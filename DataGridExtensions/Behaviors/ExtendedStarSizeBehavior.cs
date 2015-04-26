@@ -145,7 +145,7 @@
 
             AssociatedObject.BeginInvoke(() =>
             {
-                UpdateColumnWidths(AssociatedObject, null, UpdateMode.KeepFit);
+                UpdateColumnWidths(AssociatedObject, null, UpdateMode.Default);
                 _changingGridSizeCounter -= 1;
             });
         }
@@ -239,9 +239,7 @@
             var spaceAvailable = availableWidth - nonFrozenColumnsOffset - fixedColumnsWidth;
 
             var allowShrink = (updateMode == UpdateMode.ResetStarSize)
-                || ((updateMode == UpdateMode.KeepFit) && _columnsAreFitWithinViewPort) 
-                || Keyboard.IsKeyDown(Key.LeftShift) 
-                || Keyboard.IsKeyDown(Key.RightShift);
+                || (_columnsAreFitWithinViewPort && !(Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)));
 
             if ((!(variableColumnWidths < spaceAvailable)) && !allowShrink)
                 return false;
@@ -388,7 +386,6 @@
         private enum UpdateMode
         {
             Default,
-            KeepFit,
             ResetStarSize
         }
 

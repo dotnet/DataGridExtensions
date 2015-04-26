@@ -84,7 +84,7 @@
     <Setter Property="ContentTemplate">
       <Setter.Value>
         <DataTemplate>
-          <TextBlock><Run Text="+Ctrl => Apply star sizes"/><LineBreak/><Run Text="+Shift => Use only available size"/></TextBlock>
+          <TextBlock><Run Text="+Ctrl => Apply star sizes to right columns"/><LineBreak/><Run Text="+Shift => Extend beyond available size"/></TextBlock>
         </DataTemplate>
       </Setter.Value>
     </Setter>
