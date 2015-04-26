@@ -1,4 +1,6 @@
-﻿1.0.21.0
+﻿1.0.22.0
+* Improve usability of ExtendedStarSizeBehavior
+1.0.21.0
 * Improve keyboard navigation: Step into filters only with navigation keys, but not with TAB.
 1.0.20.0
 * WI1427: Combining Data Grid Extensions filters with other filtering: Expose a global filter.
@@ -41,4 +43,4 @@
 * Fix: binaries were built from outdated source.
 1.0.2.0
 * Fix WI896: IContentFilter.IsMatch should be called even if cell content is null.
-* Add some plublic accessors so it's possible to manipulate filters by code.
+* Add some public accessors so it's possible to manipulate filters by code.
