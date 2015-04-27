@@ -85,7 +85,7 @@
             <Run>This tab shows how to customize the filters in XAML when using explicit generated columns. Read the comments in the XAML for details.</Run><LineBreak/>
             <Run>Overrides the icon template to show an orange filter symbol.</Run>
           </TextBlock>
-          <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="False"
+          <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="False" FrozenColumnCount="2"
                     dgx:DataGridFilter.GlobalFilter="{Binding ExternalFilter}"
                     dgx:DataGridFilter.IsAutoFilterEnabled="True"
                     dgx:Tools.ApplyInitialSorting="True"

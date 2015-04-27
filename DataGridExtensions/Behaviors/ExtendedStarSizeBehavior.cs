@@ -23,6 +23,7 @@
     public class ExtendedStarSizeBehavior : Behavior<DataGrid>
     {
         private static readonly DependencyPropertyDescriptor ViewportWidthPropertyDescriptor = DependencyPropertyDescriptor.FromProperty(ScrollViewer.ViewportWidthProperty, typeof(ScrollViewer));
+        private static readonly DependencyPropertyDescriptor NonFrozenColumnsViewportHorizontalOffsetPropertyDescriptor = DependencyPropertyDescriptor.FromProperty(DataGrid.NonFrozenColumnsViewportHorizontalOffsetProperty, typeof(DataGrid));
 
         private readonly DispatcherThrottle _updateColumnGripperToolTipVisibilityThrottle;
 
@@ -90,6 +91,7 @@
                 return;
 
             ViewportWidthPropertyDescriptor.AddValueChanged(_scrollViewer, ScrollViewer_ViewportWidthChanged);
+            NonFrozenColumnsViewportHorizontalOffsetPropertyDescriptor.AddValueChanged(dataGrid, DataGrid_NonFrozenColumnsViewportHorizontalOffsetChanged);
 
             var dataGridEvents = dataGrid.GetAdditionalEvents();
 
@@ -114,6 +116,7 @@
                 return;
 
             ViewportWidthPropertyDescriptor.RemoveValueChanged(scrollViewer, ScrollViewer_ViewportWidthChanged);
+            NonFrozenColumnsViewportHorizontalOffsetPropertyDescriptor.RemoveValueChanged(dataGrid, DataGrid_NonFrozenColumnsViewportHorizontalOffsetChanged);
 
             var dataGridEvents = dataGrid.GetAdditionalEvents();
 
@@ -139,13 +142,31 @@
             _updateColumnGripperToolTipVisibilityThrottle.Tick();
         }
 
+        private void DataGrid_NonFrozenColumnsViewportHorizontalOffsetChanged(object sender, EventArgs e)
+        {
+            var dataGrid = (DataGrid)sender;
+            if (dataGrid == null)
+                return;
+
+            if (_changingGridSizeCounter > 0)
+                return;
+
+            _changingGridSizeCounter += 1;
+            UpdateColumnWidths(dataGrid, null, UpdateMode.Default);
+            _changingGridSizeCounter -= 1;
+        }
+
         private void ScrollViewer_ViewportWidthChanged(object sender, EventArgs e)
         {
             _changingGridSizeCounter += 1;
 
-            AssociatedObject.BeginInvoke(() =>
+            var dataGrid = AssociatedObject;
+            if (dataGrid == null)
+                return;
+
+            dataGrid.BeginInvoke(() =>
             {
-                UpdateColumnWidths(AssociatedObject, null, UpdateMode.Default);
+                UpdateColumnWidths(dataGrid, null, UpdateMode.Default);
                 _changingGridSizeCounter -= 1;
             });
         }
@@ -158,6 +179,9 @@
 
             if (_changingGridSizeCounter > 0)
                 return;
+
+            if (e.Column.DisplayIndex < dataGrid.FrozenColumnCount)
+                return; // wait for NonFrozenColumnsViewportHorizontalOffset change
 
             _changingGridSizeCounter += 1;
             UpdateColumnWidths(dataGrid, e.Column, UpdateMode.Default);
@@ -187,7 +211,7 @@
 
         private static bool ApplyStarSize(IEnumerable<DataGridColumn> dataGridColumns, DataGridColumn modifiedColum)
         {
-            if ((modifiedColum == null) || !Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl))
+            if ((modifiedColum == null) || (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl)))
                 return false;
 
             var starSize = GetStarSize(modifiedColum);
