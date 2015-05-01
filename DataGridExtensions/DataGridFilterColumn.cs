@@ -20,7 +20,7 @@
             if (column == null)
                 throw new ArgumentNullException("column");
 
-            return (bool)column.GetValue(IsFilterVisibleProperty);
+            return column.GetValue<bool>(IsFilterVisibleProperty);
         }
         /// <summary>
         /// Control the visibility of the filter for this column.

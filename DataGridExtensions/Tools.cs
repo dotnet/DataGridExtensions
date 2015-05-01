@@ -19,13 +19,13 @@
         {
             Contract.Requires(dataGrid != null);
 
-            return (bool)dataGrid.GetValue(ApplyInitialSortingProperty);
+            return dataGrid.GetValue<bool>(ApplyInitialSortingProperty);
         }
         /// <summary>
         /// Sets a flag to enable the 'apply initial sorting' feature.
         /// </summary>
         /// <param name="dataGrid">The data grid.</param>
-        /// <param name="value">if set to <c>true</c> the initial sorting will be appied.</param>
+        /// <param name="value">if set to <c>true</c> the initial sorting will be applied.</param>
         public static void SetApplyInitialSorting(this DataGrid dataGrid, bool value)
         {
             Contract.Requires(dataGrid != null);

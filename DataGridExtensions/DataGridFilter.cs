@@ -20,7 +20,7 @@
         {
             Contract.Requires(obj != null);
 
-            return (bool)obj.GetValue(IsAutoFilterEnabledProperty);
+            return obj.GetValue<bool>(IsAutoFilterEnabledProperty);
         }
         /// <summary>
         /// Sets if the default filters are automatically attached to each column. Set to false if you want to control filters by code.
@@ -91,7 +91,7 @@
             Contract.Requires(dataGrid != null);
             Contract.Ensures(Contract.Result<IContentFilterFactory>() != null);
 
-            return (IContentFilterFactory)dataGrid.GetValue(ContentFilterFactoryProperty);
+            return (IContentFilterFactory)dataGrid.GetValue(ContentFilterFactoryProperty) ?? DefaultContentFilterFactory;
         }
         /// <summary>
         /// Sets the content filter factory for the data grid filter.
@@ -100,6 +100,7 @@
         {
             if (dataGrid == null)
                 throw new ArgumentNullException("dataGrid");
+
             dataGrid.SetValue(ContentFilterFactoryProperty, value);
         }
         /// <summary>
@@ -127,7 +128,7 @@
         {
             Contract.Requires(obj != null);
 
-            return (TimeSpan) obj.GetValue(FilterEvaluationDelayProperty);
+            return obj.GetValue<TimeSpan>(FilterEvaluationDelayProperty);
         }
 
         /// <summary>
@@ -185,6 +186,8 @@
 
         private static void GlobalFilter_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            Contract.Requires(d != null);
+
             ((DataGrid) d).GetFilter().SetGlobalFilter((Predicate<object>) e.NewValue);
         }
 

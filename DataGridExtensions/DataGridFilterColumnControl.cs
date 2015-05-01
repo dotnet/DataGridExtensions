@@ -57,7 +57,7 @@
                 if (DataGrid == null)
                     throw new InvalidOperationException("DataGridColumnHeader must be a child element of a DataGrid");
 
-                // Find our host and attach oursef.
+                // Find our host and attach ourself.
                 FilterHost = DataGrid.GetFilter();
             }
 

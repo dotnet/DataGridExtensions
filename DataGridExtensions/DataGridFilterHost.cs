@@ -107,6 +107,7 @@
         {
             get
             {
+                Contract.Ensures(Contract.Result<DataGrid>() != null);
                 return _dataGrid;
             }
         }
@@ -178,10 +179,14 @@
 
         private void DataGrid_Loaded(object sender, RoutedEventArgs e)
         {
-            // To improve keyboard navigation we should not step into the headers filter controls with the TAB key, 
+            // To improve keyboard navigation we should not step into the headers filter controls with the TAB key,
             // but only with navigation keys.
 
-            var scrollViewer = DataGrid.Template.FindName("DG_ScrollViewer", DataGrid) as ScrollViewer;
+            var template = DataGrid.Template;
+            if (template == null)
+                return;
+
+            var scrollViewer = template.FindName("DG_ScrollViewer", DataGrid) as ScrollViewer;
             if (scrollViewer == null)
                 return;
 

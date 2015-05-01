@@ -65,5 +65,32 @@
 
             self.Dispatcher.BeginInvoke(priority, action);
         }
+
+        /// <summary>
+        /// Performs a cast from object to <typeparamref name="T"/>, avoiding possible null violations if <typeparamref name="T"/> is a value type.
+        /// </summary>
+        /// <typeparam name="T">The target type</typeparam>
+        /// <param name="value">The value.</param>
+        /// <returns>The value casted to <typeparamref name="T"/>, or <c>default(T)</c> if value is <c>null</c>.</returns>
+        public static T SafeCast<T>(this object value)
+        {
+            return (value == null) ? default(T) : (T)value;
+        }
+
+        /// <summary>
+        /// Gets the value of a dependency property using <see cref="SafeCast{T}(object)" />.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self">The dependency object from which to get the value.</param>
+        /// <param name="property">The property to get.</param>
+        /// <returns>The value safely casted to <typeparamref name="T"/></returns>
+        public static T GetValue<T>(this DependencyObject self, DependencyProperty property)
+        {
+            Contract.Requires(self != null);
+            Contract.Requires(property != null);
+
+            return self.GetValue(property).SafeCast<T>();
+        }
+
     }
 }

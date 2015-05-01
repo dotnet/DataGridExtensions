@@ -9,7 +9,7 @@
     /// </summary>
     public class RegexContentFilter : IContentFilter
     {
-        readonly Regex _filterRegex;
+        private readonly Regex _filterRegex;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RegexContentFilter"/> class.

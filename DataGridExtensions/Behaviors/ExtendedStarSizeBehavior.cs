@@ -173,6 +173,10 @@
 
         private void DataGrid_ColumnActualWidthChanged(object sender, DataGridColumnEventArgs e)
         {
+            var colum = e.Column;
+            if (colum == null)
+                return;
+
             var dataGrid = (DataGrid)sender;
             if (dataGrid == null)
                 return;
@@ -180,11 +184,11 @@
             if (_changingGridSizeCounter > 0)
                 return;
 
-            if (e.Column.DisplayIndex < dataGrid.FrozenColumnCount)
+            if (colum.DisplayIndex < dataGrid.FrozenColumnCount)
                 return; // wait for NonFrozenColumnsViewportHorizontalOffset change
 
             _changingGridSizeCounter += 1;
-            UpdateColumnWidths(dataGrid, e.Column, UpdateMode.Default);
+            UpdateColumnWidths(dataGrid, colum, UpdateMode.Default);
             _changingGridSizeCounter -= 1;
         }
 
@@ -346,7 +350,7 @@
         {
             Contract.Requires(column != null);
 
-            return (double)column.GetValue(StarSizeProperty);
+            return column.GetValue<double>(StarSizeProperty);
         }
 
         private static readonly DependencyProperty StarSizeProperty =
