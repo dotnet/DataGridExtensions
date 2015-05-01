@@ -1,4 +1,6 @@
-﻿1.0.22.0
+﻿1.0.23.0
+* Fix ExtendedStarSizeBehavior for frozen columns
+1.0.22.0
 * Improve usability of ExtendedStarSizeBehavior
 1.0.21.0
 * Improve keyboard navigation: Step into filters only with navigation keys, but not with TAB.
