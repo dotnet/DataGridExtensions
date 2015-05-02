@@ -1,4 +1,6 @@
-﻿1.0.23.0
+﻿1.0.24.0
+* Release after fixing additional CC warnings.
+1.0.23.0
 * Fix ExtendedStarSizeBehavior for frozen columns
 1.0.22.0
 * Improve usability of ExtendedStarSizeBehavior
