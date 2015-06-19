@@ -77,6 +77,8 @@
 
         private void DataGrid_Loaded(object sender, EventArgs e)
         {
+            Contract.Requires(sender != null);
+
             var dataGrid = (DataGrid)sender;
 
             dataGrid.BeginInvoke(DispatcherPriority.Background, () => DataGrid_Loaded(dataGrid));

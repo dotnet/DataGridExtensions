@@ -43,27 +43,27 @@
         /// <summary>
         /// Shortcut to <see cref="System.Windows.Threading.Dispatcher.BeginInvoke(Delegate, Object[])"/>
         /// </summary>
-        public static void BeginInvoke(this DispatcherObject self, Action action)
+        public static void BeginInvoke(this Visual self, Action action)
         {
-            if (self == null)
-                throw new ArgumentNullException("self");
-            if (action == null)
-                throw new ArgumentNullException("action");
+            Contract.Requires(self != null);
+            Contract.Requires(action != null);
 
-            self.Dispatcher.BeginInvoke(action);
+            var dispatcher = self.Dispatcher;
+            Contract.Assume(dispatcher != null);
+            dispatcher.BeginInvoke(action);
         }
 
         /// <summary>
         /// Shortcut to <see cref="System.Windows.Threading.Dispatcher.BeginInvoke(DispatcherPriority, Delegate)"/>
         /// </summary>
-        public static void BeginInvoke(this DispatcherObject self, DispatcherPriority priority, Action action)
+        public static void BeginInvoke(this Visual self, DispatcherPriority priority, Action action)
         {
-            if (self == null)
-                throw new ArgumentNullException("self");
-            if (action == null)
-                throw new ArgumentNullException("action");
+            Contract.Requires(self != null);
+            Contract.Requires(action != null);
 
-            self.Dispatcher.BeginInvoke(priority, action);
+            var dispatcher = self.Dispatcher;
+            Contract.Assume(dispatcher != null);
+            dispatcher.BeginInvoke(priority, action);
         }
 
         /// <summary>
