@@ -284,6 +284,19 @@
             }
         }
 
+        /// <summary>
+        /// Style for the clear button in the filter text box in a filtered DataGridTextColumn.
+        /// </summary>
+        public static ResourceKey ColumnHeaderSearchTextBoxClearButtonStyleKey
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<ResourceKey>() != null);
+
+                return new ComponentResourceKey(typeof(DataGridFilter), "ColumnHeaderSearchTextBoxClearButtonStyle");
+            }
+        }
+
         #endregion
     }
 }

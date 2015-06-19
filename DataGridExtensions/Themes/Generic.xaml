@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:src="clr-namespace:DataGridExtensions"
-    xmlns:behaviors="clr-namespace:DataGridExtensions.Behaviors">
+    xmlns:behaviors="clr-namespace:DataGridExtensions.Behaviors"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity">
 
   <!-- Style for a filter check box. The check box is only visible when it's hovered, focused or has a value.  -->
   <Style x:Key="{x:Static src:DataGridFilter.ColumnHeaderSearchCheckBoxStyleKey}" TargetType="CheckBox">
@@ -20,10 +21,59 @@
     </Style.Triggers>
   </Style>
 
+  <!-- Style for the clear button in the filter text box -->
+  <Style x:Key="{x:Static src:DataGridFilter.ColumnHeaderSearchTextBoxClearButtonStyleKey}" TargetType="Button">
+    <Setter Property="Foreground" Value="LightGray"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ButtonBase">
+          <Border Background="Transparent">
+            <Path Data="M0,0 L7,7 M0,7 L7,0" Stroke="{TemplateBinding Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center" StrokeThickness="2" Margin="3"/>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter Property="Foreground" Value="Gray"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
   <!-- Style for a filter text box. The text box is only visible when it's hovered, focused or has a value.  -->
   <Style x:Key="{x:Static src:DataGridFilter.ColumnHeaderSearchTextBoxStyleKey}" TargetType="TextBox">
     <Setter Property="MinWidth" Value="20"/>
     <Setter Property="Margin" Value="4,0,2,0"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type TextBox}">
+          <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+            <DockPanel>
+              <Button x:Name="clear" DockPanel.Dock="Right" Focusable="False" Style="{DynamicResource {x:Static src:DataGridFilter.ColumnHeaderSearchTextBoxClearButtonStyleKey}}">
+                <i:Interaction.Behaviors>
+                  <behaviors:ClearTextBoxOnButtonClickBehavior TextBox="{Binding RelativeSource={RelativeSource TemplatedParent}}"/>
+                </i:Interaction.Behaviors>
+              </Button>
+              <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+            </DockPanel>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+              <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter Property="BorderBrush" TargetName="border" Value="#FF7EB4EA"/>
+            </Trigger>
+            <Trigger Property="IsKeyboardFocused" Value="True">
+              <Setter Property="BorderBrush" TargetName="border" Value="#FF569DE5"/>
+            </Trigger>
+            <Trigger Property="Text" Value="">
+              <Setter Property="Visibility" TargetName="clear" Value="Hidden"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
     <Style.Triggers>
       <Trigger Property="Text" Value="">
         <Setter Property="Opacity" Value="0"/>
@@ -50,7 +100,7 @@
     <Setter Property="Foreground" Value="Gray"/>
   </Style>
 
-  <!-- Default template for a filter on a colum represened by a DataGridTextColumn. -->
+  <!-- Default template for a filter on a column represented by a DataGridTextColumn. -->
   <ControlTemplate x:Key="{x:Static src:DataGridFilter.TextColumnFilterTemplateKey}">
     <Grid>
       <Control Style="{DynamicResource {x:Static src:DataGridFilter.IconStyleKey}}"/>
@@ -59,7 +109,7 @@
     </Grid>
   </ControlTemplate>
 
-  <!-- Default template for a filter on a colum represened by a DataGridCheckBoxColumn. -->
+  <!-- Default template for a filter on a column represented by a DataGridCheckBoxColumn. -->
   <ControlTemplate x:Key="{x:Static src:DataGridFilter.CheckBoxColumnFilterTemplateKey}">
     <Grid>
       <Control Style="{DynamicResource {x:Static src:DataGridFilter.IconStyleKey}}"/>
