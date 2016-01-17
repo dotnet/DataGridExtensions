@@ -231,7 +231,6 @@
             OnFilterChanged();
         }
 
-
         /// <summary>
         /// Evaluates the current filters and applies the filtering to the collection view of the items control.
         /// </summary>

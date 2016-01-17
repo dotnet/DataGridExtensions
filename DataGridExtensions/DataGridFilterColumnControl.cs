@@ -124,7 +124,7 @@
         /// Identifies the Filter dependency property
         /// </summary>
         public static readonly DependencyProperty FilterProperty =
-            DependencyProperty.Register("Filter", typeof(object), typeof(DataGridFilterColumnControl), new UIPropertyMetadata(null, (sender, e) => ((DataGridFilterColumnControl)sender).Filter_Changed(e.NewValue)));
+            DependencyProperty.Register("Filter", typeof(object), typeof(DataGridFilterColumnControl), new FrameworkPropertyMetadata(null, (sender, e) => ((DataGridFilterColumnControl)sender).Filter_Changed(e.NewValue)));
 
         private void Filter_Changed(object newValue)
         {

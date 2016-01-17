@@ -107,7 +107,7 @@
         /// Identifies the ContentFilterFactory dependency property
         /// </summary>
         public static readonly DependencyProperty ContentFilterFactoryProperty =
-            DependencyProperty.RegisterAttached("ContentFilterFactory", typeof(IContentFilterFactory), typeof(DataGridFilter), new UIPropertyMetadata(DefaultContentFilterFactory, null, ContentFilterFactory_CoerceValue));
+            DependencyProperty.RegisterAttached("ContentFilterFactory", typeof(IContentFilterFactory), typeof(DataGridFilter), new FrameworkPropertyMetadata(DefaultContentFilterFactory, null, ContentFilterFactory_CoerceValue));
 
         private static object ContentFilterFactory_CoerceValue(DependencyObject sender, object value)
         {
@@ -146,7 +146,7 @@
         /// Identifies the FilterEvaluationDelay dependency property
         /// </summary>
         public static readonly DependencyProperty FilterEvaluationDelayProperty =
-            DependencyProperty.RegisterAttached("FilterEvaluationDelay", typeof(TimeSpan), typeof(DataGridFilter), new UIPropertyMetadata(TimeSpan.FromSeconds(0.5)));
+            DependencyProperty.RegisterAttached("FilterEvaluationDelay", typeof(TimeSpan), typeof(DataGridFilter), new FrameworkPropertyMetadata(TimeSpan.FromSeconds(0.5)));
 
         #endregion
 
@@ -188,7 +188,7 @@
         {
             Contract.Requires(d != null);
 
-            ((DataGrid) d).GetFilter().SetGlobalFilter((Predicate<object>) e.NewValue);
+            ((DataGrid)d).GetFilter().SetGlobalFilter((Predicate<object>)e.NewValue);
         }
 
         #region Resource keys
@@ -196,106 +196,47 @@
         /// <summary>
         /// Template for the filter on a column represented by a DataGridTextColumn.
         /// </summary>
-        public static ResourceKey TextColumnFilterTemplateKey
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<ResourceKey>() != null);
-
-                return new ComponentResourceKey(typeof(DataGridFilter), typeof(DataGridTextColumn));
-            }
-        }
+        public static readonly ResourceKey TextColumnFilterTemplateKey = new ComponentResourceKey(typeof(DataGridFilter), typeof(DataGridTextColumn));
 
         /// <summary>
         /// Template for the filter on a column represented by a DataGridCheckBoxColumn.
         /// </summary>
-        public static ResourceKey CheckBoxColumnFilterTemplateKey
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<ResourceKey>() != null);
+        public static readonly ResourceKey CheckBoxColumnFilterTemplateKey = new ComponentResourceKey(typeof(DataGridFilter), typeof(DataGridCheckBoxColumn));
 
-                return new ComponentResourceKey(typeof(DataGridFilter), typeof(DataGridCheckBoxColumn));
-            }
-        }
+        /// <summary>
+        /// Template for the filter on a column represented by a DataGridCheckBoxColumn.
+        /// </summary>
+        public static readonly ResourceKey TemplateColumnFilterTemplateKey = new ComponentResourceKey(typeof(DataGridFilter), typeof(DataGridTemplateColumn));
 
         /// <summary>
         /// Template for the whole column header.
         /// </summary>
-        public static ResourceKey ColumnHeaderTemplateKey
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<ResourceKey>() != null);
-
-                return new ComponentResourceKey(typeof(DataGridFilter), typeof(DataGridColumn));
-            }
-        }
+        public static readonly ResourceKey ColumnHeaderTemplateKey = new ComponentResourceKey(typeof(DataGridFilter), typeof(DataGridColumn));
 
         /// <summary>
         /// The filter icon template.
         /// </summary>
-        public static ResourceKey IconTemplateKey
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<ResourceKey>() != null);
-
-                return new ComponentResourceKey(typeof(DataGridFilter), "IconTemplate");
-            }
-        }
+        public static readonly ResourceKey IconTemplateKey = new ComponentResourceKey(typeof(DataGridFilter), "IconTemplate");
 
         /// <summary>
         /// The filter icon style.
         /// </summary>
-        public static ResourceKey IconStyleKey
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<ResourceKey>() != null);
-
-                return new ComponentResourceKey(typeof(DataGridFilter), "IconStyle");
-            }
-        }
+        public static readonly ResourceKey IconStyleKey = new ComponentResourceKey(typeof(DataGridFilter), "IconStyle");
 
         /// <summary>
         /// Style for the filter check box in a filtered DataGridCheckBoxColumn.
         /// </summary>
-        public static ResourceKey ColumnHeaderSearchCheckBoxStyleKey
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<ResourceKey>() != null);
-
-                return new ComponentResourceKey(typeof(DataGridFilter), "ColumnHeaderSearchCheckBoxStyle");
-            }
-        }
+        public static readonly ResourceKey ColumnHeaderSearchCheckBoxStyleKey = new ComponentResourceKey(typeof(DataGridFilter), "ColumnHeaderSearchCheckBoxStyle");
 
         /// <summary>
         /// Style for the filter text box in a filtered DataGridTextColumn.
         /// </summary>
-        public static ResourceKey ColumnHeaderSearchTextBoxStyleKey
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<ResourceKey>() != null);
-
-                return new ComponentResourceKey(typeof(DataGridFilter), "ColumnHeaderSearchTextBoxStyle");
-            }
-        }
+        public static readonly ResourceKey ColumnHeaderSearchTextBoxStyleKey = new ComponentResourceKey(typeof(DataGridFilter), "ColumnHeaderSearchTextBoxStyle");
 
         /// <summary>
         /// Style for the clear button in the filter text box in a filtered DataGridTextColumn.
         /// </summary>
-        public static ResourceKey ColumnHeaderSearchTextBoxClearButtonStyleKey
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<ResourceKey>() != null);
-
-                return new ComponentResourceKey(typeof(DataGridFilter), "ColumnHeaderSearchTextBoxClearButtonStyle");
-            }
-        }
+        public static readonly ResourceKey ColumnHeaderSearchTextBoxClearButtonStyleKey = new ComponentResourceKey(typeof(DataGridFilter), "ColumnHeaderSearchTextBoxClearButtonStyle");
 
         #endregion
     }

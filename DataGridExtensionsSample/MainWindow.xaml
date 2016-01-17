@@ -92,6 +92,7 @@
                     dgx:DataGridFilter.FilterEvaluationDelay="0:0:0">
             <i:Interaction.Behaviors>
               <dgx:ExtendedStarSizeBehavior/>
+              <dgx:BeginEditOnCtrlEnterBehavior/>
             </i:Interaction.Behaviors>
 
             <DataGrid.Resources>
@@ -126,16 +127,29 @@
                                       Binding="{Binding Path=Flag, Mode=OneWay}"
                                       dgx:DataGridFilterColumn.Template="{StaticResource {x:Static dgx:DataGridFilter.TextColumnFilterTemplateKey}}" />
               <!-- Use the integer filter for the integer column. -->
-              <DataGridTextColumn Header="Integer/Custom" Binding="{Binding Index, Mode=OneWay}" Width="*"
-                                  dgx:DataGridFilterColumn.Template="{StaticResource IntegerFilter}" />
+              <DataGridTextColumn Header="Integer/Custom"
+                                  Binding="{Binding Index, Mode=OneWay}"
+                                  Width="*"
+                                  dgx:DataGridFilterColumn.Template="{StaticResource IntegerFilter}"
+                                  />
               <!-- Hide the filter for this column. -->
-              <DataGridTextColumn Header="Text/No Filter" Binding="{Binding Column1, Mode=OneWay}" Width="*"
-                                  dgx:DataGridFilterColumn.IsFilterVisible="False" SortDirection="Descending" />
+              <DataGridTextColumn Header="Text/No Filter" Binding="{Binding Column1}" Width="*"
+                                  dgx:DataGridFilterColumn.IsFilterVisible="False"
+                                  dgx:Tools.IsMultiLineEditingEnabled="True"
+                                  SortDirection="Descending" />
               <!-- Use the default filter for this column. -->
               <DataGridTextColumn Header="Text/Text" Binding="{Binding Column2, Mode=OneWay}" Width="*"/>
               <!-- Use a special filter using a toggle button with a popup to enter more than one condition. -->
               <DataGridTextColumn Header="Double/Custom" Binding="{Binding Probability, Mode=OneWay}" Width="*"
                                   dgx:DataGridFilterColumn.Template="{StaticResource FilterWithPopup}" />
+              <!-- A template column may contain everything, so we need to specify the SortMemberPath explicitly...-->
+              <DataGridTemplateColumn Header="Template" SortMemberPath="Probability">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <TextBlock Margin="2" Text="{Binding Probability}"/>
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
             </DataGrid.Columns>
           </DataGrid>
         </DockPanel>

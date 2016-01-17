@@ -12,7 +12,7 @@ namespace DataGridExtensionsSample
             Flag = rand.Next(2) == 0;
             Index = index;
             Column1 = Guid.NewGuid().ToString();
-            Column2 = Guid.NewGuid().ToString();
+            Column2 = rand.Next(20) == 0 ? null : Guid.NewGuid().ToString();
             Probability = rand.NextDouble();
         }
 

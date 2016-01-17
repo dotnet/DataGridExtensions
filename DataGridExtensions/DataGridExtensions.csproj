@@ -164,6 +164,7 @@
     <Compile Include="DataGridFilteringEventArgs.cs" />
     <Compile Include="Behaviors\ExtendedStarSizeBehavior.cs" />
     <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="InternalExtensionMethods.cs" />
     <Compile Include="Framework\DispatcherThrottle.cs" />
     <Compile Include="IContentFilter.cs" />
     <Compile Include="IContentFilterFactory.cs" />

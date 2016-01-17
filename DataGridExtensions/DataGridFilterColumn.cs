@@ -36,7 +36,7 @@
         /// Identifies the IsFilterVisible dependency property
         /// </summary>
         public static readonly DependencyProperty IsFilterVisibleProperty =
-            DependencyProperty.RegisterAttached("IsFilterVisible", typeof(bool), typeof(DataGridFilterColumn), new UIPropertyMetadata(true));
+            DependencyProperty.RegisterAttached("IsFilterVisible", typeof(bool), typeof(DataGridFilterColumn), new FrameworkPropertyMetadata(true));
 
         #endregion
 
