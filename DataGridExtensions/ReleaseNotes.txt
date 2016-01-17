@@ -1,4 +1,9 @@
-﻿1.0.25.0
+﻿1.0.26.0
+* Copy/Paste support for cell selection.
+* Multiline editing for text columns.
+* Template columns now have a default filter (same as text column).
+* Fix RegexContentFilter: Search for empty cells is possible with "^$".
+1.0.25.0
 * Include a clear button in the text filters text box to improve usability.
 1.0.24.0
 * Release after fixing additional CC warnings.
