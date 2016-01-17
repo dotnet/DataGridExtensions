@@ -135,7 +135,7 @@
               <!-- Hide the filter for this column. -->
               <DataGridTextColumn Header="Text/No Filter" Binding="{Binding Column1}" Width="*"
                                   dgx:DataGridFilterColumn.IsFilterVisible="False"
-                                  dgx:Tools.IsMultiLineEditingEnabled="True"
+                                  dgx:Tools.IsMultilineEditingEnabled="True"
                                   SortDirection="Descending" />
               <!-- Use the default filter for this column. -->
               <DataGridTextColumn Header="Text/Text" Binding="{Binding Column2, Mode=OneWay}" Width="*"/>

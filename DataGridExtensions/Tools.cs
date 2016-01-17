@@ -77,23 +77,23 @@
         /// <param name="obj">The column.</param>
         /// <returns><c>true</c> if  multi line editing is enabled.</returns>
         [AttachedPropertyBrowsableForType(typeof(DataGridTextColumn))]
-        public static bool GetIsMultiLineEditingEnabled(DataGridTextColumn obj)
+        public static bool GetIsMultilineEditingEnabled(DataGridTextColumn obj)
         {
             Contract.Requires(obj != null);
-            return (bool)obj.GetValue(IsMultiLineEditingEnabledProperty);
+            return (bool)obj.GetValue(IsMultilineEditingEnabledProperty);
         }
         /// <summary>
         /// Sets a value that indicates if multi line editing is enabled for the specified text column.
         /// </summary>
         /// <param name="obj">The column.</param>
         /// <param name="value">if set to <c>true</c> multi line editing is enabled.</param>
-        public static void SetIsMultiLineEditingEnabled(DataGridTextColumn obj, bool value)
+        public static void SetIsMultilineEditingEnabled(DataGridTextColumn obj, bool value)
         {
             Contract.Requires(obj != null);
-            obj.SetValue(IsMultiLineEditingEnabledProperty, value);
+            obj.SetValue(IsMultilineEditingEnabledProperty, value);
         }
         /// <summary>
-        /// Identifies the <see cref="P:DataGridExtensions.Tools.IsMultiLineEditingEnabled"/> attached property
+        /// Identifies the <see cref="P:DataGridExtensions.Tools.IsMultilineEditingEnabled"/> attached property
         /// </summary>
         /// <AttachedPropertyComments>
         /// <summary>
@@ -103,10 +103,10 @@
         /// This property can only be set to true once, toggling the value will have no further effect.
         /// </remarks>
         /// </AttachedPropertyComments>
-        public static readonly DependencyProperty IsMultiLineEditingEnabledProperty =
-            DependencyProperty.RegisterAttached("IsMultiLineEditingEnabled", typeof(bool), typeof(Tools), new FrameworkPropertyMetadata(false, IsMultiLineEditingEnabled_Changed));
+        public static readonly DependencyProperty IsMultilineEditingEnabledProperty =
+            DependencyProperty.RegisterAttached("IsMultilineEditingEnabled", typeof(bool), typeof(Tools), new FrameworkPropertyMetadata(false, IsMultilineEditingEnabled_Changed));
 
-        private static void IsMultiLineEditingEnabled_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void IsMultilineEditingEnabled_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (!true.Equals(e.NewValue))
                 return;
