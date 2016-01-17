@@ -43,10 +43,11 @@
         {
             if (_filterRegex == null)
                 return true;
-            if (value == null)
-                return false;
 
-            return _filterRegex.IsMatch(value.ToString());
+            // this will allow to search for empty entries using ^$
+            var input = (value != null) ? value.ToString() : string.Empty;
+
+            return _filterRegex.IsMatch(input);
         }
 
         #endregion
