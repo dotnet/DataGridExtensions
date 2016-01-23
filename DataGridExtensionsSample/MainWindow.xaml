@@ -154,6 +154,17 @@
           </DataGrid>
         </DockPanel>
       </TabItem>
+      
+      <TabItem Header="Copy/Paste">
+        <DataGrid x:Name="CopyPasteDataGrid" SelectionUnit="Cell" ItemsSource="{Binding Items}">
+          <DataGrid.ContextMenu>
+            <ContextMenu>
+              <MenuItem Header="Copy" Click="Copy_Click"/>
+              <MenuItem Header="Paste" Click="Paste_Click"/>
+            </ContextMenu>
+          </DataGrid.ContextMenu>
+        </DataGrid>
+      </TabItem>
 
     </TabControl>
 

@@ -151,10 +151,11 @@
         }
 
         /// <summary>
-        /// Replaces the selected cells with the data. Cell selection and the data table must have matching dimensions, either 1:n, n:1 or n:n.
+        /// Replaces the selected cells with the data. Cell selection and the data table must have matching dimensions, either 1:n, n:1 or n:x*n.
         /// </summary>
         /// <param name="dataGrid">The data grid.</param>
         /// <param name="data">The data.</param>
+        /// <remarks>The cell selection is assumed to be a rectangular area.</remarks>
         /// <returns><c>true</c> if the dimensions of data and cell selection did match and the cells data has been replaced; otherwise <c>false</c>.</returns>
         public static bool PasteCells(this DataGrid dataGrid, IList<IList<string>> data)
         {
@@ -162,7 +163,7 @@
             Contract.Requires(data != null);
             Contract.Requires(Contract.ForAll(data, item => item != null));
 
-            var numberOfRows = data.Count;
+            var numberOfDataRows = data.Count;
             if (data.Count < 1)
                 return false;
 
@@ -170,7 +171,7 @@
             Contract.Assume(firstRow != null);
             Contract.Assume(Contract.ForAll(firstRow, item => item != null));
 
-            var numberOfColumns = firstRow.Count;
+            var numberOfDataColumns = firstRow.Count;
 
             var selectedCells = dataGrid.SelectedCells;
             if (selectedCells == null)
@@ -186,54 +187,62 @@
             var selectedColumns = selectedCells
                 .Select(cellInfo => cellInfo.Column)
                 .Distinct()
+                .Where(column => column.Visibility == Visibility.Visible)
+                .OrderBy(column => column.DisplayIndex)
                 .ToArray();
 
-            var selectedItems = selectedCells
+            var selectedRows = selectedCells
                 .Select(cellInfo => cellInfo.Item)
                 .Distinct()
+                .OrderBy(item => dataGrid.Items.IndexOf(item))
                 .ToArray();
 
-            if ((selectedColumns.Length == 1) && (selectedItems.Length == 1))
+            if ((selectedColumns.Length == 1) && (selectedRows.Length == 1))
             {
-                // n:1 => n:n
+                // n:1 => n:n, extend selection to match data
                 var selectedColumn = selectedColumns[0];
                 selectedColumns = dataGrid.Columns
                     .Where(col => col.DisplayIndex >= selectedColumn.DisplayIndex)
                     .OrderBy(col => col.DisplayIndex)
                     .Where(col => col.Visibility == Visibility.Visible)
-                    .Take(numberOfColumns)
+                    .Take(numberOfDataColumns)
                     .ToArray();
 
-                var selectedItem = selectedItems[0];
-                selectedItems = dataGrid.Items
+                var selectedItem = selectedRows[0];
+                selectedRows = dataGrid.Items
                     .Cast<object>()
                     .Skip(dataGrid.Items.IndexOf(selectedItem))
-                    .Take(numberOfRows)
+                    .Take(numberOfDataRows)
                     .ToArray();
             }
 
-            if ((selectedItems.Length == numberOfRows) && (selectedColumns.Length == numberOfColumns))
+            var verticalFactor = selectedRows.Length / numberOfDataRows;
+            if ((numberOfDataRows * verticalFactor) != selectedRows.Length)
+                return false;
+
+            var horizontalFactor = selectedColumns.Length / numberOfDataColumns;
+            if ((numberOfDataColumns * horizontalFactor) != selectedColumns.Length)
+                return false;
+
+            // n:x*n
+            Enumerate.AsTuples(selectedRows, Repeat(data, verticalFactor))
+                .ForEach(row => Enumerate.AsTuples(selectedColumns, Repeat(row.Item2, horizontalFactor))
+                    .ForEach(column => column.Item1.OnPastingCellClipboardContent(row.Item1, column.Item2)));
+
+            return true;
+        }
+
+        private static IEnumerable<T> Repeat<T>(ICollection<T> source, int count)
+        {
+            Contract.Requires(source != null);
+
+            for (var i = 0; i < count; i++)
             {
-                // n:n
-                Enumerate.AsTuples(selectedItems, data)
-                    .ForEach(row => Enumerate.AsTuples(selectedColumns, row.Item2)
-                        .ForEach(column => column.Item1.OnPastingCellClipboardContent(row.Item1, column.Item2)));
-
-                return true;
+                foreach (var item in source)
+                {
+                    yield return item;
+                }
             }
-
-            if ((data.Count == 1) && (firstRow.Count == 1))
-            {
-                // 1:n
-                var cellContent = firstRow[0];
-
-                selectedItems.ForEach(row => selectedColumns
-                    .ForEach(column => column.OnPastingCellClipboardContent(row, cellContent)));
-
-                return true;
-            }
-
-            return false;
         }
 
         private static IList<string> GetRowContent(IGrouping<object, DataGridCellInfo> row)

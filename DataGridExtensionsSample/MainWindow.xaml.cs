@@ -60,6 +60,8 @@ namespace DataGridExtensionsSample
         }
         public static readonly DependencyProperty ExternalFilterProperty = DependencyProperty.Register("ExternalFilter", typeof(Predicate<object>), typeof(MainWindow));
 
+        private IList<IList<string>> _clipboard;
+
 
         private void DataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
@@ -97,5 +99,18 @@ namespace DataGridExtensionsSample
 
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private void Copy_Click(object sender, RoutedEventArgs e)
+        {
+            _clipboard = CopyPasteDataGrid.GetCellSelection();
+
+        }
+        private void Paste_Click(object sender, RoutedEventArgs e)
+        {
+            if (_clipboard == null)
+                return;
+
+            CopyPasteDataGrid.PasteCells(_clipboard);
+        }
     }
 }
