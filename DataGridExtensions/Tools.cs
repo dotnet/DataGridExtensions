@@ -1,8 +1,10 @@
 ﻿namespace DataGridExtensions
 {
     using System.Diagnostics.Contracts;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Input;
 
     /// <summary>
     /// Some useful tools for data grids.
@@ -115,5 +117,72 @@
         }
 
         #endregion
+
+        #region Force commit on lost focus
+
+        /// <summary>
+        /// Gets a value that indicates if a commit will be forced on the data grid when it looses the focus.
+        /// </summary>
+        /// <param name="dataGrid">The object.</param>
+        /// <returns><c>true</c> if a commit will be forced for the data grid when it looses the focus</returns>
+        [AttachedPropertyBrowsableForType(typeof(DataGrid))]
+        public static bool GetForceCommitOnLostFocus(DataGrid dataGrid)
+        {
+            Contract.Requires(dataGrid != null);
+            return (bool)dataGrid.GetValue(ForceCommitOnLostFocusProperty);
+        }
+        /// <summary>
+        /// Sets a value that indicates if a commit will be forced on the data grid when it looses the focus.
+        /// </summary>
+        /// <param name="dataGrid">The data grid.</param>
+        /// <param name="value">If set to <c>true</c> a commit will be forced on the data grid when it looses the focus.</param>
+        public static void SetForceCommitOnLostFocus(DataGrid dataGrid, bool value)
+        {
+            Contract.Requires(dataGrid != null);
+            dataGrid.SetValue(ForceCommitOnLostFocusProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the ForceCommitOnLostFocus dependency property
+        /// </summary>
+        public static readonly DependencyProperty ForceCommitOnLostFocusProperty =
+            DependencyProperty.RegisterAttached("ForceCommitOnLostFocus", typeof(bool), typeof(Tools), new FrameworkPropertyMetadata(ForceCommitOnLostFocus_Changed));
+
+        private static void ForceCommitOnLostFocus_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var dataGrid = (DataGrid)d;
+            if (dataGrid == null)
+                return;
+
+            dataGrid.PreviewLostKeyboardFocus -= DataGrid_OnPreviewLostKeyboardFocus;
+
+            if (!true.Equals(e.NewValue))
+                return;
+
+            dataGrid.PreviewLostKeyboardFocus += DataGrid_OnPreviewLostKeyboardFocus;
+        }
+
+        private static void DataGrid_OnPreviewLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            var newFocus = e.NewFocus as DependencyObject;
+            if (newFocus == null)
+                return;
+
+            var dataGrid = sender as DataGrid;
+            if (dataGrid == null)
+                return;
+
+            var ancestors = newFocus.AncestorsAndSelf();
+            if (ancestors == null)
+                return;
+
+            if (ancestors.Any(item => ReferenceEquals(item, dataGrid)))
+                return; // Focus still in data grid.
+
+            dataGrid.CommitEdit(); // Commit cell
+            dataGrid.CommitEdit(); // Commit row
+        }
+
+        #endregion  
     }
 }

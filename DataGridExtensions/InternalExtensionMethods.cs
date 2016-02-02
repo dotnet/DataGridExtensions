@@ -41,6 +41,18 @@
             return null;
         }
 
+        public static IEnumerable<DependencyObject> AncestorsAndSelf(this DependencyObject self)
+        {
+            Contract.Requires(self != null);
+            Contract.Ensures(Contract.Result<IEnumerable<DependencyObject>>() != null);
+
+            while (self != null)
+            {
+                yield return self;
+                self = LogicalTreeHelper.GetParent(self) ?? VisualTreeHelper.GetParent(self);
+            }
+        }
+
         /// <summary>
         /// Shortcut to <see cref="System.Windows.Threading.Dispatcher.BeginInvoke(Delegate, Object[])"/>
         /// </summary>
