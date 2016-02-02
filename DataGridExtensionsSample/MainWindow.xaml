@@ -21,6 +21,15 @@
       <src:FilterWithPopupControl Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}"/>
     </ControlTemplate>
 
+    <ControlTemplate x:Key="ComboboxFilter">
+      <Grid>
+        <Grid>
+          <Control Style="{DynamicResource {x:Static dgx:DataGridFilter.IconStyleKey}}"/>
+          <ComboBox Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding SourceValues}" IsEditable="True"/>
+        </Grid>
+      </Grid>
+    </ControlTemplate>
+
     <Style TargetType="DataGrid">
       <Setter Property="HorizontalGridLinesBrush" Value="LightGray" />
       <Setter Property="VerticalGridLinesBrush" Value="LightGray" />
@@ -139,6 +148,8 @@
                                   SortDirection="Descending" />
               <!-- Use the default filter for this column. -->
               <DataGridTextColumn Header="Text/Text" Binding="{Binding Column2, Mode=OneWay}" Width="*"/>
+              <!-- Use a simple combo box for filtering -->
+              <DataGridTextColumn Header="Text/Custom" Binding="{Binding Column5, Mode=OneWay}" Width="*" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
               <!-- Use a special filter using a toggle button with a popup to enter more than one condition. -->
               <DataGridTextColumn Header="Double/Custom" Binding="{Binding Probability, Mode=OneWay}" Width="*"
                                   dgx:DataGridFilterColumn.Template="{StaticResource FilterWithPopup}" />
@@ -154,7 +165,7 @@
           </DataGrid>
         </DockPanel>
       </TabItem>
-      
+
       <TabItem Header="Copy/Paste">
         <DataGrid x:Name="CopyPasteDataGrid" SelectionUnit="Cell" ItemsSource="{Binding Items}">
           <DataGrid.ContextMenu>
