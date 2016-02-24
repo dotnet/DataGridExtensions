@@ -86,18 +86,9 @@
         /// <returns><c>true</c> if the cell selection is a rectangular range.</returns>
         public static bool HasRectangularCellSelection(this DataGrid dataGrid)
         {
-            if (dataGrid == null)
-                return false;
+            var selectedCells = dataGrid.GetVisibleSelectedCells();
 
-            var selectedCells = dataGrid.SelectedCells;
-            if (selectedCells == null)
-                return false;
-
-            selectedCells = selectedCells
-                .Where(c => c.Column.Visibility == Visibility.Visible)
-                .ToArray();
-
-            if (!selectedCells.Any())
+            if (selectedCells == null || !selectedCells.Any())
                 return false;
 
             var visibleColumnIndexes = dataGrid.Columns
@@ -132,15 +123,9 @@
         {
             Contract.Requires(dataGrid != null);
 
-            var selectedCells = dataGrid.SelectedCells;
-            if (selectedCells == null)
-                return null;
+            var selectedCells = dataGrid.GetVisibleSelectedCells();
 
-            selectedCells = selectedCells
-                .Where(c => c.Column.Visibility == Visibility.Visible)
-                .ToArray();
-
-            if (!selectedCells.Any())
+            if ((selectedCells == null) || !selectedCells.Any())
                 return null;
 
             var orderedRows = selectedCells
@@ -173,15 +158,9 @@
 
             var numberOfDataColumns = firstRow.Count;
 
-            var selectedCells = dataGrid.SelectedCells;
-            if (selectedCells == null)
-                return false;
+            var selectedCells = dataGrid.GetVisibleSelectedCells();
 
-            selectedCells = selectedCells
-                .Where(c => c.IsValid && (c.Column.Visibility == Visibility.Visible))
-                .ToArray();
-
-            if (!selectedCells.Any())
+            if ((selectedCells == null) || !selectedCells.Any())
                 return false;
 
             var selectedColumns = selectedCells
@@ -230,6 +209,26 @@
                     .ForEach(column => column.Item1.OnPastingCellClipboardContent(row.Item1, column.Item2)));
 
             return true;
+        }
+
+
+        /// <summary>
+        /// Gets the selected cells that are in visible columns.
+        /// </summary>
+        /// <param name="dataGrid">The data grid.</param>
+        /// <returns>The selected cells of visible columns.</returns>
+        public static IList<DataGridCellInfo> GetVisibleSelectedCells(this DataGrid dataGrid)
+        {
+            if (dataGrid == null)
+                return null;
+
+            var selectedCells = dataGrid.SelectedCells;
+            if (selectedCells == null)
+                return null;
+
+            return selectedCells
+                .Where(cellInfo => cellInfo.IsValid && (cellInfo.Column != null) && (cellInfo.Column.Visibility == Visibility.Visible))
+                .ToArray();
         }
 
         private static IEnumerable<T> Repeat<T>(ICollection<T> source, int count)
