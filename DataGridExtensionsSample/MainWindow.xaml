@@ -25,9 +25,23 @@
       <Grid>
         <Grid>
           <Control Style="{DynamicResource {x:Static dgx:DataGridFilter.IconStyleKey}}"/>
-          <ComboBox Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding SourceValues}" IsEditable="True"/>
+          <ComboBox x:Name="ComboBox" Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding SourceValues}" IsEditable="True" />
         </Grid>
       </Grid>
+      <ControlTemplate.Triggers>
+        <Trigger SourceName="ComboBox" Property="Text" Value="">
+          <Setter TargetName="ComboBox" Property="Opacity" Value="0" />
+        </Trigger>
+        <Trigger SourceName="ComboBox" Property="Text" Value="{x:Null}">
+          <Setter TargetName="ComboBox" Property="Opacity" Value="0" />
+        </Trigger>
+        <Trigger SourceName="ComboBox" Property="IsMouseOver" Value="True">
+          <Setter TargetName="ComboBox" Property="Opacity" Value="1" />
+        </Trigger>
+        <Trigger SourceName="ComboBox" Property="IsFocused" Value="True">
+          <Setter TargetName="ComboBox" Property="Opacity" Value="1" />
+        </Trigger>
+      </ControlTemplate.Triggers>
     </ControlTemplate>
 
     <Style TargetType="DataGrid">

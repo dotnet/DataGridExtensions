@@ -133,7 +133,8 @@
                 return;
 
             // Ensure that no cell is in editing state, this would cause an exception when trying to change the filter!
-            _dataGrid.CommitEdit();
+            _dataGrid.CommitEdit(); // Commit cell
+            _dataGrid.CommitEdit(); // Commit row
 
             if (_deferFilterEvaluationTimer == null)
             {

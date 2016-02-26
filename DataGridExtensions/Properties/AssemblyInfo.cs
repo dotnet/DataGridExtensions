@@ -17,9 +17,10 @@ using System.Windows.Markup;
 [assembly: Guid("26c621e5-4dac-4f34-b534-9bb334d6380b")]
 [assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
 
+[assembly: XmlnsPrefix("urn:tom-englert.de/DataGridExtensions", "dgx")]
 [assembly: XmlnsDefinition("urn:tom-englert.de/DataGridExtensions", "DataGridExtensions")]
 [assembly: XmlnsDefinition("urn:tom-englert.de/DataGridExtensions", "DataGridExtensions.Behaviors")]
 
-[assembly: AssemblyVersion("1.0.27.0")]
-[assembly: AssemblyFileVersion("1.0.27.0")]
+[assembly: AssemblyVersion("1.0.28.0")]
+[assembly: AssemblyFileVersion("1.0.28.0")]
 

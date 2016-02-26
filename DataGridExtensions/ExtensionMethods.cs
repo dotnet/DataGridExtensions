@@ -146,7 +146,7 @@
         {
             Contract.Requires(dataGrid != null);
             Contract.Requires(data != null);
-            Contract.Requires(Contract.ForAll(data, item => item != null));
+            // Contract.Requires(Contract.ForAll(data, item => item != null));
 
             var numberOfDataRows = data.Count;
             if (data.Count < 1)
@@ -154,7 +154,7 @@
 
             var firstRow = data[0];
             Contract.Assume(firstRow != null);
-            Contract.Assume(Contract.ForAll(firstRow, item => item != null));
+            // Contract.Assume(Contract.ForAll(firstRow, item => item != null));
 
             var numberOfDataColumns = firstRow.Count;
 

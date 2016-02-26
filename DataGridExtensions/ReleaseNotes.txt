@@ -1,4 +1,7 @@
-﻿1.0.27.0
+﻿1.0.28.0
+* Add feature: ForceCommitOnLostFocus 
+* Fix null reference exception in HasRectangularCellSelection when cell selection is invalid.
+1.0.27.0
 * Improve Copy/Paste support for cell selection. Also supports n:m => x*n:y*m
 1.0.26.0
 * Copy/Paste support for cell selection.
