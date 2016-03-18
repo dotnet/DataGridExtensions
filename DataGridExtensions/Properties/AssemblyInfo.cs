@@ -21,6 +21,6 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition("urn:tom-englert.de/DataGridExtensions", "DataGridExtensions")]
 [assembly: XmlnsDefinition("urn:tom-englert.de/DataGridExtensions", "DataGridExtensions.Behaviors")]
 
-[assembly: AssemblyVersion("1.0.28.0")]
-[assembly: AssemblyFileVersion("1.0.28.0")]
+[assembly: AssemblyVersion("1.0.29.0")]
+[assembly: AssemblyFileVersion("1.0.29.0")]
 

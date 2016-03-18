@@ -1,4 +1,7 @@
-﻿1.0.28.0
+﻿1.0.29.0
+* Provide a means to override default column styles.
+* Values and SourceValues need to be updated after a row change.
+1.0.28.0
 * Add feature: ForceCommitOnLostFocus 
 * Fix null reference exception in HasRectangularCellSelection when cell selection is invalid.
 1.0.27.0
