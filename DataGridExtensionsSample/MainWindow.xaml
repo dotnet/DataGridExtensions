@@ -48,6 +48,17 @@
       <Setter Property="HorizontalGridLinesBrush" Value="LightGray" />
       <Setter Property="VerticalGridLinesBrush" Value="LightGray" />
     </Style>
+    
+    <XmlDataProvider x:Key="ComboBoxSource" Source="SampleList.xml" XPath="Items/Item"/>
+
+    <Style x:Key="DataGridComboBoxStyle" TargetType="ComboBox">
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="Padding" Value="3,2,0,0"/>
+      <Setter Property="Foreground" Value="Green"/>
+    </Style>
+    <Style x:Key="DataGridTextBlockStyle" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="Blue"/>
+    </Style>
 
   </Window.Resources>
 
@@ -118,6 +129,14 @@
               <dgx:BeginEditOnCtrlEnterBehavior/>
             </i:Interaction.Behaviors>
 
+            <!-- Override the default styles for some columns... -->
+            <dgx:ColumnStyles.DefaultColumnStyles>
+              <dgx:DataGridColumnStyleCollection>
+                <dgx:DataGridColumnStyle ColumnType="DataGridComboBoxColumn" EditingElementStyle="{StaticResource DataGridComboBoxStyle}"/>
+                <dgx:DataGridColumnStyle ColumnType="DataGridTextColumn" ElementStyle="{StaticResource DataGridTextBlockStyle}"/>
+              </dgx:DataGridColumnStyleCollection>
+            </dgx:ColumnStyles.DefaultColumnStyles>
+
             <DataGrid.Resources>
               <!-- Override default icon style to have a blue icon that changes to red when the column header is hovered. -->
               <Style TargetType="Control" x:Key="{x:Static dgx:DataGridFilter.IconStyleKey}" BasedOn="{StaticResource {x:Static dgx:DataGridFilter.IconStyleKey}}">
@@ -139,7 +158,7 @@
                                     VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridColumnHeader}}" />
                 </DockPanel>
               </DataTemplate>
-
+              
             </DataGrid.Resources>
 
             <DataGrid.Columns>
@@ -163,7 +182,9 @@
               <!-- Use the default filter for this column. -->
               <DataGridTextColumn Header="Text/Text" Binding="{Binding Column2, Mode=OneWay}" Width="*"/>
               <!-- Use a simple combo box for filtering -->
-              <DataGridTextColumn Header="Text/Custom" Binding="{Binding Column5, Mode=OneWay}" Width="*" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
+              <DataGridComboBoxColumn Header="Text/Custom" SelectedValueBinding="{Binding Column5}" 
+                                      Width="*" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}" 
+                                      ItemsSource="{Binding Source={StaticResource ComboBoxSource}}"/>
               <!-- Use a special filter using a toggle button with a popup to enter more than one condition. -->
               <DataGridTextColumn Header="Double/Custom" Binding="{Binding Probability, Mode=OneWay}" Width="*"
                                   dgx:DataGridFilterColumn.Template="{StaticResource FilterWithPopup}" />

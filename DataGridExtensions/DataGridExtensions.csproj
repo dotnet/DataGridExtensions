@@ -156,6 +156,7 @@
     <Compile Include="Behaviors\BeginEditOnCtrlEnterBehavior.cs" />
     <Compile Include="Behaviors\ClearTextBoxOnButtonClickBehavior.cs" />
     <Compile Include="Behaviors\DisableTargetWhileEditingBehavior.cs" />
+    <Compile Include="ColumnStyles.cs" />
     <Compile Include="DataGridEventsProvider.cs" />
     <Compile Include="DataGridFilter.cs" />
     <Compile Include="DataGridFilterColumn.cs" />
