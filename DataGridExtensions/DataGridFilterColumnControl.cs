@@ -9,6 +9,8 @@
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
     using System.Windows.Data;
+    using System.Windows.Threading;
+
     using DataGridExtensions.Framework;
 
     /// <summary>
@@ -65,6 +67,7 @@
 
             DataGrid.SourceUpdated += DataGrid_SourceOrTargetUpdated;
             DataGrid.TargetUpdated += DataGrid_SourceOrTargetUpdated;
+            DataGrid.RowEditEnding += DataGrid_RowEditEnding;
 
             // Must set a non-null empty template here, else we won't get the coerce value callback when the columns attached property is null!
             Template = EmptyControlTemplate;
@@ -94,6 +97,7 @@
             {
                 DataGrid.SourceUpdated -= DataGrid_SourceOrTargetUpdated;
                 DataGrid.TargetUpdated -= DataGrid_SourceOrTargetUpdated;
+                DataGrid.RowEditEnding -= DataGrid_RowEditEnding;
             }
 
             // Clear all bindings generatend during load.
@@ -106,8 +110,13 @@
         {
             if (e.Property == ItemsControl.ItemsSourceProperty)
             {
-                OnPropertyChanged("SourceValues");
+                ValuesUpdated();
             }
+        }
+
+        private void DataGrid_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
+        {
+            this.BeginInvoke(DispatcherPriority.Background, ValuesUpdated);
         }
 
         /// <summary>
@@ -221,9 +230,10 @@
         /// </summary>
         internal void ValuesUpdated()
         {
-            // We simply raise a change event for the Values propety and create the output on the fly in the getter of the Values property;
-            // if there is no binding to the values property we don't waste resources to compute a list that is never used.
-            OnPropertyChanged("Values");
+            // We simply raise a change event for the properties and create the output on the fly in the getter of the properties;
+            // if there is no binding to the properties we don't waste resources to compute a list that is never used.
+            OnPropertyChanged(nameof(Values));
+            OnPropertyChanged(nameof(SourceValues));
         }
 
         /// <summary>
