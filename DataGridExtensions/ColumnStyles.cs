@@ -1,7 +1,6 @@
 ﻿namespace DataGridExtensions
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Diagnostics.Contracts;
@@ -77,11 +76,11 @@
             if (style == null)
                 return;
 
-            SetBinding(column, DataGridColumnStyle.ElementStyleProperty, style);
-            SetBinding(column, DataGridColumnStyle.EditingElementStyleProperty, style);
+            SetStyleBinding(column, DataGridColumnStyle.ElementStyleProperty, style);
+            SetStyleBinding(column, DataGridColumnStyle.EditingElementStyleProperty, style);
         }
 
-        private static void SetBinding(DependencyObject column, DependencyProperty property, DataGridColumnStyle style)
+        private static void SetStyleBinding(DependencyObject column, DependencyProperty property, DataGridColumnStyle style)
         {
             Contract.Requires(column != null);
             Contract.Requires(property != null);
@@ -91,11 +90,18 @@
             // => use reflection to get the effective property for the specified column.
 
             var propertyName = property.Name;
+            var columnType = column.GetType();
 
-            var targetProperty = column.GetType().GetField(propertyName + "Property", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)?.GetValue(null) as DependencyProperty;
+            var defaultStyle = columnType.GetProperty("Default" + propertyName, BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)?.GetValue(null, null) as Style;
+            var activeStyle = columnType.GetProperty(propertyName)?.GetValue(column, null) as Style;
+
+            if (activeStyle != defaultStyle)
+                return;
+
+            var targetProperty = columnType.GetField(propertyName + "Property", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)?.GetValue(null) as DependencyProperty;
             if (targetProperty != null)
             {
-                BindingOperations.SetBinding(column, targetProperty, new Binding(propertyName) { Source = style });
+                BindingOperations.SetBinding(column, targetProperty, new Binding(propertyName) { Source = style, FallbackValue = defaultStyle });
             }
         }
     }
