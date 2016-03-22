@@ -8,5 +8,5 @@ PAUSE
 GOTO :EOF
 
 :PUSH
-nuget push %1.%VERSION%.nupkg
+..\.nuget\nuget push %1.%VERSION%.nupkg
 GOTO :EOF
