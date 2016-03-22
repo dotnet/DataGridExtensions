@@ -1,4 +1,6 @@
-﻿1.0.29.0
+﻿1.0.30.0
+* Custom column styles must not be overridden by default column styles.
+1.0.29.0
 * Provide a means to override default column styles.
 * Values and SourceValues need to be updated after a row change.
 1.0.28.0

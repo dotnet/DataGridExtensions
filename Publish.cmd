@@ -1,4 +1,4 @@
-SET VERSION=1.0.29.0
+SET VERSION=1.0.30.0
 
 PUSHD %~dp0\Deploy
 
