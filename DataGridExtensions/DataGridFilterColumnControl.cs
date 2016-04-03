@@ -11,8 +11,6 @@
     using System.Windows.Data;
     using System.Windows.Threading;
 
-    using DataGridExtensions.Framework;
-
     /// <summary>
     /// This class is the control hosting all information needed for filtering of one column.
     /// Filtering is enabled by simply adding this control to the header template of the DataGridColumn.
@@ -30,8 +28,9 @@
         static DataGridFilterColumnControl()
         {
             var templatePropertyDescriptor = DependencyPropertyDescriptor.FromProperty(TemplateProperty, typeof(Control));
-            Contract.Assume(templatePropertyDescriptor != null);
-            templatePropertyDescriptor.DesignerCoerceValueCallback = Template_CoerceValue;
+
+            if (templatePropertyDescriptor != null)
+                templatePropertyDescriptor.DesignerCoerceValueCallback = Template_CoerceValue;
         }
 
         /// <summary>
@@ -139,11 +138,9 @@
         {
             // Update the effective filter. If the filter is provided as content, the content filter will be recreated when needed.
             _activeFilter = newValue as IContentFilter;
+
             // Notify the filter to update the view.
-            var filterHost = FilterHost;
-            if (filterHost == null)
-                return;
-            filterHost.OnFilterChanged();
+            FilterHost?.OnFilterChanged();
         }
 
         private static object Template_CoerceValue(DependencyObject sender, object baseValue)
@@ -152,21 +149,16 @@
                 return baseValue;
 
             var control = sender as DataGridFilterColumnControl;
-            if (control == null)
-                return null;
 
             // Just resolved the binding to the template property attached to the column, and the value has not been set on the column:
             // => try to find the default template based on the columns type.
-            var column = control.Maybe()
-                .Select(c => c.ColumnHeader)
-                .Return (h => h.Column);
+            var columnType = control?.ColumnHeader?.Column?.GetType();
+            if (columnType == null)
+                return null;
 
-            if (column != null)
-            {
-                return control.TryFindResource(new ComponentResourceKey(typeof(DataGridFilter), column.GetType())) as ControlTemplate;
-            }
+            var resourceKey = new ComponentResourceKey(typeof(DataGridFilter), columnType);
 
-            return null;
+            return control.DataGrid.GetResourceLocator()?.FindResource(control, resourceKey) ?? control.TryFindResource(resourceKey);
         }
 
         /// <summary>

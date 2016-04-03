@@ -170,6 +170,7 @@
     <Compile Include="IContentFilter.cs" />
     <Compile Include="IContentFilterFactory.cs" />
     <Compile Include="IDataGridEventsProvider.cs" />
+    <Compile Include="IResourceLocator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegexContentFilter.cs" />
     <Compile Include="SimpleContentFilter.cs" />

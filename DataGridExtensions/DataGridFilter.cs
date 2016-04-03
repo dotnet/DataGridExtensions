@@ -40,11 +40,8 @@
         private static void IsAutoFilterEnabled_Changed(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             var dataGrid = sender as DataGrid;
-            if (dataGrid != null)
-            {
-                // Force creation of the host and show or hide the controls.
-                dataGrid.GetFilter().Enable(true.Equals(e.NewValue));
-            }
+            // Force creation of the host and show or hide the controls.
+            dataGrid?.GetFilter().Enable(true.Equals(e.NewValue));
         }
 
         #endregion
@@ -149,6 +146,39 @@
             DependencyProperty.RegisterAttached("FilterEvaluationDelay", typeof(TimeSpan), typeof(DataGridFilter), new FrameworkPropertyMetadata(TimeSpan.FromSeconds(0.5)));
 
         #endregion
+
+        /// <summary>
+        /// Gets the resource locator.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <returns>The locator</returns>
+        [AttachedPropertyBrowsableForType(typeof(DataGrid))]
+        public static IResourceLocator GetResourceLocator(this DataGrid obj)
+        {
+            Contract.Requires(obj != null);
+            return (IResourceLocator)obj.GetValue(ResourceLocatorProperty);
+        }
+        /// <summary>
+        /// Sets the resource locator.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <param name="value">The value.</param>
+        public static void SetResourceLocator(this DataGrid obj, IResourceLocator value)
+        {
+            Contract.Requires(obj != null);
+            obj.SetValue(ResourceLocatorProperty, value);
+        }
+        /// <summary>
+        /// Identifies the <see cref="P:DataGridExtensions.DataGridFilter.ResourceLocator"/> attached property
+        /// </summary>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Set an resource locator to locate resource if the component resource keys can not be found, e.g. because dgx is used in a plugin and multiple assemblies with resources might exist.
+        /// </summary>
+        /// </AttachedPropertyComments>
+        public static readonly DependencyProperty ResourceLocatorProperty =
+            DependencyProperty.RegisterAttached("ResourceLocator", typeof(IResourceLocator), typeof(DataGridFilter), new FrameworkPropertyMetadata(null));
+
 
         /// <summary>
         /// Gets the value of the <see cref="P:DataGridExtensions.GlobalFilter"/> attached property from a given <see cref="DataGrid"/>.

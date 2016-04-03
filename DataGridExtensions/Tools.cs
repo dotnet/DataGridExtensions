@@ -172,11 +172,7 @@
             if (dataGrid == null)
                 return;
 
-            var ancestors = newFocus.AncestorsAndSelf();
-            if (ancestors == null)
-                return;
-
-            if (ancestors.Any(item => ReferenceEquals(item, dataGrid)))
+            if (newFocus.AncestorsAndSelf().Any(item => ReferenceEquals(item, dataGrid)))
                 return; // Focus still in data grid.
 
             dataGrid.CommitEdit(); // Commit cell

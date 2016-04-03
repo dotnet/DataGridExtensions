@@ -1,4 +1,5 @@
-﻿namespace DataGridExtensions
+﻿using System.Diagnostics.Contracts;
+namespace DataGridExtensions
 {
     using System;
     using System.Collections.ObjectModel;
@@ -90,6 +91,7 @@
             // => use reflection to get the effective property for the specified column.
 
             var propertyName = property.Name;
+            Contract.Assume(propertyName != null);
             var columnType = column.GetType();
 
             var defaultStyle = columnType.GetProperty("Default" + propertyName, BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)?.GetValue(null, null) as Style;

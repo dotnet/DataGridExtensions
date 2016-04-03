@@ -183,23 +183,11 @@
             // To improve keyboard navigation we should not step into the headers filter controls with the TAB key,
             // but only with navigation keys.
 
-            var template = DataGrid.Template;
-            if (template == null)
-                return;
+            var scrollViewer = DataGrid.Template?.FindName("DG_ScrollViewer", DataGrid) as ScrollViewer;
 
-            var scrollViewer = template.FindName("DG_ScrollViewer", DataGrid) as ScrollViewer;
-            if (scrollViewer == null)
-                return;
+            var headersPresenter = (FrameworkElement)scrollViewer?.Template?.FindName("PART_ColumnHeadersPresenter", scrollViewer);
 
-            var controlTemplate = scrollViewer.Template;
-            if (controlTemplate == null)
-                return;
-
-            var headersPresenter = (FrameworkElement)controlTemplate.FindName("PART_ColumnHeadersPresenter", scrollViewer);
-            if (headersPresenter == null)
-                return;
-
-            headersPresenter.SetValue(KeyboardNavigation.TabNavigationProperty, KeyboardNavigationMode.None);
+            headersPresenter?.SetValue(KeyboardNavigation.TabNavigationProperty, KeyboardNavigationMode.None);
         }
 
         private void Columns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -215,7 +203,10 @@
             if (!filteredColumnsWithEmptyHeaderTemplate.Any())
                 return;
 
-            var headerTemplate = (DataTemplate)_dataGrid.FindResource(DataGridFilter.ColumnHeaderTemplateKey);
+            var resource = _dataGrid.GetResourceLocator()?.FindResource(DataGrid, DataGridFilter.ColumnHeaderTemplateKey) 
+                ?? _dataGrid.TryFindResource(DataGridFilter.ColumnHeaderTemplateKey);
+
+            var headerTemplate = (DataTemplate)resource;
 
             foreach (var column in filteredColumnsWithEmptyHeaderTemplate)
             {

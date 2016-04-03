@@ -59,6 +59,20 @@
             DependencyProperty.Register("ColumnHeaderGripperToolTipStyle", typeof(Style), typeof(ExtendedStarSizeBehavior));
 
         /// <summary>
+        /// Gets or sets the resource locator.
+        /// </summary>
+        public IResourceLocator ResourceLocator
+        {
+            get { return (IResourceLocator)GetValue(ResourceLocatorProperty); }
+            set { SetValue(ResourceLocatorProperty, value); }
+        }
+        /// <summary>
+        /// Identifies the <see cref="ResourceLocator"/> dependency property
+        /// </summary>
+        public static readonly DependencyProperty ResourceLocatorProperty =
+            DependencyProperty.Register("ResourceLocator", typeof(IResourceLocator), typeof(ExtendedStarSizeBehavior));
+
+        /// <summary>
         /// Called after the behavior is attached to an AssociatedObject.
         /// </summary>
         /// <remarks>
@@ -88,7 +102,7 @@
         {
             Contract.Requires(dataGrid != null);
 
-            _scrollViewer = dataGrid.Template.Maybe().Return(t => t.FindName("DG_ScrollViewer", dataGrid) as ScrollViewer);
+            _scrollViewer = dataGrid.Template?.FindName("DG_ScrollViewer", dataGrid) as ScrollViewer;
             if (_scrollViewer == null)
                 return;
 
@@ -310,19 +324,19 @@
 
             foreach (var column in dataGrid.Columns.OrderBy(c => c.DisplayIndex))
             {
-                var leftColumnRightGripperToolTip = leftColumn.Maybe().Return(x => (ToolTip)x.GetValue(RightGripperToolTipProperty));
-                var thisColumnLeftGripperToolTip = column.Maybe().Return(x => (ToolTip)x.GetValue(LeftGripperToolTipProperty));
+                var leftColumnRightGripperToolTip = (ToolTip)leftColumn?.GetValue(RightGripperToolTipProperty);
+                var thisColumnLeftGripperToolTip = (ToolTip)column?.GetValue(LeftGripperToolTipProperty);
 
                 var visibility = isLeftColumnStarSized ? Visibility.Visible : Visibility.Collapsed;
 
-                leftColumnRightGripperToolTip.Maybe().Do(t => t.Visibility = visibility);
-                thisColumnLeftGripperToolTip.Maybe().Do(t => t.Visibility = visibility);
+                leftColumnRightGripperToolTip?.Do(t => t.Visibility = visibility);
+                thisColumnLeftGripperToolTip?.Do(t => t.Visibility = visibility);
 
                 leftColumn = column;
                 isLeftColumnStarSized = GetStarSize(column) > double.Epsilon;
             }
 
-            leftColumn.Maybe().Select(x => (ToolTip)x.GetValue(RightGripperToolTipProperty)).Do(t => t.Visibility = Visibility.Collapsed);
+            (leftColumn?.GetValue(RightGripperToolTipProperty) as ToolTip)?.Do(t => t.Visibility = Visibility.Collapsed);
         }
 
         private void InjectColumnHeaderStyle(DataGrid dataGrid)
@@ -392,7 +406,7 @@
         {
             Contract.Requires(columnHeader != null);
 
-            var gripper = columnHeader.Template.Maybe().Return(t => t.FindName(gripperName, columnHeader) as Thumb);
+            var gripper = columnHeader.Template?.FindName(gripperName, columnHeader) as Thumb;
             if (gripper == null)
                 return;
 
@@ -400,7 +414,9 @@
             if (dataGrid == null)
                 return;
 
-            var style = ColumnHeaderGripperToolTipStyle ?? dataGrid.FindResource(ColumnHeaderGripperToolTipStyleKey) as Style;
+            var style = ColumnHeaderGripperToolTipStyle 
+                ?? (ResourceLocator?.FindResource(dataGrid, ColumnHeaderGripperToolTipStyleKey) 
+                    ?? dataGrid.TryFindResource(ColumnHeaderGripperToolTipStyleKey)) as Style;
 
             var toolTip = new ToolTip { Style = style };
 
@@ -408,7 +424,7 @@
 
             gripper.ToolTip = toolTip;
 
-            columnHeader.Column.Maybe().Do(c => c.SetValue(toolTipProperty, toolTip));
+            columnHeader.Column?.SetValue(toolTipProperty, toolTip);
 
             _updateColumnGripperToolTipVisibilityThrottle.Tick();
         }
