@@ -1,4 +1,6 @@
-﻿1.0.30.0
+﻿1.0.31.0
+* Introduce resource locator to be able to completely override the resource location.
+1.0.30.0
 * Custom column styles must not be overridden by default column styles.
 1.0.29.0
 * Provide a means to override default column styles.
