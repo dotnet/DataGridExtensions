@@ -1,0 +1,2 @@
+git tfs rcheckin
+pause
