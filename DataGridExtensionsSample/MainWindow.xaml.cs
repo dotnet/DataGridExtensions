@@ -9,6 +9,8 @@ namespace DataGridExtensionsSample
 {
     using System.ComponentModel;
     using System.Diagnostics;
+    using System.IO;
+    using System.Text;
     using System.Windows.Threading;
 
     /// <summary>
@@ -17,6 +19,7 @@ namespace DataGridExtensionsSample
     public partial class MainWindow : INotifyPropertyChanged
     {
         private Random _rand = new Random();
+        private const char TextColumnSeparator = '\t';
 
         public MainWindow()
         {
@@ -60,8 +63,6 @@ namespace DataGridExtensionsSample
         }
         public static readonly DependencyProperty ExternalFilterProperty = DependencyProperty.Register("ExternalFilter", typeof(Predicate<object>), typeof(MainWindow));
 
-        private IList<IList<string>> _clipboard;
-
 
         private void DataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
@@ -91,10 +92,7 @@ namespace DataGridExtensionsSample
 
         private void Reload_Click(object sender, RoutedEventArgs e)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs("Items"));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Items"));
         }
 
 
@@ -102,15 +100,151 @@ namespace DataGridExtensionsSample
 
         private void Copy_Click(object sender, RoutedEventArgs e)
         {
-            _clipboard = CopyPasteDataGrid.GetCellSelection();
+            if (!CopyPasteDataGrid.HasRectangularCellSelection())
+            {
+                MessageBox.Show("Invalid selection for copy");
+                return;
+            }
 
+            var cellSelection = CopyPasteDataGrid.GetCellSelection();
+
+            Clipboard.SetText(cellSelection.ToString(TextColumnSeparator));
         }
+
         private void Paste_Click(object sender, RoutedEventArgs e)
         {
-            if (_clipboard == null)
-                return;
+            CopyPasteDataGrid.PasteCells(Clipboard.GetText().ParseTable(TextColumnSeparator));
+        }
+    }
 
-            CopyPasteDataGrid.PasteCells(_clipboard);
+    internal static class ExtensionMethods
+    {
+        private const string Quote = "\"";
+
+        internal static string ToString(this IList<IList<string>> table, char separator)
+        {
+            if ((table.Count == 1) && (table[0] != null) && (table[0].Count == 1) && string.IsNullOrWhiteSpace(table[0][0]))
+                return Quote + (table[0][0] ?? string.Empty) + Quote;
+
+            return string.Join(Environment.NewLine, table.Select(line => string.Join(separator.ToString(), line.Select(cell => Quoted(cell, separator)))));
+        }
+
+        internal static IList<IList<string>> ParseTable(this string text, char separator)
+        {
+            var table = new List<IList<string>>();
+
+            using (var reader = new StringReader(text))
+            {
+                while (reader.Peek() != -1)
+                {
+                    table.Add(ReadTableLine(reader, separator));
+                }
+            }
+
+            if (!table.Any())
+                return null;
+
+            var headerColumns = table.First();
+
+            return table.Any(columns => columns.Count != headerColumns.Count) ? null : table;
+        }
+
+        internal static IList<string> ReadTableLine(TextReader reader, char separator)
+        {
+            var columns = new List<string>();
+
+            while (true)
+            {
+                columns.Add(ReadTableColumn(reader, separator));
+
+                if ((char)reader.Peek() == separator)
+                {
+                    reader.Read();
+                    continue;
+                }
+
+                while (IsLineFeed(reader.Peek()))
+                {
+                    reader.Read();
+                }
+
+                break;
+            }
+
+            return columns;
+        }
+
+        internal static string ReadTableColumn(TextReader reader, char separator)
+        {
+            var stringBuilder = new StringBuilder();
+            int nextChar;
+
+            if (IsDoubleQuote(reader.Peek()))
+            {
+                reader.Read();
+
+                while ((nextChar = reader.Read()) != -1)
+                {
+                    if (IsDoubleQuote(nextChar))
+                    {
+                        if (IsDoubleQuote(reader.Peek()))
+                        {
+                            reader.Read();
+                            stringBuilder.Append((char)nextChar);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        stringBuilder.Append((char)nextChar);
+                    }
+                }
+            }
+            else
+            {
+                while ((nextChar = reader.Peek()) != -1)
+                {
+                    if (IsLineFeed(nextChar) || (nextChar == separator))
+                        break;
+
+                    reader.Read();
+                    stringBuilder.Append((char)nextChar);
+                }
+            }
+
+            return stringBuilder.ToString();
+        }
+
+        private static bool IsDoubleQuote(int c)
+        {
+            return (c == '"');
+        }
+
+
+        internal static string Quoted(string value, char separator)
+        {
+            if (string.IsNullOrEmpty(value))
+                return string.Empty;
+
+            if (value.Any(IsLineFeed) || value.Contains(separator) || value.StartsWith(Quote, StringComparison.Ordinal))
+            {
+                return Quote + value.Replace(Quote, Quote + Quote) + Quote;
+            }
+
+            return value;
+        }
+
+        private static bool IsLineFeed(int c)
+        {
+            return (c == '\r') || (c == '\n');
+        }
+
+        private static bool IsLineFeed(char c)
+        {
+            return IsLineFeed((int)c);
         }
     }
 }

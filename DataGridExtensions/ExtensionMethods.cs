@@ -94,6 +94,7 @@
             var visibleColumnIndexes = dataGrid.Columns
                 .Where(c => c.Visibility == Visibility.Visible)
                 .Select(c => c.DisplayIndex)
+                .OrderBy(displayIndex => displayIndex)
                 .ToList();
 
             var rowIndexes = selectedCells
@@ -219,14 +220,9 @@
         /// <returns>The selected cells of visible columns.</returns>
         public static IList<DataGridCellInfo> GetVisibleSelectedCells(this DataGrid dataGrid)
         {
-            if (dataGrid == null)
-                return null;
+            var selectedCells = dataGrid?.SelectedCells;
 
-            var selectedCells = dataGrid.SelectedCells;
-            if (selectedCells == null)
-                return null;
-
-            return selectedCells
+            return selectedCells?
                 .Where(cellInfo => cellInfo.IsValid && (cellInfo.Column != null) && (cellInfo.Column.Visibility == Visibility.Visible))
                 .ToArray();
         }
