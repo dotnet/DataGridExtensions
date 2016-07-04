@@ -16,11 +16,15 @@
 
     <!-- Template for a simple integer dgx control. -->
     <ControlTemplate x:Key="IntegerFilter">
-      <src:IntegerGreatherThanFilterControl Filter="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
+      <src:IntegerGreatherThanFilterControl Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
     </ControlTemplate>
 
     <ControlTemplate x:Key="FilterWithPopup">
       <src:FilterWithPopupControl Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}"/>
+    </ControlTemplate>
+    
+    <ControlTemplate x:Key="MultipleChoiceFilter">
+      <src:MultipleChoiceFilter Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}"/>
     </ControlTemplate>
 
     <ControlTemplate x:Key="ComboboxFilter">
@@ -185,7 +189,7 @@
               <DataGridTextColumn Header="Text/Text" Binding="{Binding Column2, Mode=OneWay}" Width="*"/>
               <!-- Use a simple combo box for filtering -->
               <DataGridComboBoxColumn Header="Text/Custom" SelectedValueBinding="{Binding Column5}" 
-                                      Width="*" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}" 
+                                      Width="*" dgx:DataGridFilterColumn.Template="{StaticResource MultipleChoiceFilter}" 
                                       ItemsSource="{Binding Source={StaticResource ComboBoxSource}}"/>
               <!-- Use a simple combo box for filtering, but override the editing element style -->
               <DataGridComboBoxColumn Header="Text/Custom" SelectedValueBinding="{Binding Column5}" 
