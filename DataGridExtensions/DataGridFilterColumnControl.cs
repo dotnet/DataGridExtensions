@@ -17,8 +17,8 @@
     /// </summary>
     public class DataGridFilterColumnControl : Control, INotifyPropertyChanged
     {
-        private static readonly BooleanToVisibilityConverter BooleanToVisibilityConverter = new BooleanToVisibilityConverter();
-        private static readonly ControlTemplate EmptyControlTemplate = new ControlTemplate();
+        private static readonly BooleanToVisibilityConverter _booleanToVisibilityConverter = new BooleanToVisibilityConverter();
+        private static readonly ControlTemplate _emptyControlTemplate = new ControlTemplate();
 
         /// <summary>
         /// The active filter for this column.
@@ -69,12 +69,12 @@
             DataGrid.RowEditEnding += DataGrid_RowEditEnding;
 
             // Must set a non-null empty template here, else we won't get the coerce value callback when the columns attached property is null!
-            Template = EmptyControlTemplate;
+            Template = _emptyControlTemplate;
 
             // Bind our IsFilterVisible and Template properties to the corresponding properties attached to the
             // DataGridColumnHeader.Column property. Use binding instead of simple assignment since columnHeader.Column is still null at this point.
             var isFilterVisiblePropertyPath = new PropertyPath("Column.(0)", DataGridFilterColumn.IsFilterVisibleProperty);
-            BindingOperations.SetBinding(this, VisibilityProperty, new Binding() { Path = isFilterVisiblePropertyPath, Source = ColumnHeader, Mode = BindingMode.OneWay, Converter = BooleanToVisibilityConverter });
+            BindingOperations.SetBinding(this, VisibilityProperty, new Binding() { Path = isFilterVisiblePropertyPath, Source = ColumnHeader, Mode = BindingMode.OneWay, Converter = _booleanToVisibilityConverter });
 
             var templatePropertyPath = new PropertyPath("Column.(0)", DataGridFilterColumn.TemplateProperty);
             BindingOperations.SetBinding(this, TemplateProperty, new Binding() { Path = templatePropertyPath, Source = ColumnHeader, Mode = BindingMode.OneWay });
@@ -87,10 +87,7 @@
         {
             // Detach from host.
             // Must check for null, unloaded event might be raised even if no loaded event has been raised before!
-            if (FilterHost != null)
-            {
-                FilterHost.RemoveColumn(this);
-            }
+            FilterHost?.RemoveColumn(this);
 
             if (DataGrid != null)
             {
@@ -99,7 +96,7 @@
                 DataGrid.RowEditEnding -= DataGrid_RowEditEnding;
             }
 
-            // Clear all bindings generatend during load.
+            // Clear all bindings generated during load.
             BindingOperations.ClearBinding(this, VisibilityProperty);
             BindingOperations.ClearBinding(this, TemplateProperty);
             BindingOperations.ClearBinding(this, FilterProperty);
@@ -193,13 +190,7 @@
         /// Returns a flag indicating whether this column has some filter condition to evaluate or not.
         /// If there is no filter condition we don't need to invoke this filter.
         /// </summary>
-        public bool IsFiltered
-        {
-            get
-            {
-                return (Filter != null) && !string.IsNullOrWhiteSpace(Filter.ToString()) && (ColumnHeader != null) && (ColumnHeader.Column != null);
-            }
-        }
+        public bool IsFiltered => !string.IsNullOrWhiteSpace(Filter?.ToString()) && ColumnHeader?.Column != null;
 
         /// <summary>
         /// Returns true if the given item matches the filter condition for this column.
@@ -231,13 +222,7 @@
         /// <summary>
         /// Gets the column this control is hosting the filter for.
         /// </summary>
-        public DataGridColumn Column
-        {
-            get
-            {
-                return ColumnHeader != null ? ColumnHeader.Column : null;
-            }
-        }
+        public DataGridColumn Column => ColumnHeader?.Column;
 
         /// <summary>
         /// The DataGrid we belong to.
@@ -269,8 +254,8 @@
         /// <summary>
         /// Identifies the CellValue dependency property, a private helper property used to evaluate the property path for the list items.
         /// </summary>
-        private static readonly DependencyProperty CellValueProperty =
-            DependencyProperty.Register("CellValue", typeof(object), typeof(DataGridFilterColumnControl));
+        private static readonly DependencyProperty _cellValueProperty =
+            DependencyProperty.Register("_cellValue", typeof(object), typeof(DataGridFilterColumnControl));
 
         /// <summary>
         /// Examines the property path and returns the objects value for this column.
@@ -278,21 +263,16 @@
         /// </summary>
         protected object GetCellContent(object item)
         {
-            var columnHeader = ColumnHeader;
-            if (columnHeader == null)
-                return null;
+            var propertyPath = ColumnHeader?.Column.SortMemberPath;
 
-            var column = columnHeader.Column;
-            if (column == null)
+            if (string.IsNullOrEmpty(propertyPath))
                 return null;
-
-            var propertyPath = column.SortMemberPath;
 
             // Since already the name "SortMemberPath" implies that this might be not only a simple property name but a full property path
             // we use binding for evaluation; this will properly handle even complex property paths like e.g. "SubItems[0].Name"
-            BindingOperations.SetBinding(this, CellValueProperty, new Binding(propertyPath) { Source = item });
-            var propertyValue = GetValue(CellValueProperty);
-            BindingOperations.ClearBinding(this, CellValueProperty);
+            BindingOperations.SetBinding(this, _cellValueProperty, new Binding(propertyPath) { Source = item });
+            var propertyValue = GetValue(_cellValueProperty);
+            BindingOperations.ClearBinding(this, _cellValueProperty);
 
             return propertyValue;
         }
@@ -304,14 +284,11 @@
         {
             Contract.Ensures(Contract.Result<IEnumerable<string>>() != null);
 
-            if (DataGrid == null)
-                return Enumerable.Empty<string>();
-
-            var items = DataGrid.Items.Cast<object>();
-
-            return items.Select(GetCellContent)
+            return DataGrid?.Items
+                .Cast<object>()
+                .Select(GetCellContent)
                 .Where(content => content != null)
-                .Select(content => content.ToString());
+                .Select(content => content.ToString()) ?? Enumerable.Empty<string>();
         }
 
         /// <summary>
@@ -321,12 +298,17 @@
         {
             Contract.Ensures(Contract.Result<IEnumerable<string>>() != null);
 
-            if ((DataGrid == null) || (DataGrid.ItemsSource == null))
+            var itemsSource = DataGrid?.ItemsSource;
+
+            if (itemsSource == null)
                 return Enumerable.Empty<string>();
 
-            var items = DataGrid.ItemsSource.Cast<object>();
+            var collectionView = itemsSource as ICollectionView;
 
-            return items.Select(GetCellContent)
+            var items = collectionView?.SourceCollection ?? itemsSource;
+
+            return items.Cast<object>()
+                .Select(GetCellContent)
                 .Where(content => content != null)
                 .Select(content => content.ToString());
         }

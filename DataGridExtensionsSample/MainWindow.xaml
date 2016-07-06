@@ -6,6 +6,7 @@
         xmlns:src="clr-namespace:DataGridExtensionsSample"
         xmlns:dgx="urn:tom-englert.de/DataGridExtensions"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
         Loaded="MainWindow_OnLoaded" TextOptions.TextFormattingMode="Display" UseLayoutRounding="True"
         Title="DataGrid Extensions Sample">
@@ -56,6 +57,12 @@
     </Style>
     
     <XmlDataProvider x:Key="ComboBoxSource" Source="SampleList.xml" XPath="Items/Item"/>
+    
+    <CollectionViewSource x:Key="SortedItems" Source="{Binding Items}">
+      <CollectionViewSource.SortDescriptions>
+        <componentModel:SortDescription PropertyName="Column1"/>
+      </CollectionViewSource.SortDescriptions>
+    </CollectionViewSource>
 
     <Style x:Key="DataGridComboBoxStyle" TargetType="ComboBox">
       <Setter Property="BorderThickness" Value="0"/>
@@ -125,7 +132,7 @@
             <Run>This tab shows how to customize the filters in XAML when using explicit generated columns. Read the comments in the XAML for details.</Run><LineBreak/>
             <Run>Overrides the icon template to show an orange filter symbol.</Run>
           </TextBlock>
-          <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="False" FrozenColumnCount="2"
+          <DataGrid ItemsSource="{Binding Source={StaticResource SortedItems}}" AutoGenerateColumns="False" FrozenColumnCount="2"
                     dgx:DataGridFilter.GlobalFilter="{Binding ExternalFilter}"
                     dgx:DataGridFilter.IsAutoFilterEnabled="True"
                     dgx:Tools.ApplyInitialSorting="True"
