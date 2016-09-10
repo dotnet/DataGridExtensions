@@ -1,4 +1,6 @@
-﻿1.0.33.0
+﻿1.0.34.0
+* Change resource keys to workaround https://connect.microsoft.com/VisualStudio/feedback/details/2993889/
+1.0.33.0
 * Fix SourceItems for custom filters change while filtering when ItemsSource of DataGrid is an ICollectionView.
 1.0.32.0
 * Fix issue with  Copy/Paste support for cell selection when columns are reordered.
