@@ -241,7 +241,7 @@
         /// <summary>
         /// Template for the whole column header.
         /// </summary>
-        public static readonly ResourceKey ColumnHeaderTemplateKey = new ComponentResourceKey(typeof(DataGridFilter), typeof(DataGridColumn));
+        public static readonly ResourceKey ColumnHeaderTemplateKey = new ComponentResourceKey(typeof(DataGridFilter), "ColumnHeaderTemplate");
 
         /// <summary>
         /// The filter icon template.
