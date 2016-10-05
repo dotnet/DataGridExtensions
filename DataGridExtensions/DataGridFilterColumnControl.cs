@@ -162,6 +162,10 @@
         /// Returns all distinct visible (filtered) values of this column as string.
         /// This can be used to e.g. feed the ItemsSource of an AutoCompleteBox to give a hint to the user what to enter.
         /// </summary>
+        /// <remarks>
+        /// You may need to include "NotifyOnTargetUpdated=true" in the binding of the DataGrid.ItemsSource to get up-to-date
+        /// values when the source object changes.
+        /// </remarks>
         public IEnumerable<string> Values
         {
             get
@@ -174,8 +178,12 @@
 
         /// <summary>
         /// Returns all distinct source values of this column as string.
-        /// This can be used to e.g. feed the ItemsSource of an Excel-like autofilter.
+        /// This can be used to e.g. feed the ItemsSource of an Excel-like auto-filter.
         /// </summary>
+        /// <remarks>
+        /// You may need to include "NotifyOnTargetUpdated=true" in the binding of the DataGrid.ItemsSource to get up-to-date 
+        /// values when the source object changes.
+        /// </remarks>
         public IEnumerable<string> SourceValues
         {
             get
