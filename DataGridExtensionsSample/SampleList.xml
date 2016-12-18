@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Items>
+  <Item></Item>
   <Item Value="Test">lorem</Item>
   <Item>ipsum</Item>
   <Item>dolor</Item>

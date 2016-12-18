@@ -295,8 +295,7 @@
             return DataGrid?.Items
                 .Cast<object>()
                 .Select(GetCellContent)
-                .Where(content => content != null)
-                .Select(content => content.ToString()) ?? Enumerable.Empty<string>();
+                .Select(content => content?.ToString() ?? string.Empty) ?? Enumerable.Empty<string>();
         }
 
         /// <summary>
@@ -317,8 +316,7 @@
 
             return items.Cast<object>()
                 .Select(GetCellContent)
-                .Where(content => content != null)
-                .Select(content => content.ToString());
+                .Select(content => content?.ToString() ?? string.Empty);
         }
 
         #region INotifyPropertyChanged Members
