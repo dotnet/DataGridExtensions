@@ -1,4 +1,4 @@
-# Data Grid Extensions
+### Data Grid Extensions ![Badge](https://tom-englert.visualstudio.com/_apis/public/build/definitions/75bf84d2-d359-404a-a712-07c9f693f635/11/badge)
 
 Modular extensions for the WPF DataGrid control.
 
