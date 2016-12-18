@@ -1,12 +1,11 @@
-SET VERSION=1.0.34.0
+IF /I NOT "%1" == "true" GOTO :EOF
 
 PUSHD %~dp0\Deploy
 
 CALL :PUSH DataGridExtensions
 
-PAUSE
 GOTO :EOF
 
 :PUSH
-..\.nuget\nuget push %1.%VERSION%.nupkg
+"%~dp0.nuget\nuget" push %1.1.0.??.0.nupkg
 GOTO :EOF
