@@ -2,14 +2,13 @@
 
 Modular extensions for the WPF DataGrid control.
 
-This is a clone of https://datagridextensions.codeplex.com/
+The binaries are available as [NuGet](http://nuget.org/packages/DataGridExtensions) packages.
 
-Binaries are available on [NuGet](http://nuget.org/packages/DataGridExtensions)
+This package contains useful extensions for the WPF DataGrid (`System.Windows.Controls.DataGrid`).
 
-This package contains useful extensions for the WPF DataGrid (System.Windows.Controls.DataGrid).
 The current version supports the following features and behaviors:
 
-* Add filtering capabilities to the DataGrid.
+* Add filtering capabilities to the DataGrid
 * Apply the initial sorting
 * Disable another control while in editing mode
 * Provide additional column events
@@ -23,14 +22,16 @@ This extension is
 * Easy to customize
 * Attaches to the existing DataGrid
 
-Unlike many other free extensions this package does not introduce a new derived DataGrid class, limiting you a fixed set of features that you have to live with, but transparently attaches to the existing DataGrid, giving you the freedom to use exactly the feature you need, customizing them as you like, and combining them with other useful extensions.
+Unlike many other free extensions this package does not introduce a new derived DataGrid class, limiting you a fixed set of features 
+that you have to live with, but transparently attaches to the existing DataGrid, giving you the freedom to use exactly the feature you need, 
+customizing them as you like, and combining them with other useful extensions.
 
 Filtering is enabled by simply adding one attached property to your DataGrid:
 
 `<DataGrid ItemsSource="{Binding Items}" dgx:DataGridFilter.IsAutoFilterEnabled="True"/>`
 
 You will get a simple but efficient text or boolean filter, depending on the column type:
-![Sample1](https://github.com/tom-englert/DataGridExtensions/blob/master/Assets/Sample1.jpg)
+![Sample1](Assets/Sample1.jpg)
 
 Every part is easily customizable by providing simple styles or templates:
 
@@ -38,9 +39,10 @@ Every part is easily customizable by providing simple styles or templates:
 
 By overriding the default template you can simply create individual filters:
 
-![Sample2](https://github.com/tom-englert/DataGridExtensions/blob/master/Assets/Sample2.jpg)
+![Sample2](Assets/Sample2.jpg)
 
-For a full functional demo run the sample app or see the [ResX Resource Manager](https://github.com/tom-englert/ResXResourceManager) or [COM Registry Browser](http://comregistrybrowser.codeplex.com)  projects that use the filtering extensions.
+For a full functional demo run the sample app or see the [ResX Resource Manager](https://github.com/tom-englert/ResXResourceManager) 
+or [COM Registry Browser](https://github.com/tom-englert/ComRegistryBrowser)  projects that use the filtering extensions.
 
 
 Powerd by&nbsp;&nbsp;&nbsp;<a href="http://www.jetbrains.com/resharper/"><img src="http://www.tom-englert.de/Images/icon_ReSharper.png" alt="ReSharper" width="64" height="64" /></a> &nbsp;&nbsp;&nbsp; <a href="http://research.microsoft.com/en-us/projects/contracts/"><img src="http://www.tom-englert.de/Images/codecontracts_sm.png" alt="CodeContracts" width="90" height="56" /></a>&nbsp;</p>
