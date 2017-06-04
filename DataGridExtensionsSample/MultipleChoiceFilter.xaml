@@ -30,7 +30,7 @@
         </Popup>
       </Grid>
       <ControlTemplate.Triggers>
-        <DataTrigger Binding="{Binding ElementName=Control, Path=Filter.Items}" Value="{x:Null}">
+        <DataTrigger Binding="{Binding ElementName=Control, Path=Filter.ExcludedItems}" Value="{x:Null}">
           <Setter TargetName="IsFilterActiveMarker" Property="Visibility" Value="Hidden"/>
         </DataTrigger>
       </ControlTemplate.Triggers>

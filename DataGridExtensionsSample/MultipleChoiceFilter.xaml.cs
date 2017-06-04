@@ -43,7 +43,7 @@
 
             var filter = Filter;
 
-            if (filter?.Items == null)
+            if (filter?.ExcludedItems == null)
             {
                 _listBox?.SelectAll();
             }
@@ -59,9 +59,16 @@
         {
             var filter = Filter;
 
-            if (filter?.Items == null)
+            if (filter?.ExcludedItems == null)
             {
                 _listBox.SelectAll();
+            }
+            else
+            {
+                foreach (var item in _listBox.Items.Cast<string>().Except(filter.ExcludedItems))
+                {
+                    _listBox.SelectedItems.Add(item);
+                }
             }
         }
 
@@ -69,7 +76,7 @@
         {
             var filter = Filter;
 
-            if (filter?.Items == null)
+            if (filter?.ExcludedItems == null)
             {
                 _listBox?.SelectAll();
                 return;
@@ -78,7 +85,7 @@
             if (_listBox?.SelectedItems.Count != 0)
                 return;
 
-            foreach (var item in filter.Items)
+            foreach (var item in _listBox.Items.Cast<string>().Except(filter.ExcludedItems))
             {
                 _listBox.SelectedItems.Add(item);
             }
@@ -86,24 +93,31 @@
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Filter = new MultipleChoiceContentFilter(_listBox?.SelectedItems.Cast<string>());
+            var excludedItems = Filter?.ExcludedItems ?? new string[0];
+
+            var selectedItems = _listBox.SelectedItems.Cast<string>().ToArray();
+            var unselectedItems = _listBox.Items.Cast<string>().Except(selectedItems).ToArray();
+
+            excludedItems = excludedItems.Except(selectedItems).Concat(unselectedItems).Distinct().ToArray();
+
+            Filter = new MultipleChoiceContentFilter(excludedItems);
         }
     }
     public class MultipleChoiceContentFilter : IContentFilter
     {
-        public MultipleChoiceContentFilter(IEnumerable<string> items)
+        public MultipleChoiceContentFilter(IEnumerable<string> excludedItems)
         {
-            Items = items?.ToArray();
+            ExcludedItems = excludedItems?.ToArray();
         }
 
-        public IList<string> Items
+        public IList<string> ExcludedItems
         {
             get;
         }
 
         public bool IsMatch(object value)
         {
-            return Items?.Contains(value as string) ?? true;
+            return ExcludedItems?.Contains(value as string) != true;
         }
     }
 }
