@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
+    using System.Diagnostics.CodeAnalysis;
     using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Windows;
@@ -228,19 +229,24 @@
         /// </summary>
         private void EvaluateFilter()
         {
-            if (_deferFilterEvaluationTimer != null)
-                _deferFilterEvaluationTimer.Stop();
+            _deferFilterEvaluationTimer?.Stop();
 
             var collectionView = _dataGrid.Items;
 
             // Collect all active filters of all known columns.
-            var filters = _filterColumnControls.Where(column => column.IsVisible && column.IsFiltered).ToArray();
+            var columnFilters = GetColumnFilters();
 
             if (Filtering != null)
             {
                 // Notify client about additional columns being filtered.
-                var columns = filters.Select(filter => filter.Column).Where(column => column != null).ToArray();
-                var newColumns = columns.Except(_filteredColumns).ToArray();
+                var columns = columnFilters
+                    .Select(filter => filter.Column)
+                    .Where(column => column != null)
+                    .ToArray();
+
+                var newColumns = columns
+                    .Except(_filteredColumns)
+                    .ToArray();
 
                 if (newColumns.Length > 0)
                 {
@@ -256,26 +262,12 @@
                 _filteredColumns = columns;
             }
 
-            if (FilterChanged != null)
-            {
-                FilterChanged(this, EventArgs.Empty);
-            }
+            FilterChanged?.Invoke(this, EventArgs.Empty);
 
             try
             {
                 // Apply filter to collection view
-                if (!filters.Any())
-                {
-                    collectionView.Filter = _globalFilter;
-                }
-                else if (_globalFilter == null)
-                {
-                    collectionView.Filter = item => filters.All(filter => filter.Matches(item));
-                }
-                else
-                {
-                    collectionView.Filter = item => _globalFilter(item) && filters.All(filter => filter.Matches(item));
-                }
+                collectionView.Filter = CreatePredicate(columnFilters);
 
                 // Notify all filters about the change of the collection view.
                 _filterColumnControls.ForEach(filter => filter.ValuesUpdated());
@@ -289,8 +281,31 @@
             }
         }
 
+        internal Predicate<object> CreatePredicate(IList<DataGridFilterColumnControl> columnFilters)
+        {
+            if (columnFilters?.Any() != true)
+            {
+                return _globalFilter;
+            }
+
+            if (_globalFilter == null)
+            {
+                return item => columnFilters.All(filter => filter.Matches(item));
+            }
+
+            return item => _globalFilter(item) && columnFilters.All(filter => filter.Matches(item));
+        }
+
+        internal IList<DataGridFilterColumnControl> GetColumnFilters(DataGridFilterColumnControl excluded = null)
+        {
+            return _filterColumnControls
+                .Where(column => !ReferenceEquals(column, excluded))
+                .Where(column => column.IsVisible && column.IsFiltered)
+                .ToArray();
+        }
+
         [ContractInvariantMethod]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Required for code contracts.")]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Required for code contracts.")]
         private void ObjectInvariant()
         {
             Contract.Invariant(_dataGrid != null);

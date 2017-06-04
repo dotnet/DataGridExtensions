@@ -55,13 +55,13 @@
             items.CollectionChanged += ListBox_ItemsCollectionChanged;
         }
 
-        private void ListBox_ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        private void ListBox_ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             var filter = Filter;
 
             if (filter?.Items == null)
             {
-                _listBox?.SelectAll();
+                _listBox.SelectAll();
             }
         }
 

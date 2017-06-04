@@ -178,7 +178,7 @@
 
         /// <summary>
         /// Returns all distinct source values of this column as string.
-        /// This can be used to e.g. feed the ItemsSource of an Excel-like auto-filter.
+        /// This can be used to e.g. feed the ItemsSource of an Excel-like auto-filter that always shows all source values that can be selected. 
         /// </summary>
         /// <remarks>
         /// You may need to include "NotifyOnTargetUpdated=true" in the binding of the DataGrid.ItemsSource to get up-to-date 
@@ -190,7 +190,35 @@
             {
                 Contract.Ensures(Contract.Result<IEnumerable<string>>() != null);
 
-                return InternalSourceValues().Distinct().ToArray();
+                // use the global filter, if any...
+                var predicate = FilterHost.CreatePredicate(null) ?? (_ => true);
+
+                return InternalSourceValues(predicate)
+                    .Distinct()
+                    .ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Returns all distinct selectable values of this column as string.
+        /// This can be used to e.g. feed the ItemsSource of an Excel-like auto-filter, that only shows the values that are currently selectable, depending on the other filters.
+        /// </summary>
+        /// <remarks>
+        /// You may need to include "NotifyOnTargetUpdated=true" in the binding of the DataGrid.ItemsSource to get up-to-date 
+        /// values when the source object changes.
+        /// </remarks>
+        public IEnumerable<string> SelectableValues
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<IEnumerable<string>>() != null);
+
+                // filter by all columns except this.
+                var predicate = FilterHost.CreatePredicate(FilterHost.GetColumnFilters(this)) ?? (_ => true);
+
+                return InternalSourceValues(predicate)
+                    .Distinct()
+                    .ToArray();
             }
         }
 
@@ -225,6 +253,7 @@
             // if there is no binding to the properties we don't waste resources to compute a list that is never used.
             OnPropertyChanged(nameof(Values));
             OnPropertyChanged(nameof(SourceValues));
+            OnPropertyChanged(nameof(SelectableValues));
         }
 
         /// <summary>
@@ -301,8 +330,9 @@
         /// <summary>
         /// Gets the cell content of all list items for this column.
         /// </summary>
-        protected IEnumerable<string> InternalSourceValues()
+        protected IEnumerable<string> InternalSourceValues(Predicate<object> predicate)
         {
+            Contract.Requires(predicate != null);
             Contract.Ensures(Contract.Result<IEnumerable<string>>() != null);
 
             var itemsSource = DataGrid?.ItemsSource;
@@ -315,6 +345,7 @@
             var items = collectionView?.SourceCollection ?? itemsSource;
 
             return items.Cast<object>()
+                .Where(item => predicate(item))
                 .Select(GetCellContent)
                 .Select(content => content?.ToString() ?? string.Empty);
         }

@@ -32,7 +32,7 @@
       <Grid d:DataContext="{d:DesignInstance dgx:DataGridFilterColumnControl}">
         <Grid>
           <Control Style="{DynamicResource {x:Static dgx:DataGridFilter.IconStyleKey}}"/>
-          <ComboBox x:Name="ComboBox" Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding SourceValues}" IsEditable="True" />
+          <ComboBox x:Name="ComboBox" Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding SelectableValues}" IsEditable="True" />
         </Grid>
       </Grid>
       <ControlTemplate.Triggers>
