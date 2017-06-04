@@ -1,4 +1,4 @@
-### Data Grid Extensions ![Badge](https://tom-englert.visualstudio.com/_apis/public/build/definitions/75bf84d2-d359-404a-a712-07c9f693f635/11/badge)
+### Data Grid Extensions ![Badge](https://tom-englert.visualstudio.com/_apis/public/build/definitions/75bf84d2-d359-404a-a712-07c9f693f635/11/badge) [![NuGet Status](http://img.shields.io/nuget/v/DataGridExtensions.svg?style=flat)](https://www.nuget.org/packages/DataGridExtensions/)
 
 Modular extensions for the WPF DataGrid control.
 
@@ -42,7 +42,7 @@ By overriding the default template you can simply create individual filters:
 ![Sample2](Assets/Sample2.jpg)
 
 For a full functional demo run the sample app or see the [ResX Resource Manager](https://github.com/tom-englert/ResXResourceManager) 
-or [COM Registry Browser](https://github.com/tom-englert/ComRegistryBrowser)  projects that use the filtering extensions.
+or [Project Configuration Manager](https://github.com/tom-englert/ProjectConfigurationManager) projects that use the filtering extensions.
 
 
 Powerd by&nbsp;&nbsp;&nbsp;<a href="http://www.jetbrains.com/resharper/"><img src="http://www.tom-englert.de/Images/icon_ReSharper.png" alt="ReSharper" width="64" height="64" /></a> &nbsp;&nbsp;&nbsp; <a href="http://research.microsoft.com/en-us/projects/contracts/"><img src="http://www.tom-englert.de/Images/codecontracts_sm.png" alt="CodeContracts" width="90" height="56" /></a>&nbsp;</p>
