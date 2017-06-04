@@ -9,7 +9,7 @@ using System.Windows.Markup;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("tom-englert.de")]
 [assembly: AssemblyProduct("Tom's Toolbox")]
-[assembly: AssemblyCopyright("Copyright © 2012-2016 tom-englert.de, Germany")]
+[assembly: AssemblyCopyright("Copyright © 2012-2017 tom-englert.de, Germany")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
@@ -21,6 +21,11 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition("urn:tom-englert.de/DataGridExtensions", "DataGridExtensions")]
 [assembly: XmlnsDefinition("urn:tom-englert.de/DataGridExtensions", "DataGridExtensions.Behaviors")]
 
-[assembly: AssemblyVersion("1.0.35.0")]
-[assembly: AssemblyFileVersion("1.0.35.0")]
+[assembly: AssemblyVersion(Product.Version)]
+[assembly: AssemblyFileVersion(Product.Version)]
+
+static class Product
+{
+    public const string Version = "1.0.36.0";
+}
 
