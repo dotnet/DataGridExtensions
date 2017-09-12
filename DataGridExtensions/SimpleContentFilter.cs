@@ -1,6 +1,10 @@
-﻿namespace DataGridExtensions
+﻿using JetBrains.Annotations;
+using System.Diagnostics;
+
+namespace DataGridExtensions
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Diagnostics.Contracts;
 
     /// <summary>
@@ -8,6 +12,7 @@
     /// </summary>
     public class SimpleContentFilter : IContentFilter
     {
+        [NotNull]
         private readonly string _content;
         private readonly StringComparison _stringComparison;
 
@@ -16,7 +21,7 @@
         /// </summary>
         /// <param name="content">The content.</param>
         /// <param name="stringComparison">The string comparison.</param>
-        public SimpleContentFilter(string content, StringComparison stringComparison)
+        public SimpleContentFilter([NotNull] string content, StringComparison stringComparison)
         {
             Contract.Requires(content != null);
 
@@ -44,7 +49,8 @@
         #endregion
 
         [ContractInvariantMethod]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Required for code contracts.")]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Required for code contracts.")]
+        [Conditional("CONTRACTS_FULL")]
         private void ObjectInvariant()
         {
             Contract.Invariant(_content != null);

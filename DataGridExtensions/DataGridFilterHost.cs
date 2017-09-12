@@ -1,4 +1,6 @@
-﻿namespace DataGridExtensions
+﻿using JetBrains.Annotations;
+
+namespace DataGridExtensions
 {
     using System;
     using System.Collections.Generic;
@@ -22,10 +24,12 @@
         /// <summary>
         /// The data grid this filter is attached to.
         /// </summary>
+        [NotNull]
         private readonly DataGrid _dataGrid;
         /// <summary>
         /// Filter information about each column.
         /// </summary>
+        [NotNull]
         private readonly List<DataGridFilterColumnControl> _filterColumnControls = new List<DataGridFilterColumnControl>();
         /// <summary>
         /// Timer to defer evaluation of the filter until user has stopped typing.
@@ -48,7 +52,7 @@
         /// Create a new filter host for the given data grid.
         /// </summary>
         /// <param name="dataGrid">The data grid to filter.</param>
-        internal DataGridFilterHost(DataGrid dataGrid)
+        internal DataGridFilterHost([NotNull] DataGrid dataGrid)
         {
             Contract.Requires(dataGrid != null);
 
@@ -91,6 +95,7 @@
         /// <summary>
         /// Gets a the active filter column controls for this data grid.
         /// </summary>
+        [NotNull]
         public IList<DataGridFilterColumnControl> FilterColumnControls
         {
             get
@@ -104,6 +109,7 @@
         /// <summary>
         /// The data grid this filter is attached to.
         /// </summary>
+        [NotNull]
         public DataGrid DataGrid
         {
             get
@@ -150,7 +156,7 @@
         /// Adds a new column.
         /// </summary>
         /// <param name="filterColumn"></param>
-        internal void AddColumn(DataGridFilterColumnControl filterColumn)
+        internal void AddColumn([NotNull] DataGridFilterColumnControl filterColumn)
         {
             Contract.Requires(filterColumn != null);
 
@@ -161,7 +167,7 @@
         /// <summary>
         /// Removes an unloaded column.
         /// </summary>
-        internal void RemoveColumn(DataGridFilterColumnControl filterColumn)
+        internal void RemoveColumn([NotNull] DataGridFilterColumnControl filterColumn)
         {
             Contract.Requires(filterColumn != null);
 
@@ -172,6 +178,7 @@
         /// <summary>
         /// Creates a new content filter.
         /// </summary>
+        [NotNull]
         internal IContentFilter CreateContentFilter(object content)
         {
             Contract.Ensures(Contract.Result<IContentFilter>() != null);

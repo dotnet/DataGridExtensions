@@ -1,4 +1,6 @@
-﻿namespace DataGridExtensions.Behaviors
+﻿using JetBrains.Annotations;
+
+namespace DataGridExtensions.Behaviors
 {
     using System.Diagnostics.Contracts;
     using System.Windows;
@@ -43,7 +45,7 @@
             dataGrid.PreviewKeyDown -= DataGrid_PreviewKeyDown;
         }
 
-        private static void DataGrid_PreviewKeyDown(object sender, KeyEventArgs e)
+        private static void DataGrid_PreviewKeyDown([NotNull] object sender, [NotNull] KeyEventArgs e)
         {
             Contract.Requires(sender != null);
 
@@ -61,7 +63,7 @@
             e.Handled = true;
         }
 
-        private static bool IsChildOfEditingElement(DependencyObject element)
+        private static bool IsChildOfEditingElement([CanBeNull] DependencyObject element)
         {
             while (element != null)
             {

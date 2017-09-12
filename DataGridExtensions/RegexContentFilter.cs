@@ -1,4 +1,6 @@
-﻿namespace DataGridExtensions
+﻿using JetBrains.Annotations;
+
+namespace DataGridExtensions
 {
     using System;
     using System.Diagnostics.Contracts;
@@ -16,7 +18,7 @@
         /// </summary>
         /// <param name="expression">The expression.</param>
         /// <param name="regexOptions">The regex options.</param>
-        public RegexContentFilter(string expression, RegexOptions regexOptions)
+        public RegexContentFilter([NotNull] string expression, RegexOptions regexOptions)
         {
             Contract.Requires(expression != null);
 

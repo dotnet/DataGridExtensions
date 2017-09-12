@@ -1,4 +1,6 @@
-﻿namespace DataGridExtensions
+﻿using JetBrains.Annotations;
+
+namespace DataGridExtensions
 {
     using System;
     using System.Diagnostics.Contracts;
@@ -16,7 +18,7 @@
         /// Gets if the default filters are automatically attached to each column.
         /// </summary>
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
-        public static bool GetIsAutoFilterEnabled(this DataGrid obj)
+        public static bool GetIsAutoFilterEnabled([NotNull] this DataGrid obj)
         {
             Contract.Requires(obj != null);
 
@@ -25,7 +27,7 @@
         /// <summary>
         /// Sets if the default filters are automatically attached to each column. Set to false if you want to control filters by code.
         /// </summary>
-        public static void SetIsAutoFilterEnabled(this DataGrid obj, bool value)
+        public static void SetIsAutoFilterEnabled([NotNull] this DataGrid obj, bool value)
         {
             Contract.Requires(obj != null);
 
@@ -53,7 +55,8 @@
         /// This property is only used by code and is not accessible from XAML.
         /// </summary>
 
-        public static DataGridFilterHost GetFilter(this DataGrid dataGrid)
+        [NotNull]
+        public static DataGridFilterHost GetFilter([NotNull] this DataGrid dataGrid)
         {
             Contract.Requires(dataGrid != null);
             Contract.Ensures(Contract.Result<DataGridFilterHost>() != null);
@@ -83,7 +86,8 @@
         /// Gets the content filter factory for the data grid filter.
         /// </summary>
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
-        public static IContentFilterFactory GetContentFilterFactory(this DataGrid dataGrid)
+        [NotNull]
+        public static IContentFilterFactory GetContentFilterFactory([NotNull] this DataGrid dataGrid)
         {
             Contract.Requires(dataGrid != null);
             Contract.Ensures(Contract.Result<IContentFilterFactory>() != null);
@@ -121,7 +125,7 @@
         /// </summary>
         /// <param name="obj">The data grid</param>
         /// <returns>The throttle delay.</returns>
-        public static TimeSpan GetFilterEvaluationDelay(this DataGrid obj)
+        public static TimeSpan GetFilterEvaluationDelay([NotNull] this DataGrid obj)
         {
             Contract.Requires(obj != null);
 
@@ -133,7 +137,7 @@
         /// </summary>
         /// <param name="obj">The data grid</param>
         /// <param name="value">The new throttle delay.</param>
-        public static void SetFilterEvaluationDelay(this DataGrid obj, TimeSpan value)
+        public static void SetFilterEvaluationDelay([NotNull] this DataGrid obj, TimeSpan value)
         {
             Contract.Requires(obj != null);
 
@@ -153,7 +157,7 @@
         /// <param name="obj">The object.</param>
         /// <returns>The locator</returns>
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
-        public static IResourceLocator GetResourceLocator(this DataGrid obj)
+        public static IResourceLocator GetResourceLocator([NotNull] this DataGrid obj)
         {
             Contract.Requires(obj != null);
             return (IResourceLocator)obj.GetValue(ResourceLocatorProperty);
@@ -163,7 +167,7 @@
         /// </summary>
         /// <param name="obj">The object.</param>
         /// <param name="value">The value.</param>
-        public static void SetResourceLocator(this DataGrid obj, IResourceLocator value)
+        public static void SetResourceLocator([NotNull] this DataGrid obj, IResourceLocator value)
         {
             Contract.Requires(obj != null);
             obj.SetValue(ResourceLocatorProperty, value);
@@ -186,7 +190,7 @@
         /// <param name="obj">The <see cref="DataGrid"/> from which to read the property value.</param>
         /// <returns>the value of the <see cref="P:DataGridExtensions.GlobalFilter"/> attached property.</returns>
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
-        public static Predicate<object> GetGlobalFilter(DataGrid obj)
+        public static Predicate<object> GetGlobalFilter([NotNull] DataGrid obj)
         {
             Contract.Requires(obj != null);
 
@@ -197,7 +201,7 @@
         /// </summary>
         /// <param name="obj">The <see cref="DataGrid" /> on which to set the property value.</param>
         /// <param name="value">The property value to set.</param>
-        public static void SetGlobalFilter(DataGrid obj, Predicate<object> value)
+        public static void SetGlobalFilter([NotNull] DataGrid obj, Predicate<object> value)
         {
             Contract.Requires(obj != null);
 

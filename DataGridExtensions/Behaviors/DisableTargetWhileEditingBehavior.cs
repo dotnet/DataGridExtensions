@@ -6,7 +6,7 @@
     using System.Windows.Interactivity;
 
     /// <summary>
-    /// This behavior disables the specified <see cref="Target"/> element while the 
+    /// This behavior disables the specified <see cref="Target"/> element while the
     /// DataGrid is in editing mode.
     /// </summary>
     public class DisableTargetWhileEditingBehavior : Behavior<DataGrid>
@@ -16,8 +16,8 @@
         /// </summary>
         public UIElement Target
         {
-            get { return (UIElement)GetValue(TargetProperty); }
-            set { SetValue(TargetProperty, value); }
+            get => (UIElement)GetValue(TargetProperty);
+            set => SetValue(TargetProperty, value);
         }
         /// <summary>
         /// Identifies the Target dependency property

@@ -5,6 +5,8 @@
     using System.Windows.Controls;
     using System.Windows.Interactivity;
 
+    using JetBrains.Annotations;
+
     /// <summary>
     /// Clears the text of the <see cref="TextBox"/> when the associated button is clicked.
     /// </summary>
@@ -45,14 +47,16 @@
         /// <summary>
         /// Gets or sets the text box to clear.
         /// </summary>
+        [CanBeNull]
         public TextBox TextBox
         {
-            get { return (TextBox)GetValue(TextBoxProperty); }
-            set { SetValue(TextBoxProperty, value); }
+            get => (TextBox)GetValue(TextBoxProperty);
+            set => SetValue(TextBoxProperty, value);
         }
         /// <summary>
         /// Identifies the <see cref="TextBox"/> dependency property
         /// </summary>
+        [NotNull]
         public static readonly DependencyProperty TextBoxProperty =
             DependencyProperty.Register("TextBox", typeof (TextBox), typeof (ClearTextBoxOnButtonClickBehavior));
 

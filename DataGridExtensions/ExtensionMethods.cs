@@ -1,4 +1,6 @@
-﻿namespace DataGridExtensions
+﻿using JetBrains.Annotations;
+
+namespace DataGridExtensions
 {
     using System;
     using System.Collections.Generic;
@@ -23,7 +25,7 @@
         /// Ctrl+Return will add a new line when editing the cell.
         /// </remarks>
         // ReSharper disable once SuggestBaseTypeForParameter : works only with text column!
-        public static void EnableMultilineEditing(this DataGridTextColumn column)
+        public static void EnableMultilineEditing([NotNull] this DataGridTextColumn column)
         {
             Contract.Requires(column != null);
 
@@ -120,7 +122,7 @@
         /// </summary>
         /// <param name="dataGrid">The data grid.</param>
         /// <returns>The selected cell content.</returns>
-        public static IList<IList<string>> GetCellSelection(this DataGrid dataGrid)
+        public static IList<IList<string>> GetCellSelection([NotNull] this DataGrid dataGrid)
         {
             Contract.Requires(dataGrid != null);
 
@@ -143,7 +145,7 @@
         /// <param name="data">The data.</param>
         /// <remarks>The cell selection is assumed to be a rectangular area.</remarks>
         /// <returns><c>true</c> if the dimensions of data and cell selection did match and the cells data has been replaced; otherwise <c>false</c>.</returns>
-        public static bool PasteCells(this DataGrid dataGrid, IList<IList<string>> data)
+        public static bool PasteCells([NotNull] this DataGrid dataGrid, [NotNull] IList<IList<string>> data)
         {
             Contract.Requires(dataGrid != null);
             Contract.Requires(data != null);
@@ -227,7 +229,7 @@
                 .ToArray();
         }
 
-        private static IEnumerable<T> Repeat<T>(ICollection<T> source, int count)
+        private static IEnumerable<T> Repeat<T>([NotNull] ICollection<T> source, int count)
         {
             Contract.Requires(source != null);
 
@@ -240,7 +242,8 @@
             }
         }
 
-        private static IList<string> GetRowContent(IGrouping<object, DataGridCellInfo> row)
+        [NotNull]
+        private static IList<string> GetRowContent([NotNull] IGrouping<object, DataGridCellInfo> row)
         {
             Contract.Requires(row != null);
             Contract.Ensures(Contract.Result<IList<string>>() != null);

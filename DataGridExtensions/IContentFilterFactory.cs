@@ -1,4 +1,6 @@
-﻿namespace DataGridExtensions
+﻿using JetBrains.Annotations;
+
+namespace DataGridExtensions
 {
     using System.Diagnostics.Contracts;
 
@@ -12,6 +14,7 @@
         /// </summary>
         /// <param name="content">The content to create the filter for.</param>
         /// <returns>The new filter.</returns>
+        [NotNull]
         IContentFilter Create(object content);
     }
 

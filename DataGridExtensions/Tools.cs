@@ -1,4 +1,6 @@
-﻿namespace DataGridExtensions
+﻿using JetBrains.Annotations;
+
+namespace DataGridExtensions
 {
     using System.Diagnostics.Contracts;
     using System.Linq;
@@ -18,7 +20,7 @@
         /// </summary>
         /// <param name="dataGrid">The data grid.</param>
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
-        public static bool GetApplyInitialSorting(this DataGrid dataGrid)
+        public static bool GetApplyInitialSorting([NotNull] this DataGrid dataGrid)
         {
             Contract.Requires(dataGrid != null);
 
@@ -29,7 +31,7 @@
         /// </summary>
         /// <param name="dataGrid">The data grid.</param>
         /// <param name="value">if set to <c>true</c> the initial sorting will be applied.</param>
-        public static void SetApplyInitialSorting(this DataGrid dataGrid, bool value)
+        public static void SetApplyInitialSorting([NotNull] this DataGrid dataGrid, bool value)
         {
             Contract.Requires(dataGrid != null);
 
@@ -49,7 +51,8 @@
         /// </summary>
         /// <param name="dataGrid">The data grid.</param>
         /// <returns>The event provider.</returns>
-        public static IDataGridEventsProvider GetAdditionalEvents(this DataGrid dataGrid)
+        [NotNull]
+        public static IDataGridEventsProvider GetAdditionalEvents([NotNull] this DataGrid dataGrid)
         {
             Contract.Requires(dataGrid != null);
             Contract.Ensures(Contract.Result<IDataGridEventsProvider>() != null);
@@ -79,7 +82,7 @@
         /// <param name="obj">The column.</param>
         /// <returns><c>true</c> if  multi line editing is enabled.</returns>
         [AttachedPropertyBrowsableForType(typeof(DataGridTextColumn))]
-        public static bool GetIsMultilineEditingEnabled(DataGridTextColumn obj)
+        public static bool GetIsMultilineEditingEnabled([NotNull] DataGridTextColumn obj)
         {
             Contract.Requires(obj != null);
             return (bool)obj.GetValue(IsMultilineEditingEnabledProperty);
@@ -89,7 +92,7 @@
         /// </summary>
         /// <param name="obj">The column.</param>
         /// <param name="value">if set to <c>true</c> multi line editing is enabled.</param>
-        public static void SetIsMultilineEditingEnabled(DataGridTextColumn obj, bool value)
+        public static void SetIsMultilineEditingEnabled([NotNull] DataGridTextColumn obj, bool value)
         {
             Contract.Requires(obj != null);
             obj.SetValue(IsMultilineEditingEnabledProperty, value);
@@ -126,7 +129,7 @@
         /// <param name="dataGrid">The object.</param>
         /// <returns><c>true</c> if a commit will be forced for the data grid when it looses the focus</returns>
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
-        public static bool GetForceCommitOnLostFocus(DataGrid dataGrid)
+        public static bool GetForceCommitOnLostFocus([NotNull] DataGrid dataGrid)
         {
             Contract.Requires(dataGrid != null);
             return (bool)dataGrid.GetValue(ForceCommitOnLostFocusProperty);
@@ -136,7 +139,7 @@
         /// </summary>
         /// <param name="dataGrid">The data grid.</param>
         /// <param name="value">If set to <c>true</c> a commit will be forced on the data grid when it looses the focus.</param>
-        public static void SetForceCommitOnLostFocus(DataGrid dataGrid, bool value)
+        public static void SetForceCommitOnLostFocus([NotNull] DataGrid dataGrid, bool value)
         {
             Contract.Requires(dataGrid != null);
             dataGrid.SetValue(ForceCommitOnLostFocusProperty, value);

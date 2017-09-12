@@ -1,4 +1,6 @@
-﻿namespace DataGridExtensions
+﻿using JetBrains.Annotations;
+
+namespace DataGridExtensions
 {
     using System;
     using System.Collections.Generic;
@@ -122,8 +124,8 @@
         /// </summary>
         public object Filter
         {
-            get { return GetValue(FilterProperty); }
-            set { SetValue(FilterProperty, value); }
+            get => GetValue(FilterProperty); 
+            set => SetValue(FilterProperty, value);
         }
         /// <summary>
         /// Identifies the Filter dependency property
@@ -166,6 +168,7 @@
         /// You may need to include "NotifyOnTargetUpdated=true" in the binding of the DataGrid.ItemsSource to get up-to-date
         /// values when the source object changes.
         /// </remarks>
+        [NotNull]
         public IEnumerable<string> Values
         {
             get
@@ -184,6 +187,7 @@
         /// You may need to include "NotifyOnTargetUpdated=true" in the binding of the DataGrid.ItemsSource to get up-to-date 
         /// values when the source object changes.
         /// </remarks>
+        [NotNull]
         public IEnumerable<string> SourceValues
         {
             get
@@ -207,6 +211,7 @@
         /// You may need to include "NotifyOnTargetUpdated=true" in the binding of the DataGrid.ItemsSource to get up-to-date 
         /// values when the source object changes.
         /// </remarks>
+        [NotNull]
         public IEnumerable<string> SelectableValues
         {
             get
@@ -317,6 +322,7 @@
         /// <summary>
         /// Gets the cell content of all list items for this column.
         /// </summary>
+        [NotNull]
         protected IEnumerable<string> InternalValues()
         {
             Contract.Ensures(Contract.Result<IEnumerable<string>>() != null);
@@ -330,7 +336,8 @@
         /// <summary>
         /// Gets the cell content of all list items for this column.
         /// </summary>
-        protected IEnumerable<string> InternalSourceValues(Predicate<object> predicate)
+        [NotNull]
+        protected IEnumerable<string> InternalSourceValues([NotNull] Predicate<object> predicate)
         {
             Contract.Requires(predicate != null);
             Contract.Ensures(Contract.Result<IEnumerable<string>>() != null);

@@ -4,6 +4,8 @@
     using System.Windows;
     using System.Windows.Controls;
 
+    using JetBrains.Annotations;
+
     internal static class ApplyInitialSorting
     {
         public static void IsEnabled_Changed(DependencyObject sender, DependencyPropertyChangedEventArgs e)
@@ -18,7 +20,7 @@
                 dataGrid.Loaded -= DataGrid_Loaded;
         }
 
-        private static void DataGrid_Loaded(object sender, RoutedEventArgs e)
+        private static void DataGrid_Loaded([NotNull] object sender, [NotNull] RoutedEventArgs e)
         {
             var dataGrid = sender as DataGrid;
             if (dataGrid == null)
@@ -31,7 +33,7 @@
                     dataGrid.Items.SortDescriptions.Add(new SortDescription(column.SortMemberPath, column.SortDirection.Value));
                 }
             }
-        }            
+        }
 
     }
 }

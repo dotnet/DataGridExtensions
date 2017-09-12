@@ -1,4 +1,6 @@
-﻿namespace DataGridExtensions
+﻿using JetBrains.Annotations;
+
+namespace DataGridExtensions
 {
     using System;
     using System.Diagnostics.Contracts;
@@ -45,7 +47,7 @@
         /// <summary>
         /// Gets the control template for the filter of this column. If the template is null or unset, a default template will be used.
         /// </summary>
-        public static ControlTemplate GetTemplate(this DataGridColumn column)
+        public static ControlTemplate GetTemplate([NotNull] this DataGridColumn column)
         {
             Contract.Requires(column != null);
 
@@ -54,7 +56,7 @@
         /// <summary>
         /// Sets the control template for the filter of this column. If the template is null or unset, a default template will be used.
         /// </summary>
-        public static void SetTemplate(this DataGridColumn column, ControlTemplate value)
+        public static void SetTemplate([NotNull] this DataGridColumn column, ControlTemplate value)
         {
             Contract.Requires(column != null);
 
@@ -73,7 +75,7 @@
         /// <summary>
         /// Gets the filter expression of the column.
         /// </summary>
-        public static object GetFilter(this DataGridColumn column)
+        public static object GetFilter([NotNull] this DataGridColumn column)
         {
             Contract.Requires(column != null);
 
@@ -82,7 +84,7 @@
         /// <summary>
         /// Sets the filter expression of the column.
         /// </summary>
-        public static void SetFilter(this DataGridColumn column, object value)
+        public static void SetFilter([NotNull] this DataGridColumn column, object value)
         {
             Contract.Requires(column != null);
 

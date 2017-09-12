@@ -1,4 +1,6 @@
-﻿namespace DataGridExtensions
+﻿using JetBrains.Annotations;
+
+namespace DataGridExtensions
 {
     using System;
     using System.Collections.Generic;
@@ -13,7 +15,7 @@
         /// Restarts the specified timer.
         /// </summary>
         /// <param name="timer">The timer.</param>
-        internal static void Restart(this DispatcherTimer timer)
+        internal static void Restart([NotNull] this DispatcherTimer timer)
         {
             Contract.Requires(timer != null);
 
@@ -41,7 +43,8 @@
             return null;
         }
 
-        public static IEnumerable<DependencyObject> AncestorsAndSelf(this DependencyObject self)
+        [NotNull]
+        public static IEnumerable<DependencyObject> AncestorsAndSelf([NotNull] this DependencyObject self)
         {
             Contract.Requires(self != null);
             Contract.Ensures(Contract.Result<IEnumerable<DependencyObject>>() != null);
@@ -56,7 +59,7 @@
         /// <summary>
         /// Shortcut to <see cref="System.Windows.Threading.Dispatcher.BeginInvoke(Delegate, Object[])"/>
         /// </summary>
-        public static void BeginInvoke(this Visual self, Action action)
+        public static void BeginInvoke([NotNull] this Visual self, [NotNull] Action action)
         {
             Contract.Requires(self != null);
             Contract.Requires(action != null);
@@ -69,7 +72,7 @@
         /// <summary>
         /// Shortcut to <see cref="System.Windows.Threading.Dispatcher.BeginInvoke(DispatcherPriority, Delegate)"/>
         /// </summary>
-        public static void BeginInvoke(this Visual self, DispatcherPriority priority, Action action)
+        public static void BeginInvoke([NotNull] this Visual self, DispatcherPriority priority, [NotNull] Action action)
         {
             Contract.Requires(self != null);
             Contract.Requires(action != null);
@@ -97,7 +100,7 @@
         /// <param name="self">The dependency object from which to get the value.</param>
         /// <param name="property">The property to get.</param>
         /// <returns>The value safely casted to <typeparamref name="T"/></returns>
-        public static T GetValue<T>(this DependencyObject self, DependencyProperty property)
+        public static T GetValue<T>([NotNull] this DependencyObject self, [NotNull] DependencyProperty property)
         {
             Contract.Requires(self != null);
             Contract.Requires(property != null);
@@ -111,7 +114,7 @@
         /// <typeparam name="T">The type of elements in the collection.</typeparam>
         /// <param name="collection">The collection.</param>
         /// <param name="action">The action.</param>
-        public static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
+        public static void ForEach<T>([NotNull] this IEnumerable<T> collection, [NotNull] Action<T> action)
         {
             Contract.Requires(collection != null);
             Contract.Requires(action != null);
@@ -134,7 +137,8 @@
         /// <param name="second">The second collection.</param>
         /// <returns>Tuples of the elements.</returns>
         /// <remarks>If the number of elements in each collection is different, the smaller collection determines the number of enumerated items.</remarks>
-        public static IEnumerable<Tuple<T1, T2>> AsTuples<T1, T2>(IEnumerable<T1> first, IEnumerable<T2> second)
+        [NotNull]
+        public static IEnumerable<Tuple<T1, T2>> AsTuples<T1, T2>([NotNull] IEnumerable<T1> first, [NotNull] IEnumerable<T2> second)
         {
             Contract.Requires(first != null);
             Contract.Requires(second != null);

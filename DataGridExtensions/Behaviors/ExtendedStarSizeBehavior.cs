@@ -1,4 +1,6 @@
-﻿namespace DataGridExtensions.Behaviors
+﻿using JetBrains.Annotations;
+
+namespace DataGridExtensions.Behaviors
 {
     using System;
     using System.Collections.Generic;
@@ -25,6 +27,7 @@
         private static readonly DependencyPropertyDescriptor ViewportWidthPropertyDescriptor = DependencyPropertyDescriptor.FromProperty(ScrollViewer.ViewportWidthProperty, typeof(ScrollViewer));
         private static readonly DependencyPropertyDescriptor NonFrozenColumnsViewportHorizontalOffsetPropertyDescriptor = DependencyPropertyDescriptor.FromProperty(DataGrid.NonFrozenColumnsViewportHorizontalOffsetProperty, typeof(DataGrid));
 
+        [NotNull]
         private readonly DispatcherThrottle _updateColumnGripperToolTipVisibilityThrottle;
 
         private int _changingGridSizeCounter;
@@ -49,8 +52,8 @@
         /// </summary>
         public Style ColumnHeaderGripperToolTipStyle
         {
-            get { return (Style)GetValue(ColumnHeaderGripperToolTipStyleProperty); }
-            set { SetValue(ColumnHeaderGripperToolTipStyleProperty, value); }
+            get => (Style)GetValue(ColumnHeaderGripperToolTipStyleProperty); 
+            set => SetValue(ColumnHeaderGripperToolTipStyleProperty, value);
         }
         /// <summary>
         /// Identifies the ColumnHeaderGripperToolTipStyle dependency property
@@ -63,8 +66,8 @@
         /// </summary>
         public IResourceLocator ResourceLocator
         {
-            get { return (IResourceLocator)GetValue(ResourceLocatorProperty); }
-            set { SetValue(ResourceLocatorProperty, value); }
+            get => (IResourceLocator)GetValue(ResourceLocatorProperty); 
+            set => SetValue(ResourceLocatorProperty, value);
         }
         /// <summary>
         /// Identifies the <see cref="ResourceLocator"/> dependency property
@@ -89,7 +92,7 @@
             dataGrid.Unloaded += DataGrid_Unloaded;
         }
 
-        private void DataGrid_Loaded(object sender, EventArgs e)
+        private void DataGrid_Loaded([NotNull] object sender, EventArgs e)
         {
             Contract.Requires(sender != null);
 
@@ -98,7 +101,7 @@
             dataGrid.BeginInvoke(DispatcherPriority.Background, () => DataGrid_Loaded(dataGrid));
         }
 
-        private void DataGrid_Loaded(DataGrid dataGrid)
+        private void DataGrid_Loaded([NotNull] DataGrid dataGrid)
         {
             Contract.Requires(dataGrid != null);
 
@@ -208,7 +211,7 @@
             _changingGridSizeCounter -= 1;
         }
 
-        private void DataGrid_ColumnVisibilityChanged(object sender, EventArgs e)
+        private void DataGrid_ColumnVisibilityChanged([NotNull] object sender, EventArgs e)
         {
             Contract.Requires(sender != null);
 
@@ -216,7 +219,7 @@
             _updateColumnGripperToolTipVisibilityThrottle.Tick();
         }
 
-        private void UpdateColumnWidths(DataGrid dataGrid, DataGridColumn modifiedColum, UpdateMode updateMode)
+        private void UpdateColumnWidths([NotNull] DataGrid dataGrid, DataGridColumn modifiedColum, UpdateMode updateMode)
         {
             Contract.Requires(dataGrid != null);
 
@@ -252,7 +255,7 @@
             return true;
         }
 
-        private bool DistributeAvailableSize(DataGrid dataGrid, DataGridColumn[] dataGridColumns, DataGridColumn modifiedColum, UpdateMode updateMode)
+        private bool DistributeAvailableSize([NotNull] DataGrid dataGrid, [NotNull] DataGridColumn[] dataGridColumns, DataGridColumn modifiedColum, UpdateMode updateMode)
         {
             Contract.Requires(dataGrid != null);
             Contract.Requires(dataGridColumns != null);
@@ -298,7 +301,7 @@
             return true;
         }
 
-        private static void HijackStarSizeColumnsInfo(DataGrid dataGrid)
+        private static void HijackStarSizeColumnsInfo([NotNull] DataGrid dataGrid)
         {
             Contract.Requires(dataGrid != null);
 
@@ -339,7 +342,7 @@
             (leftColumn?.GetValue(RightGripperToolTipProperty) as ToolTip)?.Do(t => t.Visibility = Visibility.Collapsed);
         }
 
-        private void InjectColumnHeaderStyle(DataGrid dataGrid)
+        private void InjectColumnHeaderStyle([NotNull] DataGrid dataGrid)
         {
             Contract.Requires(dataGrid != null);
 
@@ -355,14 +358,14 @@
             dataGrid.ColumnHeaderStyle = newStyle;
         }
 
-        private static double GetActualWidth(DataGridColumn column)
+        private static double GetActualWidth([NotNull] DataGridColumn column)
         {
             Contract.Requires(column != null);
 
             return (double)column.ActualWidth;
         }
 
-        private static double GetStarSize(DataGridColumn column)
+        private static double GetStarSize([NotNull] DataGridColumn column)
         {
             Contract.Requires(column != null);
 
@@ -402,7 +405,7 @@
             });
         }
 
-        private void ApplyGripperToolTip(DataGridColumnHeader columnHeader, string gripperName, DependencyProperty toolTipProperty)
+        private void ApplyGripperToolTip([NotNull] DataGridColumnHeader columnHeader, string gripperName, DependencyProperty toolTipProperty)
         {
             Contract.Requires(columnHeader != null);
 
