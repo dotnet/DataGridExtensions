@@ -8,7 +8,7 @@
 
     internal static class ApplyInitialSorting
     {
-        public static void IsEnabled_Changed(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        public static void IsEnabled_Changed([NotNull] DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             var dataGrid = sender as DataGrid;
             if (dataGrid == null)

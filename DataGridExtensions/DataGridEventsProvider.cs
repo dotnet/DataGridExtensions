@@ -11,7 +11,7 @@
 
     internal sealed class DataGridEventsProvider : IDataGridEventsProvider
     {
-        [NotNull]
+        [NotNull, ItemNotNull]
         private static readonly IList _emptyList = new object[0];
         // ReSharper disable AssignNullToNotNullAttribute
         [NotNull]

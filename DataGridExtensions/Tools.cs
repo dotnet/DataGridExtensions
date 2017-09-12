@@ -67,10 +67,10 @@
 
             return eventsProvider;
         }
-
         /// <summary>
         /// Identifies the DataGridEventsProvider dependency property
         /// </summary>
+        [NotNull]
         private static readonly DependencyProperty DataGridEventsProviderProperty =
             DependencyProperty.RegisterAttached("DataGridEventsProvider", typeof(IDataGridEventsProvider), typeof(Tools));
 
@@ -109,10 +109,11 @@
         /// This property can only be set to true once, toggling the value will have no further effect.
         /// </remarks>
         /// </AttachedPropertyComments>
+        [NotNull]
         public static readonly DependencyProperty IsMultilineEditingEnabledProperty =
             DependencyProperty.RegisterAttached("IsMultilineEditingEnabled", typeof(bool), typeof(Tools), new FrameworkPropertyMetadata(false, IsMultilineEditingEnabled_Changed));
 
-        private static void IsMultilineEditingEnabled_Changed(DependencyObject d, [NotNull] DependencyPropertyChangedEventArgs e)
+        private static void IsMultilineEditingEnabled_Changed([NotNull] DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (!true.Equals(e.NewValue))
                 return;
@@ -145,14 +146,14 @@
             Contract.Requires(dataGrid != null);
             dataGrid.SetValue(ForceCommitOnLostFocusProperty, value);
         }
-
         /// <summary>
         /// Identifies the ForceCommitOnLostFocus dependency property
         /// </summary>
+        [NotNull]
         public static readonly DependencyProperty ForceCommitOnLostFocusProperty =
             DependencyProperty.RegisterAttached("ForceCommitOnLostFocus", typeof(bool), typeof(Tools), new FrameworkPropertyMetadata(ForceCommitOnLostFocus_Changed));
 
-        private static void ForceCommitOnLostFocus_Changed(DependencyObject d, [NotNull] DependencyPropertyChangedEventArgs e)
+        private static void ForceCommitOnLostFocus_Changed([NotNull] DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var dataGrid = (DataGrid)d;
             if (dataGrid == null)

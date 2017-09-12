@@ -1,8 +1,11 @@
-﻿namespace DataGridExtensions
+﻿using System.Diagnostics;
+
+namespace DataGridExtensions
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Windows;
@@ -40,25 +43,21 @@
         /// </summary>
         public DataGridFilterColumnControl()
         {
-            Loaded += self_Loaded;
-            Unloaded += self_Unloaded;
+            Loaded += Self_Loaded;
+            Unloaded += Self_Unloaded;
 
             Focusable = false;
             DataContext = this;
         }
 
-        private void self_Loaded([NotNull] object sender, [NotNull] RoutedEventArgs e)
+        private void Self_Loaded([NotNull] object sender, [NotNull] RoutedEventArgs e)
         {
             if (FilterHost == null)
             {
                 // Find the ancestor column header and data grid controls.
                 ColumnHeader = this.FindAncestorOrSelf<DataGridColumnHeader>();
-                if (ColumnHeader == null)
-                    throw new InvalidOperationException("DataGridFilterColumnControl must be a child element of a DataGridColumnHeader.");
 
-                DataGrid = ColumnHeader.FindAncestorOrSelf<DataGrid>();
-                if (DataGrid == null)
-                    throw new InvalidOperationException("DataGridColumnHeader must be a child element of a DataGrid");
+                DataGrid = ColumnHeader?.FindAncestorOrSelf<DataGrid>() ?? throw new InvalidOperationException("DataGridFilterColumnControl must be a child element of a DataGridColumnHeader.");
 
                 // Find our host and attach ourself.
                 FilterHost = DataGrid.GetFilter();
@@ -85,7 +84,7 @@
             BindingOperations.SetBinding(this, FilterProperty, new Binding() { Path = filterPropertyPath, Source = ColumnHeader, Mode = BindingMode.TwoWay });
         }
 
-        private void self_Unloaded([NotNull] object sender, [NotNull] RoutedEventArgs e)
+        private void Self_Unloaded([NotNull] object sender, [NotNull] RoutedEventArgs e)
         {
             // Detach from host.
             // Must check for null, unloaded event might be raised even if no loaded event has been raised before!
@@ -365,11 +364,7 @@
         /// <param name="propertyName">Name of the property.</param>
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            var eventHandler = PropertyChanged;
-            if (eventHandler != null)
-            {
-                eventHandler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         /// <summary>
@@ -380,7 +375,8 @@
         #endregion
 
         [ContractInvariantMethod]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Required for code contracts.")]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Required for code contracts.")]
+        [Conditional("CONTRACTS_FULL")]
         private void ObjectInvariant()
         {
             Contract.Invariant((FilterHost == null) || (DataGrid != null));

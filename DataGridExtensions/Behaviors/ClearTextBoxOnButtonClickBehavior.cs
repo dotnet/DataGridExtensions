@@ -60,7 +60,7 @@
         public static readonly DependencyProperty TextBoxProperty =
             DependencyProperty.Register("TextBox", typeof (TextBox), typeof (ClearTextBoxOnButtonClickBehavior));
 
-        private void AssociatedObject_Click([NotNull] object sender, System.Windows.RoutedEventArgs e)
+        private void AssociatedObject_Click([NotNull] object sender, [NotNull] RoutedEventArgs e)
         {
             var textBox = TextBox;
 

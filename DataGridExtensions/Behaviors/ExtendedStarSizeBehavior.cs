@@ -1,9 +1,12 @@
-﻿namespace DataGridExtensions.Behaviors
+﻿using System.Diagnostics;
+
+namespace DataGridExtensions.Behaviors
 {
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Windows;
@@ -440,7 +443,8 @@
         }
 
         [ContractInvariantMethod]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Required for code contracts.")]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Required for code contracts.")]
+        [Conditional("CONTRACTS_FULL")]
         private void ObjectInvariant()
         {
             Contract.Invariant(_updateColumnGripperToolTipVisibilityThrottle != null);
