@@ -1,6 +1,4 @@
-﻿using JetBrains.Annotations;
-
-namespace DataGridExtensions
+﻿namespace DataGridExtensions
 {
     using System;
     using System.Collections.Generic;
@@ -12,6 +10,8 @@ namespace DataGridExtensions
     using System.Windows.Controls.Primitives;
     using System.Windows.Data;
     using System.Windows.Threading;
+
+    using JetBrains.Annotations;
 
     /// <summary>
     /// This class is the control hosting all information needed for filtering of one column.
@@ -47,7 +47,7 @@ namespace DataGridExtensions
             DataContext = this;
         }
 
-        private void self_Loaded(object sender, RoutedEventArgs e)
+        private void self_Loaded([NotNull] object sender, [NotNull] RoutedEventArgs e)
         {
             if (FilterHost == null)
             {
@@ -85,7 +85,7 @@ namespace DataGridExtensions
             BindingOperations.SetBinding(this, FilterProperty, new Binding() { Path = filterPropertyPath, Source = ColumnHeader, Mode = BindingMode.TwoWay });
         }
 
-        private void self_Unloaded(object sender, RoutedEventArgs e)
+        private void self_Unloaded([NotNull] object sender, [NotNull] RoutedEventArgs e)
         {
             // Detach from host.
             // Must check for null, unloaded event might be raised even if no loaded event has been raised before!
@@ -104,7 +104,7 @@ namespace DataGridExtensions
             BindingOperations.ClearBinding(this, FilterProperty);
         }
 
-        private void DataGrid_SourceOrTargetUpdated(object sender, DataTransferEventArgs e)
+        private void DataGrid_SourceOrTargetUpdated([NotNull] object sender, [NotNull] DataTransferEventArgs e)
         {
             if (e.Property == ItemsControl.ItemsSourceProperty)
             {
@@ -112,7 +112,7 @@ namespace DataGridExtensions
             }
         }
 
-        private void DataGrid_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
+        private void DataGrid_RowEditEnding([NotNull] object sender, [NotNull] DataGridRowEditEndingEventArgs e)
         {
             this.BeginInvoke(DispatcherPriority.Background, ValuesUpdated);
         }

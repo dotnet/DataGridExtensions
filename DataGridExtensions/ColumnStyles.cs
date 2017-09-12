@@ -49,7 +49,7 @@
 
         [ContractVerification(false)]
         [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
-        private static void DefaultColumnStyles_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void DefaultColumnStyles_Changed(DependencyObject d, [NotNull] DependencyPropertyChangedEventArgs e)
         {
             var dataGrid = (DataGrid)d;
 

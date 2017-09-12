@@ -1,9 +1,9 @@
-﻿using JetBrains.Annotations;
-
-namespace DataGridExtensions.Framework
+﻿namespace DataGridExtensions.Framework
 {
     using System;
     using System.Diagnostics.Contracts;
+
+    using JetBrains.Annotations;
 
     internal static class MaybeExtensions
     {

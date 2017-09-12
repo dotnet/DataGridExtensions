@@ -5,6 +5,8 @@
     using System.Windows.Controls;
     using System.Windows.Interactivity;
 
+    using JetBrains.Annotations;
+
     /// <summary>
     /// This behavior disables the specified <see cref="Target"/> element while the
     /// DataGrid is in editing mode.
@@ -59,7 +61,7 @@
             dataGrid.CellEditEnding -= DataGrid_CellEditEnding;
         }
 
-        private void DataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        private void DataGrid_CellEditEnding([NotNull] object sender, [NotNull] DataGridCellEditEndingEventArgs e)
         {
             if (Target == null)
                 return;
@@ -67,7 +69,7 @@
             Target.IsEnabled = true;
         }
 
-        private void DataGrid_PreparingCellForEdit(object sender, DataGridPreparingCellForEditEventArgs e)
+        private void DataGrid_PreparingCellForEdit([NotNull] object sender, [NotNull] DataGridPreparingCellForEditEventArgs e)
         {
             if (Target == null)
                 return;

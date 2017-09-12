@@ -1,6 +1,4 @@
-﻿using JetBrains.Annotations;
-
-namespace DataGridExtensions
+﻿namespace DataGridExtensions
 {
     using System;
     using System.Collections.Generic;
@@ -14,6 +12,8 @@ namespace DataGridExtensions
     using System.Windows.Controls.Primitives;
     using System.Windows.Input;
     using System.Windows.Threading;
+
+    using JetBrains.Annotations;
 
     /// <summary>
     /// This class hosts all filter columns and handles the filter changes on the data grid level.
@@ -186,7 +186,7 @@ namespace DataGridExtensions
             return _dataGrid.GetContentFilterFactory().Create(content);
         }
 
-        private void DataGrid_Loaded(object sender, RoutedEventArgs e)
+        private void DataGrid_Loaded([NotNull] object sender, [NotNull] RoutedEventArgs e)
         {
             // To improve keyboard navigation we should not step into the headers filter controls with the TAB key,
             // but only with navigation keys.
@@ -198,7 +198,7 @@ namespace DataGridExtensions
             headersPresenter?.SetValue(KeyboardNavigation.TabNavigationProperty, KeyboardNavigationMode.None);
         }
 
-        private void Columns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void Columns_CollectionChanged([NotNull] object sender, [NotNull] NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems == null)
                 return;

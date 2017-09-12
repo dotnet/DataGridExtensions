@@ -1,6 +1,4 @@
-﻿using JetBrains.Annotations;
-
-namespace DataGridExtensions
+﻿namespace DataGridExtensions
 {
     using System;
     using System.Collections.Generic;
@@ -10,6 +8,8 @@ namespace DataGridExtensions
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
     using System.Windows.Input;
+
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Extension methods for the data grid.
@@ -40,7 +40,7 @@ namespace DataGridExtensions
             column.EditingElementStyle = textBoxStyle;
         }
 
-        private static void EditingElement_PreviewKeyDown(object sender, KeyEventArgs e)
+        private static void EditingElement_PreviewKeyDown([NotNull] object sender, [NotNull] KeyEventArgs e)
         {
             Contract.Requires(sender != null);
 

@@ -1,12 +1,12 @@
-﻿using JetBrains.Annotations;
-
-namespace DataGridExtensions.Behaviors
+﻿namespace DataGridExtensions.Behaviors
 {
     using System.Diagnostics.Contracts;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
     using System.Windows.Interactivity;
+
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Ctrl+Enter on a cell starts editing the cell without clearing the content.

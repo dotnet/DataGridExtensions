@@ -1,10 +1,10 @@
-﻿using JetBrains.Annotations;
-
-namespace DataGridExtensions
+﻿namespace DataGridExtensions
 {
     using System;
     using System.Diagnostics.Contracts;
     using System.Text.RegularExpressions;
+
+    using JetBrains.Annotations;
 
     /// <summary>
     /// A content filter using the content as a regular expression to match the string representation of the value.

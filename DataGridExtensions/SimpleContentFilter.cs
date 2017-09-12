@@ -1,11 +1,11 @@
-﻿using JetBrains.Annotations;
-using System.Diagnostics;
-
-namespace DataGridExtensions
+﻿namespace DataGridExtensions
 {
     using System;
+    using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using System.Diagnostics.Contracts;
+
+    using JetBrains.Annotations;
 
     /// <summary>
     /// A content filter using a simple "contains" string comparison to match the content and the value.

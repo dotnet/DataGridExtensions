@@ -1,11 +1,11 @@
-﻿using JetBrains.Annotations;
-
-namespace DataGridExtensions
+﻿namespace DataGridExtensions
 {
     using System;
     using System.Diagnostics.Contracts;
     using System.Windows;
     using System.Windows.Controls;
+
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Defines the attached properties that can be set on the data grid column level.

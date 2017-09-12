@@ -1,9 +1,9 @@
-﻿using System.ComponentModel;
-using System.Windows.Controls;
-using System.Collections.Generic;
-
-namespace DataGridExtensions
+﻿namespace DataGridExtensions
 {
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Windows.Controls;
+
     /// <summary>
     /// Notification about additional columns to be filtered.
     /// Clients can e.g. use this event to cache/preload column data in a different thread and/or display a wait cursor while filtering.

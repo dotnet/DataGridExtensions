@@ -1,13 +1,13 @@
-﻿using JetBrains.Annotations;
-using System.Diagnostics;
-
-namespace DataGridExtensions.Framework
+﻿namespace DataGridExtensions.Framework
 {
     using System;
+    using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using System.Diagnostics.Contracts;
     using System.Threading;
     using System.Windows.Threading;
+
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Implements a throttle that uses the dispatcher to delay the target action.

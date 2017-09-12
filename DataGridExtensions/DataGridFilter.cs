@@ -1,11 +1,11 @@
-﻿using JetBrains.Annotations;
-
-namespace DataGridExtensions
+﻿namespace DataGridExtensions
 {
     using System;
     using System.Diagnostics.Contracts;
     using System.Windows;
     using System.Windows.Controls;
+
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Defines the attached properties that can be set on the data grid level.
@@ -39,7 +39,7 @@ namespace DataGridExtensions
         public static readonly DependencyProperty IsAutoFilterEnabledProperty =
             DependencyProperty.RegisterAttached("IsAutoFilterEnabled", typeof(bool), typeof(DataGridFilter), new FrameworkPropertyMetadata(false, IsAutoFilterEnabled_Changed));
 
-        private static void IsAutoFilterEnabled_Changed(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        private static void IsAutoFilterEnabled_Changed(DependencyObject sender, [NotNull] DependencyPropertyChangedEventArgs e)
         {
             var dataGrid = sender as DataGrid;
             // Force creation of the host and show or hide the controls.
@@ -218,7 +218,7 @@ namespace DataGridExtensions
         public static readonly DependencyProperty GlobalFilterProperty =
             DependencyProperty.RegisterAttached("GlobalFilter", typeof(Predicate<object>), typeof(DataGridFilter), new FrameworkPropertyMetadata(GlobalFilter_Changed));
 
-        private static void GlobalFilter_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void GlobalFilter_Changed(DependencyObject d, [NotNull] DependencyPropertyChangedEventArgs e)
         {
             Contract.Requires(d != null);
 

@@ -1,6 +1,4 @@
-﻿using JetBrains.Annotations;
-
-namespace DataGridExtensions
+﻿namespace DataGridExtensions
 {
     using System;
     using System.Collections;
@@ -8,6 +6,8 @@ namespace DataGridExtensions
     using System.ComponentModel;
     using System.Diagnostics.Contracts;
     using System.Windows.Controls;
+
+    using JetBrains.Annotations;
 
     internal sealed class DataGridEventsProvider : IDataGridEventsProvider
     {
@@ -113,20 +113,20 @@ namespace DataGridExtensions
             ColumnDisplayIndexChanged?.Invoke(_dataGrid, new DataGridColumnEventArgs(column));
         }
 
-        private void DataGridColumnVisibility_Changed([NotNull] object source, EventArgs e)
+        private void DataGridColumnVisibility_Changed([NotNull] object source, [NotNull] EventArgs e)
         {
             Contract.Requires(source != null);
 
             OnColumnVisibilityChanged((DataGridColumn)source);
         }
 
-        private void DataGridColumnActualWidth_Changed([NotNull] object source, EventArgs e)
+        private void DataGridColumnActualWidth_Changed([NotNull] object source, [NotNull] EventArgs e)
         {
             Contract.Requires(source != null);
 
             OnColumnActualWidthChanged((DataGridColumn)source);
         }
-        private void DataGridColumnDisplayIndex_Changed([NotNull] object source, EventArgs e)
+        private void DataGridColumnDisplayIndex_Changed([NotNull] object source, [NotNull] EventArgs e)
         {
             Contract.Requires(source != null);
 

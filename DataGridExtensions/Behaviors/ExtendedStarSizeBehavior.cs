@@ -1,6 +1,4 @@
-﻿using JetBrains.Annotations;
-
-namespace DataGridExtensions.Behaviors
+﻿namespace DataGridExtensions.Behaviors
 {
     using System;
     using System.Collections.Generic;
@@ -15,7 +13,10 @@ namespace DataGridExtensions.Behaviors
     using System.Windows.Input;
     using System.Windows.Interactivity;
     using System.Windows.Threading;
+
     using DataGridExtensions.Framework;
+
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Extended start size column behavior. Allows columns to get larger than the client area, but not smaller.
@@ -92,7 +93,7 @@ namespace DataGridExtensions.Behaviors
             dataGrid.Unloaded += DataGrid_Unloaded;
         }
 
-        private void DataGrid_Loaded([NotNull] object sender, EventArgs e)
+        private void DataGrid_Loaded([NotNull] object sender, [NotNull] EventArgs e)
         {
             Contract.Requires(sender != null);
 
@@ -124,7 +125,7 @@ namespace DataGridExtensions.Behaviors
             InjectColumnHeaderStyle(dataGrid);
         }
 
-        private void DataGrid_Unloaded(object sender, RoutedEventArgs e)
+        private void DataGrid_Unloaded([NotNull] object sender, [NotNull] RoutedEventArgs e)
         {
             Contract.Requires(sender != null);
 
@@ -145,12 +146,12 @@ namespace DataGridExtensions.Behaviors
             dataGridEvents.ColumnDisplayIndexChanged -= DataGrid_ColumnDisplayIndexChanged;
         }
 
-        private void DataGrid_ColumnDisplayIndexChanged(object sender, DataGridColumnEventArgs e)
+        private void DataGrid_ColumnDisplayIndexChanged([NotNull] object sender, [NotNull] DataGridColumnEventArgs e)
         {
             _updateColumnGripperToolTipVisibilityThrottle.Tick();
         }
 
-        private void Columns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void Columns_CollectionChanged([NotNull] object sender, [NotNull] NotifyCollectionChangedEventArgs e)
         {
             var dataGrid = AssociatedObject;
             if (dataGrid == null)
@@ -161,7 +162,7 @@ namespace DataGridExtensions.Behaviors
             _updateColumnGripperToolTipVisibilityThrottle.Tick();
         }
 
-        private void DataGrid_NonFrozenColumnsViewportHorizontalOffsetChanged(object sender, EventArgs e)
+        private void DataGrid_NonFrozenColumnsViewportHorizontalOffsetChanged([NotNull] object sender, [NotNull] EventArgs e)
         {
             var dataGrid = (DataGrid)sender;
             if (dataGrid == null)
@@ -175,7 +176,7 @@ namespace DataGridExtensions.Behaviors
             _changingGridSizeCounter -= 1;
         }
 
-        private void ScrollViewer_ViewportWidthChanged(object sender, EventArgs e)
+        private void ScrollViewer_ViewportWidthChanged([NotNull] object sender, [NotNull] EventArgs e)
         {
             _changingGridSizeCounter += 1;
 
@@ -190,7 +191,7 @@ namespace DataGridExtensions.Behaviors
             });
         }
 
-        private void DataGrid_ColumnActualWidthChanged(object sender, DataGridColumnEventArgs e)
+        private void DataGrid_ColumnActualWidthChanged([NotNull] object sender, [NotNull] DataGridColumnEventArgs e)
         {
             var colum = e.Column;
             if (colum == null)
@@ -211,7 +212,7 @@ namespace DataGridExtensions.Behaviors
             _changingGridSizeCounter -= 1;
         }
 
-        private void DataGrid_ColumnVisibilityChanged([NotNull] object sender, EventArgs e)
+        private void DataGrid_ColumnVisibilityChanged([NotNull] object sender, [NotNull] EventArgs e)
         {
             Contract.Requires(sender != null);
 
@@ -384,7 +385,7 @@ namespace DataGridExtensions.Behaviors
         private static readonly DependencyProperty ColumnHeaderGripperExtenderProperty =
             DependencyProperty.RegisterAttached("ColumnHeaderGripperExtender", typeof(ExtendedStarSizeBehavior), typeof(ExtendedStarSizeBehavior), new FrameworkPropertyMetadata(null, ColumnHeaderGripperExtender_Changed));
 
-        private static void ColumnHeaderGripperExtender_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void ColumnHeaderGripperExtender_Changed(DependencyObject d, [NotNull] DependencyPropertyChangedEventArgs e)
         {
             var columnHeader = d as DataGridColumnHeader;
             if (columnHeader == null)
