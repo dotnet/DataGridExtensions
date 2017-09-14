@@ -1,0 +1,402 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<assembly name="DataGridExtensions">
+  <member name="P:DataGridExtensions.Behaviors.ClearTextBoxOnButtonClickBehavior.TextBox">
+    <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+  </member>
+  <member name="F:DataGridExtensions.Behaviors.ClearTextBoxOnButtonClickBehavior.TextBoxProperty">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="P:DataGridExtensions.Behaviors.DisableTargetWhileEditingBehavior.Target">
+    <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+  </member>
+  <member name="F:DataGridExtensions.Behaviors.DisableTargetWhileEditingBehavior.TargetProperty">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="P:DataGridExtensions.Behaviors.ExtendedStarSizeBehavior.ColumnHeaderGripperToolTipStyle">
+    <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+  </member>
+  <member name="F:DataGridExtensions.Behaviors.ExtendedStarSizeBehavior.ColumnHeaderGripperToolTipStyleKey">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="F:DataGridExtensions.Behaviors.ExtendedStarSizeBehavior.ColumnHeaderGripperToolTipStyleProperty">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="P:DataGridExtensions.Behaviors.ExtendedStarSizeBehavior.ResourceLocator">
+    <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+  </member>
+  <member name="F:DataGridExtensions.Behaviors.ExtendedStarSizeBehavior.ResourceLocatorProperty">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="F:DataGridExtensions.ColumnStyles.DefaultColumnStylesProperty">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="M:DataGridExtensions.ColumnStyles.GetDefaultColumnStyles(System.Windows.Controls.DataGrid)">
+    <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.ItemNotNullAttribute.#ctor" />
+    <parameter name="dataGrid">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.ColumnStyles.SetDefaultColumnStyles(System.Windows.Controls.DataGrid,DataGridExtensions.DataGridColumnStyleCollection)">
+    <parameter name="dataGrid">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="value">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+      <attribute ctor="M:JetBrains.Annotations.ItemNotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="P:DataGridExtensions.DataGridColumnStyle.ColumnType">
+    <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+  </member>
+  <member name="P:DataGridExtensions.DataGridColumnStyle.EditingElementStyle">
+    <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+  </member>
+  <member name="F:DataGridExtensions.DataGridColumnStyle.EditingElementStyleProperty">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="P:DataGridExtensions.DataGridColumnStyle.ElementStyle">
+    <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+  </member>
+  <member name="F:DataGridExtensions.DataGridColumnStyle.ElementStyleProperty">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="F:DataGridExtensions.DataGridFilter.CheckBoxColumnFilterTemplateKey">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="F:DataGridExtensions.DataGridFilter.ColumnHeaderSearchCheckBoxStyleKey">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="F:DataGridExtensions.DataGridFilter.ColumnHeaderSearchTextBoxClearButtonStyleKey">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="F:DataGridExtensions.DataGridFilter.ColumnHeaderSearchTextBoxStyleKey">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="F:DataGridExtensions.DataGridFilter.ColumnHeaderTemplateKey">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="F:DataGridExtensions.DataGridFilter.ContentFilterFactoryProperty">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="F:DataGridExtensions.DataGridFilter.FilterEvaluationDelayProperty">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="M:DataGridExtensions.DataGridFilter.GetContentFilterFactory(System.Windows.Controls.DataGrid)">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <parameter name="dataGrid">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.DataGridFilter.GetFilter(System.Windows.Controls.DataGrid)">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <parameter name="dataGrid">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.DataGridFilter.GetFilterEvaluationDelay(System.Windows.Controls.DataGrid)">
+    <parameter name="obj">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.DataGridFilter.GetGlobalFilter(System.Windows.Controls.DataGrid)">
+    <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    <parameter name="obj">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.DataGridFilter.GetIsAutoFilterEnabled(System.Windows.Controls.DataGrid)">
+    <parameter name="obj">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.DataGridFilter.GetResourceLocator(System.Windows.Controls.DataGrid)">
+    <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    <parameter name="obj">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="F:DataGridExtensions.DataGridFilter.GlobalFilterProperty">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="F:DataGridExtensions.DataGridFilter.IconStyleKey">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="F:DataGridExtensions.DataGridFilter.IconTemplateKey">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="F:DataGridExtensions.DataGridFilter.IsAutoFilterEnabledProperty">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="F:DataGridExtensions.DataGridFilter.ResourceLocatorProperty">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="M:DataGridExtensions.DataGridFilter.SetContentFilterFactory(System.Windows.Controls.DataGrid,DataGridExtensions.IContentFilterFactory)">
+    <parameter name="dataGrid">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="value">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.DataGridFilter.SetFilterEvaluationDelay(System.Windows.Controls.DataGrid,System.TimeSpan)">
+    <parameter name="obj">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.DataGridFilter.SetGlobalFilter(System.Windows.Controls.DataGrid,System.Predicate{System.Object})">
+    <parameter name="obj">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="value">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.DataGridFilter.SetIsAutoFilterEnabled(System.Windows.Controls.DataGrid,System.Boolean)">
+    <parameter name="obj">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.DataGridFilter.SetResourceLocator(System.Windows.Controls.DataGrid,DataGridExtensions.IResourceLocator)">
+    <parameter name="obj">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="value">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="F:DataGridExtensions.DataGridFilter.TemplateColumnFilterTemplateKey">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="F:DataGridExtensions.DataGridFilter.TextColumnFilterTemplateKey">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="F:DataGridExtensions.DataGridFilterColumn.FilterProperty">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="M:DataGridExtensions.DataGridFilterColumn.GetFilter(System.Windows.Controls.DataGridColumn)">
+    <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    <parameter name="column">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.DataGridFilterColumn.GetIsFilterVisible(System.Windows.Controls.DataGridColumn)">
+    <parameter name="column">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.DataGridFilterColumn.GetTemplate(System.Windows.Controls.DataGridColumn)">
+    <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    <parameter name="column">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="F:DataGridExtensions.DataGridFilterColumn.IsFilterVisibleProperty">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="M:DataGridExtensions.DataGridFilterColumn.SetFilter(System.Windows.Controls.DataGridColumn,System.Object)">
+    <parameter name="column">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="value">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.DataGridFilterColumn.SetIsFilterVisible(System.Windows.Controls.DataGridColumn,System.Boolean)">
+    <parameter name="column">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.DataGridFilterColumn.SetTemplate(System.Windows.Controls.DataGridColumn,System.Windows.Controls.ControlTemplate)">
+    <parameter name="column">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="value">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="F:DataGridExtensions.DataGridFilterColumn.TemplateProperty">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="P:DataGridExtensions.DataGridFilterColumnControl.Column">
+    <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+  </member>
+  <member name="P:DataGridExtensions.DataGridFilterColumnControl.ColumnHeader">
+    <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+  </member>
+  <member name="P:DataGridExtensions.DataGridFilterColumnControl.DataGrid">
+    <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+  </member>
+  <member name="P:DataGridExtensions.DataGridFilterColumnControl.Filter">
+    <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+  </member>
+  <member name="P:DataGridExtensions.DataGridFilterColumnControl.FilterHost">
+    <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+  </member>
+  <member name="F:DataGridExtensions.DataGridFilterColumnControl.FilterProperty">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="M:DataGridExtensions.DataGridFilterColumnControl.GetCellContent(System.Object)">
+    <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    <parameter name="item">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.DataGridFilterColumnControl.InternalSourceValues(System.Predicate{System.Object})">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.ItemNotNullAttribute.#ctor" />
+    <parameter name="predicate">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.DataGridFilterColumnControl.InternalValues">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.ItemNotNullAttribute.#ctor" />
+  </member>
+  <member name="M:DataGridExtensions.DataGridFilterColumnControl.OnPropertyChanged(System.String)">
+    <parameter name="propertyName">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="P:DataGridExtensions.DataGridFilterColumnControl.SelectableValues">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.ItemNotNullAttribute.#ctor" />
+  </member>
+  <member name="P:DataGridExtensions.DataGridFilterColumnControl.SourceValues">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.ItemNotNullAttribute.#ctor" />
+  </member>
+  <member name="P:DataGridExtensions.DataGridFilterColumnControl.Values">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.ItemNotNullAttribute.#ctor" />
+  </member>
+  <member name="P:DataGridExtensions.DataGridFilterHost.DataGrid">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="P:DataGridExtensions.DataGridFilterHost.FilterColumnControls">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.ItemNotNullAttribute.#ctor" />
+  </member>
+  <member name="M:DataGridExtensions.DataGridFilteringEventArgs.#ctor(System.Collections.Generic.ICollection{System.Windows.Controls.DataGridColumn})">
+    <parameter name="columns">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+      <attribute ctor="M:JetBrains.Annotations.ItemNotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="P:DataGridExtensions.DataGridFilteringEventArgs.Columns">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.ItemNotNullAttribute.#ctor" />
+  </member>
+  <member name="M:DataGridExtensions.ExtensionMethods.EnableMultilineEditing(System.Windows.Controls.DataGridTextColumn)">
+    <parameter name="column">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.ExtensionMethods.GetCellSelection(System.Windows.Controls.DataGrid)">
+    <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    <attribute ctor="M:JetBrains.Annotations.ItemNotNullAttribute.#ctor" />
+    <parameter name="dataGrid">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.ExtensionMethods.GetVisibleSelectedCells(System.Windows.Controls.DataGrid)">
+    <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    <parameter name="dataGrid">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.ExtensionMethods.HasRectangularCellSelection(System.Windows.Controls.DataGrid)">
+    <parameter name="dataGrid">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.ExtensionMethods.PasteCells(System.Windows.Controls.DataGrid,System.Collections.Generic.IList{System.Collections.Generic.IList{System.String}})">
+    <parameter name="dataGrid">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="data">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+      <attribute ctor="M:JetBrains.Annotations.ItemNotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.Framework.DispatcherThrottle.#ctor(System.Windows.Threading.DispatcherPriority,System.Action)">
+    <parameter name="target">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.IContentFilter.IsMatch(System.Object)">
+    <parameter name="value">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.IContentFilterFactory.Create(System.Object)">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <parameter name="content">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.IResourceLocator.FindResource(System.Windows.FrameworkElement,System.Object)">
+    <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    <parameter name="target">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="resourceKey">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.RegexContentFilter.#ctor(System.String,System.Text.RegularExpressions.RegexOptions)">
+    <parameter name="expression">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.SimpleContentFilter.#ctor(System.String,System.StringComparison)">
+    <parameter name="content">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="F:DataGridExtensions.Tools.ApplyInitialSortingProperty">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="F:DataGridExtensions.Tools.ForceCommitOnLostFocusProperty">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="M:DataGridExtensions.Tools.GetAdditionalEvents(System.Windows.Controls.DataGrid)">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    <parameter name="dataGrid">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.Tools.GetApplyInitialSorting(System.Windows.Controls.DataGrid)">
+    <parameter name="dataGrid">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.Tools.GetForceCommitOnLostFocus(System.Windows.Controls.DataGrid)">
+    <parameter name="dataGrid">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.Tools.GetIsMultilineEditingEnabled(System.Windows.Controls.DataGridTextColumn)">
+    <parameter name="obj">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="F:DataGridExtensions.Tools.IsMultilineEditingEnabledProperty">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="M:DataGridExtensions.Tools.SetApplyInitialSorting(System.Windows.Controls.DataGrid,System.Boolean)">
+    <parameter name="dataGrid">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.Tools.SetForceCommitOnLostFocus(System.Windows.Controls.DataGrid,System.Boolean)">
+    <parameter name="dataGrid">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:DataGridExtensions.Tools.SetIsMultilineEditingEnabled(System.Windows.Controls.DataGridTextColumn,System.Boolean)">
+    <parameter name="obj">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+</assembly>
