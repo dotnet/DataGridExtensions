@@ -1,4 +1,7 @@
-﻿1.0.36.0
+﻿1.0.37.0
+* Include ExternalAnnotations for R# 
+
+1.0.36.0
 * Fix #2: Added an additional DataGridFilterColumnControl.SelectableValues property that holds all values that are currently selectable in the column.
 
 1.0.35.0
