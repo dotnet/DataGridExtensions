@@ -31,15 +31,17 @@ namespace DataGridExtensions
         /// <summary>
         /// Filter information about each column.
         /// </summary>
-        [NotNull]
+        [NotNull, ItemNotNull]
         private readonly List<DataGridFilterColumnControl> _filterColumnControls = new List<DataGridFilterColumnControl>();
         /// <summary>
         /// Timer to defer evaluation of the filter until user has stopped typing.
         /// </summary>
+        [CanBeNull]
         private DispatcherTimer _deferFilterEvaluationTimer;
         /// <summary>
         /// The columns that we are currently filtering.
         /// </summary>
+        [NotNull, ItemNotNull]
         private DataGridColumn[] _filteredColumns = new DataGridColumn[0];
         /// <summary>
         /// Flag indicating if filtering is currently enabled.
@@ -48,6 +50,7 @@ namespace DataGridExtensions
         /// <summary>
         /// A global filter that is applied in addition to the column filters.
         /// </summary>
+        [CanBeNull]
         private Predicate<object> _globalFilter;
 
         /// <summary>
@@ -69,6 +72,7 @@ namespace DataGridExtensions
             // Assign a default style that changes HorizontalContentAlignment to "Stretch", so our filter symbol will appear on the right edge of the column.
             var baseStyle = (Style)dataGrid.FindResource(typeof(DataGridColumnHeader));
             var newStyle = new Style(typeof(DataGridColumnHeader), baseStyle);
+            // ReSharper disable once AssignNullToNotNullAttribute
             newStyle.Setters.Add(new Setter(Control.HorizontalContentAlignmentProperty, HorizontalAlignment.Stretch));
 
             dataGrid.ColumnHeaderStyle = newStyle;
@@ -90,20 +94,23 @@ namespace DataGridExtensions
         /// </summary>
         public void Clear()
         {
-            _filterColumnControls.ForEach(filter => filter.Filter = null);
+            foreach (var control in _filterColumnControls)
+            {
+                control.Filter = null;
+            }
+
             EvaluateFilter();
         }
 
         /// <summary>
         /// Gets a the active filter column controls for this data grid.
         /// </summary>
-        [NotNull]
+        [NotNull, ItemNotNull]
         public IList<DataGridFilterColumnControl> FilterColumnControls
         {
             get
             {
                 Contract.Ensures(Contract.Result<IList<DataGridFilterColumnControl>>() != null);
-
                 return new ReadOnlyCollection<DataGridFilterColumnControl>(_filterColumnControls);
             }
         }
@@ -128,7 +135,12 @@ namespace DataGridExtensions
         internal void Enable(bool value)
         {
             _isFilteringEnabled = value;
-            _filterColumnControls.ForEach(control => control.Visibility = value ? Visibility.Visible : Visibility.Hidden);
+
+            foreach (var control in _filterColumnControls)
+            {
+                control.Visibility = (value ? Visibility.Visible : Visibility.Hidden);
+            }
+
             EvaluateFilter();
         }
 
@@ -181,7 +193,7 @@ namespace DataGridExtensions
         /// Creates a new content filter.
         /// </summary>
         [NotNull]
-        internal IContentFilter CreateContentFilter(object content)
+        internal IContentFilter CreateContentFilter([CanBeNull] object content)
         {
             Contract.Ensures(Contract.Result<IContentFilter>() != null);
 
@@ -197,6 +209,7 @@ namespace DataGridExtensions
 
             var headersPresenter = (FrameworkElement)scrollViewer?.Template?.FindName("PART_ColumnHeadersPresenter", scrollViewer);
 
+            // ReSharper disable once AssignNullToNotNullAttribute
             headersPresenter?.SetValue(KeyboardNavigation.TabNavigationProperty, KeyboardNavigationMode.None);
         }
 
@@ -206,7 +219,7 @@ namespace DataGridExtensions
                 return;
 
             var filteredColumnsWithEmptyHeaderTemplate = e.NewItems
-                .Cast<DataGridColumn>()
+                .OfType<DataGridColumn>()
                 .Where(column => column.GetIsFilterVisible() && (column.HeaderTemplate == null))
                 .ToArray();
 
@@ -226,7 +239,7 @@ namespace DataGridExtensions
             }
         }
 
-        internal void SetGlobalFilter(Predicate<object> globalFilter)
+        internal void SetGlobalFilter([CanBeNull] Predicate<object> globalFilter)
         {
             _globalFilter = globalFilter;
 
@@ -279,7 +292,10 @@ namespace DataGridExtensions
                 collectionView.Filter = CreatePredicate(columnFilters);
 
                 // Notify all filters about the change of the collection view.
-                _filterColumnControls.ForEach(filter => filter.ValuesUpdated());
+                foreach (var control in _filterColumnControls)
+                {
+                    control.ValuesUpdated();
+                }
             }
             catch (InvalidOperationException)
             {
@@ -290,7 +306,8 @@ namespace DataGridExtensions
             }
         }
 
-        internal Predicate<object> CreatePredicate(IList<DataGridFilterColumnControl> columnFilters)
+        [CanBeNull]
+        internal Predicate<object> CreatePredicate([CanBeNull, ItemNotNull] IList<DataGridFilterColumnControl> columnFilters)
         {
             if (columnFilters?.Any() != true)
             {
@@ -305,7 +322,8 @@ namespace DataGridExtensions
             return item => _globalFilter(item) && columnFilters.All(filter => filter.Matches(item));
         }
 
-        internal IList<DataGridFilterColumnControl> GetColumnFilters(DataGridFilterColumnControl excluded = null)
+        [NotNull, ItemNotNull]
+        internal IList<DataGridFilterColumnControl> GetColumnFilters([CanBeNull] DataGridFilterColumnControl excluded = null)
         {
             return _filterColumnControls
                 .Where(column => !ReferenceEquals(column, excluded))

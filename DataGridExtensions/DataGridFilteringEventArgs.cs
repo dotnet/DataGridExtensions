@@ -4,6 +4,8 @@
     using System.ComponentModel;
     using System.Windows.Controls;
 
+    using JetBrains.Annotations;
+
     /// <summary>
     /// Notification about additional columns to be filtered.
     /// Clients can e.g. use this event to cache/preload column data in a different thread and/or display a wait cursor while filtering.
@@ -14,11 +16,12 @@
     /// </summary>
     public class DataGridFilteringEventArgs : CancelEventArgs
     {
+        /// <inheritdoc />
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataGridFilteringEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="T:DataGridExtensions.DataGridFilteringEventArgs" /> class.
         /// </summary>
         /// <param name="columns">The additional columns that will be filtered.</param>
-        public DataGridFilteringEventArgs(ICollection<DataGridColumn> columns)
+        public DataGridFilteringEventArgs([NotNull, ItemNotNull] ICollection<DataGridColumn> columns)
         {
             Columns = columns;
         }
@@ -26,10 +29,7 @@
         /// <summary>
         /// Gets the additional columns that will be filtered.
         /// </summary>
-        public ICollection<DataGridColumn> Columns
-        {
-            get;
-            private set;
-        }
+        [NotNull, ItemNotNull]
+        public ICollection<DataGridColumn> Columns { get; }
     }
 }

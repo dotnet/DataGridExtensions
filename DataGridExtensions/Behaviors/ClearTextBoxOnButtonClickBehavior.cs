@@ -65,7 +65,7 @@
             var textBox = TextBox;
 
             if (textBox != null)
-                textBox.Text = null;
+                textBox.Text = string.Empty;
         }
     }
 }

@@ -58,8 +58,7 @@
             Contract.Requires(dataGrid != null);
             Contract.Ensures(Contract.Result<IDataGridEventsProvider>() != null);
 
-            var eventsProvider = dataGrid.GetValue(DataGridEventsProviderProperty) as IDataGridEventsProvider;
-            if (eventsProvider == null)
+            if (!(dataGrid.GetValue(DataGridEventsProviderProperty) is IDataGridEventsProvider eventsProvider))
             {
                 eventsProvider = new DataGridEventsProvider(dataGrid);
                 dataGrid.SetValue(DataGridEventsProviderProperty, eventsProvider);
@@ -86,6 +85,7 @@
         public static bool GetIsMultilineEditingEnabled([NotNull] DataGridTextColumn obj)
         {
             Contract.Requires(obj != null);
+            // ReSharper disable once PossibleNullReferenceException
             return (bool)obj.GetValue(IsMultilineEditingEnabledProperty);
         }
         /// <summary>
@@ -134,6 +134,7 @@
         public static bool GetForceCommitOnLostFocus([NotNull] DataGrid dataGrid)
         {
             Contract.Requires(dataGrid != null);
+            // ReSharper disable once PossibleNullReferenceException
             return (bool)dataGrid.GetValue(ForceCommitOnLostFocusProperty);
         }
         /// <summary>
@@ -156,8 +157,6 @@
         private static void ForceCommitOnLostFocus_Changed([NotNull] DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var dataGrid = (DataGrid)d;
-            if (dataGrid == null)
-                return;
 
             dataGrid.PreviewLostKeyboardFocus -= DataGrid_OnPreviewLostKeyboardFocus;
 
@@ -169,12 +168,10 @@
 
         private static void DataGrid_OnPreviewLostKeyboardFocus([NotNull] object sender, [NotNull] KeyboardFocusChangedEventArgs e)
         {
-            var newFocus = e.NewFocus as DependencyObject;
-            if (newFocus == null)
+            if (!(e.NewFocus is DependencyObject newFocus))
                 return;
 
-            var dataGrid = sender as DataGrid;
-            if (dataGrid == null)
+            if (!(sender is DataGrid dataGrid))
                 return;
 
             if (newFocus.AncestorsAndSelf().Any(item => ReferenceEquals(item, dataGrid)))

@@ -20,26 +20,33 @@ namespace DataGridExtensions
     /// This class is the control hosting all information needed for filtering of one column.
     /// Filtering is enabled by simply adding this control to the header template of the DataGridColumn.
     /// </summary>
+    /// <seealso cref="System.Windows.Controls.Control" />
+    /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
     public class DataGridFilterColumnControl : Control, INotifyPropertyChanged
     {
+        [NotNull]
         private static readonly BooleanToVisibilityConverter _booleanToVisibilityConverter = new BooleanToVisibilityConverter();
+        [NotNull]
         private static readonly ControlTemplate _emptyControlTemplate = new ControlTemplate();
 
         /// <summary>
         /// The active filter for this column.
         /// </summary>
+        [CanBeNull]
         private IContentFilter _activeFilter;
 
         static DataGridFilterColumnControl()
         {
+            // ReSharper disable once AssignNullToNotNullAttribute
             var templatePropertyDescriptor = DependencyPropertyDescriptor.FromProperty(TemplateProperty, typeof(Control));
 
             if (templatePropertyDescriptor != null)
                 templatePropertyDescriptor.DesignerCoerceValueCallback = Template_CoerceValue;
         }
 
+        /// <inheritdoc />
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataGridFilterColumnControl"/> class.
+        /// Initializes a new instance of the <see cref="T:DataGridExtensions.DataGridFilterColumnControl" /> class.
         /// </summary>
         public DataGridFilterColumnControl()
         {
@@ -65,9 +72,11 @@ namespace DataGridExtensions
 
             FilterHost.AddColumn(this);
 
+            // ReSharper disable PossibleNullReferenceException
             DataGrid.SourceUpdated += DataGrid_SourceOrTargetUpdated;
             DataGrid.TargetUpdated += DataGrid_SourceOrTargetUpdated;
             DataGrid.RowEditEnding += DataGrid_RowEditEnding;
+            // ReSharper restore PossibleNullReferenceException
 
             // Must set a non-null empty template here, else we won't get the coerce value callback when the columns attached property is null!
             Template = _emptyControlTemplate;
@@ -75,9 +84,11 @@ namespace DataGridExtensions
             // Bind our IsFilterVisible and Template properties to the corresponding properties attached to the
             // DataGridColumnHeader.Column property. Use binding instead of simple assignment since columnHeader.Column is still null at this point.
             var isFilterVisiblePropertyPath = new PropertyPath("Column.(0)", DataGridFilterColumn.IsFilterVisibleProperty);
+            // ReSharper disable once AssignNullToNotNullAttribute
             BindingOperations.SetBinding(this, VisibilityProperty, new Binding() { Path = isFilterVisiblePropertyPath, Source = ColumnHeader, Mode = BindingMode.OneWay, Converter = _booleanToVisibilityConverter });
 
             var templatePropertyPath = new PropertyPath("Column.(0)", DataGridFilterColumn.TemplateProperty);
+            // ReSharper disable once AssignNullToNotNullAttribute
             BindingOperations.SetBinding(this, TemplateProperty, new Binding() { Path = templatePropertyPath, Source = ColumnHeader, Mode = BindingMode.OneWay });
 
             var filterPropertyPath = new PropertyPath("Column.(0)", DataGridFilterColumn.FilterProperty);
@@ -90,15 +101,18 @@ namespace DataGridExtensions
             // Must check for null, unloaded event might be raised even if no loaded event has been raised before!
             FilterHost?.RemoveColumn(this);
 
-            if (DataGrid != null)
+            var dataGrid = DataGrid;
+            if (dataGrid != null)
             {
-                DataGrid.SourceUpdated -= DataGrid_SourceOrTargetUpdated;
-                DataGrid.TargetUpdated -= DataGrid_SourceOrTargetUpdated;
-                DataGrid.RowEditEnding -= DataGrid_RowEditEnding;
+                dataGrid.SourceUpdated -= DataGrid_SourceOrTargetUpdated;
+                dataGrid.TargetUpdated -= DataGrid_SourceOrTargetUpdated;
+                dataGrid.RowEditEnding -= DataGrid_RowEditEnding;
             }
 
             // Clear all bindings generated during load.
+            // ReSharper disable once AssignNullToNotNullAttribute
             BindingOperations.ClearBinding(this, VisibilityProperty);
+            // ReSharper disable once AssignNullToNotNullAttribute
             BindingOperations.ClearBinding(this, TemplateProperty);
             BindingOperations.ClearBinding(this, FilterProperty);
         }
@@ -121,6 +135,7 @@ namespace DataGridExtensions
         /// If the filter object implements IFilter, it will be used directly as the filter,
         /// else the filter object will be passed to the content filter.
         /// </summary>
+        [CanBeNull]
         public object Filter
         {
             get => GetValue(FilterProperty); 
@@ -129,10 +144,12 @@ namespace DataGridExtensions
         /// <summary>
         /// Identifies the Filter dependency property
         /// </summary>
+        [NotNull]
         public static readonly DependencyProperty FilterProperty =
+            // ReSharper disable once PossibleNullReferenceException
             DependencyProperty.Register("Filter", typeof(object), typeof(DataGridFilterColumnControl), new FrameworkPropertyMetadata(null, (sender, e) => ((DataGridFilterColumnControl)sender).Filter_Changed(e.NewValue)));
 
-        private void Filter_Changed(object newValue)
+        private void Filter_Changed([CanBeNull] object newValue)
         {
             // Update the effective filter. If the filter is provided as content, the content filter will be recreated when needed.
             _activeFilter = newValue as IContentFilter;
@@ -141,7 +158,8 @@ namespace DataGridExtensions
             FilterHost?.OnFilterChanged();
         }
 
-        private static object Template_CoerceValue(DependencyObject sender, object baseValue)
+        [CanBeNull]
+        private static object Template_CoerceValue([NotNull] DependencyObject sender, [CanBeNull] object baseValue)
         {
             if (baseValue != null)
                 return baseValue;
@@ -156,7 +174,7 @@ namespace DataGridExtensions
 
             var resourceKey = new ComponentResourceKey(typeof(DataGridFilter), columnType);
 
-            return control.DataGrid.GetResourceLocator()?.FindResource(control, resourceKey) ?? control.TryFindResource(resourceKey);
+            return control.DataGrid?.GetResourceLocator()?.FindResource(control, resourceKey) ?? control.TryFindResource(resourceKey);
         }
 
         /// <summary>
@@ -167,7 +185,7 @@ namespace DataGridExtensions
         /// You may need to include "NotifyOnTargetUpdated=true" in the binding of the DataGrid.ItemsSource to get up-to-date
         /// values when the source object changes.
         /// </remarks>
-        [NotNull]
+        [NotNull, ItemNotNull]
         public IEnumerable<string> Values
         {
             get
@@ -186,7 +204,7 @@ namespace DataGridExtensions
         /// You may need to include "NotifyOnTargetUpdated=true" in the binding of the DataGrid.ItemsSource to get up-to-date 
         /// values when the source object changes.
         /// </remarks>
-        [NotNull]
+        [NotNull, ItemNotNull]
         public IEnumerable<string> SourceValues
         {
             get
@@ -194,7 +212,7 @@ namespace DataGridExtensions
                 Contract.Ensures(Contract.Result<IEnumerable<string>>() != null);
 
                 // use the global filter, if any...
-                var predicate = FilterHost.CreatePredicate(null) ?? (_ => true);
+                var predicate = FilterHost?.CreatePredicate(null) ?? (_ => true);
 
                 return InternalSourceValues(predicate)
                     .Distinct()
@@ -210,7 +228,7 @@ namespace DataGridExtensions
         /// You may need to include "NotifyOnTargetUpdated=true" in the binding of the DataGrid.ItemsSource to get up-to-date 
         /// values when the source object changes.
         /// </remarks>
-        [NotNull]
+        [NotNull, ItemNotNull]
         public IEnumerable<string> SelectableValues
         {
             get
@@ -218,7 +236,7 @@ namespace DataGridExtensions
                 Contract.Ensures(Contract.Result<IEnumerable<string>>() != null);
 
                 // filter by all columns except this.
-                var predicate = FilterHost.CreatePredicate(FilterHost.GetColumnFilters(this)) ?? (_ => true);
+                var predicate = FilterHost?.CreatePredicate(FilterHost.GetColumnFilters(this)) ?? (_ => true);
 
                 return InternalSourceValues(predicate)
                     .Distinct()
@@ -235,7 +253,7 @@ namespace DataGridExtensions
         /// <summary>
         /// Returns true if the given item matches the filter condition for this column.
         /// </summary>
-        internal bool Matches(object item)
+        internal bool Matches([CanBeNull] object item)
         {
             if ((Filter == null) || (FilterHost == null))
                 return true;
@@ -263,11 +281,13 @@ namespace DataGridExtensions
         /// <summary>
         /// Gets the column this control is hosting the filter for.
         /// </summary>
+        [CanBeNull]
         public DataGridColumn Column => ColumnHeader?.Column;
 
         /// <summary>
         /// The DataGrid we belong to.
         /// </summary>
+        [CanBeNull]
         protected DataGrid DataGrid
         {
             get;
@@ -277,6 +297,7 @@ namespace DataGridExtensions
         /// <summary>
         /// The filter we belong to.
         /// </summary>
+        [CanBeNull]
         protected DataGridFilterHost FilterHost
         {
             get;
@@ -286,6 +307,7 @@ namespace DataGridExtensions
         /// <summary>
         /// The column header of the column we are filtering. This control must be a child element of the column header.
         /// </summary>
+        [CanBeNull]
         protected DataGridColumnHeader ColumnHeader
         {
             get;
@@ -295,6 +317,7 @@ namespace DataGridExtensions
         /// <summary>
         /// Identifies the CellValue dependency property, a private helper property used to evaluate the property path for the list items.
         /// </summary>
+        [NotNull]
         private static readonly DependencyProperty _cellValueProperty =
             DependencyProperty.Register("_cellValue", typeof(object), typeof(DataGridFilterColumnControl));
 
@@ -302,8 +325,10 @@ namespace DataGridExtensions
         /// Examines the property path and returns the objects value for this column.
         /// Filtering is applied on the SortMemberPath, this is the path used to create the binding.
         /// </summary>
-        protected object GetCellContent(object item)
+        [CanBeNull]
+        protected object GetCellContent([CanBeNull] object item)
         {
+            // ReSharper disable once PossibleNullReferenceException
             var propertyPath = ColumnHeader?.Column.SortMemberPath;
 
             if (string.IsNullOrEmpty(propertyPath))
@@ -321,7 +346,7 @@ namespace DataGridExtensions
         /// <summary>
         /// Gets the cell content of all list items for this column.
         /// </summary>
-        [NotNull]
+        [NotNull, ItemNotNull]
         protected IEnumerable<string> InternalValues()
         {
             Contract.Ensures(Contract.Result<IEnumerable<string>>() != null);
@@ -335,7 +360,7 @@ namespace DataGridExtensions
         /// <summary>
         /// Gets the cell content of all list items for this column.
         /// </summary>
-        [NotNull]
+        [NotNull, ItemNotNull]
         protected IEnumerable<string> InternalSourceValues([NotNull] Predicate<object> predicate)
         {
             Contract.Requires(predicate != null);
@@ -362,7 +387,7 @@ namespace DataGridExtensions
         /// Raises the PropertyChanged event.
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
-        protected virtual void OnPropertyChanged(string propertyName)
+        protected virtual void OnPropertyChanged([NotNull] string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

@@ -32,7 +32,9 @@
             var textBoxStyle = new Style(typeof(TextBox), column.EditingElementStyle);
             var setters = textBoxStyle.Setters;
 
+            // ReSharper disable once AssignNullToNotNullAttribute
             setters.Add(new EventSetter(UIElement.PreviewKeyDownEvent, (KeyEventHandler)EditingElement_PreviewKeyDown));
+            // ReSharper disable once AssignNullToNotNullAttribute
             setters.Add(new Setter(TextBoxBase.AcceptsReturnProperty, true));
 
             textBoxStyle.Seal();
@@ -64,6 +66,7 @@
                 if (parent == null)
                     return;
 
+                // ReSharper disable once AssignNullToNotNullAttribute
                 var args = new KeyEventArgs(e.KeyboardDevice, e.InputSource, e.Timestamp, Key.Return)
                 {
                     RoutedEvent = UIElement.KeyDownEvent
@@ -86,7 +89,7 @@
         /// </summary>
         /// <param name="dataGrid">The data grid.</param>
         /// <returns><c>true</c> if the cell selection is a rectangular range.</returns>
-        public static bool HasRectangularCellSelection(this DataGrid dataGrid)
+        public static bool HasRectangularCellSelection([NotNull] this DataGrid dataGrid)
         {
             var selectedCells = dataGrid.GetVisibleSelectedCells();
 
@@ -94,6 +97,7 @@
                 return false;
 
             var visibleColumnIndexes = dataGrid.Columns
+                // ReSharper disable once PossibleNullReferenceException
                 .Where(c => c.Visibility == Visibility.Visible)
                 .Select(c => c.DisplayIndex)
                 .OrderBy(displayIndex => displayIndex)
@@ -102,10 +106,12 @@
             var rowIndexes = selectedCells
                 .Select(cell => cell.Item)
                 .Distinct()
+                // ReSharper disable once AssignNullToNotNullAttribute
                 .Select(item => dataGrid.Items.IndexOf(item))
                 .ToArray();
 
             var columnIndexes = selectedCells
+                // ReSharper disable once PossibleNullReferenceException
                 .Select(c => c.Column.DisplayIndex)
                 .Distinct()
                 .Select(i => visibleColumnIndexes.IndexOf(i))
@@ -122,6 +128,7 @@
         /// </summary>
         /// <param name="dataGrid">The data grid.</param>
         /// <returns>The selected cell content.</returns>
+        [CanBeNull, ItemNotNull]
         public static IList<IList<string>> GetCellSelection([NotNull] this DataGrid dataGrid)
         {
             Contract.Requires(dataGrid != null);
@@ -133,6 +140,8 @@
 
             var orderedRows = selectedCells
                 .GroupBy(i => i.Item)
+                // ReSharper disable once AssignNullToNotNullAttribute
+                // ReSharper disable once PossibleNullReferenceException
                 .OrderBy(i => dataGrid.Items.IndexOf(i.Key));
 
             return orderedRows.Select(GetRowContent).ToArray();
@@ -145,7 +154,7 @@
         /// <param name="data">The data.</param>
         /// <remarks>The cell selection is assumed to be a rectangular area.</remarks>
         /// <returns><c>true</c> if the dimensions of data and cell selection did match and the cells data has been replaced; otherwise <c>false</c>.</returns>
-        public static bool PasteCells([NotNull] this DataGrid dataGrid, [NotNull] IList<IList<string>> data)
+        public static bool PasteCells([NotNull] this DataGrid dataGrid, [NotNull, ItemNotNull] IList<IList<string>> data)
         {
             Contract.Requires(dataGrid != null);
             Contract.Requires(data != null);
@@ -169,6 +178,7 @@
             var selectedColumns = selectedCells
                 .Select(cellInfo => cellInfo.Column)
                 .Distinct()
+                // ReSharper disable once PossibleNullReferenceException
                 .Where(column => column.Visibility == Visibility.Visible)
                 .OrderBy(column => column.DisplayIndex)
                 .ToArray();
@@ -176,6 +186,7 @@
             var selectedRows = selectedCells
                 .Select(cellInfo => cellInfo.Item)
                 .Distinct()
+                // ReSharper disable once AssignNullToNotNullAttribute
                 .OrderBy(item => dataGrid.Items.IndexOf(item))
                 .ToArray();
 
@@ -184,7 +195,9 @@
                 // n:1 => n:n, extend selection to match data
                 var selectedColumn = selectedColumns[0];
                 selectedColumns = dataGrid.Columns
+                    // ReSharper disable PossibleNullReferenceException
                     .Where(col => col.DisplayIndex >= selectedColumn.DisplayIndex)
+                    // ReSharper restore PossibleNullReferenceException
                     .OrderBy(col => col.DisplayIndex)
                     .Where(col => col.Visibility == Visibility.Visible)
                     .Take(numberOfDataColumns)
@@ -193,6 +206,7 @@
                 var selectedItem = selectedRows[0];
                 selectedRows = dataGrid.Items
                     .Cast<object>()
+                    // ReSharper disable once AssignNullToNotNullAttribute
                     .Skip(dataGrid.Items.IndexOf(selectedItem))
                     .Take(numberOfDataRows)
                     .ToArray();
@@ -207,9 +221,15 @@
                 return false;
 
             // n:x*n
-            Enumerate.AsTuples(selectedRows, Repeat(data, verticalFactor))
-                .ForEach(row => Enumerate.AsTuples(selectedColumns, Repeat(row.Item2, horizontalFactor))
-                    .ForEach(column => column.Item1.OnPastingCellClipboardContent(row.Item1, column.Item2)));
+            foreach (var row in Enumerate.AsTuples(selectedRows, Repeat(data, verticalFactor)))
+            {
+                // ReSharper disable AssignNullToNotNullAttribute, PossibleNullReferenceException
+                foreach (var column in Enumerate.AsTuples(selectedColumns, Repeat(row.Item2, horizontalFactor)))
+                {
+                    column.Item1.OnPastingCellClipboardContent(row.Item1, column.Item2);
+                }
+                // ReSharper restore AssignNullToNotNullAttribute, PossibleNullReferenceException
+            }
 
             return true;
         }
@@ -220,7 +240,8 @@
         /// </summary>
         /// <param name="dataGrid">The data grid.</param>
         /// <returns>The selected cells of visible columns.</returns>
-        public static IList<DataGridCellInfo> GetVisibleSelectedCells(this DataGrid dataGrid)
+        [CanBeNull]
+        public static IList<DataGridCellInfo> GetVisibleSelectedCells([CanBeNull] this DataGrid dataGrid)
         {
             var selectedCells = dataGrid?.SelectedCells;
 
@@ -229,7 +250,8 @@
                 .ToArray();
         }
 
-        private static IEnumerable<T> Repeat<T>([NotNull] ICollection<T> source, int count)
+        [NotNull, ItemCanBeNull]
+        private static IEnumerable<T> Repeat<T>([NotNull, ItemCanBeNull] ICollection<T> source, int count)
         {
             Contract.Requires(source != null);
 
@@ -242,16 +264,17 @@
             }
         }
 
-        [NotNull]
+        [NotNull, ItemNotNull]
         private static IList<string> GetRowContent([NotNull] IGrouping<object, DataGridCellInfo> row)
         {
             Contract.Requires(row != null);
             Contract.Ensures(Contract.Result<IList<string>>() != null);
 
             return row
+                // ReSharper disable once PossibleNullReferenceException
                 .OrderBy(i => i.Column.DisplayIndex)
                 .Select(i => i.Column.OnCopyingCellClipboardContent(i.Item))
-                .Select(i => i == null ? string.Empty : i.ToString())
+                .Select(i => i?.ToString() ?? string.Empty)
                 .ToArray();
         }
 

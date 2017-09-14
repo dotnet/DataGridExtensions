@@ -15,7 +15,7 @@
         /// <param name="content">The content to create the filter for.</param>
         /// <returns>The new filter.</returns>
         [NotNull]
-        IContentFilter Create(object content);
+        IContentFilter Create([CanBeNull] object content);
     }
 
     #region IContentFilterFactory contract binding

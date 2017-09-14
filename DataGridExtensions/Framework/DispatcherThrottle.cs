@@ -23,16 +23,6 @@
         private int _counter;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DispatcherThrottle"/> class.
-        /// </summary>
-        /// <param name="target">The target action to invoke when the throttle condition is hit.</param>
-        public DispatcherThrottle([NotNull] Action target)
-            : this(DispatcherPriority.Normal, target)
-        {
-            Contract.Requires(target != null);
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="DispatcherThrottle" /> class.
         /// </summary>
         /// <param name="priority">The priority of the dispatcher.</param>

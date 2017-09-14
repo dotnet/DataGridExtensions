@@ -5,7 +5,7 @@
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity">
 
   <!-- Style for a filter check box. The check box is only visible when it's hovered, focused or has a value.  -->
-  <Style x:Key="{ComponentResourceKey {x:Type src:DataGridFilter}, ColumnHeaderSearchCheckBoxStyle}" TargetType="CheckBox">
+  <Style x:Key="{x:Static src:DataGridFilter.ColumnHeaderSearchCheckBoxStyleKey}" TargetType="CheckBox">
     <Setter Property="IsThreeState" Value="True" />
     <Setter Property="Margin" Value="4,0,2,0" />
     <Style.Triggers>
@@ -22,7 +22,7 @@
   </Style>
 
   <!-- Style for the clear button in the filter text box -->
-  <Style x:Key="{ComponentResourceKey {x:Type src:DataGridFilter}, ColumnHeaderSearchTextBoxClearButtonStyle}" TargetType="Button">
+  <Style x:Key="{x:Static src:DataGridFilter.ColumnHeaderSearchTextBoxClearButtonStyleKey}" TargetType="Button">
     <Setter Property="Foreground" Value="LightGray" />
     <Setter Property="Template">
       <Setter.Value>
@@ -41,7 +41,7 @@
   </Style>
 
   <!-- Style for a filter text box. The text box is only visible when it's hovered, focused or has a value.  -->
-  <Style x:Key="{ComponentResourceKey {x:Type src:DataGridFilter}, ColumnHeaderSearchTextBoxStyle}" TargetType="TextBox">
+  <Style x:Key="{x:Static src:DataGridFilter.ColumnHeaderSearchTextBoxStyleKey}" TargetType="TextBox">
     <Setter Property="MinWidth" Value="20" />
     <Setter Property="Margin" Value="4,0,2,0" />
     <Setter Property="Template">
@@ -88,11 +88,11 @@
   </Style>
 
   <!-- Reusable filter symbol -->
-  <ControlTemplate x:Key="{ComponentResourceKey {x:Type src:DataGridFilter}, IconTemplate}">
+  <ControlTemplate x:Key="{x:Static src:DataGridFilter.IconTemplateKey}">
     <Path Data="M0,0 L10,0 6,4 6,9 4,9 4,4 Z" Fill="{TemplateBinding Foreground}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,0" />
   </ControlTemplate>
 
-  <Style TargetType="Control" x:Key="{ComponentResourceKey {x:Type src:DataGridFilter}, IconStyle}">
+  <Style TargetType="Control" x:Key="{x:Static src:DataGridFilter.IconStyleKey}">
     <Setter Property="HorizontalAlignment" Value="Right" />
     <Setter Property="VerticalAlignment" Value="Center" />
     <Setter Property="Template" Value="{DynamicResource {x:Static src:DataGridFilter.IconTemplateKey}}" />
@@ -101,7 +101,7 @@
   </Style>
 
   <!-- Default template for a filter on a column represented by a DataGridTextColumn. -->
-  <ControlTemplate x:Key="{ComponentResourceKey {x:Type src:DataGridFilter}, {x:Type DataGridTextColumn}}">
+  <ControlTemplate x:Key="{x:Static src:DataGridFilter.TextColumnFilterTemplateKey}">
     <Grid>
       <Control Style="{DynamicResource {x:Static src:DataGridFilter.IconStyleKey}}" />
       <TextBox Style="{DynamicResource {x:Static src:DataGridFilter.ColumnHeaderSearchTextBoxStyleKey}}"
@@ -110,7 +110,7 @@
   </ControlTemplate>
 
   <!-- Default template for a filter on a column represented by a DataGridCheckBoxColumn. -->
-  <ControlTemplate x:Key="{ComponentResourceKey {x:Type src:DataGridFilter}, {x:Type DataGridCheckBoxColumn}}">
+  <ControlTemplate x:Key="{x:Static src:DataGridFilter.CheckBoxColumnFilterTemplateKey}">
     <Grid>
       <Control Style="{DynamicResource {x:Static src:DataGridFilter.IconStyleKey}}" />
       <CheckBox Style="{DynamicResource {x:Static src:DataGridFilter.ColumnHeaderSearchCheckBoxStyleKey}}"
@@ -119,7 +119,7 @@
   </ControlTemplate>
 
   <!-- Default template for a filter on a column represented by a DataGridTemplateColumn. -->
-  <ControlTemplate x:Key="{ComponentResourceKey {x:Type src:DataGridFilter}, {x:Type DataGridTemplateColumn}}">
+  <ControlTemplate x:Key="{x:Static src:DataGridFilter.TemplateColumnFilterTemplateKey}">
     <Grid>
       <Control Style="{DynamicResource {x:Static src:DataGridFilter.IconStyleKey}}" />
       <TextBox Style="{DynamicResource {x:Static src:DataGridFilter.ColumnHeaderSearchTextBoxStyleKey}}"
@@ -128,7 +128,7 @@
   </ControlTemplate>
 
   <!-- Default template for the column header including the filter control. -->
-  <DataTemplate x:Key="{ComponentResourceKey {x:Type src:DataGridFilter}, ColumnHeaderTemplate}">
+  <DataTemplate x:Key="{x:Static src:DataGridFilter.ColumnHeaderTemplateKey}">
     <DockPanel Background="Transparent">
       <!-- The control to host the filter UI for this column -->
       <src:DataGridFilterColumnControl DockPanel.Dock="Right" />
@@ -139,7 +139,7 @@
     </DockPanel>
   </DataTemplate>
 
-  <Style TargetType="ToolTip" x:Key="{ComponentResourceKey {x:Type behaviors:ExtendedStarSizeBehavior}, ColumnHeaderGripperToolTipStyle}">
+  <Style TargetType="ToolTip" x:Key="{x:Static behaviors:ExtendedStarSizeBehavior.ColumnHeaderGripperToolTipStyleKey}">
     <Setter Property="ContentTemplate">
       <Setter.Value>
         <DataTemplate>

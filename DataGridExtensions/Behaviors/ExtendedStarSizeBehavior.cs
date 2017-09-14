@@ -1,11 +1,10 @@
-﻿using System.Diagnostics;
-
-namespace DataGridExtensions.Behaviors
+﻿namespace DataGridExtensions.Behaviors
 {
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.ComponentModel;
+    using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using System.Diagnostics.Contracts;
     using System.Linq;
@@ -21,6 +20,7 @@ namespace DataGridExtensions.Behaviors
 
     using JetBrains.Annotations;
 
+    /// <inheritdoc />
     /// <summary>
     /// Extended start size column behavior. Allows columns to get larger than the client area, but not smaller.
     /// The Resizing behavior can be modified using Ctrl or Shift keys: Ctrl resizes all columns to the right proportionally, Shift fits all columns to the right into the client area.
@@ -28,23 +28,31 @@ namespace DataGridExtensions.Behaviors
     /// </summary>
     public class ExtendedStarSizeBehavior : Behavior<DataGrid>
     {
+        // ReSharper disable AssignNullToNotNullAttribute
+        [NotNull]
         private static readonly DependencyPropertyDescriptor ViewportWidthPropertyDescriptor = DependencyPropertyDescriptor.FromProperty(ScrollViewer.ViewportWidthProperty, typeof(ScrollViewer));
+        [NotNull]
         private static readonly DependencyPropertyDescriptor NonFrozenColumnsViewportHorizontalOffsetPropertyDescriptor = DependencyPropertyDescriptor.FromProperty(DataGrid.NonFrozenColumnsViewportHorizontalOffsetProperty, typeof(DataGrid));
+        // ReSharper restore AssignNullToNotNullAttribute
 
         [NotNull]
         private readonly DispatcherThrottle _updateColumnGripperToolTipVisibilityThrottle;
 
-        private int _changingGridSizeCounter;
+        [CanBeNull]
         private ScrollViewer _scrollViewer;
+
+        private int _changingGridSizeCounter;
         private bool _columnsAreFitWithinViewPort;
 
         /// <summary>
-        /// The resrouce key for the default column header gripper tool tip style.
+        /// The resource key for the default column header gripper tool tip style.
         /// </summary>
+        [NotNull]
         public static readonly ResourceKey ColumnHeaderGripperToolTipStyleKey = new ComponentResourceKey(typeof(ExtendedStarSizeBehavior), "ColumnHeaderGripperToolTipStyle");
 
+        /// <inheritdoc />
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExtendedStarSizeBehavior"/> class.
+        /// Initializes a new instance of the <see cref="T:DataGridExtensions.Behaviors.ExtendedStarSizeBehavior" /> class.
         /// </summary>
         public ExtendedStarSizeBehavior()
         {
@@ -54,6 +62,7 @@ namespace DataGridExtensions.Behaviors
         /// <summary>
         /// Gets or sets the style of the tool tip for the grippers in the column headers.
         /// </summary>
+        [CanBeNull]
         public Style ColumnHeaderGripperToolTipStyle
         {
             get => (Style)GetValue(ColumnHeaderGripperToolTipStyleProperty); 
@@ -62,12 +71,14 @@ namespace DataGridExtensions.Behaviors
         /// <summary>
         /// Identifies the ColumnHeaderGripperToolTipStyle dependency property
         /// </summary>
+        [NotNull]
         public static readonly DependencyProperty ColumnHeaderGripperToolTipStyleProperty =
             DependencyProperty.Register("ColumnHeaderGripperToolTipStyle", typeof(Style), typeof(ExtendedStarSizeBehavior));
 
         /// <summary>
         /// Gets or sets the resource locator.
         /// </summary>
+        [CanBeNull]
         public IResourceLocator ResourceLocator
         {
             get => (IResourceLocator)GetValue(ResourceLocatorProperty); 
@@ -76,15 +87,11 @@ namespace DataGridExtensions.Behaviors
         /// <summary>
         /// Identifies the <see cref="ResourceLocator"/> dependency property
         /// </summary>
+        [NotNull]
         public static readonly DependencyProperty ResourceLocatorProperty =
             DependencyProperty.Register("ResourceLocator", typeof(IResourceLocator), typeof(ExtendedStarSizeBehavior));
 
-        /// <summary>
-        /// Called after the behavior is attached to an AssociatedObject.
-        /// </summary>
-        /// <remarks>
-        /// Override this to hook up functionality to the AssociatedObject.
-        /// </remarks>
+        /// <inheritdoc />
         protected override void OnAttached()
         {
             base.OnAttached();
@@ -168,8 +175,6 @@ namespace DataGridExtensions.Behaviors
         private void DataGrid_NonFrozenColumnsViewportHorizontalOffsetChanged([NotNull] object sender, [NotNull] EventArgs e)
         {
             var dataGrid = (DataGrid)sender;
-            if (dataGrid == null)
-                return;
 
             if (_changingGridSizeCounter > 0)
                 return;
@@ -184,10 +189,8 @@ namespace DataGridExtensions.Behaviors
             _changingGridSizeCounter += 1;
 
             var dataGrid = AssociatedObject;
-            if (dataGrid == null)
-                return;
 
-            dataGrid.BeginInvoke(() =>
+            dataGrid?.BeginInvoke(() =>
             {
                 UpdateColumnWidths(dataGrid, null, UpdateMode.Default);
                 _changingGridSizeCounter -= 1;
@@ -201,8 +204,6 @@ namespace DataGridExtensions.Behaviors
                 return;
 
             var dataGrid = (DataGrid)sender;
-            if (dataGrid == null)
-                return;
 
             if (_changingGridSizeCounter > 0)
                 return;
@@ -223,20 +224,22 @@ namespace DataGridExtensions.Behaviors
             _updateColumnGripperToolTipVisibilityThrottle.Tick();
         }
 
-        private void UpdateColumnWidths([NotNull] DataGrid dataGrid, DataGridColumn modifiedColum, UpdateMode updateMode)
+        private void UpdateColumnWidths([NotNull] DataGrid dataGrid, [CanBeNull] DataGridColumn modifiedColum, UpdateMode updateMode)
         {
             Contract.Requires(dataGrid != null);
 
+            // ReSharper disable PossibleNullReferenceException
             var dataGridColumns = dataGrid.Columns
                 .OrderBy(c => c.DisplayIndex)
                 .Skip(dataGrid.FrozenColumnCount)
                 .Where(c => (c.Visibility == Visibility.Visible))
                 .ToArray();
+            // ReSharper restore PossibleNullReferenceException
 
             _columnsAreFitWithinViewPort = !ApplyStarSize(dataGridColumns, modifiedColum) && DistributeAvailableSize(dataGrid, dataGridColumns, modifiedColum, updateMode);
         }
 
-        private static bool ApplyStarSize(IEnumerable<DataGridColumn> dataGridColumns, DataGridColumn modifiedColum)
+        private static bool ApplyStarSize([NotNull, ItemNotNull] IEnumerable<DataGridColumn> dataGridColumns, [CanBeNull] DataGridColumn modifiedColum)
         {
             if ((modifiedColum == null) || (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl)))
                 return false;
@@ -249,6 +252,7 @@ namespace DataGridExtensions.Behaviors
 
             foreach (var column in dataGridColumns.SkipWhile(c => !Equals(c, modifiedColum)).Skip(1))
             {
+                // ReSharper disable once AssignNullToNotNullAttribute
                 starSize = GetStarSize(column);
                 if (starSize > double.Epsilon)
                 {
@@ -259,7 +263,7 @@ namespace DataGridExtensions.Behaviors
             return true;
         }
 
-        private bool DistributeAvailableSize([NotNull] DataGrid dataGrid, [NotNull] DataGridColumn[] dataGridColumns, DataGridColumn modifiedColum, UpdateMode updateMode)
+        private bool DistributeAvailableSize([NotNull] DataGrid dataGrid, [NotNull, ItemNotNull] DataGridColumn[] dataGridColumns, [CanBeNull] DataGridColumn modifiedColum, UpdateMode updateMode)
         {
             Contract.Requires(dataGrid != null);
             Contract.Requires(dataGridColumns != null);
@@ -268,20 +272,23 @@ namespace DataGridExtensions.Behaviors
             if (scrollViewer == null)
                 return false;
 
-            var startColumnIndex = (modifiedColum != null) ? modifiedColum.DisplayIndex : 0;
+            var startColumnIndex = modifiedColum?.DisplayIndex ?? 0;
 
-            Func<DataGridColumn, bool> isFixedColumn = c => (GetStarSize(c) <= double.Epsilon) || (c.DisplayIndex <= startColumnIndex);
-            Func<DataGridColumn, bool> isVariableColumn = c => !isFixedColumn(c);
+            // ReSharper disable AssignNullToNotNullAttribute
+            bool IsFixedColumn(DataGridColumn c) => (GetStarSize(c) <= double.Epsilon) || (c.DisplayIndex <= startColumnIndex);
+            bool IsVariableColumn(DataGridColumn c) => !IsFixedColumn(c);
+            // ReSharper restore AssignNullToNotNullAttribute
 
             var fixedColumnsWidth = dataGridColumns
-                .Where(isFixedColumn)
+                .Where(IsFixedColumn)
+                // ReSharper disable once PossibleNullReferenceException
                 .Select(c => c.ActualWidth)
                 .Sum();
 
             var getEffectiveColumnSize = (updateMode == UpdateMode.ResetStarSize) ? (Func<DataGridColumn, double>)GetStarSize : GetActualWidth;
 
             var variableColumnWidths = dataGridColumns
-                .Where(isVariableColumn)
+                .Where(IsVariableColumn)
                 .Select(getEffectiveColumnSize)
                 .Sum();
 
@@ -297,7 +304,7 @@ namespace DataGridExtensions.Behaviors
 
             var factor = spaceAvailable / variableColumnWidths;
 
-            foreach (var column in dataGridColumns.Where(isVariableColumn))
+            foreach (var column in dataGridColumns.Where(IsVariableColumn))
             {
                 column.Width = getEffectiveColumnSize(column) * factor;
             }
@@ -311,6 +318,7 @@ namespace DataGridExtensions.Behaviors
 
             foreach (var column in dataGrid.Columns)
             {
+                // ReSharper disable once PossibleNullReferenceException
                 var width = column.Width;
                 if (!width.IsStar)
                     continue;
@@ -329,21 +337,26 @@ namespace DataGridExtensions.Behaviors
             DataGridColumn leftColumn = null;
             var isLeftColumnStarSized = false;
 
+            // ReSharper disable once PossibleNullReferenceException
             foreach (var column in dataGrid.Columns.OrderBy(c => c.DisplayIndex))
             {
                 var leftColumnRightGripperToolTip = (ToolTip)leftColumn?.GetValue(RightGripperToolTipProperty);
-                var thisColumnLeftGripperToolTip = (ToolTip)column?.GetValue(LeftGripperToolTipProperty);
+                var thisColumnLeftGripperToolTip = (ToolTip)column.GetValue(LeftGripperToolTipProperty);
 
                 var visibility = isLeftColumnStarSized ? Visibility.Visible : Visibility.Collapsed;
 
-                leftColumnRightGripperToolTip?.Do(t => t.Visibility = visibility);
-                thisColumnLeftGripperToolTip?.Do(t => t.Visibility = visibility);
+                if (leftColumnRightGripperToolTip != null)
+                    leftColumnRightGripperToolTip.Visibility = visibility;
+
+                if (thisColumnLeftGripperToolTip != null)
+                    thisColumnLeftGripperToolTip.Visibility = visibility;
 
                 leftColumn = column;
                 isLeftColumnStarSized = GetStarSize(column) > double.Epsilon;
             }
 
-            (leftColumn?.GetValue(RightGripperToolTipProperty) as ToolTip)?.Do(t => t.Visibility = Visibility.Collapsed);
+            if (leftColumn?.GetValue(RightGripperToolTipProperty) is ToolTip toolTip)
+                toolTip.Visibility = Visibility.Collapsed;
         }
 
         private void InjectColumnHeaderStyle([NotNull] DataGrid dataGrid)
@@ -366,7 +379,7 @@ namespace DataGridExtensions.Behaviors
         {
             Contract.Requires(column != null);
 
-            return (double)column.ActualWidth;
+            return column.ActualWidth;
         }
 
         private static double GetStarSize([NotNull] DataGridColumn column)
@@ -376,45 +389,44 @@ namespace DataGridExtensions.Behaviors
             return column.GetValue<double>(StarSizeProperty);
         }
 
+        [NotNull]
         private static readonly DependencyProperty StarSizeProperty =
             DependencyProperty.RegisterAttached("StarSize", typeof(double), typeof(ExtendedStarSizeBehavior), new FrameworkPropertyMetadata(0.0));
 
+        [NotNull]
         private static readonly DependencyProperty LeftGripperToolTipProperty =
             DependencyProperty.RegisterAttached("LeftGripperToolTip", typeof(ToolTip), typeof(ExtendedStarSizeBehavior));
 
+        [NotNull]
         private static readonly DependencyProperty RightGripperToolTipProperty =
             DependencyProperty.RegisterAttached("RightGripperToolTip", typeof(ToolTip), typeof(ExtendedStarSizeBehavior));
 
+        [NotNull]
         private static readonly DependencyProperty ColumnHeaderGripperExtenderProperty =
             DependencyProperty.RegisterAttached("ColumnHeaderGripperExtender", typeof(ExtendedStarSizeBehavior), typeof(ExtendedStarSizeBehavior), new FrameworkPropertyMetadata(null, ColumnHeaderGripperExtender_Changed));
 
-        private static void ColumnHeaderGripperExtender_Changed(DependencyObject d, [NotNull] DependencyPropertyChangedEventArgs e)
+        private static void ColumnHeaderGripperExtender_Changed([NotNull] DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var columnHeader = d as DataGridColumnHeader;
-            if (columnHeader == null)
+            if (!(d is DataGridColumnHeader columnHeader))
                 return;
 
-            var self = e.NewValue as ExtendedStarSizeBehavior;
-            if (self == null)
+            if (!(e.NewValue is ExtendedStarSizeBehavior self))
                 return;
 
             var dataGrid = self.AssociatedObject;
-            if (dataGrid == null)
-                return;
 
-            dataGrid.BeginInvoke(DispatcherPriority.Background, () =>
+            dataGrid?.BeginInvoke(DispatcherPriority.Background, () =>
             {
                 self.ApplyGripperToolTip(columnHeader, @"PART_LeftHeaderGripper", LeftGripperToolTipProperty);
                 self.ApplyGripperToolTip(columnHeader, @"PART_RightHeaderGripper", RightGripperToolTipProperty);
             });
         }
 
-        private void ApplyGripperToolTip([NotNull] DataGridColumnHeader columnHeader, string gripperName, DependencyProperty toolTipProperty)
+        private void ApplyGripperToolTip([NotNull] DataGridColumnHeader columnHeader, [NotNull] string gripperName, [NotNull] DependencyProperty toolTipProperty)
         {
             Contract.Requires(columnHeader != null);
 
-            var gripper = columnHeader.Template?.FindName(gripperName, columnHeader) as Thumb;
-            if (gripper == null)
+            if (!(columnHeader.Template?.FindName(gripperName, columnHeader) is Thumb gripper))
                 return;
 
             var dataGrid = AssociatedObject;

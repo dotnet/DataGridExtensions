@@ -16,6 +16,7 @@
         /// <summary>
         /// Gets or sets the target element that will be disabled during editing.
         /// </summary>
+        [CanBeNull]
         public UIElement Target
         {
             get => (UIElement)GetValue(TargetProperty);
@@ -24,15 +25,11 @@
         /// <summary>
         /// Identifies the Target dependency property
         /// </summary>
+        [NotNull]
         public static readonly DependencyProperty TargetProperty =
-            DependencyProperty.Register("Target", typeof (UIElement), typeof (DisableTargetWhileEditingBehavior));
+            DependencyProperty.Register("Target", typeof(UIElement), typeof(DisableTargetWhileEditingBehavior));
 
-        /// <summary>
-        /// Called after the behavior is attached to an AssociatedObject.
-        /// </summary>
-        /// <remarks>
-        /// Override this to hook up functionality to the AssociatedObject.
-        /// </remarks>
+        /// <inheritdoc />
         protected override void OnAttached()
         {
             base.OnAttached();
@@ -44,12 +41,7 @@
             dataGrid.CellEditEnding += DataGrid_CellEditEnding;
         }
 
-        /// <summary>
-        /// Called when the behavior is being detached from its AssociatedObject, but before it has actually occurred.
-        /// </summary>
-        /// <remarks>
-        /// Override this to unhook functionality from the AssociatedObject.
-        /// </remarks>
+        /// <inheritdoc />
         protected override void OnDetaching()
         {
             base.OnDetaching();

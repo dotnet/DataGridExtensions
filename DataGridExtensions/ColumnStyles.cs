@@ -57,7 +57,11 @@
             if (styles == null)
                 return;
 
-            dataGrid.Columns.ForEach(col => ApplyStyle(styles, col));
+            foreach (var col in dataGrid.Columns)
+            {
+                ApplyStyle(styles, col);
+            }
+
             dataGrid.Columns.CollectionChanged += (_, args) => Columns_CollectionChanged(styles, args);
         }
 

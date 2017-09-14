@@ -6,11 +6,13 @@
 
     using JetBrains.Annotations;
 
+    /// <inheritdoc />
     /// <summary>
     /// A content filter using the content as a regular expression to match the string representation of the value.
     /// </summary>
     public class RegexContentFilter : IContentFilter
     {
+        [CanBeNull]
         private readonly Regex _filterRegex;
 
         /// <summary>

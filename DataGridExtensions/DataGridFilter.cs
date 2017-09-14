@@ -40,7 +40,7 @@
         public static readonly DependencyProperty IsAutoFilterEnabledProperty =
             DependencyProperty.RegisterAttached("IsAutoFilterEnabled", typeof(bool), typeof(DataGridFilter), new FrameworkPropertyMetadata(false, IsAutoFilterEnabled_Changed));
 
-        private static void IsAutoFilterEnabled_Changed(DependencyObject sender, [NotNull] DependencyPropertyChangedEventArgs e)
+        private static void IsAutoFilterEnabled_Changed([NotNull] DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             var dataGrid = sender as DataGrid;
             // Force creation of the host and show or hide the controls.

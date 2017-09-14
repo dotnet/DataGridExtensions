@@ -29,7 +29,8 @@
         /// <typeparam name="T">The type to return.</typeparam>
         /// <param name="item">The item to start search with.</param>
         /// <returns>The element if found; otherwise null.</returns>
-        internal static T FindAncestorOrSelf<T>(this DependencyObject item) where T : class
+        [CanBeNull]
+        internal static T FindAncestorOrSelf<T>([CanBeNull] this DependencyObject item) where T : class
         {
             while (item != null)
             {
@@ -43,7 +44,7 @@
             return null;
         }
 
-        [NotNull]
+        [NotNull, ItemNotNull]
         public static IEnumerable<DependencyObject> AncestorsAndSelf([NotNull] this DependencyObject self)
         {
             Contract.Requires(self != null);
@@ -88,7 +89,8 @@
         /// <typeparam name="T">The target type</typeparam>
         /// <param name="value">The value.</param>
         /// <returns>The value casted to <typeparamref name="T"/>, or <c>default(T)</c> if value is <c>null</c>.</returns>
-        public static T SafeCast<T>(this object value)
+        [CanBeNull]
+        public static T SafeCast<T>([CanBeNull] this object value)
         {
             return (value == null) ? default(T) : (T)value;
         }
@@ -100,29 +102,13 @@
         /// <param name="self">The dependency object from which to get the value.</param>
         /// <param name="property">The property to get.</param>
         /// <returns>The value safely casted to <typeparamref name="T"/></returns>
+        [CanBeNull]
         public static T GetValue<T>([NotNull] this DependencyObject self, [NotNull] DependencyProperty property)
         {
             Contract.Requires(self != null);
             Contract.Requires(property != null);
 
             return self.GetValue(property).SafeCast<T>();
-        }
-
-        /// <summary>
-        /// Performs the specified action on each element of the collection.
-        /// </summary>
-        /// <typeparam name="T">The type of elements in the collection.</typeparam>
-        /// <param name="collection">The collection.</param>
-        /// <param name="action">The action.</param>
-        public static void ForEach<T>([NotNull] this IEnumerable<T> collection, [NotNull] Action<T> action)
-        {
-            Contract.Requires(collection != null);
-            Contract.Requires(action != null);
-
-            foreach (var item in collection)
-            {
-                action(item);
-            }
         }
     }
 
@@ -137,8 +123,8 @@
         /// <param name="second">The second collection.</param>
         /// <returns>Tuples of the elements.</returns>
         /// <remarks>If the number of elements in each collection is different, the smaller collection determines the number of enumerated items.</remarks>
-        [NotNull]
-        public static IEnumerable<Tuple<T1, T2>> AsTuples<T1, T2>([NotNull] IEnumerable<T1> first, [NotNull] IEnumerable<T2> second)
+        [NotNull, ItemNotNull]
+        public static IEnumerable<Tuple<T1, T2>> AsTuples<T1, T2>([NotNull, ItemCanBeNull] IEnumerable<T1> first, [NotNull, ItemCanBeNull] IEnumerable<T2> second)
         {
             Contract.Requires(first != null);
             Contract.Requires(second != null);
