@@ -9,6 +9,8 @@
     /// </summary>
     public partial class IntegerGreatherThanFilterControl
     {
+        private TextBox _textBox;
+
         public IntegerGreatherThanFilterControl()
         {
             InitializeComponent();
@@ -16,8 +18,8 @@
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var textBox = (TextBox)sender;
-            var text = textBox.Text;
+            _textBox = (TextBox)sender;
+            var text = _textBox.Text;
             int threshold;
 
             Filter = !int.TryParse(text, out threshold) ? null : new ContentFilter(threshold);
@@ -32,7 +34,15 @@
         /// Identifies the Filter dependency property
         /// </summary>
         public static readonly DependencyProperty FilterProperty =
-            DependencyProperty.Register("Filter", typeof(IContentFilter), typeof(IntegerGreatherThanFilterControl), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+            DependencyProperty.Register("Filter", typeof(IContentFilter), typeof(IntegerGreatherThanFilterControl), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (o, args) => ((IntegerGreatherThanFilterControl)o).Filter_Changed(args.NewValue)));
+
+        private void Filter_Changed(object newValue)
+        {
+            if ((newValue == null) && (_textBox != null))
+            {
+                _textBox.Text = string.Empty;
+            }
+        }
 
         class ContentFilter : IContentFilter
         {

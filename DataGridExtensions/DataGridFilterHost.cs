@@ -76,6 +76,8 @@ namespace DataGridExtensions
             newStyle.Setters.Add(new Setter(Control.HorizontalContentAlignmentProperty, HorizontalAlignment.Stretch));
 
             dataGrid.ColumnHeaderStyle = newStyle;
+
+            dataGrid.CommandBindings.Add(new CommandBinding(DataGrid.SelectAllCommand, DataGrid_SelectAll));
         }
 
         /// <summary>
@@ -136,9 +138,11 @@ namespace DataGridExtensions
         {
             _isFilteringEnabled = value;
 
+            var visibility = value ? Visibility.Visible : Visibility.Hidden;
+
             foreach (var control in _filterColumnControls)
             {
-                control.Visibility = (value ? Visibility.Visible : Visibility.Hidden);
+                control.Visibility = visibility;
             }
 
             EvaluateFilter();
@@ -211,6 +215,22 @@ namespace DataGridExtensions
 
             // ReSharper disable once AssignNullToNotNullAttribute
             headersPresenter?.SetValue(KeyboardNavigation.TabNavigationProperty, KeyboardNavigationMode.None);
+        }
+
+        private void DataGrid_SelectAll(object sender, [NotNull] ExecutedRoutedEventArgs e)
+        {
+            e.Handled = true;
+
+            if (!_isFilteringEnabled || (_dataGrid.Items.Count > 0))
+            {
+                DataGrid.SelectAll();
+                return;
+            }
+
+            foreach (var control in _filterColumnControls)
+            {
+                control.Filter = null;
+            }
         }
 
         private void Columns_CollectionChanged([NotNull] object sender, [NotNull] NotifyCollectionChangedEventArgs e)
