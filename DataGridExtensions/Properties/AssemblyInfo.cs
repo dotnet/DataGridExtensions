@@ -9,7 +9,7 @@ using System.Windows.Markup;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("tom-englert.de")]
 [assembly: AssemblyProduct("Tom's Toolbox")]
-[assembly: AssemblyCopyright("Copyright © 2012-2017 tom-englert.de, Germany")]
+[assembly: AssemblyCopyright("Copyright © 2012-2018 tom-englert.de, Germany")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
