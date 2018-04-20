@@ -3,12 +3,8 @@
   <Target Name="TfmSpecificContent">
     <ItemGroup>
       <ExternalAnnotations Include="$(TargetDir)$(PackageId).ExternalAnnotations.xml" />
-      <DebugSymbols Include="$(TargetDir)$(PackageId).pdb" />
     </ItemGroup>
     <CreateItem Include="@(ExternalAnnotations)" AdditionalMetadata="PackagePath=lib\$(TargetFramework)">
-      <Output TaskParameter="Include" ItemName="TfmSpecificPackageFile" />
-    </CreateItem>
-    <CreateItem Include="@(DebugSymbols)" AdditionalMetadata="PackagePath=lib\$(TargetFramework)">
       <Output TaskParameter="Include" ItemName="TfmSpecificPackageFile" />
     </CreateItem>
   </Target>
@@ -43,15 +39,11 @@
 
   <ItemGroup>
     <PackageReference Include="Expression.Blend.Sdk" Version="1.0.2" />
-    <PackageReference Include="Fody" Version="3.0.3">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="JetBrains.Annotations" Version="11.1.0">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="JetBrainsAnnotations.Fody" Version="2.2.0">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
+
+    <PackageReference Include="Fody" Version="*" PrivateAssets="All" />
+    <PackageReference Include="JetBrains.Annotations" Version="*" PrivateAssets="All" />
+    <PackageReference Include="JetBrainsAnnotations.Fody" Version="*" PrivateAssets="All" />
+    <PackageReference Include="SourceLink.Create.CommandLine" Version="*" PrivateAssets="All" /> 
   </ItemGroup>
 
   <ItemGroup>
