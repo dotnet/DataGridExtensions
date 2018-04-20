@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataGridExtensions", "DataGridExtensions\DataGridExtensions.csproj", "{393C28BB-DB90-40E8-B1A3-741D8B99BA39}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataGridExtensions", "DataGridExtensions\DataGridExtensions.csproj", "{393C28BB-DB90-40E8-B1A3-741D8B99BA39}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataGridExtensionsSample", "DataGridExtensionsSample\DataGridExtensionsSample.csproj", "{977C4FEE-4F44-4F64-803B-3F7350F3A487}"
 EndProject
@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		CodeContracts.ruleset = CodeContracts.ruleset
 		CustomDictionary.xml = CustomDictionary.xml
+		Directory.Build.props = Directory.Build.props
 		License = License
 		README.md = README.md
 		ReleaseNotes.md = ReleaseNotes.md

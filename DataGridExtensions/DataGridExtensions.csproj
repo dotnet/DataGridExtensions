@@ -9,31 +9,29 @@
     </CreateItem>
   </Target>
   
-  <Target Name="SetPackageVersion" BeforeTargets="GenerateNuspec">
-    <GetAssemblyIdentity AssemblyFiles="$(ProjectDir)bin\$(Configuration)\net40\$(PackageId).dll">
-      <Output TaskParameter="Assemblies" ItemName="AssemblyVersion" />
-    </GetAssemblyIdentity>
-    <PropertyGroup>
-      <PackageVersion>%(AssemblyVersion.Version)</PackageVersion>
-    </PropertyGroup>
-  </Target>
-
   <PropertyGroup>
     <LanguageTargets>$(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\Microsoft.CSharp.targets</LanguageTargets>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <TargetFrameworks>net40;net45</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>DataGridExtensions.snk</AssemblyOriginatorKeyFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <TargetsForTfmSpecificContentInPackage>TfmSpecificContent</TargetsForTfmSpecificContentInPackage>
-    <Authors>tom-englert.de</Authors>
+
     <PackageLicenseUrl>https://raw.githubusercontent.com/tom-englert/DataGridExtensions/master/License</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/tom-englert/DataGridExtensions</PackageProjectUrl>
     <RepositoryUrl>https://github.com/tom-englert/DataGridExtensions.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>DGX DataGrid Filter</PackageTags>
     <PackageReleaseNotes>https://raw.githubusercontent.com/tom-englert/DataGridExtensions/master/ReleaseNotes.md</PackageReleaseNotes>
+    <Title>Data Grid Extensions</Title>
+    <Description>This package contains useful extensions for the MS DataGrid (System.Windows.Controls.DataGrid).
+The current version supports the following features:
+- Add filtering capabilities to the DataGrid.
+- Correctly apply initial sorting criteria.
+- Easy to use\r\n- Easy to customize
+- Attaches to the existing DataGrid</Description>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

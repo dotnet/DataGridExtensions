@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+    <Authors>tom-englert.de</Authors>
+    <Company>tom-englert.de</Company>
+    <Copyright>Copyright © 2012-2018 tom-englert.de, Germany</Copyright>
+    <Product>Tom's Toolbox</Product>
+    <Version>1.0.37</Version>
+  </PropertyGroup>
+</Project>
