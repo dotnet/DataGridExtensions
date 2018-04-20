@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Markup;
 
 [assembly: AssemblyTitle("Data Grid Extensions")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("This package contains useful extensions for the MS DataGrid (System.Windows.Controls.DataGrid).\r\nThe current version supports the following features:\r\n- Add filtering capabilities to the DataGrid.\r\n- Correctly apply initial sorting criteria.\r\n- Easy to use\r\n- Easy to customize\r\n- Attaches to the existing DataGrid")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("tom-englert.de")]
 [assembly: AssemblyProduct("Tom's Toolbox")]
