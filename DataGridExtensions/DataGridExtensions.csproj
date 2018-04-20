@@ -19,6 +19,7 @@
   </Target>
 
   <PropertyGroup>
+    <LanguageTargets>$(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\Microsoft.CSharp.targets</LanguageTargets>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TargetFrameworks>net40;net45</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
