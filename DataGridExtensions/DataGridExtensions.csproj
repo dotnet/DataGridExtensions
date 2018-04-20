@@ -3,8 +3,12 @@
   <Target Name="TfmSpecificContent">
     <ItemGroup>
       <ExternalAnnotations Include="$(TargetDir)$(PackageId).ExternalAnnotations.xml" />
+      <DebugSymbols Include="$(TargetDir)$(PackageId).pdb" />
     </ItemGroup>
     <CreateItem Include="@(ExternalAnnotations)" AdditionalMetadata="PackagePath=lib\$(TargetFramework)">
+      <Output TaskParameter="Include" ItemName="TfmSpecificPackageFile" />
+    </CreateItem>
+    <CreateItem Include="@(DebugSymbols)" AdditionalMetadata="PackagePath=lib\$(TargetFramework)">
       <Output TaskParameter="Include" ItemName="TfmSpecificPackageFile" />
     </CreateItem>
   </Target>
