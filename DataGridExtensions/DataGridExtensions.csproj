@@ -27,6 +27,12 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <TargetsForTfmSpecificContentInPackage>TfmSpecificContent</TargetsForTfmSpecificContentInPackage>
     <Authors>tom-englert.de</Authors>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/tom-englert/DataGridExtensions/master/License</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/tom-englert/DataGridExtensions</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/tom-englert/DataGridExtensions.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>DGX DataGrid Filter</PackageTags>
+    <PackageReleaseNotes>https://raw.githubusercontent.com/tom-englert/DataGridExtensions/master/ReleaseNotes.md</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
