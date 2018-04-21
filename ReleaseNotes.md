@@ -1,4 +1,8 @@
-﻿1.0.37.0
+﻿1.0.38.0
+- "SelectAll" button clears all filters if the data grid does not display any rows, because column headers can't be scrolled horizontally in this case.
+- Provide an explicit .net45 version to fix issues with referenced packages (System.Windows.Interactivity). 
+
+1.0.37.0
 * Include ExternalAnnotations for R# 
 
 1.0.36.0
