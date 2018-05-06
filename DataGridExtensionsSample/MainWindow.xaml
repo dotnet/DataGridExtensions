@@ -94,8 +94,13 @@
           </StackPanel>
           <DataGrid Name="Grid1"
                     ItemsSource="{Binding Items}"
-                    dgx:DataGridFilter.IsAutoFilterEnabled="{Binding Path=IsChecked, ElementName=IsFilterEnabled}"/>
-        </DockPanel>
+                    dgx:DataGridFilter.IsAutoFilterEnabled="{Binding Path=IsChecked, ElementName=IsFilterEnabled}">
+            <DataGrid.ItemsPanel>
+              <ItemsPanelTemplate>
+                <VirtualizingStackPanel KeyboardNavigation.DirectionalNavigation="Contained"/>
+              </ItemsPanelTemplate>
+            </DataGrid.ItemsPanel>
+          </DataGrid></DockPanel>
       </TabItem>
 
       <TabItem Header="Extended 1">
