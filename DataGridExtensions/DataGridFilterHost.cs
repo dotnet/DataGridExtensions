@@ -65,6 +65,7 @@ namespace DataGridExtensions
 
             dataGrid.Columns.CollectionChanged += Columns_CollectionChanged;
             dataGrid.Loaded += DataGrid_Loaded;
+            dataGrid.CommandBindings.Add(new CommandBinding(DataGrid.SelectAllCommand, DataGrid_SelectAll));
 
             if (dataGrid.ColumnHeaderStyle != null)
                 return;
@@ -76,8 +77,6 @@ namespace DataGridExtensions
             newStyle.Setters.Add(new Setter(Control.HorizontalContentAlignmentProperty, HorizontalAlignment.Stretch));
 
             dataGrid.ColumnHeaderStyle = newStyle;
-
-            dataGrid.CommandBindings.Add(new CommandBinding(DataGrid.SelectAllCommand, DataGrid_SelectAll));
         }
 
         /// <summary>
