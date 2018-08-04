@@ -89,7 +89,9 @@
             </TextBlock>
             <Decorator Height="10" />
             <StackPanel Orientation="Horizontal">
-              <CheckBox x:Name="IsFilterEnabled" DockPanel.Dock="Top" IsChecked="True" Content="Enable filters" />
+              <CheckBox x:Name="IsFilterEnabled" DockPanel.Dock="Top" IsChecked="True" Content="Enable filters" VerticalAlignment="Center" />
+              <Decorator Width="20"/>
+              <Button Click="ClearAllFilters_Click">Clear all filters</Button>
             </StackPanel>
           </StackPanel>
           <DataGrid Name="Grid1"

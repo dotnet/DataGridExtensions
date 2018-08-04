@@ -115,6 +115,11 @@ namespace DataGridExtensionsSample
         {
             CopyPasteDataGrid.PasteCells(Clipboard.GetText().ParseTable(TextColumnSeparator));
         }
+
+        private void ClearAllFilters_Click(object sender, RoutedEventArgs e)
+        {
+            Grid1.GetFilter().Clear();
+        }
     }
 
     internal static class ExtensionMethods

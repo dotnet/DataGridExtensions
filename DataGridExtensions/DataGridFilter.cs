@@ -55,7 +55,6 @@
         /// Filter attached property to attach the DataGridFilterHost instance to the owning DataGrid.
         /// This property is only used by code and is not accessible from XAML.
         /// </summary>
-
         [NotNull]
         public static DataGridFilterHost GetFilter([NotNull] this DataGrid dataGrid)
         {
