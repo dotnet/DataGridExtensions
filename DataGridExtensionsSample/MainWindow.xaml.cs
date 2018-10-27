@@ -11,6 +11,7 @@ namespace DataGridExtensionsSample
     using System.Diagnostics;
     using System.IO;
     using System.Text;
+    using System.Windows.Data;
     using System.Windows.Threading;
 
     /// <summary>
@@ -19,6 +20,7 @@ namespace DataGridExtensionsSample
     public partial class MainWindow : INotifyPropertyChanged
     {
         private Random _rand = new Random();
+        private object _column2Filter = "A";
         private const char TextColumnSeparator = '\t';
 
         public MainWindow()
@@ -29,6 +31,21 @@ namespace DataGridExtensionsSample
             Grid1.GetFilter().Filtering += Grid1_Filtering;
 
             ExternalFilter = item => ((DataItem)item).Column1.Contains("7");
+
+            BindingOperations.SetBinding(Column2, DataGridFilterColumn.FilterProperty, new Binding("DataContext.Column2Filter") { Source = this, Mode = BindingMode.TwoWay });
+        }
+
+        public object Column2Filter
+        {
+            get
+            {
+                return _column2Filter;
+            }
+            set
+            {
+                _column2Filter = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Column2Filter)));
+            }
         }
 
         void Grid1_Filtering(object sender, DataGridFilteringEventArgs e)
@@ -61,6 +78,7 @@ namespace DataGridExtensionsSample
             get { return (Predicate<object>)GetValue(ExternalFilterProperty); }
             set { SetValue(ExternalFilterProperty, value); }
         }
+
         public static readonly DependencyProperty ExternalFilterProperty = DependencyProperty.Register("ExternalFilter", typeof(Predicate<object>), typeof(MainWindow));
 
 
