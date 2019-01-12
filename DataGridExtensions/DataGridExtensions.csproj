@@ -1,14 +1,5 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Target Name="TfmSpecificContent">
-    <ItemGroup>
-      <ExternalAnnotations Include="$(TargetDir)$(PackageId).ExternalAnnotations.xml" />
-    </ItemGroup>
-    <CreateItem Include="@(ExternalAnnotations)" AdditionalMetadata="PackagePath=lib\$(TargetFramework)">
-      <Output TaskParameter="Include" ItemName="TfmSpecificPackageFile" />
-    </CreateItem>
-  </Target>
-  
   <PropertyGroup>
     <LanguageTargets>$(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\Microsoft.CSharp.targets</LanguageTargets>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
@@ -17,9 +8,7 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>DataGridExtensions.snk</AssemblyOriginatorKeyFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <TargetsForTfmSpecificContentInPackage>TfmSpecificContent</TargetsForTfmSpecificContentInPackage>
-
-    <PackageLicenseUrl>https://raw.githubusercontent.com/tom-englert/DataGridExtensions/master/License</PackageLicenseUrl>
+    <PackageLicenseFile>License</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/tom-englert/DataGridExtensions</PackageProjectUrl>
     <RepositoryUrl>https://github.com/tom-englert/DataGridExtensions.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -32,14 +21,8 @@ The current version supports the following features:
 - Correctly apply initial sorting criteria.
 - Easy to use\r\n- Easy to customize
 - Attaches to the existing DataGrid</Description>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE;DEBUG;JETBRAINS_ANNOTATIONS</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>TRACE;JETBRAINS_ANNOTATIONS</DefineConstants>
+    <DebugType>embedded</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'net40-client'">
@@ -50,11 +33,9 @@ The current version supports the following features:
 
   <ItemGroup>
     <PackageReference Include="Expression.Blend.Sdk" Version="1.0.2" />
-
-    <PackageReference Include="Fody" Version="*" PrivateAssets="All" />
-    <PackageReference Include="JetBrains.Annotations" Version="*" PrivateAssets="All" />
-    <PackageReference Include="JetBrainsAnnotations.Fody" Version="*" PrivateAssets="All" />
-    <PackageReference Include="SourceLink.Create.CommandLine" Version="*" PrivateAssets="All" /> 
+    <PackageReference Include="Fody" Version="4.0.0-beta.1" PrivateAssets="All" />
+    <PackageReference Include="JetBrainsAnnotations.Fody" Version="2.11.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-18618-05" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
@@ -69,7 +50,7 @@ The current version supports the following features:
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="DataGridExtensions.ExternalAnnotations.xml">
+    <None Include="..\License" Link="License" Pack="true" PackagePath="">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
