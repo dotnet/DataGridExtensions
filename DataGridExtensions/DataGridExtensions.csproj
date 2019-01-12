@@ -8,6 +8,7 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>DataGridExtensions.snk</AssemblyOriginatorKeyFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageOutputPath>$(SolutionDir)nugets</PackageOutputPath>
     <PackageLicenseFile>License</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/tom-englert/DataGridExtensions</PackageProjectUrl>
     <RepositoryUrl>https://github.com/tom-englert/DataGridExtensions.git</RepositoryUrl>
