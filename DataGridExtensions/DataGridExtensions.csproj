@@ -10,6 +10,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageOutputPath>$(SolutionDir)nugets</PackageOutputPath>
     <PackageLicenseFile>License</PackageLicenseFile>
+    <PackageIconUrl>https://raw.githubusercontent.com/tom-englert/DataGridExtensions/master/Icon.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/tom-englert/DataGridExtensions</PackageProjectUrl>
     <RepositoryUrl>https://github.com/tom-englert/DataGridExtensions.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
