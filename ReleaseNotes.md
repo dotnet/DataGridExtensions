@@ -1,4 +1,7 @@
-﻿1.0.40
+﻿1.0.41
+- Fix #16: exception clicking select all on a single select grid
+
+1.0.40
 - Use embedded pdbs and license
 
 1.0.39
