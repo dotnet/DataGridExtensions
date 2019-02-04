@@ -17,7 +17,7 @@
         <Popup d:DataContext="{d:DesignInstance dgx:DataGridFilterColumnControl}"
                x:Name="Popup" IsOpen="{Binding Path=IsChecked, ElementName=ToggleButton, Mode=TwoWay}"
                AllowsTransparency="True" StaysOpen="False">
-          <ListBox x:Name="ListBox" ItemsSource="{Binding SelectableValues}" SelectionMode="Extended" SelectionChanged="ListBox_SelectionChanged">
+          <ListBox x:Name="ListBox" ItemsSource="{Binding SourceValues}" SelectionMode="Extended" SelectionChanged="ListBox_SelectionChanged">
             <ListBox.ItemTemplate>
               <DataTemplate>
                 <DockPanel>

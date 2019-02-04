@@ -1,6 +1,5 @@
 ﻿namespace DataGridExtensions
 {
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
@@ -22,8 +21,6 @@
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
         public static bool GetApplyInitialSorting([NotNull] this DataGrid dataGrid)
         {
-            Contract.Requires(dataGrid != null);
-
             return dataGrid.GetValue<bool>(ApplyInitialSortingProperty);
         }
         /// <summary>
@@ -33,8 +30,6 @@
         /// <param name="value">if set to <c>true</c> the initial sorting will be applied.</param>
         public static void SetApplyInitialSorting([NotNull] this DataGrid dataGrid, bool value)
         {
-            Contract.Requires(dataGrid != null);
-
             dataGrid.SetValue(ApplyInitialSortingProperty, value);
         }
         /// <summary>
@@ -55,9 +50,6 @@
         [NotNull]
         public static IDataGridEventsProvider GetAdditionalEvents([NotNull] this DataGrid dataGrid)
         {
-            Contract.Requires(dataGrid != null);
-            Contract.Ensures(Contract.Result<IDataGridEventsProvider>() != null);
-
             if (!(dataGrid.GetValue(DataGridEventsProviderProperty) is IDataGridEventsProvider eventsProvider))
             {
                 eventsProvider = new DataGridEventsProvider(dataGrid);
@@ -84,7 +76,6 @@
         [AttachedPropertyBrowsableForType(typeof(DataGridTextColumn))]
         public static bool GetIsMultilineEditingEnabled([NotNull] DataGridTextColumn obj)
         {
-            Contract.Requires(obj != null);
             // ReSharper disable once PossibleNullReferenceException
             return (bool)obj.GetValue(IsMultilineEditingEnabledProperty);
         }
@@ -95,7 +86,6 @@
         /// <param name="value">if set to <c>true</c> multi line editing is enabled.</param>
         public static void SetIsMultilineEditingEnabled([NotNull] DataGridTextColumn obj, bool value)
         {
-            Contract.Requires(obj != null);
             obj.SetValue(IsMultilineEditingEnabledProperty, value);
         }
         /// <summary>
@@ -133,7 +123,6 @@
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
         public static bool GetForceCommitOnLostFocus([NotNull] DataGrid dataGrid)
         {
-            Contract.Requires(dataGrid != null);
             // ReSharper disable once PossibleNullReferenceException
             return (bool)dataGrid.GetValue(ForceCommitOnLostFocusProperty);
         }
@@ -144,7 +133,6 @@
         /// <param name="value">If set to <c>true</c> a commit will be forced on the data grid when it looses the focus.</param>
         public static void SetForceCommitOnLostFocus([NotNull] DataGrid dataGrid, bool value)
         {
-            Contract.Requires(dataGrid != null);
             dataGrid.SetValue(ForceCommitOnLostFocusProperty, value);
         }
         /// <summary>

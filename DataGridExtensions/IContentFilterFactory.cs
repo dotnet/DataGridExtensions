@@ -1,13 +1,11 @@
 ﻿namespace DataGridExtensions
 {
-    using System.Diagnostics.Contracts;
-
     using JetBrains.Annotations;
 
     /// <summary>
     /// Interface to be implemented by a content filter factory.
     /// </summary>
-    public partial interface IContentFilterFactory
+    public interface IContentFilterFactory
     {
         /// <summary>
         /// Creates the content filter for the specified content.
@@ -17,22 +15,4 @@
         [NotNull]
         IContentFilter Create([CanBeNull] object content);
     }
-
-    #region IContentFilterFactory contract binding
-    [ContractClass(typeof(ContentFilterFactoryContract))]
-    public partial interface IContentFilterFactory
-    {
-    }
-
-    [ContractClassFor(typeof(IContentFilterFactory))]
-    abstract class ContentFilterFactoryContract : IContentFilterFactory
-    {
-        public IContentFilter Create(object content)
-        {
-            Contract.Ensures(Contract.Result<IContentFilter>() != null);
-
-            throw new System.NotImplementedException();
-        }
-    }
-    #endregion
 }

@@ -4,9 +4,6 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
-    using System.Diagnostics;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
@@ -22,11 +19,6 @@
     /// </summary>
     public sealed class DataGridFilterHost
     {
-        /// <summary>
-        /// The data grid this filter is attached to.
-        /// </summary>
-        [NotNull]
-        private readonly DataGrid _dataGrid;
         /// <summary>
         /// Filter information about each column.
         /// </summary>
@@ -58,13 +50,11 @@
         /// <param name="dataGrid">The data grid to filter.</param>
         internal DataGridFilterHost([NotNull] DataGrid dataGrid)
         {
-            Contract.Requires(dataGrid != null);
-
-            _dataGrid = dataGrid;
+            DataGrid = dataGrid;
 
             dataGrid.Columns.CollectionChanged += Columns_CollectionChanged;
             dataGrid.Loaded += DataGrid_Loaded;
-            dataGrid.CommandBindings.Add(new CommandBinding(DataGrid.SelectAllCommand, DataGrid_SelectAll));
+            dataGrid.CommandBindings.Add(new CommandBinding(DataGrid.SelectAllCommand, DataGrid_SelectAll, DataGrid_CanSelectAll));
 
             if (dataGrid.ColumnHeaderStyle != null)
                 return;
@@ -106,27 +96,13 @@
         /// Gets a the active filter column controls for this data grid.
         /// </summary>
         [NotNull, ItemNotNull]
-        public IList<DataGridFilterColumnControl> FilterColumnControls
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<IList<DataGridFilterColumnControl>>() != null);
-                return new ReadOnlyCollection<DataGridFilterColumnControl>(_filterColumnControls);
-            }
-        }
+        public IList<DataGridFilterColumnControl> FilterColumnControls => new ReadOnlyCollection<DataGridFilterColumnControl>(_filterColumnControls);
 
         /// <summary>
         /// The data grid this filter is attached to.
         /// </summary>
         [NotNull]
-        public DataGrid DataGrid
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<DataGrid>() != null);
-                return _dataGrid;
-            }
-        }
+        public DataGrid DataGrid { get; }
 
         /// <summary>
         /// Enables filtering by showing or hiding the filter controls.
@@ -156,12 +132,12 @@
                 return;
 
             // Ensure that no cell is in editing state, this would cause an exception when trying to change the filter!
-            _dataGrid.CommitEdit(); // Commit cell
-            _dataGrid.CommitEdit(); // Commit row
+            DataGrid.CommitEdit(); // Commit cell
+            DataGrid.CommitEdit(); // Commit row
 
             if (_deferFilterEvaluationTimer == null)
             {
-                var throttleDelay = _dataGrid.GetFilterEvaluationDelay();
+                var throttleDelay = DataGrid.GetFilterEvaluationDelay();
                 _deferFilterEvaluationTimer = new DispatcherTimer(throttleDelay, DispatcherPriority.Input, (_, __) => EvaluateFilter(), Dispatcher.CurrentDispatcher);
             }
 
@@ -174,8 +150,6 @@
         /// <param name="filterColumn"></param>
         internal void AddColumn([NotNull] DataGridFilterColumnControl filterColumn)
         {
-            Contract.Requires(filterColumn != null);
-
             filterColumn.Visibility = _isFilteringEnabled ? Visibility.Visible : Visibility.Hidden;
             _filterColumnControls.Add(filterColumn);
         }
@@ -185,8 +159,6 @@
         /// </summary>
         internal void RemoveColumn([NotNull] DataGridFilterColumnControl filterColumn)
         {
-            Contract.Requires(filterColumn != null);
-
             _filterColumnControls.Remove(filterColumn);
             OnFilterChanged();
         }
@@ -197,9 +169,7 @@
         [NotNull]
         internal IContentFilter CreateContentFilter([CanBeNull] object content)
         {
-            Contract.Ensures(Contract.Result<IContentFilter>() != null);
-
-            return _dataGrid.GetContentFilterFactory().Create(content);
+            return DataGrid.GetContentFilterFactory().Create(content);
         }
 
         private void DataGrid_Loaded([NotNull] object sender, [NotNull] RoutedEventArgs e)
@@ -219,9 +189,13 @@
         {
             e.Handled = true;
 
-            if (!_isFilteringEnabled || (_dataGrid.Items.Count > 0))
+            if (!_isFilteringEnabled || (DataGrid.Items.Count > 0))
             {
-                DataGrid.SelectAll();
+                if (DataGrid.SelectionMode != DataGridSelectionMode.Single)
+                {
+                    DataGrid.SelectAll();
+                }
+
                 return;
             }
 
@@ -229,6 +203,11 @@
             {
                 control.Filter = null;
             }
+        }
+
+        private void DataGrid_CanSelectAll(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = (DataGrid.SelectionMode != DataGridSelectionMode.Single) || (DataGrid.Items.Count == 0);
         }
 
         private void Columns_CollectionChanged([NotNull] object sender, [NotNull] NotifyCollectionChangedEventArgs e)
@@ -244,15 +223,13 @@
             if (!filteredColumnsWithEmptyHeaderTemplate.Any())
                 return;
 
-            var resource = _dataGrid.GetResourceLocator()?.FindResource(DataGrid, DataGridFilter.ColumnHeaderTemplateKey) 
-                ?? _dataGrid.TryFindResource(DataGridFilter.ColumnHeaderTemplateKey);
+            var resource = DataGrid.GetResourceLocator()?.FindResource(DataGrid, DataGridFilter.ColumnHeaderTemplateKey) 
+                ?? DataGrid.TryFindResource(DataGridFilter.ColumnHeaderTemplateKey);
 
             var headerTemplate = (DataTemplate)resource;
 
             foreach (var column in filteredColumnsWithEmptyHeaderTemplate)
             {
-                Contract.Assume(column != null);
-
                 column.HeaderTemplate = headerTemplate;
             }
         }
@@ -271,7 +248,7 @@
         {
             _deferFilterEvaluationTimer?.Stop();
 
-            var collectionView = _dataGrid.Items;
+            var collectionView = DataGrid.Items;
 
             // Collect all active filters of all known columns.
             var columnFilters = GetColumnFilters();
@@ -291,7 +268,7 @@
                 if (newColumns.Length > 0)
                 {
                     var args = new DataGridFilteringEventArgs(newColumns);
-                    Filtering(_dataGrid, args);
+                    Filtering(DataGrid, args);
 
                     if (args.Cancel)
                     {
@@ -347,15 +324,6 @@
                 .Where(column => !ReferenceEquals(column, excluded))
                 .Where(column => column.IsVisible && column.IsFiltered)
                 .ToArray();
-        }
-
-        [ContractInvariantMethod]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Required for code contracts.")]
-        [Conditional("CONTRACTS_FULL")]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_dataGrid != null);
-            Contract.Invariant(_filterColumnControls != null);
         }
     }
 }

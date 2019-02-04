@@ -4,9 +4,6 @@
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.ComponentModel;
-    using System.Diagnostics;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
@@ -65,7 +62,7 @@
         [CanBeNull]
         public Style ColumnHeaderGripperToolTipStyle
         {
-            get => (Style)GetValue(ColumnHeaderGripperToolTipStyleProperty); 
+            get => (Style)GetValue(ColumnHeaderGripperToolTipStyleProperty);
             set => SetValue(ColumnHeaderGripperToolTipStyleProperty, value);
         }
         /// <summary>
@@ -81,7 +78,7 @@
         [CanBeNull]
         public IResourceLocator ResourceLocator
         {
-            get => (IResourceLocator)GetValue(ResourceLocatorProperty); 
+            get => (IResourceLocator)GetValue(ResourceLocatorProperty);
             set => SetValue(ResourceLocatorProperty, value);
         }
         /// <summary>
@@ -97,7 +94,6 @@
             base.OnAttached();
 
             var dataGrid = AssociatedObject;
-            Contract.Assume(dataGrid != null);
 
             dataGrid.Loaded += DataGrid_Loaded;
             dataGrid.Unloaded += DataGrid_Unloaded;
@@ -105,8 +101,6 @@
 
         private void DataGrid_Loaded([NotNull] object sender, [NotNull] EventArgs e)
         {
-            Contract.Requires(sender != null);
-
             var dataGrid = (DataGrid)sender;
 
             dataGrid.BeginInvoke(DispatcherPriority.Background, () => DataGrid_Loaded(dataGrid));
@@ -114,8 +108,6 @@
 
         private void DataGrid_Loaded([NotNull] DataGrid dataGrid)
         {
-            Contract.Requires(dataGrid != null);
-
             _scrollViewer = dataGrid.Template?.FindName("DG_ScrollViewer", dataGrid) as ScrollViewer;
             if (_scrollViewer == null)
                 return;
@@ -137,8 +129,6 @@
 
         private void DataGrid_Unloaded([NotNull] object sender, [NotNull] RoutedEventArgs e)
         {
-            Contract.Requires(sender != null);
-
             var dataGrid = (DataGrid)sender;
 
             var scrollViewer = _scrollViewer;
@@ -218,16 +208,12 @@
 
         private void DataGrid_ColumnVisibilityChanged([NotNull] object sender, [NotNull] EventArgs e)
         {
-            Contract.Requires(sender != null);
-
             UpdateColumnWidths((DataGrid)sender, null, UpdateMode.ResetStarSize);
             _updateColumnGripperToolTipVisibilityThrottle.Tick();
         }
 
         private void UpdateColumnWidths([NotNull] DataGrid dataGrid, [CanBeNull] DataGridColumn modifiedColum, UpdateMode updateMode)
         {
-            Contract.Requires(dataGrid != null);
-
             // ReSharper disable PossibleNullReferenceException
             var dataGridColumns = dataGrid.Columns
                 .OrderBy(c => c.DisplayIndex)
@@ -265,9 +251,6 @@
 
         private bool DistributeAvailableSize([NotNull] DataGrid dataGrid, [NotNull, ItemNotNull] DataGridColumn[] dataGridColumns, [CanBeNull] DataGridColumn modifiedColum, UpdateMode updateMode)
         {
-            Contract.Requires(dataGrid != null);
-            Contract.Requires(dataGridColumns != null);
-
             var scrollViewer = _scrollViewer;
             if (scrollViewer == null)
                 return false;
@@ -314,8 +297,6 @@
 
         private static void HijackStarSizeColumnsInfo([NotNull] DataGrid dataGrid)
         {
-            Contract.Requires(dataGrid != null);
-
             foreach (var column in dataGrid.Columns)
             {
                 // ReSharper disable once PossibleNullReferenceException
@@ -361,11 +342,7 @@
 
         private void InjectColumnHeaderStyle([NotNull] DataGrid dataGrid)
         {
-            Contract.Requires(dataGrid != null);
-
             var baseStyle = dataGrid.ColumnHeaderStyle ?? (Style)dataGrid.FindResource(typeof(DataGridColumnHeader));
-
-            Contract.Assume(baseStyle != null);
 
             if (baseStyle.Setters.OfType<Setter>().Any(setter => setter.Property == ColumnHeaderGripperExtenderProperty))
                 return;
@@ -377,15 +354,11 @@
 
         private static double GetActualWidth([NotNull] DataGridColumn column)
         {
-            Contract.Requires(column != null);
-
             return column.ActualWidth;
         }
 
         private static double GetStarSize([NotNull] DataGridColumn column)
         {
-            Contract.Requires(column != null);
-
             return column.GetValue<double>(StarSizeProperty);
         }
 
@@ -424,8 +397,6 @@
 
         private void ApplyGripperToolTip([NotNull] DataGridColumnHeader columnHeader, [NotNull] string gripperName, [NotNull] DependencyProperty toolTipProperty)
         {
-            Contract.Requires(columnHeader != null);
-
             if (!(columnHeader.Template?.FindName(gripperName, columnHeader) is Thumb gripper))
                 return;
 
@@ -433,8 +404,8 @@
             if (dataGrid == null)
                 return;
 
-            var style = ColumnHeaderGripperToolTipStyle 
-                ?? (ResourceLocator?.FindResource(dataGrid, ColumnHeaderGripperToolTipStyleKey) 
+            var style = ColumnHeaderGripperToolTipStyle
+                ?? (ResourceLocator?.FindResource(dataGrid, ColumnHeaderGripperToolTipStyleKey)
                     ?? dataGrid.TryFindResource(ColumnHeaderGripperToolTipStyleKey)) as Style;
 
             var toolTip = new ToolTip { Style = style };
@@ -452,14 +423,6 @@
         {
             Default,
             ResetStarSize
-        }
-
-        [ContractInvariantMethod]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Required for code contracts.")]
-        [Conditional("CONTRACTS_FULL")]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_updateColumnGripperToolTipVisibilityThrottle != null);
         }
     }
 }

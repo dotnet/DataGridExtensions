@@ -1,9 +1,6 @@
 ﻿namespace DataGridExtensions.Framework
 {
     using System;
-    using System.Diagnostics;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Diagnostics.Contracts;
     using System.Threading;
     using System.Windows.Threading;
 
@@ -29,8 +26,6 @@
         /// <param name="target">The target action to invoke when the throttle condition is hit.</param>
         public DispatcherThrottle(DispatcherPriority priority, [NotNull] Action target)
         {
-            Contract.Requires(target != null);
-
             _target = target;
             _priority = priority;
         }
@@ -49,15 +44,6 @@
 
                 _target();
             });
-        }
-
-        [ContractInvariantMethod]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Required for code contracts.")]
-        [Conditional("CONTRACTS_FULL")]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_dispatcher != null);
-            Contract.Invariant(_target != null);
         }
     }
 }

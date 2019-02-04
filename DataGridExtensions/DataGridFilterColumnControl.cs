@@ -1,12 +1,8 @@
-﻿using System.Diagnostics;
-
-namespace DataGridExtensions
+﻿namespace DataGridExtensions
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
@@ -190,8 +186,6 @@ namespace DataGridExtensions
         {
             get
             {
-                Contract.Ensures(Contract.Result<IEnumerable<string>>() != null);
-
                 return InternalValues().Distinct().ToArray();
             }
         }
@@ -209,8 +203,6 @@ namespace DataGridExtensions
         {
             get
             {
-                Contract.Ensures(Contract.Result<IEnumerable<string>>() != null);
-
                 // use the global filter, if any...
                 var predicate = FilterHost?.CreatePredicate(null) ?? (_ => true);
 
@@ -233,8 +225,6 @@ namespace DataGridExtensions
         {
             get
             {
-                Contract.Ensures(Contract.Result<IEnumerable<string>>() != null);
-
                 // filter by all columns except this.
                 var predicate = FilterHost?.CreatePredicate(FilterHost.GetColumnFilters(this)) ?? (_ => true);
 
@@ -349,8 +339,6 @@ namespace DataGridExtensions
         [NotNull, ItemNotNull]
         protected IEnumerable<string> InternalValues()
         {
-            Contract.Ensures(Contract.Result<IEnumerable<string>>() != null);
-
             return DataGrid?.Items
                 .Cast<object>()
                 .Select(GetCellContent)
@@ -363,9 +351,6 @@ namespace DataGridExtensions
         [NotNull, ItemNotNull]
         protected IEnumerable<string> InternalSourceValues([NotNull] Predicate<object> predicate)
         {
-            Contract.Requires(predicate != null);
-            Contract.Ensures(Contract.Result<IEnumerable<string>>() != null);
-
             var itemsSource = DataGrid?.ItemsSource;
 
             if (itemsSource == null)
@@ -398,14 +383,5 @@ namespace DataGridExtensions
         public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion
-
-        [ContractInvariantMethod]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Required for code contracts.")]
-        [Conditional("CONTRACTS_FULL")]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant((FilterHost == null) || (DataGrid != null));
-        }
-
     }
 }

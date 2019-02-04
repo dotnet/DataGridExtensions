@@ -1,6 +1,5 @@
 ﻿namespace DataGridExtensions.Behaviors
 {
-    using System.Diagnostics.Contracts;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Interactivity;
@@ -35,7 +34,6 @@
             base.OnAttached();
 
             var dataGrid = AssociatedObject;
-            Contract.Assume(dataGrid != null);
 
             dataGrid.PreparingCellForEdit += DataGrid_PreparingCellForEdit;
             dataGrid.CellEditEnding += DataGrid_CellEditEnding;
@@ -47,7 +45,6 @@
             base.OnDetaching();
 
             var dataGrid = AssociatedObject;
-            Contract.Assume(dataGrid != null);
 
             dataGrid.PreparingCellForEdit -= DataGrid_PreparingCellForEdit;
             dataGrid.CellEditEnding -= DataGrid_CellEditEnding;

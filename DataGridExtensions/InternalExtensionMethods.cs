@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Windows;
     using System.Windows.Media;
     using System.Windows.Threading;
@@ -17,8 +16,6 @@
         /// <param name="timer">The timer.</param>
         internal static void Restart([NotNull] this DispatcherTimer timer)
         {
-            Contract.Requires(timer != null);
-
             timer.Stop();
             timer.Start();
         }
@@ -47,9 +44,6 @@
         [NotNull, ItemNotNull]
         public static IEnumerable<DependencyObject> AncestorsAndSelf([NotNull] this DependencyObject self)
         {
-            Contract.Requires(self != null);
-            Contract.Ensures(Contract.Result<IEnumerable<DependencyObject>>() != null);
-
             while (self != null)
             {
                 yield return self;
@@ -62,11 +56,7 @@
         /// </summary>
         public static void BeginInvoke([NotNull] this Visual self, [NotNull] Action action)
         {
-            Contract.Requires(self != null);
-            Contract.Requires(action != null);
-
             var dispatcher = self.Dispatcher;
-            Contract.Assume(dispatcher != null);
             dispatcher.BeginInvoke(action);
         }
 
@@ -75,11 +65,7 @@
         /// </summary>
         public static void BeginInvoke([NotNull] this Visual self, DispatcherPriority priority, [NotNull] Action action)
         {
-            Contract.Requires(self != null);
-            Contract.Requires(action != null);
-
             var dispatcher = self.Dispatcher;
-            Contract.Assume(dispatcher != null);
             dispatcher.BeginInvoke(priority, action);
         }
 
@@ -105,9 +91,6 @@
         [CanBeNull]
         public static T GetValue<T>([NotNull] this DependencyObject self, [NotNull] DependencyProperty property)
         {
-            Contract.Requires(self != null);
-            Contract.Requires(property != null);
-
             return self.GetValue(property).SafeCast<T>();
         }
     }
@@ -126,10 +109,6 @@
         [NotNull, ItemNotNull]
         public static IEnumerable<Tuple<T1, T2>> AsTuples<T1, T2>([NotNull, ItemCanBeNull] IEnumerable<T1> first, [NotNull, ItemCanBeNull] IEnumerable<T2> second)
         {
-            Contract.Requires(first != null);
-            Contract.Requires(second != null);
-            Contract.Ensures(Contract.Result<IEnumerable<Tuple<T1, T2>>>() != null);
-
             using (var e1 = first.GetEnumerator())
             {
                 using (var e2 = second.GetEnumerator())

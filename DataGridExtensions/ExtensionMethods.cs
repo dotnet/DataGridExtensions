@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
@@ -27,8 +26,6 @@
         // ReSharper disable once SuggestBaseTypeForParameter : works only with text column!
         public static void EnableMultilineEditing([NotNull] this DataGridTextColumn column)
         {
-            Contract.Requires(column != null);
-
             var textBoxStyle = new Style(typeof(TextBox), column.EditingElementStyle);
             var setters = textBoxStyle.Setters;
 
@@ -44,8 +41,6 @@
 
         private static void EditingElement_PreviewKeyDown([NotNull] object sender, [NotNull] KeyEventArgs e)
         {
-            Contract.Requires(sender != null);
-
             if (e.Key != Key.Return)
                 return;
 
@@ -131,8 +126,6 @@
         [CanBeNull, ItemNotNull]
         public static IList<IList<string>> GetCellSelection([NotNull] this DataGrid dataGrid)
         {
-            Contract.Requires(dataGrid != null);
-
             var selectedCells = dataGrid.GetVisibleSelectedCells();
 
             if ((selectedCells == null) || !selectedCells.Any())
@@ -156,17 +149,11 @@
         /// <returns><c>true</c> if the dimensions of data and cell selection did match and the cells data has been replaced; otherwise <c>false</c>.</returns>
         public static bool PasteCells([NotNull] this DataGrid dataGrid, [NotNull, ItemNotNull] IList<IList<string>> data)
         {
-            Contract.Requires(dataGrid != null);
-            Contract.Requires(data != null);
-            // Contract.Requires(Contract.ForAll(data, item => item != null));
-
             var numberOfDataRows = data.Count;
             if (data.Count < 1)
                 return false;
 
             var firstRow = data[0];
-            Contract.Assume(firstRow != null);
-            // Contract.Assume(Contract.ForAll(firstRow, item => item != null));
 
             var numberOfDataColumns = firstRow.Count;
 
@@ -253,8 +240,6 @@
         [NotNull, ItemCanBeNull]
         private static IEnumerable<T> Repeat<T>([NotNull, ItemCanBeNull] ICollection<T> source, int count)
         {
-            Contract.Requires(source != null);
-
             for (var i = 0; i < count; i++)
             {
                 foreach (var item in source)
@@ -267,9 +252,6 @@
         [NotNull, ItemNotNull]
         private static IList<string> GetRowContent([NotNull] IGrouping<object, DataGridCellInfo> row)
         {
-            Contract.Requires(row != null);
-            Contract.Ensures(Contract.Result<IList<string>>() != null);
-
             return row
                 // ReSharper disable once PossibleNullReferenceException
                 .OrderBy(i => i.Column.DisplayIndex)

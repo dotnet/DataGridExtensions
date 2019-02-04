@@ -1,7 +1,6 @@
 ﻿namespace DataGridExtensions
 {
     using System;
-    using System.Diagnostics.Contracts;
     using System.Windows;
     using System.Windows.Controls;
 
@@ -20,8 +19,6 @@
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
         public static bool GetIsAutoFilterEnabled([NotNull] this DataGrid obj)
         {
-            Contract.Requires(obj != null);
-
             return obj.GetValue<bool>(IsAutoFilterEnabledProperty);
         }
         /// <summary>
@@ -29,8 +26,6 @@
         /// </summary>
         public static void SetIsAutoFilterEnabled([NotNull] this DataGrid obj, bool value)
         {
-            Contract.Requires(obj != null);
-
             obj.SetValue(IsAutoFilterEnabledProperty, value);
         }
         /// <summary>
@@ -58,9 +53,6 @@
         [NotNull]
         public static DataGridFilterHost GetFilter([NotNull] this DataGrid dataGrid)
         {
-            Contract.Requires(dataGrid != null);
-            Contract.Ensures(Contract.Result<DataGridFilterHost>() != null);
-
             var value = (DataGridFilterHost)dataGrid.GetValue(FilterProperty);
             if (value == null)
             {
@@ -91,9 +83,6 @@
         [NotNull]
         public static IContentFilterFactory GetContentFilterFactory([NotNull] this DataGrid dataGrid)
         {
-            Contract.Requires(dataGrid != null);
-            Contract.Ensures(Contract.Result<IContentFilterFactory>() != null);
-
             return (IContentFilterFactory)dataGrid.GetValue(ContentFilterFactoryProperty) ?? DefaultContentFilterFactory;
         }
         /// <summary>
@@ -131,8 +120,6 @@
         /// <returns>The throttle delay.</returns>
         public static TimeSpan GetFilterEvaluationDelay([NotNull] this DataGrid obj)
         {
-            Contract.Requires(obj != null);
-
             return obj.GetValue<TimeSpan>(FilterEvaluationDelayProperty);
         }
 
@@ -143,8 +130,6 @@
         /// <param name="value">The new throttle delay.</param>
         public static void SetFilterEvaluationDelay([NotNull] this DataGrid obj, TimeSpan value)
         {
-            Contract.Requires(obj != null);
-
             obj.SetValue(FilterEvaluationDelayProperty, value);
         }
         /// <summary>
@@ -165,7 +150,6 @@
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
         public static IResourceLocator GetResourceLocator([NotNull] this DataGrid obj)
         {
-            Contract.Requires(obj != null);
             return (IResourceLocator)obj.GetValue(ResourceLocatorProperty);
         }
         /// <summary>
@@ -175,7 +159,6 @@
         /// <param name="value">The value.</param>
         public static void SetResourceLocator([NotNull] this DataGrid obj, [CanBeNull] IResourceLocator value)
         {
-            Contract.Requires(obj != null);
             obj.SetValue(ResourceLocatorProperty, value);
         }
         /// <summary>
@@ -200,8 +183,6 @@
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
         public static Predicate<object> GetGlobalFilter([NotNull] DataGrid obj)
         {
-            Contract.Requires(obj != null);
-
             return (Predicate<object>)obj.GetValue(GlobalFilterProperty);
         }
         /// <summary>
@@ -211,8 +192,6 @@
         /// <param name="value">The property value to set.</param>
         public static void SetGlobalFilter([NotNull] DataGrid obj, [CanBeNull] Predicate<object> value)
         {
-            Contract.Requires(obj != null);
-
             obj.SetValue(GlobalFilterProperty, value);
         }
         /// <summary>
@@ -229,8 +208,6 @@
 
         private static void GlobalFilter_Changed([NotNull] DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            Contract.Requires(d != null);
-
             ((DataGrid)d).GetFilter().SetGlobalFilter((Predicate<object>)e.NewValue);
         }
 

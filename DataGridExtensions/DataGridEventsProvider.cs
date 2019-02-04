@@ -4,7 +4,6 @@
     using System.Collections;
     using System.Collections.Specialized;
     using System.ComponentModel;
-    using System.Diagnostics.Contracts;
     using System.Windows.Controls;
 
     using JetBrains.Annotations;
@@ -76,8 +75,6 @@
 
         private void RemoveEventHandlers([NotNull] DataGridColumn column)
         {
-            Contract.Requires(column != null);
-
             VisibilityPropertyDescriptor.RemoveValueChanged(column, DataGridColumnVisibility_Changed);
             ActualWidthPropertyDescriptor.RemoveValueChanged(column, DataGridColumnActualWidth_Changed);
             DisplayIndexPropertyDescriptor.RemoveValueChanged(column, DataGridColumnDisplayIndex_Changed);
@@ -85,8 +82,6 @@
 
         private void AddEventHandlers([NotNull] DataGridColumn column)
         {
-            Contract.Requires(column != null);
-
             VisibilityPropertyDescriptor.AddValueChanged(column, DataGridColumnVisibility_Changed);
             ActualWidthPropertyDescriptor.AddValueChanged(column, DataGridColumnActualWidth_Changed);
             DisplayIndexPropertyDescriptor.AddValueChanged(column, DataGridColumnDisplayIndex_Changed);
@@ -94,42 +89,30 @@
 
         private void OnColumnVisibilityChanged([NotNull] DataGridColumn column)
         {
-            Contract.Requires(column != null);
-
             ColumnVisibilityChanged?.Invoke(_dataGrid, new DataGridColumnEventArgs(column));
         }
 
         private void OnColumnActualWidthChanged([NotNull] DataGridColumn column)
         {
-            Contract.Requires(column != null);
-
             ColumnActualWidthChanged?.Invoke(_dataGrid, new DataGridColumnEventArgs(column));
         }
 
         private void OnColumnDisplayIndexChanged([NotNull] DataGridColumn column)
         {
-            Contract.Requires(column != null);
-
             ColumnDisplayIndexChanged?.Invoke(_dataGrid, new DataGridColumnEventArgs(column));
         }
 
         private void DataGridColumnVisibility_Changed([NotNull] object source, [NotNull] EventArgs e)
         {
-            Contract.Requires(source != null);
-
             OnColumnVisibilityChanged((DataGridColumn)source);
         }
 
         private void DataGridColumnActualWidth_Changed([NotNull] object source, [NotNull] EventArgs e)
         {
-            Contract.Requires(source != null);
-
             OnColumnActualWidthChanged((DataGridColumn)source);
         }
         private void DataGridColumnDisplayIndex_Changed([NotNull] object source, [NotNull] EventArgs e)
         {
-            Contract.Requires(source != null);
-
             OnColumnDisplayIndexChanged((DataGridColumn)source);
         }
     }

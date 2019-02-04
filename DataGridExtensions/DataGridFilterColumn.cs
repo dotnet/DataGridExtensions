@@ -1,7 +1,6 @@
 ﻿namespace DataGridExtensions
 {
     using System;
-    using System.Diagnostics.Contracts;
     using System.Windows;
     using System.Windows.Controls;
 
@@ -51,8 +50,6 @@
         [CanBeNull]
         public static ControlTemplate GetTemplate([NotNull] this DataGridColumn column)
         {
-            Contract.Requires(column != null);
-
             return (ControlTemplate)column.GetValue(TemplateProperty);
         }
         /// <summary>
@@ -60,8 +57,6 @@
         /// </summary>
         public static void SetTemplate([NotNull] this DataGridColumn column, [CanBeNull] ControlTemplate value)
         {
-            Contract.Requires(column != null);
-
             column.SetValue(TemplateProperty, value);
         }
         /// <summary>
@@ -81,8 +76,6 @@
         [CanBeNull]
         public static object GetFilter([NotNull] this DataGridColumn column)
         {
-            Contract.Requires(column != null);
-
             return column.GetValue(FilterProperty);
         }
         /// <summary>
@@ -90,8 +83,6 @@
         /// </summary>
         public static void SetFilter([NotNull] this DataGridColumn column, [CanBeNull] object value)
         {
-            Contract.Requires(column != null);
-
             column.SetValue(FilterProperty, value);
         }
         /// <summary>

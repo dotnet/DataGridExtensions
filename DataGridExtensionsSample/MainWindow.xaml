@@ -32,7 +32,7 @@
       <Grid d:DataContext="{d:DesignInstance dgx:DataGridFilterColumnControl}">
         <Grid>
           <Control Style="{DynamicResource {x:Static dgx:DataGridFilter.IconStyleKey}}"/>
-          <ComboBox x:Name="ComboBox" Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding SelectableValues}" IsEditable="True" />
+          <ComboBox x:Name="ComboBox" Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding SourceValues}" IsEditable="True" />
         </Grid>
       </Grid>
       <ControlTemplate.Triggers>
@@ -94,7 +94,7 @@
               <Button Click="ClearAllFilters_Click">Clear all filters</Button>
             </StackPanel>
           </StackPanel>
-          <DataGrid Name="Grid1"
+          <DataGrid Name="Grid1" SelectionMode="Single"
                     ItemsSource="{Binding Items}"
                     dgx:DataGridFilter.IsAutoFilterEnabled="{Binding Path=IsChecked, ElementName=IsFilterEnabled}">
             <DataGrid.ItemsPanel>

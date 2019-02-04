@@ -1,6 +1,5 @@
 ﻿namespace DataGridExtensions.Behaviors
 {
-    using System.Diagnostics.Contracts;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Interactivity;
@@ -23,7 +22,6 @@
             base.OnAttached();
 
             var button = AssociatedObject;
-            Contract.Assume(button != null);
 
             button.Click += AssociatedObject_Click;
         }
@@ -37,7 +35,6 @@
         protected override void OnDetaching()
         {
             var button = AssociatedObject;
-            Contract.Assume(button != null);
 
             button.Click -= AssociatedObject_Click;
 
