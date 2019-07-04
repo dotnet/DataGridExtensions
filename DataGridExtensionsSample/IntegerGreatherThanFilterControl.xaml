@@ -5,14 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:dgx="clr-namespace:DataGridExtensions;assembly=DataGridExtensions"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="30" d:DesignWidth="300">
   <Control.Template>
     <ControlTemplate>
       <Grid>
         <Control Style="{DynamicResource {x:Static dgx:DataGridFilter.IconStyleKey}}"/>
         <StackPanel x:Name="inputPanel" Orientation="Horizontal" Margin="4,0,2,0" Background="Red">
           <TextBlock Text="> "/>
-          <TextBox x:Name="textBox" TextChanged="TextBox_TextChanged" MinWidth="20"/>
+          <TextBox x:Name="textBox" TextChanged="TextBox_TextChanged" MinWidth="20" />
         </StackPanel>
       </Grid>
       <ControlTemplate.Triggers>

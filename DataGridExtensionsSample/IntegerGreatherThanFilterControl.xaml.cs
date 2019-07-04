@@ -1,5 +1,6 @@
 ﻿namespace DataGridExtensionsSample
 {
+    using System.Globalization;
     using System.Windows;
     using System.Windows.Controls;
     using DataGridExtensions;
@@ -16,13 +17,18 @@
             InitializeComponent();
         }
 
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+
+            _textBox = Template.FindName("textBox", this) as TextBox;
+        }
+
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _textBox = (TextBox)sender;
-            var text = _textBox.Text;
-            int threshold;
+            var text = ((TextBox)sender)?.Text;
 
-            Filter = !int.TryParse(text, out threshold) ? null : new ContentFilter(threshold);
+            Filter = !int.TryParse(text, NumberStyles.Any, CultureInfo.CurrentCulture, out var threshold) ? null : new ContentFilter(threshold);
         }
 
         public IContentFilter Filter
@@ -38,10 +44,11 @@
 
         private void Filter_Changed(object newValue)
         {
-            if ((newValue == null) && (_textBox != null))
-            {
-                _textBox.Text = string.Empty;
-            }
+            var textBox = _textBox;
+            if (textBox == null)
+                return;
+
+            textBox.Text = (newValue as ContentFilter)?.Value ?? string.Empty;
         }
 
         class ContentFilter : IContentFilter
@@ -62,6 +69,8 @@
 
                 return int.TryParse(value.ToString(), out i) && (i > _threshold);
             }
+
+            public string Value => _threshold.ToString(CultureInfo.CurrentCulture);
         }
     }
 }
