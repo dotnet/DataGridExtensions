@@ -78,7 +78,7 @@
   <Grid>
     <Button x:Name="ReloadButton" Content="Reload data" VerticalAlignment="Top" HorizontalAlignment="Right" Click="Reload_Click" />
 
-    <TabControl>
+    <TabControl SelectedIndex="2">
 
       <TabItem Header="Basic usage">
         <DockPanel>
