@@ -108,8 +108,6 @@ namespace DataGridExtensionsSample
             Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() =>
             {
                 // Sample to manipulate the filter values by code.
-                Grid1.Columns[0].SetFilter("True");
-                Grid1.Columns[2].SetFilter("3");
             }));
         }
 
