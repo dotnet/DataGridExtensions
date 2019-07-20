@@ -12,6 +12,8 @@ namespace DataGridExtensionsSample
     using System.Diagnostics;
     using System.IO;
     using System.Text;
+    using System.Threading;
+    using System.Threading.Tasks;
     using System.Windows.Data;
     using System.Windows.Threading;
 
@@ -27,6 +29,15 @@ namespace DataGridExtensionsSample
         {
             InitializeComponent();
 
+            var xs = Enumerable.Range(0, 100).Select(index => new DataItem(_rand, index)).ToArray();
+            Task.Factory
+                .StartNew(() => Thread.Sleep(3000))
+                .ContinueWith(task =>
+                {
+                    Items = xs;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Items)));
+                });
+            
             // Sample usage of the filtering event
             Grid1.GetFilter().Filtering += Grid1_Filtering;
 
@@ -65,7 +76,7 @@ namespace DataGridExtensionsSample
         /// <summary>
         /// Provide a simple list of 100 random items.
         /// </summary>
-        public IList<DataItem> Items { get; } = new ObservableCollection<DataItem>(Enumerable.Range(0, 100).Select(index => new DataItem(index)));
+        public IEnumerable<DataItem> Items { get; private set; }
 
         public Predicate<object> ExternalFilter
         {
