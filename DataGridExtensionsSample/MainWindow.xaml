@@ -143,7 +143,7 @@
               <Run>Overrides the icon template to show an orange filter symbol.</Run>
             </TextBlock>
           </DockPanel>
-          <DataGrid ItemsSource="{Binding Source={StaticResource SortedItems}, NotifyOnTargetUpdated=True}" AutoGenerateColumns="False" FrozenColumnCount="2"
+          <DataGrid ItemsSource="{Binding Source={StaticResource SortedItems}}" AutoGenerateColumns="False" FrozenColumnCount="2"
                     dgx:DataGridFilter.GlobalFilter="{Binding ExternalFilter}"
                     dgx:DataGridFilter.IsAutoFilterEnabled="True"
                     dgx:Tools.ApplyInitialSorting="True"
