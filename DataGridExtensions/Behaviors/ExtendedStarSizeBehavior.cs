@@ -10,7 +10,11 @@
     using System.Windows.Controls.Primitives;
     using System.Windows.Data;
     using System.Windows.Input;
+#if NETFRAMEWORK
     using System.Windows.Interactivity;
+#elif NETCOREAPP
+    using Microsoft.Xaml.Behaviors;
+#endif
     using System.Windows.Threading;
 
     using DataGridExtensions.Framework;
