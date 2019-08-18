@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <LanguageTargets>$(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\Microsoft.CSharp.targets</LanguageTargets>
+    <LanguageTargets>$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Bin\Microsoft.CSharp.targets</LanguageTargets>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-    <TargetFrameworks>net40-client;net45</TargetFrameworks>
+    <TargetFrameworks>net40-client;net45;netcoreapp3.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>DataGridExtensions.snk</AssemblyOriginatorKeyFile>
@@ -33,8 +33,12 @@ The current version supports the following features:
     <TargetFrameworkProfile>client</TargetFrameworkProfile>
   </PropertyGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0'">
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.0.1" />
+    <PackageReference Include="Microsoft.WindowsDesktop.App" Version="3.0.0-preview8-28405-07" />
+  </ItemGroup>
+    
   <ItemGroup>
-    <PackageReference Include="Expression.Blend.Sdk" Version="1.0.2" />
     <PackageReference Include="Fody" Version="4.0.0-beta.1" PrivateAssets="All" />
     <PackageReference Include="JetBrainsAnnotations.Fody" Version="2.11.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-18618-05" PrivateAssets="All" />
@@ -44,7 +48,8 @@ The current version supports the following features:
     <Page Include="Themes\Generic.xaml" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net40-client' or '$(TargetFramework)' == 'net45'">
+    <PackageReference Include="Expression.Blend.Sdk" Version="1.0.2" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System.Xaml" />
@@ -56,5 +61,4 @@ The current version supports the following features:
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
 </Project>
