@@ -2,11 +2,7 @@
 {
     using System.Windows;
     using System.Windows.Controls;
-#if NETFRAMEWORK
-    using System.Windows.Interactivity;
-# elif NETCOREAPP
     using Microsoft.Xaml.Behaviors;
-#endif
 
 
     using JetBrains.Annotations;
