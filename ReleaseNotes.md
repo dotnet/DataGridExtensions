@@ -1,4 +1,8 @@
-﻿1.0.41
+﻿2.0.0
+- Migrate System.Windows.Interactivity to Microsoft.Xaml.Behaviors
+- Drop support for .Net < 4.5, add support for Net Core 3.0
+
+1.0.41
 - Fix #16: exception clicking select all on a single select grid
 
 1.0.40
