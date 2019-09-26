@@ -1,4 +1,7 @@
-﻿2.0.0
+﻿2.0.1
+- Fix #25: Missing resources in netcoreapp3.0 target
+ 
+2.0.0
 - Migrate System.Windows.Interactivity to Microsoft.Xaml.Behaviors
 - Drop support for .Net < 4.5, add support for Net Core 3.0
 
