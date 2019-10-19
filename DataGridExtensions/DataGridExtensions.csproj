@@ -28,10 +28,6 @@ The current version supports the following features:
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\Icon.png" Link="Icon.png" Pack="true" PackagePath="\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.0.1" />
     <PackageReference Include="Fody" Version="6.0.0" PrivateAssets="All" />
     <PackageReference Include="JetBrainsAnnotations.Fody" Version="2.14.0" PrivateAssets="All" />
@@ -39,9 +35,8 @@ The current version supports the following features:
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\License" Link="License" Pack="true" PackagePath="">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="..\Icon.png" Link="Icon.png" Pack="true" PackagePath="\" />
+    <None Include="..\License" Link="License" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>
