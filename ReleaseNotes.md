@@ -1,4 +1,10 @@
-﻿2.0.1
+﻿2.1.1
+- Fix #27: Change notification for SourceValues when collection of item changes.
+
+2.1
+- Update Microsoft.Xaml.Behaviors.Wpf
+
+2.0.1
 - Fix #25: Missing resources in netcoreapp3.0 target
  
 2.0.0
