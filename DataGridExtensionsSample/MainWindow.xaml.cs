@@ -7,6 +7,7 @@ using DataGridExtensions;
 
 namespace DataGridExtensionsSample
 {
+    using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.IO;
@@ -19,7 +20,6 @@ namespace DataGridExtensionsSample
     /// </summary>
     public partial class MainWindow : INotifyPropertyChanged
     {
-        private Random _rand = new Random();
         private object _column2Filter = "A";
         private const char TextColumnSeparator = '\t';
 
@@ -65,13 +65,7 @@ namespace DataGridExtensionsSample
         /// <summary>
         /// Provide a simple list of 100 random items.
         /// </summary>
-        public IEnumerable<DataItem> Items
-        {
-            get
-            {
-                return Enumerable.Range(0, 100).Select(index => new DataItem(_rand, index)).ToArray();
-            }
-        }
+        public IList<DataItem> Items { get; } = new ObservableCollection<DataItem>(Enumerable.Range(0, 100).Select(index => new DataItem(index)));
 
         public Predicate<object> ExternalFilter
         {
@@ -137,6 +131,16 @@ namespace DataGridExtensionsSample
         private void ClearAllFilters_Click(object sender, RoutedEventArgs e)
         {
             Grid1.GetFilter().Clear();
+        }
+
+        private void ClearIpsum_Click(object sender, RoutedEventArgs e)
+        {
+            var ipsumItems = Items.Where(item => item.Column5 == "ipsum").ToList();
+
+            foreach (var item in ipsumItems)
+            {
+                Items.Remove(item);
+            }
         }
     }
 

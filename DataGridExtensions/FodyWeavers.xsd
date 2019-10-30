@@ -4,6 +4,7 @@
   <xs:element name="Weavers">
     <xs:complexType>
       <xs:all>
+        <xs:element name="Throttle" minOccurs="0" maxOccurs="1" type="xs:anyType" />
         <xs:element name="JetBrainsAnnotations" minOccurs="0" maxOccurs="1" type="xs:anyType" />
       </xs:all>
       <xs:attribute name="VerifyAssembly" type="xs:boolean">

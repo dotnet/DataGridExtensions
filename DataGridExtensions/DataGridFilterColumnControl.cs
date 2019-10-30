@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.Specialized;
     using System.ComponentModel;
     using System.Linq;
     using System.Windows;
@@ -10,7 +11,11 @@
     using System.Windows.Data;
     using System.Windows.Threading;
 
+    using DataGridExtensions.Framework;
+
     using JetBrains.Annotations;
+
+    using Throttle;
 
     /// <summary>
     /// This class is the control hosting all information needed for filtering of one column.
@@ -72,6 +77,7 @@
             DataGrid.SourceUpdated += DataGrid_SourceOrTargetUpdated;
             DataGrid.TargetUpdated += DataGrid_SourceOrTargetUpdated;
             DataGrid.RowEditEnding += DataGrid_RowEditEnding;
+            ((INotifyCollectionChanged)DataGrid.Items).CollectionChanged += DataGrid_CollectionChanged;
             // ReSharper restore PossibleNullReferenceException
 
             // Must set a non-null empty template here, else we won't get the coerce value callback when the columns attached property is null!
@@ -103,6 +109,7 @@
                 dataGrid.SourceUpdated -= DataGrid_SourceOrTargetUpdated;
                 dataGrid.TargetUpdated -= DataGrid_SourceOrTargetUpdated;
                 dataGrid.RowEditEnding -= DataGrid_RowEditEnding;
+                ((INotifyCollectionChanged)dataGrid.Items).CollectionChanged -= DataGrid_CollectionChanged;
             }
 
             // Clear all bindings generated during load.
@@ -123,8 +130,14 @@
 
         private void DataGrid_RowEditEnding([NotNull] object sender, [NotNull] DataGridRowEditEndingEventArgs e)
         {
-            this.BeginInvoke(DispatcherPriority.Background, ValuesUpdated);
+            ValuesUpdated();
         }
+
+        private void DataGrid_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            ValuesUpdated();
+        }
+
 
         /// <summary>
         /// The user provided filter (IFilter) or content (usually a string) used to filter this column.
@@ -259,6 +272,7 @@
         /// <summary>
         /// Notification of the filter that the content of the values might have changed.
         /// </summary>
+        [Throttled(typeof(DispatcherThrottle), (int)DispatcherPriority.Background)]
         internal void ValuesUpdated()
         {
             // We simply raise a change event for the properties and create the output on the fly in the getter of the properties;

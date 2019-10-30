@@ -7,18 +7,19 @@ namespace DataGridExtensionsSample
 {
     public class DataItem
     {
-        private static string[] _samples = new[] {"lorem", "ipsum", "dolor", "sit", "amet"};
+        private static readonly Random _rand = new Random();
+        private static readonly string[] _samples = new[] {"lorem", "ipsum", "dolor", "sit", "amet"};
 
-        public DataItem(Random rand, int index)
+        public DataItem(int index)
         {
-            Flag = rand.Next(2) == 0;
+            Flag = _rand.Next(2) == 0;
             Index = index;
             Column1 = Guid.NewGuid().ToString();
-            Column2 = rand.Next(20) == 0 ? null : Guid.NewGuid().ToString();
+            Column2 = _rand.Next(20) == 0 ? null : Guid.NewGuid().ToString();
             Column3 = Guid.NewGuid().ToString();
             Column4 = Guid.NewGuid().ToString();
-            Column5 = _samples[rand.Next(_samples.Length)];
-            Probability = rand.NextDouble();
+            Column5 = _samples[_rand.Next(_samples.Length)];
+            Probability = _rand.NextDouble();
         }
 
         public bool Flag { get; private set; }
