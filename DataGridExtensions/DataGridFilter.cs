@@ -226,6 +226,12 @@
         public static readonly ResourceKey CheckBoxColumnFilterTemplateKey = new ComponentResourceKey(typeof(DataGridFilter), typeof(DataGridCheckBoxColumn));
 
         /// <summary>
+        /// Template for the filter on a column represented by a DataGridComboBoxColumn.
+        /// </summary>
+        [NotNull]
+        public static readonly ResourceKey ComboBoxColumnFilterTemplateKey = new ComponentResourceKey(typeof(DataGridFilter), typeof(DataGridComboBoxColumn));
+
+        /// <summary>
         /// Template for the filter on a column represented by a DataGridCheckBoxColumn.
         /// </summary>
         [NotNull]
@@ -254,6 +260,12 @@
         /// </summary>
         [NotNull]
         public static readonly ResourceKey ColumnHeaderSearchCheckBoxStyleKey = new ComponentResourceKey(typeof(DataGridFilter), "ColumnHeaderSearchCheckBoxStyle");
+
+        /// <summary>
+        /// Style for the filter check box in a filtered DataGridCheckBoxColumn.
+        /// </summary>
+        [NotNull]
+        public static readonly ResourceKey ColumnHeaderSearchComboBoxStyleKey = new ComponentResourceKey(typeof(DataGridFilter), "ColumnHeaderSearchComboBoxStyle");
 
         /// <summary>
         /// Style for the filter text box in a filtered DataGridTextColumn.

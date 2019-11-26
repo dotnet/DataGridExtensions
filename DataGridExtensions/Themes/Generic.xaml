@@ -118,7 +118,17 @@
     </Grid>
   </ControlTemplate>
 
-  <!-- Default template for a filter on a column represented by a DataGridTemplateColumn. -->
+  <!-- Default template for a filter on a column represented by a DataGridComboBoxColumn. -->
+  <ControlTemplate x:Key="{x:Static src:DataGridFilter.ComboBoxColumnFilterTemplateKey}">
+      <Grid>
+          <Control Style="{DynamicResource {x:Static src:DataGridFilter.IconStyleKey}}" />
+          <ComboBox Style="{DynamicResource {x:Static src:DataGridFilter.ColumnHeaderSearchComboBoxStyleKey}}"
+                    ItemsSource="{Binding Column.ItemsSource}"
+                    SelectedValue="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}" />
+      </Grid>
+  </ControlTemplate>
+
+    <!-- Default template for a filter on a column represented by a DataGridTemplateColumn. -->
   <ControlTemplate x:Key="{x:Static src:DataGridFilter.TemplateColumnFilterTemplateKey}">
     <Grid>
       <Control Style="{DynamicResource {x:Static src:DataGridFilter.IconStyleKey}}" />

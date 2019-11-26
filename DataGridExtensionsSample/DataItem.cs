@@ -5,6 +5,8 @@ using System.Text;
 
 namespace DataGridExtensionsSample
 {
+    using System.Windows;
+
     public class DataItem
     {
         private static readonly Random _rand = new Random();
@@ -20,6 +22,7 @@ namespace DataGridExtensionsSample
             Column4 = Guid.NewGuid().ToString();
             Column5 = _samples[_rand.Next(_samples.Length)];
             Probability = _rand.NextDouble();
+            EnumColumn = Visibility.Hidden;
         }
 
         public bool Flag { get; private set; }
@@ -30,5 +33,7 @@ namespace DataGridExtensionsSample
         public string Column4 { get; set; }
         public string Column5 { get; set; }
         public double Probability { get; private set; }
+
+        public Visibility EnumColumn { get; private set; }
     }
 }

@@ -94,7 +94,7 @@
               <Button Click="ClearAllFilters_Click">Clear all filters</Button>
             </StackPanel>
           </StackPanel>
-          <DataGrid Name="Grid1" SelectionMode="Single"
+          <DataGrid Name="Grid1" SelectionMode="Single" IsReadOnly="False"
                     ItemsSource="{Binding Items}"
                     dgx:DataGridFilter.IsAutoFilterEnabled="{Binding Path=IsChecked, ElementName=IsFilterEnabled}">
             <DataGrid.ItemsPanel>

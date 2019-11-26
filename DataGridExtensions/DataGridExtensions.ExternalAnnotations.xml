@@ -67,6 +67,9 @@
   <member name="F:DataGridExtensions.DataGridFilter.ColumnHeaderSearchCheckBoxStyleKey">
     <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
   </member>
+  <member name="F:DataGridExtensions.DataGridFilter.ColumnHeaderSearchComboBoxStyleKey">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
   <member name="F:DataGridExtensions.DataGridFilter.ColumnHeaderSearchTextBoxClearButtonStyleKey">
     <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
   </member>
@@ -74,6 +77,9 @@
     <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
   </member>
   <member name="F:DataGridExtensions.DataGridFilter.ColumnHeaderTemplateKey">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="F:DataGridExtensions.DataGridFilter.ComboBoxColumnFilterTemplateKey">
     <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
   </member>
   <member name="F:DataGridExtensions.DataGridFilter.ContentFilterFactoryProperty">
