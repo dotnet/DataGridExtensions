@@ -88,6 +88,58 @@
   </Style>
 
   <!-- Reusable filter symbol -->
+    <Style x:Key="ClearSelectionButtonStyle" TargetType="Button">
+    <Setter Property="Background" Value="#FF3C688D"/>
+    <Setter Property="BorderBrush" Value="#FF617584"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="Width" Value="15"/>
+    <Setter Property="Height" Value="15"/>
+    <Setter Property="Padding" Value="0"/>
+    <Setter Property="Template">
+        <Setter.Value>
+            <ControlTemplate TargetType="Button">
+                <Grid Background="Transparent">
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal"/>
+                            <VisualState x:Name="MouseOver">
+                                <Storyboard>
+                                    <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="MouseOverElement">
+                                        <DiscreteObjectKeyFrame KeyTime="0">
+                                            <DiscreteObjectKeyFrame.Value>
+                                                <Visibility>Visible</Visibility>
+                                            </DiscreteObjectKeyFrame.Value>
+                                        </DiscreteObjectKeyFrame>
+                                    </ObjectAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </VisualState>
+                            <VisualState x:Name="Pressed">
+                                <Storyboard>
+                                    <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="MouseOverElement">
+                                        <DiscreteObjectKeyFrame KeyTime="0">
+                                            <DiscreteObjectKeyFrame.Value>
+                                                <Visibility>Visible</Visibility>
+                                            </DiscreteObjectKeyFrame.Value>
+                                        </DiscreteObjectKeyFrame>
+                                    </ObjectAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </VisualState>
+                            <VisualState x:Name="Disabled"/>
+                        </VisualStateGroup>
+                        <VisualStateGroup x:Name="FocusStates">
+                            <VisualState x:Name="Focused"/>
+                            <VisualState x:Name="Unfocused"/>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                    <Border x:Name="MouseOverElement" BorderThickness="{TemplateBinding BorderThickness}" Background="#FFC8E4ED" BorderBrush="#FF3F6A8E" Visibility="Collapsed"/>
+                    <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" HorizontalAlignment="Center" Margin="{TemplateBinding Padding}" VerticalAlignment="Center"/>
+                </Grid>
+            </ControlTemplate>
+        </Setter.Value>
+    </Setter>
+</Style>
+
+  <!-- Reusable filter symbol -->
   <ControlTemplate x:Key="{x:Static src:DataGridFilter.IconTemplateKey}">
     <Path Data="M0,0 L10,0 6,4 6,9 4,9 4,4 Z" Fill="{TemplateBinding Foreground}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,0" />
   </ControlTemplate>
@@ -122,9 +174,13 @@
   <ControlTemplate x:Key="{x:Static src:DataGridFilter.ComboBoxColumnFilterTemplateKey}">
       <Grid>
           <Control Style="{DynamicResource {x:Static src:DataGridFilter.IconStyleKey}}" />
-          <ComboBox Style="{DynamicResource {x:Static src:DataGridFilter.ColumnHeaderSearchComboBoxStyleKey}}"
+          <ComboBox x:Name="combobox" Style="{DynamicResource {x:Static src:DataGridFilter.ColumnHeaderSearchComboBoxStyleKey}}"
+                    Padding="3,3,12,3"
                     ItemsSource="{Binding Column.ItemsSource}"
                     SelectedValue="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}" />
+          <Button Command="{x:Static src:Commands.ClearComboBoxCommand}" CommandParameter="{x:Reference combobox}" HorizontalAlignment="Right" Margin="0,0,14,0" Style="{StaticResource ClearSelectionButtonStyle}">
+              <Path Data="M0,0 L1.6,0 L3,1.56 L4.4,0 L6,0 L3.8,2.5 L6,5 L4.4,5 L3,3.49 L1.59,5 L-4.2E-09,5 L2.18,2.5 z" Fill="#CC111111" Height="5" Stretch="Fill" Width="7"/>
+          </Button>
       </Grid>
   </ControlTemplate>
 
