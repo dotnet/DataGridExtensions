@@ -117,7 +117,7 @@
 
         public bool IsMatch(object value)
         {
-            return ExcludedItems?.Contains(value as string) != true;
+            return ExcludedItems?.Contains(value?.ToString()) != true;
         }
     }
 }
