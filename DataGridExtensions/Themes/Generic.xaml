@@ -127,6 +127,14 @@
     </Grid>
   </ControlTemplate>
 
+  <ControlTemplate x:Key="{x:Static src:DataGridFilter.ComboBoxColumnFilterTemplateKey}">
+    <Grid>
+      <Control Style="{DynamicResource {x:Static src:DataGridFilter.IconStyleKey}}" />
+      <TextBox Style="{DynamicResource {x:Static src:DataGridFilter.ColumnHeaderSearchTextBoxStyleKey}}"
+               Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}" />
+    </Grid>
+  </ControlTemplate>
+
   <!-- Default template for the column header including the filter control. -->
   <DataTemplate x:Key="{x:Static src:DataGridFilter.ColumnHeaderTemplateKey}">
     <DockPanel Background="Transparent">

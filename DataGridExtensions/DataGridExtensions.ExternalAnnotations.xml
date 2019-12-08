@@ -76,6 +76,9 @@
   <member name="F:DataGridExtensions.DataGridFilter.ColumnHeaderTemplateKey">
     <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
   </member>
+  <member name="F:DataGridExtensions.DataGridFilter.ComboBoxColumnFilterTemplateKey">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
   <member name="F:DataGridExtensions.DataGridFilter.ContentFilterFactoryProperty">
     <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
   </member>

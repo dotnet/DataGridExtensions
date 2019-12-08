@@ -232,6 +232,12 @@
         public static readonly ResourceKey TemplateColumnFilterTemplateKey = new ComponentResourceKey(typeof(DataGridFilter), typeof(DataGridTemplateColumn));
 
         /// <summary>
+        /// Template for the filter on a column represented by a DataGridComboBoxColumn.
+        /// </summary>
+        [NotNull]
+        public static readonly ResourceKey ComboBoxColumnFilterTemplateKey = new ComponentResourceKey(typeof(DataGridFilter), typeof(DataGridComboBoxColumn));
+
+        /// <summary>
         /// Template for the whole column header.
         /// </summary>
         [NotNull]
