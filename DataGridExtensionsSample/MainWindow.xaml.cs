@@ -27,17 +27,24 @@ namespace DataGridExtensionsSample
 
         public MainWindow()
         {
-            InitializeComponent();
-
+            // Initialize Items before InitializeComponent, bindings get already evaluated in InitializeComponent!
             Items = new ObservableCollection<DataItem>();
 
-            var xs = Enumerable.Range(0, 100).Select(index => new DataItem(_rand, index)).ToArray();
+            InitializeComponent();
+
+            var xs = Enumerable.Range(0, 100).Select(index => new DataItem(index)).ToArray();
             Task.Factory
                 .StartNew(() => Thread.Sleep(3000))
                 .ContinueWith(task =>
                 {
-                    foreach (var item in xs) Items.Add(item);
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Items)));
+                    // must populate ObservableCollection in UI-thread!
+                    Dispatcher.BeginInvoke((Action) (() =>
+                    {
+                        foreach (var item in xs)
+                        {
+                            Items.Add(item);
+                        }
+                    }));
                 });
             
             // Sample usage of the filtering event
