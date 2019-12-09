@@ -29,12 +29,14 @@ namespace DataGridExtensionsSample
         {
             InitializeComponent();
 
+            Items = new ObservableCollection<DataItem>();
+
             var xs = Enumerable.Range(0, 100).Select(index => new DataItem(_rand, index)).ToArray();
             Task.Factory
                 .StartNew(() => Thread.Sleep(3000))
                 .ContinueWith(task =>
                 {
-                    Items = xs;
+                    foreach (var item in xs) Items.Add(item);
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Items)));
                 });
             
@@ -76,7 +78,7 @@ namespace DataGridExtensionsSample
         /// <summary>
         /// Provide a simple list of 100 random items.
         /// </summary>
-        public IEnumerable<DataItem> Items { get; private set; }
+        public ObservableCollection<DataItem> Items { get; private set; }
 
         public Predicate<object> ExternalFilter
         {
