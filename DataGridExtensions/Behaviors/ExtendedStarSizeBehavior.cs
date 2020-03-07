@@ -50,7 +50,7 @@
 
         /// <inheritdoc />
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:DataGridExtensions.Behaviors.ExtendedStarSizeBehavior" /> class.
+        /// Initializes a new instance of the <see cref="DataGridExtensions.Behaviors.ExtendedStarSizeBehavior" /> class.
         /// </summary>
         public ExtendedStarSizeBehavior()
         {

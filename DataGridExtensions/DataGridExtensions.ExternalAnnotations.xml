@@ -290,6 +290,11 @@
     <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     <attribute ctor="M:JetBrains.Annotations.ItemNotNullAttribute.#ctor" />
   </member>
+  <member name="M:DataGridExtensions.ExtensionMethods.CanSelectAll(System.Windows.Controls.DataGrid)">
+    <parameter name="dataGrid">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
   <member name="M:DataGridExtensions.ExtensionMethods.EnableMultilineEditing(System.Windows.Controls.DataGridTextColumn)">
     <parameter name="column">
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />

@@ -1,5 +1,8 @@
-﻿2.2
+﻿2.3
 - Fix #32: SelectAll() is not available when SelectionUnit="Cell"
+
+2.2
+- #29: Support default for ComboBoxColumns.
 
 2.1.1
 - Fix #27: Change notification for SourceValues when collection of item changes.
