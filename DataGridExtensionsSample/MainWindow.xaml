@@ -144,6 +144,7 @@
             </TextBlock>
           </DockPanel>
           <DataGrid ItemsSource="{Binding Source={StaticResource SortedItems}}" AutoGenerateColumns="False" FrozenColumnCount="2"
+                    SelectionUnit="Cell"
                     dgx:DataGridFilter.GlobalFilter="{Binding ExternalFilter}"
                     dgx:DataGridFilter.IsAutoFilterEnabled="True"
                     dgx:Tools.ApplyInitialSorting="True"

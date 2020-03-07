@@ -237,6 +237,19 @@
                 .ToArray();
         }
 
+        /// <summary>
+        /// Determines whether it's safe to call "DataGrid.SelectAll()".
+        /// </summary>
+        /// <param name="dataGrid">The data grid.</param>
+        /// <returns>
+        ///   <c>true</c> if it's safe to call "DataGrid.SelectAll(); otherwise, <c>false</c>.
+        /// </returns>
+        public static bool CanSelectAll([NotNull] this DataGrid dataGrid)
+        {
+            return (dataGrid.SelectionMode != DataGridSelectionMode.Single && dataGrid.SelectionUnit != DataGridSelectionUnit.Cell);
+        }
+
+
         [NotNull, ItemCanBeNull]
         private static IEnumerable<T> Repeat<T>([NotNull, ItemCanBeNull] ICollection<T> source, int count)
         {

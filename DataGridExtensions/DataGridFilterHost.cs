@@ -185,13 +185,13 @@
             headersPresenter?.SetValue(KeyboardNavigation.TabNavigationProperty, KeyboardNavigationMode.None);
         }
 
-        private void DataGrid_SelectAll(object sender, [NotNull] ExecutedRoutedEventArgs e)
+        private void DataGrid_SelectAll([CanBeNull] object sender, [NotNull] ExecutedRoutedEventArgs e)
         {
             e.Handled = true;
 
             if (!_isFilteringEnabled || (DataGrid.Items.Count > 0))
             {
-                if (DataGrid.SelectionMode != DataGridSelectionMode.Single)
+                if (DataGrid.CanSelectAll())
                 {
                     DataGrid.SelectAll();
                 }
@@ -205,9 +205,9 @@
             }
         }
 
-        private void DataGrid_CanSelectAll(object sender, CanExecuteRoutedEventArgs e)
+        private void DataGrid_CanSelectAll([CanBeNull] object sender, [NotNull] CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = (DataGrid.SelectionMode != DataGridSelectionMode.Single) || (DataGrid.Items.Count == 0);
+            e.CanExecute = DataGrid.CanSelectAll() || (DataGrid.Items.Count == 0);
         }
 
         private void Columns_CollectionChanged([NotNull] object sender, [NotNull] NotifyCollectionChangedEventArgs e)
