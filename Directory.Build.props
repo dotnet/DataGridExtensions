@@ -3,8 +3,8 @@
   <PropertyGroup>
     <Authors>Tom Englert</Authors>
     <Company>tom-englert.de</Company>
-    <Copyright>© 2012-2019 tom-englert.de</Copyright>
+    <Copyright>© 2012-2020 tom-englert.de</Copyright>
     <Product>Tom's Toolbox</Product>
-    <Version>2.2.0</Version>
+    <Version>2.3.0</Version>
   </PropertyGroup>
 </Project>

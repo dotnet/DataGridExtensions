@@ -1,4 +1,7 @@
-﻿2.1.1
+﻿2.2
+- Fix #32: SelectAll() is not available when SelectionUnit="Cell"
+
+2.1.1
 - Fix #27: Change notification for SourceValues when collection of item changes.
 
 2.1
