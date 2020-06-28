@@ -64,6 +64,30 @@
 
         #endregion
 
+        #region FilterHost attached property
+
+        /// <summary>
+        /// Gets the filter host for the data grid of this column.
+        /// </summary>
+        public static DataGridFilterHost? GetFilterHost(this DataGridColumn column)
+        {
+            return (DataGridFilterHost?)column.GetValue(FilterHostProperty);
+        }
+        /// <summary>
+        /// Sets the filter host for the data grid of this column.
+        /// </summary>
+        public static void SetFilterHost(this DataGridColumn column, DataGridFilterHost? value)
+        {
+            column.SetValue(FilterHostProperty, value);
+        }
+        /// <summary>
+        /// Identifies the FilterHost dependency property.
+        /// </summary>
+        public static readonly DependencyProperty FilterHostProperty =
+            DependencyProperty.RegisterAttached("FilterHost", typeof(DataGridFilterHost), typeof(DataGridFilterColumn));
+
+        #endregion
+
         #region Filter attached property
 
         /// <summary>
@@ -84,7 +108,17 @@
         /// Identifies the Filter dependency property
         /// </summary>
         public static readonly DependencyProperty FilterProperty =
-            DependencyProperty.RegisterAttached("Filter", typeof(object), typeof(DataGridFilterColumn));
+            DependencyProperty.RegisterAttached("Filter", typeof(object), typeof(DataGridFilterColumn), new FrameworkPropertyMetadata(null, Filter_Changed));
+
+        private static void Filter_Changed(DependencyObject d, DependencyPropertyChangedEventArgs args)
+        {
+            if (!(d is DataGridColumn column))
+                return;
+
+            // Update the effective filter. If the filter is provided as content, the content filter will be recreated when needed.
+            column.SetActiveFilter(args.NewValue as IContentFilter);
+            column.GetFilterHost()?.OnFilterChanged();
+        }
 
         #endregion
 

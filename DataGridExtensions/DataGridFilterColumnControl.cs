@@ -59,7 +59,7 @@
 
             // Find our host and attach our self.
             FilterHost = DataGrid.GetFilter();
-            FilterHost.SetColumnControl(column, this);
+            FilterHost.AttachColumnControl(column, this);
 
             DataGrid.SourceUpdated += DataGrid_SourceOrTargetUpdated;
             DataGrid.TargetUpdated += DataGrid_SourceOrTargetUpdated;
@@ -130,16 +130,7 @@
         /// Identifies the Filter dependency property
         /// </summary>
         public static readonly DependencyProperty FilterProperty =
-            DependencyProperty.Register("Filter", typeof(object), typeof(DataGridFilterColumnControl), new FrameworkPropertyMetadata(null, (sender, e) => ((DataGridFilterColumnControl)sender).Filter_Changed(e.NewValue)));
-
-        private void Filter_Changed(object? newValue)
-        {
-            // Update the effective filter. If the filter is provided as content, the content filter will be recreated when needed.
-            Column?.SetActiveFilter(newValue as IContentFilter);
-
-            // Notify the filter to update the view.
-            FilterHost?.OnFilterChanged();
-        }
+            DependencyProperty.Register("Filter", typeof(object), typeof(DataGridFilterColumnControl));
 
         private static object? Template_CoerceValue(DependencyObject sender, object? baseValue)
         {

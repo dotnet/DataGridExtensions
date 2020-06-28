@@ -27,7 +27,7 @@
         /// <summary>
         /// The columns that we are currently filtering.
         /// </summary>
-        private ICollection<DataGridColumn> _filteredColumns = new DataGridColumn[0];
+        private IEnumerable<DataGridColumn> _filteredColumns = Enumerable.Empty<DataGridColumn>();
         /// <summary>
         /// Flag indicating if filtering is currently enabled.
         /// </summary>
@@ -138,18 +138,20 @@
         /// Adds a new column.
         /// </summary>
         /// <param name="column"></param>
-        /// <param name="filterColumn"></param>
-        internal void SetColumnControl(DataGridColumn column, DataGridFilterColumnControl filterColumn)
+        /// <param name="filterColumnControl"></param>
+        internal void AttachColumnControl(DataGridColumn column, DataGridFilterColumnControl filterColumnControl)
         {
-            filterColumn.Visibility = _isFilteringEnabled ? Visibility.Visible : Visibility.Hidden;
+            column.SetFilterHost(this);
 
-            _filterColumnControls[column] = filterColumn;
+            filterColumnControl.Visibility = _isFilteringEnabled ? Visibility.Visible : Visibility.Hidden;
+
+            _filterColumnControls[column] = filterColumnControl;
         }
 
         /// <summary>
         /// Removes an unloaded column.
         /// </summary>
-        internal void ClearColumnControl(DataGridColumn column)
+        internal void DetachColumnControl(DataGridColumn column)
         {
             _filterColumnControls[column] = null;
         }
