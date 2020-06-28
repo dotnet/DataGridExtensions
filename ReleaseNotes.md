@@ -1,4 +1,7 @@
-﻿2.3
+﻿2.4
+- Fix  #23: Column virtualization is not supported
+
+2.3
 - Fix #32: SelectAll() is not available when SelectionUnit="Cell"
 
 2.2
