@@ -1,7 +1,5 @@
 ﻿namespace DataGridExtensions
 {
-    using JetBrains.Annotations;
-
     /// <summary>
     /// Interface to be implemented by content filters.
     /// </summary>
@@ -14,6 +12,6 @@
         /// <returns>
         ///   <c>true</c> if the specified value matches the condition; otherwise, <c>false</c>.
         /// </returns>
-        bool IsMatch([CanBeNull] object value);
+        bool IsMatch(object? value);
     }
 }

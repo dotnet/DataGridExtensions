@@ -115,6 +115,7 @@
           </TextBlock>
           <DataGrid ItemsSource="{Binding Items}"
                     AutoGeneratingColumn="DataGrid_AutoGeneratingColumn"
+                    EnableColumnVirtualization="True"
                     dgx:DataGridFilter.ContentFilterFactory="{StaticResource RegexContentFilterFactory}"
                     dgx:DataGridFilter.IsAutoFilterEnabled="True">
             <DataGrid.Resources>

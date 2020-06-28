@@ -1,7 +1,5 @@
 ﻿namespace DataGridExtensions
 {
-    using JetBrains.Annotations;
-
     /// <summary>
     /// Interface to be implemented by a content filter factory.
     /// </summary>
@@ -12,7 +10,6 @@
         /// </summary>
         /// <param name="content">The content to create the filter for.</param>
         /// <returns>The new filter.</returns>
-        [NotNull]
-        IContentFilter Create([CanBeNull] object content);
+        IContentFilter Create(object? content);
     }
 }

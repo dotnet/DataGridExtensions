@@ -2,9 +2,8 @@
 {
     using System.Windows;
     using System.Windows.Controls;
-    using Microsoft.Xaml.Behaviors;
 
-    using JetBrains.Annotations;
+    using Microsoft.Xaml.Behaviors;
 
     /// <summary>
     /// Clears the text of the <see cref="TextBox"/> when the associated button is clicked.
@@ -44,8 +43,7 @@
         /// <summary>
         /// Gets or sets the text box to clear.
         /// </summary>
-        [CanBeNull]
-        public TextBox TextBox
+        public TextBox? TextBox
         {
             get => (TextBox)GetValue(TextBoxProperty);
             set => SetValue(TextBoxProperty, value);
@@ -53,11 +51,10 @@
         /// <summary>
         /// Identifies the <see cref="TextBox"/> dependency property
         /// </summary>
-        [NotNull]
         public static readonly DependencyProperty TextBoxProperty =
             DependencyProperty.Register("TextBox", typeof (TextBox), typeof (ClearTextBoxOnButtonClickBehavior));
 
-        private void AssociatedObject_Click([NotNull] object sender, [NotNull] RoutedEventArgs e)
+        private void AssociatedObject_Click(object sender, RoutedEventArgs e)
         {
             var textBox = TextBox;
 

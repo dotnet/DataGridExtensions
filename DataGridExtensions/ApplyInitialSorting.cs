@@ -4,14 +4,11 @@
     using System.Windows;
     using System.Windows.Controls;
 
-    using JetBrains.Annotations;
-
     internal static class ApplyInitialSorting
     {
-        public static void IsEnabled_Changed([NotNull] DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        public static void IsEnabled_Changed(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            var dataGrid = sender as DataGrid;
-            if (dataGrid == null)
+            if (!(sender is DataGrid dataGrid))
                 return;
 
             if (true.Equals(e.NewValue))
@@ -20,10 +17,9 @@
                 dataGrid.Loaded -= DataGrid_Loaded;
         }
 
-        private static void DataGrid_Loaded([NotNull] object sender, [NotNull] RoutedEventArgs e)
+        private static void DataGrid_Loaded(object sender, RoutedEventArgs e)
         {
-            var dataGrid = sender as DataGrid;
-            if (dataGrid == null)
+            if (!(sender is DataGrid dataGrid))
                 return;
 
             foreach (var column in dataGrid.Columns)

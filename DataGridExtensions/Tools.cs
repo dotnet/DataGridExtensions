@@ -5,8 +5,6 @@
     using System.Windows.Controls;
     using System.Windows.Input;
 
-    using JetBrains.Annotations;
-
     /// <summary>
     /// Some useful tools for data grids.
     /// </summary>
@@ -19,23 +17,22 @@
         /// </summary>
         /// <param name="dataGrid">The data grid.</param>
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
-        public static bool GetApplyInitialSorting([NotNull] this DataGrid dataGrid)
+        public static bool GetApplyInitialSorting(this DataGrid dataGrid)
         {
-            return dataGrid.GetValue<bool>(ApplyInitialSortingProperty);
+            return (bool)dataGrid.GetValue(ApplyInitialSortingProperty);
         }
         /// <summary>
         /// Sets a flag to enable the 'apply initial sorting' feature.
         /// </summary>
         /// <param name="dataGrid">The data grid.</param>
         /// <param name="value">if set to <c>true</c> the initial sorting will be applied.</param>
-        public static void SetApplyInitialSorting([NotNull] this DataGrid dataGrid, bool value)
+        public static void SetApplyInitialSorting(this DataGrid dataGrid, bool value)
         {
             dataGrid.SetValue(ApplyInitialSortingProperty, value);
         }
         /// <summary>
         /// Identifies the ApplyInitialSorting dependency property
         /// </summary>
-        [NotNull]
         public static readonly DependencyProperty ApplyInitialSortingProperty =
             DependencyProperty.RegisterAttached("ApplyInitialSorting", typeof(bool), typeof(Tools), new FrameworkPropertyMetadata(false, ApplyInitialSorting.IsEnabled_Changed));
 
@@ -47,8 +44,7 @@
         /// </summary>
         /// <param name="dataGrid">The data grid.</param>
         /// <returns>The event provider.</returns>
-        [NotNull]
-        public static IDataGridEventsProvider GetAdditionalEvents([NotNull] this DataGrid dataGrid)
+        public static IDataGridEventsProvider GetAdditionalEvents(this DataGrid dataGrid)
         {
             if (!(dataGrid.GetValue(DataGridEventsProviderProperty) is IDataGridEventsProvider eventsProvider))
             {
@@ -61,7 +57,6 @@
         /// <summary>
         /// Identifies the DataGridEventsProvider dependency property
         /// </summary>
-        [NotNull]
         private static readonly DependencyProperty DataGridEventsProviderProperty =
             DependencyProperty.RegisterAttached("DataGridEventsProvider", typeof(IDataGridEventsProvider), typeof(Tools));
 
@@ -71,22 +66,21 @@
         /// <summary>
         /// Gets a value that indicates if multi line editing is enabled for the specified text column.
         /// </summary>
-        /// <param name="obj">The column.</param>
+        /// <param name="column">The column.</param>
         /// <returns><c>true</c> if  multi line editing is enabled.</returns>
         [AttachedPropertyBrowsableForType(typeof(DataGridTextColumn))]
-        public static bool GetIsMultilineEditingEnabled([NotNull] DataGridTextColumn obj)
+        public static bool GetIsMultilineEditingEnabled(DataGridTextColumn column)
         {
-            // ReSharper disable once PossibleNullReferenceException
-            return (bool)obj.GetValue(IsMultilineEditingEnabledProperty);
+            return (bool)column.GetValue(IsMultilineEditingEnabledProperty);
         }
         /// <summary>
         /// Sets a value that indicates if multi line editing is enabled for the specified text column.
         /// </summary>
-        /// <param name="obj">The column.</param>
+        /// <param name="column">The column.</param>
         /// <param name="value">if set to <c>true</c> multi line editing is enabled.</param>
-        public static void SetIsMultilineEditingEnabled([NotNull] DataGridTextColumn obj, bool value)
+        public static void SetIsMultilineEditingEnabled(DataGridTextColumn column, bool value)
         {
-            obj.SetValue(IsMultilineEditingEnabledProperty, value);
+            column.SetValue(IsMultilineEditingEnabledProperty, value);
         }
         /// <summary>
         /// Identifies the <see cref="P:DataGridExtensions.Tools.IsMultilineEditingEnabled"/> attached property
@@ -99,11 +93,10 @@
         /// This property can only be set to true once, toggling the value will have no further effect.
         /// </remarks>
         /// </AttachedPropertyComments>
-        [NotNull]
         public static readonly DependencyProperty IsMultilineEditingEnabledProperty =
             DependencyProperty.RegisterAttached("IsMultilineEditingEnabled", typeof(bool), typeof(Tools), new FrameworkPropertyMetadata(false, IsMultilineEditingEnabled_Changed));
 
-        private static void IsMultilineEditingEnabled_Changed([NotNull] DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void IsMultilineEditingEnabled_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (!true.Equals(e.NewValue))
                 return;
@@ -121,9 +114,8 @@
         /// <param name="dataGrid">The object.</param>
         /// <returns><c>true</c> if a commit will be forced for the data grid when it looses the focus</returns>
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
-        public static bool GetForceCommitOnLostFocus([NotNull] DataGrid dataGrid)
+        public static bool GetForceCommitOnLostFocus(DataGrid dataGrid)
         {
-            // ReSharper disable once PossibleNullReferenceException
             return (bool)dataGrid.GetValue(ForceCommitOnLostFocusProperty);
         }
         /// <summary>
@@ -131,18 +123,17 @@
         /// </summary>
         /// <param name="dataGrid">The data grid.</param>
         /// <param name="value">If set to <c>true</c> a commit will be forced on the data grid when it looses the focus.</param>
-        public static void SetForceCommitOnLostFocus([NotNull] DataGrid dataGrid, bool value)
+        public static void SetForceCommitOnLostFocus(DataGrid dataGrid, bool value)
         {
             dataGrid.SetValue(ForceCommitOnLostFocusProperty, value);
         }
         /// <summary>
         /// Identifies the ForceCommitOnLostFocus dependency property
         /// </summary>
-        [NotNull]
         public static readonly DependencyProperty ForceCommitOnLostFocusProperty =
             DependencyProperty.RegisterAttached("ForceCommitOnLostFocus", typeof(bool), typeof(Tools), new FrameworkPropertyMetadata(ForceCommitOnLostFocus_Changed));
 
-        private static void ForceCommitOnLostFocus_Changed([NotNull] DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void ForceCommitOnLostFocus_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var dataGrid = (DataGrid)d;
 
@@ -154,8 +145,9 @@
             dataGrid.PreviewLostKeyboardFocus += DataGrid_OnPreviewLostKeyboardFocus;
         }
 
-        private static void DataGrid_OnPreviewLostKeyboardFocus([NotNull] object sender, [NotNull] KeyboardFocusChangedEventArgs e)
+        private static void DataGrid_OnPreviewLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
+            // ReSharper disable once SuspiciousTypeConversion.Global
             if (!(e.NewFocus is DependencyObject newFocus))
                 return;
 

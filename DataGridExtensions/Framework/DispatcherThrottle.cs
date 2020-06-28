@@ -4,16 +4,12 @@
     using System.Threading;
     using System.Windows.Threading;
 
-    using JetBrains.Annotations;
-
     /// <summary>
     /// Implements a throttle that uses the dispatcher to delay the target action.
     /// </summary>
     public class DispatcherThrottle
     {
-        [NotNull]
         private readonly Dispatcher _dispatcher = Dispatcher.CurrentDispatcher;
-        [NotNull]
         private readonly Action _target;
         private readonly DispatcherPriority _priority;
 
@@ -24,7 +20,7 @@
         /// </summary>
         /// <param name="priority">The priority of the dispatcher.</param>
         /// <param name="target">The target action to invoke when the throttle condition is hit.</param>
-        public DispatcherThrottle(DispatcherPriority priority, [NotNull] Action target)
+        public DispatcherThrottle(DispatcherPriority priority, Action target)
         {
             _target = target;
             _priority = priority;

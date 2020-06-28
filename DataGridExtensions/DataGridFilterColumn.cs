@@ -3,8 +3,7 @@
     using System;
     using System.Windows;
     using System.Windows.Controls;
-
-    using JetBrains.Annotations;
+    using System.Windows.Data;
 
     /// <summary>
     /// Defines the attached properties that can be set on the data grid column level.
@@ -16,17 +15,17 @@
         /// <summary>
         /// Control the visibility of the filter for this column.
         /// </summary>
-        public static bool GetIsFilterVisible([NotNull] this DataGridColumn column)
+        public static bool GetIsFilterVisible(this DataGridColumn column)
         {
             if (column == null)
                 throw new ArgumentNullException(nameof(column));
 
-            return column.GetValue<bool>(IsFilterVisibleProperty);
+            return (bool)column.GetValue(IsFilterVisibleProperty);
         }
         /// <summary>
         /// Control the visibility of the filter for this column.
         /// </summary>
-        public static void SetIsFilterVisible([NotNull] this DataGridColumn column, bool value)
+        public static void SetIsFilterVisible(this DataGridColumn column, bool value)
         {
             if (column == null)
                 throw new ArgumentNullException(nameof(column));
@@ -36,7 +35,6 @@
         /// <summary>
         /// Identifies the IsFilterVisible dependency property
         /// </summary>
-        [NotNull]
         public static readonly DependencyProperty IsFilterVisibleProperty =
             DependencyProperty.RegisterAttached("IsFilterVisible", typeof(bool), typeof(DataGridFilterColumn), new FrameworkPropertyMetadata(true));
 
@@ -47,22 +45,20 @@
         /// <summary>
         /// Gets the control template for the filter of this column. If the template is null or unset, a default template will be used.
         /// </summary>
-        [CanBeNull]
-        public static ControlTemplate GetTemplate([NotNull] this DataGridColumn column)
+        public static ControlTemplate? GetTemplate(this DataGridColumn column)
         {
             return (ControlTemplate)column.GetValue(TemplateProperty);
         }
         /// <summary>
         /// Sets the control template for the filter of this column. If the template is null or unset, a default template will be used.
         /// </summary>
-        public static void SetTemplate([NotNull] this DataGridColumn column, [CanBeNull] ControlTemplate value)
+        public static void SetTemplate(this DataGridColumn column, ControlTemplate? value)
         {
             column.SetValue(TemplateProperty, value);
         }
         /// <summary>
         /// Identifies the Template dependency property.
         /// </summary>
-        [NotNull]
         public static readonly DependencyProperty TemplateProperty =
             DependencyProperty.RegisterAttached("Template", typeof(ControlTemplate), typeof(DataGridFilterColumn));
 
@@ -73,25 +69,100 @@
         /// <summary>
         /// Gets the filter expression of the column.
         /// </summary>
-        [CanBeNull]
-        public static object GetFilter([NotNull] this DataGridColumn column)
+        public static object? GetFilter(this DataGridColumn column)
         {
             return column.GetValue(FilterProperty);
         }
         /// <summary>
         /// Sets the filter expression of the column.
         /// </summary>
-        public static void SetFilter([NotNull] this DataGridColumn column, [CanBeNull] object value)
+        public static void SetFilter(this DataGridColumn column, object? value)
         {
             column.SetValue(FilterProperty, value);
         }
         /// <summary>
         /// Identifies the Filter dependency property
         /// </summary>
-        [NotNull]
         public static readonly DependencyProperty FilterProperty =
             DependencyProperty.RegisterAttached("Filter", typeof(object), typeof(DataGridFilterColumn));
 
         #endregion
+
+        #region ActiveFilter attached property
+
+        /// <summary>
+        /// Gets the filter expression of the column.
+        /// </summary>
+        public static IContentFilter? GetActiveFilter(this DataGridColumn column)
+        {
+            return (IContentFilter)column.GetValue(ActiveFilterProperty);
+        }
+        /// <summary>
+        /// Sets the filter expression of the column.
+        /// </summary>
+        public static void SetActiveFilter(this DataGridColumn column, IContentFilter? value)
+        {
+            column.SetValue(ActiveFilterProperty, value);
+        }
+        /// <summary>
+        /// Identifies the Filter dependency property
+        /// </summary>
+        public static readonly DependencyProperty ActiveFilterProperty =
+            DependencyProperty.RegisterAttached("ActiveFilter", typeof(IContentFilter), typeof(DataGridFilterColumn));
+
+        #endregion
+
+        /// <summary>
+        /// Creates a new content filter.
+        /// </summary>
+        internal static IContentFilter CreateContentFilter(this DataGrid dataGrid, object? content)
+        {
+            return dataGrid.GetContentFilterFactory().Create(content);
+        }
+
+        /// <summary>
+        /// Returns true if the given item matches the filter condition for this column.
+        /// </summary>
+        internal static bool Matches(this DataGridColumn column, DataGrid dataGrid, object? item)
+        {
+            var activeFilter = column.GetActiveFilter();
+            if (activeFilter == null)
+            {
+                var filter = column.GetFilter();
+                if (filter == null)
+                    return true;
+
+                activeFilter = dataGrid.CreateContentFilter(filter);
+                column.SetActiveFilter(activeFilter);
+            }
+
+            return activeFilter.IsMatch(GetCellContent(column, item));
+        }
+
+        /// <summary>
+        /// Identifies the CellValue dependency property, a private helper property used to evaluate the property path for the list items.
+        /// </summary>
+        private static readonly DependencyProperty _cellValueProperty =
+            DependencyProperty.Register("_cellValue", typeof(object), typeof(DataGridFilterColumn));
+
+        /// <summary>
+        /// Examines the property path and returns the objects value for this column.
+        /// Filtering is applied on the SortMemberPath, this is the path used to create the binding.
+        /// </summary>
+        internal static object? GetCellContent(this DataGridColumn column, object? item)
+        {
+            var propertyPath = column.SortMemberPath;
+
+            if (String.IsNullOrEmpty(propertyPath))
+                return null;
+
+            // Since already the name "SortMemberPath" implies that this might be not only a simple property name but a full property path
+            // we use binding for evaluation; this will properly handle even complex property paths like e.g. "SubItems[0].Name"
+            BindingOperations.SetBinding(column, _cellValueProperty, new Binding(propertyPath) { Source = item });
+            var propertyValue = column.GetValue(_cellValueProperty);
+            BindingOperations.ClearBinding(column, _cellValueProperty);
+
+            return propertyValue;
+        }
     }
 }

@@ -3,23 +3,20 @@
     using System;
     using System.Text.RegularExpressions;
 
-    using JetBrains.Annotations;
-
     /// <inheritdoc />
     /// <summary>
     /// A content filter using the content as a regular expression to match the string representation of the value.
     /// </summary>
     public class RegexContentFilter : IContentFilter
     {
-        [CanBeNull]
-        private readonly Regex _filterRegex;
+        private readonly Regex? _filterRegex;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RegexContentFilter"/> class.
         /// </summary>
         /// <param name="expression">The expression.</param>
         /// <param name="regexOptions">The regex options.</param>
-        public RegexContentFilter([NotNull] string expression, RegexOptions regexOptions)
+        public RegexContentFilter(string expression, RegexOptions regexOptions)
         {
             try
             {
@@ -40,13 +37,13 @@
         /// <returns>
         ///   <c>true</c> if the specified value matches the condition; otherwise, <c>false</c>.
         /// </returns>
-        public bool IsMatch(object value)
+        public bool IsMatch(object? value)
         {
             if (_filterRegex == null)
                 return true;
 
             // this will allow to search for empty entries using ^$
-            var input = (value != null) ? value.ToString() : string.Empty;
+            var input = value?.ToString() ?? string.Empty;
 
             return _filterRegex.IsMatch(input);
         }
@@ -94,12 +91,9 @@
         /// <returns>
         /// The new filter.
         /// </returns>
-        public IContentFilter Create(object content)
+        public IContentFilter Create(object? content)
         {
-            if (content == null)
-                throw new ArgumentNullException("content");
-
-            return new RegexContentFilter(content.ToString(), RegexOptions);
+            return new RegexContentFilter(content?.ToString() ?? string.Empty, RegexOptions);
         }
 
         #endregion

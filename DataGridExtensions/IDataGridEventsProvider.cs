@@ -11,16 +11,16 @@
         /// <summary>
         /// Occurs when the visibility of a column has changed.
         /// </summary>
-        event EventHandler<DataGridColumnEventArgs> ColumnVisibilityChanged;
+        event EventHandler<DataGridColumnEventArgs>? ColumnVisibilityChanged;
 
         /// <summary>
         /// Occurs when the actual width of a column has changed.
         /// </summary>
-        event EventHandler<DataGridColumnEventArgs> ColumnActualWidthChanged;
+        event EventHandler<DataGridColumnEventArgs>? ColumnActualWidthChanged;
 
         /// <summary>
         /// Occurs when the display index of a column has changed.
         /// </summary>
-        event EventHandler<DataGridColumnEventArgs> ColumnDisplayIndexChanged;
+        event EventHandler<DataGridColumnEventArgs>? ColumnDisplayIndexChanged;
     }
 }

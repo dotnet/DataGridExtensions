@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Linq;
     using System.Windows;
@@ -10,8 +9,6 @@
     using System.Windows.Controls.Primitives;
     using System.Windows.Input;
     using System.Windows.Threading;
-
-    using JetBrains.Annotations;
 
     /// <summary>
     /// This class hosts all filter columns and handles the filter changes on the data grid level.
@@ -22,18 +19,15 @@
         /// <summary>
         /// Filter information about each column.
         /// </summary>
-        [NotNull, ItemNotNull]
-        private readonly List<DataGridFilterColumnControl> _filterColumnControls = new List<DataGridFilterColumnControl>();
+        private readonly IDictionary<DataGridColumn, DataGridFilterColumnControl?> _filterColumnControls = new Dictionary<DataGridColumn, DataGridFilterColumnControl?>();
         /// <summary>
         /// Timer to defer evaluation of the filter until user has stopped typing.
         /// </summary>
-        [CanBeNull]
-        private DispatcherTimer _deferFilterEvaluationTimer;
+        private DispatcherTimer? _deferFilterEvaluationTimer;
         /// <summary>
         /// The columns that we are currently filtering.
         /// </summary>
-        [NotNull, ItemNotNull]
-        private DataGridColumn[] _filteredColumns = new DataGridColumn[0];
+        private ICollection<DataGridColumn> _filteredColumns = new DataGridColumn[0];
         /// <summary>
         /// Flag indicating if filtering is currently enabled.
         /// </summary>
@@ -41,14 +35,13 @@
         /// <summary>
         /// A global filter that is applied in addition to the column filters.
         /// </summary>
-        [CanBeNull]
-        private Predicate<object> _globalFilter;
+        private Predicate<object?>? _globalFilter;
 
         /// <summary>
         /// Create a new filter host for the given data grid.
         /// </summary>
         /// <param name="dataGrid">The data grid to filter.</param>
-        internal DataGridFilterHost([NotNull] DataGrid dataGrid)
+        internal DataGridFilterHost(DataGrid dataGrid)
         {
             DataGrid = dataGrid;
 
@@ -62,7 +55,6 @@
             // Assign a default style that changes HorizontalContentAlignment to "Stretch", so our filter symbol will appear on the right edge of the column.
             var baseStyle = (Style)dataGrid.FindResource(typeof(DataGridColumnHeader));
             var newStyle = new Style(typeof(DataGridColumnHeader), baseStyle);
-            // ReSharper disable once AssignNullToNotNullAttribute
             newStyle.Setters.Add(new Setter(Control.HorizontalContentAlignmentProperty, HorizontalAlignment.Stretch));
 
             dataGrid.ColumnHeaderStyle = newStyle;
@@ -71,12 +63,12 @@
         /// <summary>
         /// Occurs before new columns are filtered.
         /// </summary>
-        public event EventHandler<DataGridFilteringEventArgs> Filtering;
+        public event EventHandler<DataGridFilteringEventArgs>? Filtering;
 
         /// <summary>
         /// Occurs when any filter has changed.
         /// </summary>
-        public event EventHandler FilterChanged;
+        public event EventHandler? FilterChanged;
 
 
         /// <summary>
@@ -84,9 +76,9 @@
         /// </summary>
         public void Clear()
         {
-            foreach (var control in _filterColumnControls)
+            foreach (var column in _filterColumnControls.Keys)
             {
-                control.Filter = null;
+                column.SetFilter(null);
             }
 
             EvaluateFilter();
@@ -95,13 +87,11 @@
         /// <summary>
         /// Gets a the active filter column controls for this data grid.
         /// </summary>
-        [NotNull, ItemNotNull]
-        public IList<DataGridFilterColumnControl> FilterColumnControls => new ReadOnlyCollection<DataGridFilterColumnControl>(_filterColumnControls);
+        public IEnumerable<DataGridFilterColumnControl> FilterColumnControls => _filterColumnControls.Values.Where(item => item != null)!;
 
         /// <summary>
         /// The data grid this filter is attached to.
         /// </summary>
-        [NotNull]
         public DataGrid DataGrid { get; }
 
         /// <summary>
@@ -114,7 +104,7 @@
 
             var visibility = value ? Visibility.Visible : Visibility.Hidden;
 
-            foreach (var control in _filterColumnControls)
+            foreach (var control in FilterColumnControls)
             {
                 control.Visibility = visibility;
             }
@@ -147,45 +137,36 @@
         /// <summary>
         /// Adds a new column.
         /// </summary>
+        /// <param name="column"></param>
         /// <param name="filterColumn"></param>
-        internal void AddColumn([NotNull] DataGridFilterColumnControl filterColumn)
+        internal void SetColumnControl(DataGridColumn column, DataGridFilterColumnControl filterColumn)
         {
             filterColumn.Visibility = _isFilteringEnabled ? Visibility.Visible : Visibility.Hidden;
-            _filterColumnControls.Add(filterColumn);
+
+            _filterColumnControls[column] = filterColumn;
         }
 
         /// <summary>
         /// Removes an unloaded column.
         /// </summary>
-        internal void RemoveColumn([NotNull] DataGridFilterColumnControl filterColumn)
+        internal void ClearColumnControl(DataGridColumn column)
         {
-            _filterColumnControls.Remove(filterColumn);
-            OnFilterChanged();
+            _filterColumnControls[column] = null;
         }
 
-        /// <summary>
-        /// Creates a new content filter.
-        /// </summary>
-        [NotNull]
-        internal IContentFilter CreateContentFilter([CanBeNull] object content)
-        {
-            return DataGrid.GetContentFilterFactory().Create(content);
-        }
-
-        private void DataGrid_Loaded([NotNull] object sender, [NotNull] RoutedEventArgs e)
+        private void DataGrid_Loaded(object sender, RoutedEventArgs e)
         {
             // To improve keyboard navigation we should not step into the headers filter controls with the TAB key,
             // but only with navigation keys.
 
             var scrollViewer = DataGrid.Template?.FindName("DG_ScrollViewer", DataGrid) as ScrollViewer;
 
-            var headersPresenter = (FrameworkElement)scrollViewer?.Template?.FindName("PART_ColumnHeadersPresenter", scrollViewer);
+            var headersPresenter = (FrameworkElement?)scrollViewer?.Template?.FindName("PART_ColumnHeadersPresenter", scrollViewer);
 
-            // ReSharper disable once AssignNullToNotNullAttribute
             headersPresenter?.SetValue(KeyboardNavigation.TabNavigationProperty, KeyboardNavigationMode.None);
         }
 
-        private void DataGrid_SelectAll([CanBeNull] object sender, [NotNull] ExecutedRoutedEventArgs e)
+        private void DataGrid_SelectAll(object? sender, ExecutedRoutedEventArgs e)
         {
             e.Handled = true;
 
@@ -199,19 +180,30 @@
                 return;
             }
 
-            foreach (var control in _filterColumnControls)
-            {
-                control.Filter = null;
-            }
+            Clear();
         }
 
-        private void DataGrid_CanSelectAll([CanBeNull] object sender, [NotNull] CanExecuteRoutedEventArgs e)
+        private void DataGrid_CanSelectAll(object? sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = DataGrid.CanSelectAll() || (DataGrid.Items.Count == 0);
         }
 
-        private void Columns_CollectionChanged([NotNull] object sender, [NotNull] NotifyCollectionChangedEventArgs e)
+        private void Columns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                _filterColumnControls.Clear();
+                return;
+            }
+
+            if (e.OldItems != null)
+            {
+                foreach (var column in e.OldItems.OfType<DataGridColumn>())
+                {
+                    _filterColumnControls.Remove(column);
+                }
+            }
+
             if (e.NewItems == null)
                 return;
 
@@ -223,7 +215,7 @@
             if (!filteredColumnsWithEmptyHeaderTemplate.Any())
                 return;
 
-            var resource = DataGrid.GetResourceLocator()?.FindResource(DataGrid, DataGridFilter.ColumnHeaderTemplateKey) 
+            var resource = DataGrid.GetResourceLocator()?.FindResource(DataGrid, DataGridFilter.ColumnHeaderTemplateKey)
                 ?? DataGrid.TryFindResource(DataGridFilter.ColumnHeaderTemplateKey);
 
             var headerTemplate = (DataTemplate)resource;
@@ -234,7 +226,7 @@
             }
         }
 
-        internal void SetGlobalFilter([CanBeNull] Predicate<object> globalFilter)
+        internal void SetGlobalFilter(Predicate<object?>? globalFilter)
         {
             _globalFilter = globalFilter;
 
@@ -251,17 +243,13 @@
             var collectionView = DataGrid.Items;
 
             // Collect all active filters of all known columns.
-            var columnFilters = GetColumnFilters();
+            var filteredColumns = GetFilteredColumns();
 
             if (Filtering != null)
             {
                 // Notify client about additional columns being filtered.
-                var columns = columnFilters
-                    .Select(filter => filter.Column)
-                    .Where(column => column != null)
-                    .ToArray();
 
-                var newColumns = columns
+                var newColumns = filteredColumns
                     .Except(_filteredColumns)
                     .ToArray();
 
@@ -276,7 +264,7 @@
                     }
                 }
 
-                _filteredColumns = columns;
+                _filteredColumns = filteredColumns;
             }
 
             FilterChanged?.Invoke(this, EventArgs.Empty);
@@ -284,12 +272,12 @@
             try
             {
                 // Apply filter to collection view
-                collectionView.Filter = CreatePredicate(columnFilters);
+                collectionView.Filter = CreatePredicate(filteredColumns);
 
                 // Notify all filters about the change of the collection view.
-                foreach (var control in _filterColumnControls)
+                foreach (var control in _filterColumnControls.Values)
                 {
-                    control.ValuesUpdated();
+                    control?.ValuesUpdated();
                 }
             }
             catch (InvalidOperationException)
@@ -301,29 +289,28 @@
             }
         }
 
-        [CanBeNull]
-        internal Predicate<object> CreatePredicate([CanBeNull, ItemNotNull] IList<DataGridFilterColumnControl> columnFilters)
+        internal Predicate<object?>? CreatePredicate(ICollection<DataGridColumn>? filteredColumns)
         {
-            if (columnFilters?.Any() != true)
+            if (filteredColumns?.Any() != true)
             {
                 return _globalFilter;
             }
 
             if (_globalFilter == null)
             {
-                return item => columnFilters.All(filter => filter.Matches(item));
+                return item => filteredColumns.All(filter => filter.Matches(DataGrid, item));
             }
 
-            return item => _globalFilter(item) && columnFilters.All(filter => filter.Matches(item));
+            return item => _globalFilter(item) && filteredColumns.All(filter => filter.Matches(DataGrid, item));
         }
 
-        [NotNull, ItemNotNull]
-        internal IList<DataGridFilterColumnControl> GetColumnFilters([CanBeNull] DataGridFilterColumnControl excluded = null)
+        internal ICollection<DataGridColumn> GetFilteredColumns(DataGridColumn? excluded = null)
         {
-            return _filterColumnControls
+            return _filterColumnControls.Keys
                 .Where(column => !ReferenceEquals(column, excluded))
-                .Where(column => column.IsVisible && column.IsFiltered)
-                .ToArray();
+                .Where(column => column?.Visibility == Visibility.Visible && !string.IsNullOrWhiteSpace(column.GetFilter()?.ToString()))
+                .ToList()
+                .AsReadOnly();
         }
     }
 }

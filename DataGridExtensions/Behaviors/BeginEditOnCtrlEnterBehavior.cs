@@ -1,12 +1,10 @@
 ﻿namespace DataGridExtensions.Behaviors
 {
-    using System.Diagnostics.Contracts;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
-    using Microsoft.Xaml.Behaviors;
 
-    using JetBrains.Annotations;
+    using Microsoft.Xaml.Behaviors;
 
     /// <summary>
     /// Ctrl+Enter on a cell starts editing the cell without clearing the content.
@@ -23,10 +21,7 @@
         {
             base.OnAttached();
 
-            var dataGrid = AssociatedObject;
-            Contract.Assume(dataGrid != null);
-
-            dataGrid.PreviewKeyDown += DataGrid_PreviewKeyDown;
+            AssociatedObject.PreviewKeyDown += DataGrid_PreviewKeyDown;
         }
 
         /// <summary>
@@ -39,16 +34,11 @@
         {
             base.OnDetaching();
 
-            var dataGrid = AssociatedObject;
-            Contract.Assume(dataGrid != null);
-
-            dataGrid.PreviewKeyDown -= DataGrid_PreviewKeyDown;
+            AssociatedObject.PreviewKeyDown -= DataGrid_PreviewKeyDown;
         }
 
-        private static void DataGrid_PreviewKeyDown([NotNull] object sender, [NotNull] KeyEventArgs e)
+        private static void DataGrid_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            Contract.Requires(sender != null);
-
             var dependencyObject = e.OriginalSource as DependencyObject;
 
             if (IsChildOfEditingElement(dependencyObject))
@@ -58,12 +48,12 @@
             if ((key != Key.Return) || (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl)))
                 return;
 
-            var dataGrid = (DataGrid)sender;
-            dataGrid.BeginEdit();
+            (sender as DataGrid)?.BeginEdit();
+
             e.Handled = true;
         }
 
-        private static bool IsChildOfEditingElement([CanBeNull] DependencyObject element)
+        private static bool IsChildOfEditingElement(DependencyObject? element)
         {
             while (element != null)
             {

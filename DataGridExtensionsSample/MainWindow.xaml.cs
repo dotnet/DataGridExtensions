@@ -30,17 +30,14 @@ namespace DataGridExtensionsSample
             // Sample usage of the filtering event
             Grid1.GetFilter().Filtering += Grid1_Filtering;
 
-            ExternalFilter = item => ((DataItem)item).Column1.Contains("7");
+            ExternalFilter = item => ((DataItem)item).Column1.Contains("7", StringComparison.CurrentCulture);
 
             BindingOperations.SetBinding(Column2, DataGridFilterColumn.FilterProperty, new Binding("DataContext.Column2Filter") { Source = this, Mode = BindingMode.TwoWay });
         }
 
         public object Column2Filter
         {
-            get
-            {
-                return _column2Filter;
-            }
+            get => _column2Filter;
             set
             {
                 _column2Filter = value;
@@ -48,7 +45,7 @@ namespace DataGridExtensionsSample
             }
         }
 
-        void Grid1_Filtering(object sender, DataGridFilteringEventArgs e)
+        void Grid1_Filtering(object? sender, DataGridFilteringEventArgs e)
         {
             // Here we could prepare some data or even cancel the filtering process.
 
@@ -65,12 +62,12 @@ namespace DataGridExtensionsSample
         /// <summary>
         /// Provide a simple list of 100 random items.
         /// </summary>
-        public IList<DataItem> Items { get; } = new ObservableCollection<DataItem>(Enumerable.Range(0, 100).Select(index => new DataItem(index)));
+        public static IList<DataItem> Items => new ObservableCollection<DataItem>(Enumerable.Range(0, 100).Select(index => new DataItem(index)));
 
         public Predicate<object> ExternalFilter
         {
-            get { return (Predicate<object>)GetValue(ExternalFilterProperty); }
-            set { SetValue(ExternalFilterProperty, value); }
+            get => (Predicate<object>)GetValue(ExternalFilterProperty);
+            set => SetValue(ExternalFilterProperty, value);
         }
 
         public static readonly DependencyProperty ExternalFilterProperty = DependencyProperty.Register("ExternalFilter", typeof(Predicate<object>), typeof(MainWindow));
@@ -104,11 +101,11 @@ namespace DataGridExtensionsSample
 
         private void Reload_Click(object sender, RoutedEventArgs e)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Items"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Items)));
         }
 
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         private void Copy_Click(object sender, RoutedEventArgs e)
         {
@@ -120,7 +117,7 @@ namespace DataGridExtensionsSample
 
             var cellSelection = CopyPasteDataGrid.GetCellSelection();
 
-            Clipboard.SetText(cellSelection.ToString(TextColumnSeparator));
+            Clipboard.SetText(cellSelection?.ToString(TextColumnSeparator));
         }
 
         private void Paste_Click(object sender, RoutedEventArgs e)
@@ -156,7 +153,7 @@ namespace DataGridExtensionsSample
             return string.Join(Environment.NewLine, table.Select(line => string.Join(separator.ToString(), line.Select(cell => Quoted(cell, separator)))));
         }
 
-        internal static IList<IList<string>> ParseTable(this string text, char separator)
+        internal static IList<IList<string>>? ParseTable(this string text, char separator)
         {
             var table = new List<IList<string>>();
 
@@ -256,9 +253,9 @@ namespace DataGridExtensionsSample
             if (string.IsNullOrEmpty(value))
                 return string.Empty;
 
-            if (value.Any(IsLineFeed) || value.Contains(separator) || value.StartsWith(Quote, StringComparison.Ordinal))
+            if (value.Any(IsLineFeed) || value.Contains(separator, StringComparison.Ordinal) || value.StartsWith(Quote, StringComparison.Ordinal))
             {
-                return Quote + value.Replace(Quote, Quote + Quote) + Quote;
+                return Quote + value.Replace(Quote, Quote + Quote, StringComparison.Ordinal) + Quote;
             }
 
             return value;

@@ -16,8 +16,8 @@
 
         public double Minimum
         {
-            get { return (double)GetValue(MinimumProperty); }
-            set { SetValue(MinimumProperty, value); }
+            get => (double)GetValue(MinimumProperty);
+            set => SetValue(MinimumProperty, value);
         }
         /// <summary>
         /// Identifies the Minimum dependency property
@@ -27,8 +27,8 @@
 
         public double Maximum
         {
-            get { return (double)GetValue(MaximumProperty); }
-            set { SetValue(MaximumProperty, value); }
+            get => (double)GetValue(MaximumProperty);
+            set => SetValue(MaximumProperty, value);
         }
         /// <summary>
         /// Identifies the Maximum dependency property
@@ -42,10 +42,10 @@
             Filter = Maximum > Minimum ? new ContentFilter(Minimum, Maximum) : null;
         }
 
-        public IContentFilter Filter
+        public IContentFilter? Filter
         {
-            get { return (IContentFilter)GetValue(FilterProperty); }
-            set { SetValue(FilterProperty, value); }
+            get => (IContentFilter?)GetValue(FilterProperty);
+            set => SetValue(FilterProperty, value);
         }
         /// <summary>
         /// Identifies the Filter dependency property
@@ -56,8 +56,7 @@
 
         private void Filter_Changed()
         {
-            var filter = Filter as ContentFilter;
-            if (filter == null)
+            if (!(Filter is ContentFilter filter))
                 return;
 
             Minimum = filter.Min;
@@ -75,30 +74,16 @@
                 _max = max;
             }
 
-            public double Min
-            {
-                get
-                {
-                    return _min;
-                }
-            }
+            public double Min => _min;
 
-            public double Max
-            {
-                get
-                {
-                    return _max;
-                }
-            }
+            public double Max => _max;
 
-            public bool IsMatch(object value)
+            public bool IsMatch(object? value)
             {
                 if (value == null)
                     return false;
 
-                double number;
-
-                if (!double.TryParse(value.ToString(), out number))
+                if (!double.TryParse(value.ToString(), out var number))
                 {
                     return false;
                 }

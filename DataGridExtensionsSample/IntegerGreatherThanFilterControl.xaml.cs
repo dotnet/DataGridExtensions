@@ -10,7 +10,7 @@
     /// </summary>
     public partial class IntegerGreatherThanFilterControl
     {
-        private TextBox _textBox;
+        private TextBox? _textBox;
 
         public IntegerGreatherThanFilterControl()
         {
@@ -26,15 +26,15 @@
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var text = ((TextBox)sender)?.Text;
+            var text = ((TextBox)sender).Text;
 
             Filter = !int.TryParse(text, NumberStyles.Any, CultureInfo.CurrentCulture, out var threshold) ? null : new ContentFilter(threshold);
         }
 
-        public IContentFilter Filter
+        public IContentFilter? Filter
         {
-            get { return (IContentFilter)GetValue(FilterProperty); }
-            set { SetValue(FilterProperty, value); }
+            get => (IContentFilter?)GetValue(FilterProperty);
+            set => SetValue(FilterProperty, value);
         }
         /// <summary>
         /// Identifies the Filter dependency property
@@ -60,14 +60,12 @@
                 _threshold = threshold;
             }
 
-            public bool IsMatch(object value)
+            public bool IsMatch(object? value)
             {
                 if (value == null)
                     return false;
 
-                int i;
-
-                return int.TryParse(value.ToString(), out i) && (i > _threshold);
+                return int.TryParse(value.ToString(), out var i) && (i > _threshold);
             }
 
             public string Value => _threshold.ToString(CultureInfo.CurrentCulture);
