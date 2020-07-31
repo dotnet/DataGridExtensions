@@ -1,4 +1,7 @@
-﻿2.4
+﻿2.4.1
+- Fix #35: DataGridFilterColumn doesn't work for combobox column
+
+2.4
 - Fix  #23: Column virtualization is not supported
 
 2.3
