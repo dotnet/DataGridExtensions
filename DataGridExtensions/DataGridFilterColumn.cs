@@ -170,7 +170,7 @@
                 column.SetActiveFilter(activeFilter);
             }
 
-            return activeFilter.IsMatch(GetCellContent(column, item));
+            return activeFilter.IsMatch(GetCellContentData(column, item));
         }
 
         /// <summary>
@@ -183,7 +183,7 @@
         /// Examines the property path and returns the objects value for this column.
         /// Filtering is applied on the SortMemberPath, this is the path used to create the binding.
         /// </summary>
-        internal static object? GetCellContent(this DataGridColumn column, object? item)
+        internal static object? GetCellContentData(this DataGridColumn column, object? item)
         {
             var propertyPath = column.SortMemberPath;
 

@@ -258,7 +258,7 @@
             return DataGrid?.Items
                 .Cast<object>()
                 .Where(item => item != null)
-                .Select(item => Column?.GetCellContent(item))
+                .Select(item => Column?.GetCellContentData(item))
                 .Select(content => content?.ToString() ?? string.Empty) ?? Enumerable.Empty<string>();
         }
 
@@ -278,7 +278,7 @@
 
             return items.Cast<object>()
                 .Where(item => item != null && predicate(item))
-                .Select(item => Column?.GetCellContent(item))
+                .Select(item => Column?.GetCellContentData(item))
                 .Select(content => content?.ToString() ?? string.Empty);
         }
 
