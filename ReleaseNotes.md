@@ -1,4 +1,7 @@
-﻿2.4.1
+﻿2.4.2
+- Fix #40: When relaxing filter criteria, the selected item should stay in view
+
+2.4.1
 - Fix #35: DataGridFilterColumn doesn't work for combobox column
 
 2.4
