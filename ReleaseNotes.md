@@ -1,4 +1,7 @@
-﻿2.4.2
+﻿2.4.3
+- Fix #40: defer scroll-into-view, to ensure it's working always
+
+2.4.2
 - Fix #40: When relaxing filter criteria, the selected item should stay in view
 
 2.4.1
