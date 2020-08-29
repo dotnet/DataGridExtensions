@@ -285,7 +285,7 @@
                 var selectedItem = DataGrid.SelectedItem;
                 if (selectedItem != null)
                 {
-                    DataGrid.ScrollIntoView(selectedItem);
+                    DataGrid.Dispatcher.BeginInvoke(DispatcherPriority.Background, (Action)(() => DataGrid.ScrollIntoView(selectedItem)));
                 }
             }
             catch (InvalidOperationException)
