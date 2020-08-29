@@ -281,6 +281,12 @@
                 {
                     control?.ValuesUpdated();
                 }
+
+                var selectedItem = DataGrid.SelectedItem;
+                if (selectedItem != null)
+                {
+                    DataGrid.ScrollIntoView(selectedItem);
+                }
             }
             catch (InvalidOperationException)
             {
