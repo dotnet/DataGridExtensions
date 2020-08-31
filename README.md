@@ -42,7 +42,7 @@ By overriding the default template you can simply create individual filters:
 
 ![Sample2](Assets/Sample2.jpg)
 
-For a full functional demo run the sample app or see the [ResX Resource Manager](https://github.com/tom-englert/ResXResourceManager) 
+For a full functional demo run the sample app or see the [ResX Resource Manager](https://github.com/dotnet/ResXResourceManager) 
 or [Project Configuration Manager](https://github.com/tom-englert/ProjectConfigurationManager) projects that use the filtering extensions.
 
 
