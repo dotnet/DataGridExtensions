@@ -1,4 +1,6 @@
-An extension method provides some additional events that are useful when interacting with the columns of the data grid. 
+### Additional Events
+An extension method that provides some additional events that are useful when interacting with the columns of the data grid. 
+
 The event provider watches for changes on any column and provides an event on the data grid level:
 
 ```c#

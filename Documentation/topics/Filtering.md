@@ -1,3 +1,5 @@
+### Filtering
+
 Filtering is enabled by simply adding one attached property to your DataGrid:
 ```xml
 <DataGrid ItemsSource="{Binding Items}" 
@@ -13,6 +15,7 @@ Every part is easily customizable by providing simple styles or templates:
                     dgx:DataGridFilterColumn.Template="{StaticResource FilterWithPopup}"/>
 ```
 By overriding the default template you can simply create individual filters:
+
 ![Sample2](Filtering_Sample2.jpg)
 
 For further details take a tour through the code of the sample application to see the many possibilities to use and customize it.
