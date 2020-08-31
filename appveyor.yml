@@ -4,4 +4,4 @@ platform: Any CPU
 build_script:
 - cmd: MSBuild -restore /p:Configuration=Release /verbosity:minimal  src\DataGridExtensions.sln
 artifacts:
-- path: nugets/*.nupkg
+- path: src/nugets/*.nupkg

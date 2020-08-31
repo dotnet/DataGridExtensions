@@ -5,17 +5,16 @@ VisualStudioVersion = 16.0.29215.179
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataGridExtensions", "DataGridExtensions\DataGridExtensions.csproj", "{393C28BB-DB90-40E8-B1A3-741D8B99BA39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataGridExtensionsSample", "DataGridExtensionsSample\DataGridExtensionsSample.csproj", "{977C4FEE-4F44-4F64-803B-3F7350F3A487}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataGridExtensionsSample", "DataGridExtensionsSample\DataGridExtensionsSample.csproj", "{977C4FEE-4F44-4F64-803B-3F7350F3A487}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DB86BFBB-CA2E-425D-BA83-9ABA746813EC}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		appveyor.yml = appveyor.yml
+		..\appveyor.yml = ..\appveyor.yml
 		Directory.Build.props = Directory.Build.props
-		global.json = global.json
-		License = License
-		README.md = README.md
-		ReleaseNotes.md = ReleaseNotes.md
+		..\License = ..\License
+		..\README.md = ..\README.md
+		..\ReleaseNotes.md = ..\ReleaseNotes.md
 	EndProjectSection
 EndProject
 Global
