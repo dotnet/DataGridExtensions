@@ -16,6 +16,8 @@ The current version supports the following features and behaviors:
 * Start editing a cell with Ctrl+Enter
 * Provide an extended star-size column behavior
 
+Read the [Documentation](Documentation\README.md) about how to use these features.
+
 Every feature is individually configurable.
 
 This extension is 
@@ -23,20 +25,27 @@ This extension is
 * Easy to customize
 * Attaches to the existing DataGrid
 
-Unlike many other free extensions this package does not introduce a new derived DataGrid class, limiting you a fixed set of features 
-that you have to live with, but transparently attaches to the existing DataGrid, giving you the freedom to use exactly the feature you need, 
+Unlike many other free extensions this package does not introduce a new derived `DataGrid` class, limiting you a fixed set of features 
+that you have to live with, but transparently attaches to the existing `DataGrid`, giving you the freedom to use exactly the feature you need, 
 customizing them as you like, and combining them with other useful extensions.
 
 Filtering is enabled by simply adding one attached property to your DataGrid:
 
-`<DataGrid ItemsSource="{Binding Items}" dgx:DataGridFilter.IsAutoFilterEnabled="True"/>`
+```xml
+<DataGrid ItemsSource="{Binding Items}" 
+          dgx:DataGridFilter.IsAutoFilterEnabled="True"/>
+```
 
 You will get a simple but efficient text or boolean filter, depending on the column type:
 ![Sample1](Assets/Sample1.jpg)
 
 Every part is easily customizable by providing simple styles or templates:
 
-`<DataGridTextColumn Header="Double/Custom" Binding="{Binding Probability, Mode=OneWay}" dgx:DataGridFilterColumn.Template="{StaticResource FilterWithPopup}"/>`
+```xml
+<DataGridTextColumn Header="Double/Custom" 
+                    Binding="{Binding Probability, Mode=OneWay}" 
+                    dgx:DataGridFilterColumn.Template="{StaticResource FilterWithPopup}"/>
+```
 
 By overriding the default template you can simply create individual filters:
 
