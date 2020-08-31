@@ -38,7 +38,7 @@ The current version supports the following features:
     <PackageReference Include="Throttle.Fody" Version="1.7.0" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Icon.png" Link="Icon.png" Pack="true" PackagePath="\" />
-    <None Include="..\License" Link="License" Pack="true" PackagePath="\" />
+    <None Include="..\..\Icon.png" Link="Icon.png" Pack="true" PackagePath="\" />
+    <None Include="..\..\License" Link="License" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>
