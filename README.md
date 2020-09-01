@@ -16,7 +16,7 @@ The current version supports the following features and behaviors:
 * Start editing a cell with Ctrl+Enter
 * Provide an extended star-size column behavior
 
-Read the [Documentation](Documentation\README.md) about how to use these features.
+Read the [Documentation](Documentation/README.md) about how to use these features.
 
 Every feature is individually configurable.
 
