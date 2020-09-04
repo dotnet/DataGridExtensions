@@ -1,4 +1,7 @@
-﻿2.4.3
+﻿2.4.4
+- Fix #41: ApplyInitialSorting may cause exceptions
+
+2.4.3
 - Fix #40: defer scroll-into-view, to ensure it's working always
 
 2.4.2
