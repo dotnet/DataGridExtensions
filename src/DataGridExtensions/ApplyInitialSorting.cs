@@ -22,14 +22,22 @@
             if (!(sender is DataGrid dataGrid))
                 return;
 
-            foreach (var column in dataGrid.Columns)
+            try
             {
-                if ((column != null) && (column.SortDirection.HasValue) && !string.IsNullOrEmpty(column.SortMemberPath))
+                foreach (var column in dataGrid.Columns)
                 {
-                    dataGrid.Items.SortDescriptions.Add(new SortDescription(column.SortMemberPath, column.SortDirection.Value));
+                    if (column?.SortDirection != null && !string.IsNullOrEmpty(column.SortMemberPath))
+                    {
+                        dataGrid.Items.SortDescriptions.Add(new SortDescription(column.SortMemberPath, column.SortDirection.Value));
+                    }
                 }
             }
+            catch
+            {
+                // in some special cases we may get:
+                // System.InvalidOperationException: 'Sorting' is not allowed during an AddNew or EditItem transaction.
+                // => just ignore, there is nothing we can do about it...
+            }
         }
-
     }
 }
