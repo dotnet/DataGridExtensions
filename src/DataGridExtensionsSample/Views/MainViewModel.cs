@@ -1,7 +1,8 @@
 ﻿namespace DataGridExtensionsSample.Views
 {
     using System.Composition;
-    using System.Windows.Input;
+
+    using DataGridExtensionsSample.Infrastructure;
 
     using TomsToolbox.Wpf;
     using TomsToolbox.Wpf.Composition.AttributedModel;

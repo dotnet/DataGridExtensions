@@ -1,8 +1,9 @@
-﻿namespace DataGridExtensionsSample
+﻿namespace DataGridExtensionsSample.Controls
 {
     using System.Globalization;
     using System.Windows;
     using System.Windows.Controls;
+
     using DataGridExtensions;
 
     /// <summary>

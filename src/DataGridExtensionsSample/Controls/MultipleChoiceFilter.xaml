@@ -1,9 +1,9 @@
-﻿<Control x:Class="DataGridExtensionsSample.MultipleChoiceFilter"
+﻿<Control x:Class="DataGridExtensionsSample.Controls.MultipleChoiceFilter"
          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
          xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d" d:DesignHeight="30" d:DesignWidth="30"
-         xmlns:dgx="urn:tom-englert.de/DataGridExtensions" 
+         xmlns:dgx="urn:tom-englert.de/DataGridExtensions"
          x:Name="Control">
   <Control.Template>
     <ControlTemplate>
@@ -21,8 +21,8 @@
             <ListBox.ItemTemplate>
               <DataTemplate>
                 <DockPanel>
-                  <CheckBox DockPanel.Dock="Left" Margin="3,2" IsChecked="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}}"/>
-                  <TextBlock Margin="3,2" Text="{Binding}" VerticalAlignment="Center"/>
+                  <CheckBox DockPanel.Dock="Left" Margin="3,2" IsChecked="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}}" />
+                  <TextBlock Margin="3,2" Text="{Binding}" VerticalAlignment="Center" />
                 </DockPanel>
               </DataTemplate>
             </ListBox.ItemTemplate>
@@ -31,7 +31,7 @@
       </Grid>
       <ControlTemplate.Triggers>
         <DataTrigger Binding="{Binding ElementName=Control, Path=Filter.ExcludedItems}" Value="{x:Null}">
-          <Setter TargetName="IsFilterActiveMarker" Property="Visibility" Value="Hidden"/>
+          <Setter TargetName="IsFilterActiveMarker" Property="Visibility" Value="Hidden" />
         </DataTrigger>
       </ControlTemplate.Triggers>
     </ControlTemplate>

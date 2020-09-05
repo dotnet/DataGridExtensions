@@ -1,29 +1,29 @@
-﻿<Control x:Class="DataGridExtensionsSample.IntegerGreatherThanFilterControl"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:dgx="clr-namespace:DataGridExtensions;assembly=DataGridExtensions"
-             mc:Ignorable="d" 
-             d:DesignHeight="30" d:DesignWidth="300">
+﻿<Control x:Class="DataGridExtensionsSample.Controls.IntegerGreatherThanFilterControl"
+         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+         xmlns:dgx="clr-namespace:DataGridExtensions;assembly=DataGridExtensions"
+         mc:Ignorable="d"
+         d:DesignHeight="30" d:DesignWidth="300">
   <Control.Template>
     <ControlTemplate>
       <Grid>
-        <Control Style="{DynamicResource {x:Static dgx:DataGridFilter.IconStyleKey}}"/>
+        <Control Style="{DynamicResource {x:Static dgx:DataGridFilter.IconStyleKey}}" />
         <StackPanel x:Name="inputPanel" Orientation="Horizontal" Margin="4,0,2,0" Background="Red">
-          <TextBlock Text="> "/>
+          <TextBlock Text="> " />
           <TextBox x:Name="textBox" TextChanged="TextBox_TextChanged" MinWidth="20" />
         </StackPanel>
       </Grid>
       <ControlTemplate.Triggers>
         <Trigger SourceName="textBox" Property="Text" Value="">
-          <Setter TargetName="inputPanel" Property="Opacity" Value="0"/>
+          <Setter TargetName="inputPanel" Property="Opacity" Value="0" />
         </Trigger>
         <Trigger Property="IsMouseOver" Value="True">
-          <Setter TargetName="inputPanel" Property="Opacity" Value="1"/>
+          <Setter TargetName="inputPanel" Property="Opacity" Value="1" />
         </Trigger>
         <Trigger SourceName="textBox" Property="IsFocused" Value="True">
-          <Setter TargetName="inputPanel" Property="Opacity" Value="1"/>
+          <Setter TargetName="inputPanel" Property="Opacity" Value="1" />
         </Trigger>
       </ControlTemplate.Triggers>
     </ControlTemplate>

@@ -4,6 +4,8 @@
     using System.ComponentModel;
     using System.Windows.Input;
 
+    using DataGridExtensionsSample.Infrastructure;
+
     using TomsToolbox.Essentials;
     using TomsToolbox.Wpf;
     using TomsToolbox.Wpf.Composition.AttributedModel;

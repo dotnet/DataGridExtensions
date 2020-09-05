@@ -8,6 +8,8 @@
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:dataGridExtensionsSample="clr-namespace:DataGridExtensionsSample"
+             xmlns:controls="clr-namespace:DataGridExtensionsSample.Controls"
+             xmlns:infrastructure="clr-namespace:DataGridExtensionsSample.Infrastructure"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance local:Customized2ViewModel}">
   <UserControl.Resources>
@@ -25,13 +27,13 @@
       <Setter Property="Foreground" Value="Blue" />
     </Style>
     <ControlTemplate x:Key="IntegerFilter">
-      <dataGridExtensionsSample:IntegerGreatherThanFilterControl Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
+      <controls:IntegerGreatherThanFilterControl Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
     </ControlTemplate>
     <ControlTemplate x:Key="FilterWithPopup">
-      <dataGridExtensionsSample:FilterWithPopupControl Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
+      <controls:FilterWithPopupControl Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
     </ControlTemplate>
     <ControlTemplate x:Key="MultipleChoiceFilter">
-      <dataGridExtensionsSample:MultipleChoiceFilter Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
+      <controls:MultipleChoiceFilter Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
     </ControlTemplate>
     <ControlTemplate x:Key="ComboboxFilter">
       <Grid d:DataContext="{d:DesignInstance dgx:DataGridFilterColumnControl}">
@@ -129,12 +131,11 @@
                             dgx:Tools.IsMultilineEditingEnabled="True"
                             SortDirection="Descending" />
         <!-- Use the default filter for this column. -->
-        <DataGridTextColumn x:Name="Column2" 
-                            Header="Text/Text" 
+        <DataGridTextColumn x:Name="Column2"
+                            Header="Text/Text"
                             Binding="{Binding Column2, Mode=OneWay}"
                             Width="*"
-                            dgx:DataGridFilterColumn.Filter="{Binding Column2Filter}"
-                            />
+                            dgx:DataGridFilterColumn.Filter="{Binding Column2Filter}" />
         <!-- Use a MultipleChoiceFilter for filtering -->
         <DataGridComboBoxColumn Header="Text/Custom" SelectedValueBinding="{Binding Column5}"
                                 Width="*" dgx:DataGridFilterColumn.Template="{StaticResource MultipleChoiceFilter}"
@@ -149,7 +150,7 @@
         <!-- A template column may contain everything, so we need to specify the SortMemberPath explicitly...-->
         <DataGridTemplateColumn Header="Template" SortMemberPath="Probability">
           <DataGridTemplateColumn.CellTemplate>
-            <DataTemplate DataType="dataGridExtensionsSample:DataItem">
+            <DataTemplate DataType="infrastructure:DataItem">
               <TextBlock Margin="2" Text="{Binding Probability}" />
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>

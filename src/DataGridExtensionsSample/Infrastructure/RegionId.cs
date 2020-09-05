@@ -1,4 +1,4 @@
-﻿namespace DataGridExtensionsSample
+﻿namespace DataGridExtensionsSample.Infrastructure
 {
     class RegionId
     {

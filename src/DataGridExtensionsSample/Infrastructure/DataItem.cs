@@ -1,4 +1,4 @@
-﻿namespace DataGridExtensionsSample
+﻿namespace DataGridExtensionsSample.Infrastructure
 {
     using System;
     using System.Windows;

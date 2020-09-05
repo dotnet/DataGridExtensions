@@ -5,6 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:composition="urn:TomsToolbox.Composition"
         xmlns:dataGridExtensionsSample="clr-namespace:DataGridExtensionsSample"
+        xmlns:infrastructure="clr-namespace:DataGridExtensionsSample.Infrastructure"
         mc:Ignorable="d"
         Title="DataGrid Extensions Sample"
-        composition:VisualComposition.RegionId="{x:Static dataGridExtensionsSample:RegionId.Shell}" />
+        composition:VisualComposition.RegionId="{x:Static infrastructure:RegionId.Shell}" />

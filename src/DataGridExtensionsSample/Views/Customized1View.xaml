@@ -1,23 +1,24 @@
 ﻿<UserControl x:Class="DataGridExtensionsSample.Views.Customized1View"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:DataGridExtensionsSample.Views"
              xmlns:dgx="urn:tom-englert.de/DataGridExtensions"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:dataGridExtensionsSample="clr-namespace:DataGridExtensionsSample"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" 
+             xmlns:controls="clr-namespace:DataGridExtensionsSample.Controls"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance local:Customized1ViewModel}">
   <UserControl.Resources>
     <ControlTemplate x:Key="IntegerFilter">
-      <dataGridExtensionsSample:IntegerGreatherThanFilterControl Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
+      <controls:IntegerGreatherThanFilterControl Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
     </ControlTemplate>
   </UserControl.Resources>
   <DockPanel>
     <DockPanel DockPanel.Dock="Top" Margin="10">
-      <Button x:Name="ReloadButton" Content="Reload data" DockPanel.Dock="Right" VerticalAlignment="Top"  Padding="5,2" Command="{Binding ReloadCommand}" />
+      <Button x:Name="ReloadButton" Content="Reload data" DockPanel.Dock="Right" VerticalAlignment="Top" Padding="5,2" Command="{Binding ReloadCommand}" />
       <TextBlock TextWrapping="WrapWithOverflow">
         <Run>This tab shows how to customize the filters when using auto generated columns. See the DataGrid_AutoGeneratingColumn event handler for details.</Run><LineBreak />
         <Run>- Overrides the content filter factory to use the regex matching instead of the default simple "string contains" matching.</Run><LineBreak />

@@ -10,8 +10,10 @@
     <DockPanel DockPanel.Dock="Top" Margin="10">
       <TextBlock TextWrapping="WrapWithOverflow">
         <Run>This tab has a context menu to show Excel-like copy/pasting of cells or blocks.</Run><LineBreak />
-        <Run></Run><LineBreak />
-        <Run></Run><LineBreak />
+        <Run />
+        <LineBreak />
+        <Run />
+        <LineBreak />
       </TextBlock>
     </DockPanel>
     <DataGrid x:Name="DataGrid" SelectionUnit="Cell" ItemsSource="{Binding DataProvider.Items}">

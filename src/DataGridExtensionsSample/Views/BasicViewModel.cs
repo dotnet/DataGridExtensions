@@ -6,6 +6,8 @@
 
     using DataGridExtensions;
 
+    using DataGridExtensionsSample.Infrastructure;
+
     using TomsToolbox.Wpf;
     using TomsToolbox.Wpf.Composition.AttributedModel;
 

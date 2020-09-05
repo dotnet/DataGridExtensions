@@ -1,7 +1,5 @@
-﻿namespace DataGridExtensionsSample
+﻿namespace DataGridExtensionsSample.Views
 {
-    using DataGridExtensionsSample.Views;
-
     using TomsToolbox.Wpf.Composition.AttributedModel;
 
     /// <summary>

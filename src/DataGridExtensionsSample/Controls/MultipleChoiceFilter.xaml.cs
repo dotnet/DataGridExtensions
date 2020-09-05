@@ -1,4 +1,4 @@
-﻿namespace DataGridExtensionsSample
+﻿namespace DataGridExtensionsSample.Controls
 {
     using System.Collections.Generic;
     using System.Collections.Specialized;

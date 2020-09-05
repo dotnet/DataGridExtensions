@@ -1,4 +1,4 @@
-﻿namespace DataGridExtensionsSample
+﻿namespace DataGridExtensionsSample.Infrastructure
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
