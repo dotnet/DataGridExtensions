@@ -24,6 +24,8 @@
 
             try
             {
+                dataGrid.Items.SortDescriptions.Clear();
+
                 foreach (var column in dataGrid.Columns)
                 {
                     if (column?.SortDirection != null && !string.IsNullOrEmpty(column.SortMemberPath))
