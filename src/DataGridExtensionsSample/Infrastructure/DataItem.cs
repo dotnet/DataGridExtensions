@@ -17,7 +17,7 @@
             Column3 = Guid.NewGuid().ToString();
             Column4 = Guid.NewGuid().ToString();
             Column5 = _samples[_rand.Next(_samples.Length)];
-            Column6 = (Visibility)_rand.Next(2);
+            Column6 = (Visibility)_rand.Next(3);
             Probability = _rand.NextDouble();
         }
 
