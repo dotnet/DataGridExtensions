@@ -1,0 +1,26 @@
+﻿<UserControl x:Class="DataGridExtensionsSample.Views.CopyPasteView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:DataGridExtensionsSample.Views"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance local:CopyPasteViewModel}">
+  <DockPanel>
+    <DockPanel DockPanel.Dock="Top" Margin="10">
+      <TextBlock TextWrapping="WrapWithOverflow">
+        <Run>This tab has a context menu to show Excel-like copy/pasting of cells or blocks.</Run><LineBreak />
+        <Run></Run><LineBreak />
+        <Run></Run><LineBreak />
+      </TextBlock>
+    </DockPanel>
+    <DataGrid x:Name="DataGrid" SelectionUnit="Cell" ItemsSource="{Binding DataProvider.Items}">
+      <DataGrid.ContextMenu>
+        <ContextMenu>
+          <MenuItem Header="Copy" Command="{Binding CopyCommand}" CommandParameter="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}" />
+          <MenuItem Header="Paste" Command="{Binding PasteCommand}" CommandParameter="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}" />
+        </ContextMenu>
+      </DataGrid.ContextMenu>
+    </DataGrid>
+  </DockPanel>
+</UserControl>

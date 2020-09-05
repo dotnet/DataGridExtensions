@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.0</TargetFrameworks>
+    <TargetFrameworks>net472</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <OutputType>WinExe</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -8,6 +8,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <Page Update="**\*View.xaml" DependentUpon="%(Filename)Model.cs" />
     <None Include="..\.editorconfig">
       <Link>.editorconfig</Link>
     </None>
@@ -19,11 +20,19 @@
     <ProjectReference Include="..\DataGridExtensions\DataGridExtensions.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Fody" Version="6.2.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers">
-      <Version>3.0.0</Version>
+      <Version>3.3.0</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="PropertyChanged.Fody" Version="3.2.9" PrivateAssets="All"/>
+    <PackageReference Include="TomsToolbox.Composition.Ninject" Version="2.1.1" />
+    <PackageReference Include="TomsToolbox.Wpf.Composition" Version="2.1.1" />
+    <PackageReference Include="TomsToolbox.Wpf.Composition.AttributedModel" Version="2.1.1" />
     <PackageReference Include="TomsToolbox.Wpf.Styles" Version="2.1.1" />
   </ItemGroup>
 </Project>

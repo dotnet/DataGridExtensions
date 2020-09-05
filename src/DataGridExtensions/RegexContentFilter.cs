@@ -56,6 +56,8 @@
     /// </summary>
     public class RegexContentFilterFactory : IContentFilterFactory
     {
+        public static readonly IContentFilterFactory Default = new RegexContentFilterFactory();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="RegexContentFilterFactory"/> class.
         /// </summary>

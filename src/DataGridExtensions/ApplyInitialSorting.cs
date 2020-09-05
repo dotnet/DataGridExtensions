@@ -1,5 +1,6 @@
 ﻿namespace DataGridExtensions
 {
+    using System;
     using System.ComponentModel;
     using System.Windows;
     using System.Windows.Controls;
@@ -34,7 +35,7 @@
                     }
                 }
             }
-            catch
+            catch (InvalidOperationException)
             {
                 // in some special cases we may get:
                 // System.InvalidOperationException: 'Sorting' is not allowed during an AddNew or EditItem transaction.
