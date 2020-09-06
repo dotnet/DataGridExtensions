@@ -6,6 +6,9 @@
     /// <summary>
     /// Provides additional events for the <see cref="DataGrid"/>
     /// </summary>
+    /// <remarks>
+    /// Retrieve this via the <see cref="Tools.GetAdditionalEvents"/> extension method.
+    /// </remarks>
     public interface IDataGridEventsProvider
     {
         /// <summary>
