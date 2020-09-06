@@ -22,5 +22,10 @@
         /// Occurs when the display index of a column has changed.
         /// </summary>
         event EventHandler<DataGridColumnEventArgs>? ColumnDisplayIndexChanged;
+
+        /// <summary>
+        /// Occurs when the sort direction of a column has changed.
+        /// </summary>
+        event EventHandler<DataGridColumnEventArgs>? ColumnSortDirectionChanged;
     }
 }

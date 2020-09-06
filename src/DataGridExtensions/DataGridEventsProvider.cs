@@ -11,6 +11,7 @@
         private static readonly DependencyPropertyDescriptor VisibilityPropertyDescriptor = DependencyPropertyDescriptor.FromProperty(DataGridColumn.VisibilityProperty, typeof(DataGridColumn));
         private static readonly DependencyPropertyDescriptor ActualWidthPropertyDescriptor = DependencyPropertyDescriptor.FromProperty(DataGridColumn.ActualWidthProperty, typeof(DataGridColumn));
         private static readonly DependencyPropertyDescriptor DisplayIndexPropertyDescriptor = DependencyPropertyDescriptor.FromProperty(DataGridColumn.DisplayIndexProperty, typeof(DataGridColumn));
+        private static readonly DependencyPropertyDescriptor SortDirectionPropertyDescriptor = DependencyPropertyDescriptor.FromProperty(DataGridColumn.SortDirectionProperty, typeof(DataGridColumn));
 
         private readonly DataGrid _dataGrid;
 
@@ -31,6 +32,8 @@
         public event EventHandler<DataGridColumnEventArgs>? ColumnActualWidthChanged;
 
         public event EventHandler<DataGridColumnEventArgs>? ColumnDisplayIndexChanged;
+
+        public event EventHandler<DataGridColumnEventArgs>? ColumnSortDirectionChanged;
 
         private void Columns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -68,6 +71,7 @@
             VisibilityPropertyDescriptor.RemoveValueChanged(column, DataGridColumnVisibility_Changed);
             ActualWidthPropertyDescriptor.RemoveValueChanged(column, DataGridColumnActualWidth_Changed);
             DisplayIndexPropertyDescriptor.RemoveValueChanged(column, DataGridColumnDisplayIndex_Changed);
+            SortDirectionPropertyDescriptor.RemoveValueChanged(column, DataGridColumnSortDirection_Changed);
         }
 
         private void AddEventHandlers(DataGridColumn column)
@@ -75,6 +79,7 @@
             VisibilityPropertyDescriptor.AddValueChanged(column, DataGridColumnVisibility_Changed);
             ActualWidthPropertyDescriptor.AddValueChanged(column, DataGridColumnActualWidth_Changed);
             DisplayIndexPropertyDescriptor.AddValueChanged(column, DataGridColumnDisplayIndex_Changed);
+            SortDirectionPropertyDescriptor.AddValueChanged(column, DataGridColumnSortDirection_Changed);
         }
 
         private void OnColumnVisibilityChanged(DataGridColumn column)
@@ -92,6 +97,11 @@
             ColumnDisplayIndexChanged?.Invoke(_dataGrid, new DataGridColumnEventArgs(column));
         }
 
+        private void OnColumnSortDirectionChanged(DataGridColumn column)
+        {
+            ColumnSortDirectionChanged?.Invoke(_dataGrid, new DataGridColumnEventArgs(column));
+        }
+
         private void DataGridColumnVisibility_Changed(object? source, EventArgs e)
         {
             OnColumnVisibilityChanged((DataGridColumn)source!);
@@ -105,6 +115,11 @@
         private void DataGridColumnDisplayIndex_Changed(object? source, EventArgs e)
         {
             OnColumnDisplayIndexChanged((DataGridColumn)source!);
+        }
+
+        private void DataGridColumnSortDirection_Changed(object? source, EventArgs e)
+        {
+            OnColumnSortDirectionChanged((DataGridColumn)source!);
         }
     }
 }
