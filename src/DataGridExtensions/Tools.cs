@@ -33,8 +33,13 @@
         /// <summary>
         /// Identifies the ApplyInitialSorting dependency property
         /// </summary>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// This property is a shortcut for the <see cref="ApplyInitialSortingBehavior"/>.
+        /// </summary>
+        /// </AttachedPropertyComments>
         public static readonly DependencyProperty ApplyInitialSortingProperty =
-            DependencyProperty.RegisterAttached("ApplyInitialSorting", typeof(bool), typeof(Tools), new FrameworkPropertyMetadata(false, ApplyInitialSorting.IsEnabled_Changed));
+            DependencyProperty.RegisterAttached("ApplyInitialSorting", typeof(bool), typeof(Tools), new FrameworkPropertyMetadata(false, ApplyInitialSortingBehavior.IsEnabled_Changed));
 
         #endregion
 
