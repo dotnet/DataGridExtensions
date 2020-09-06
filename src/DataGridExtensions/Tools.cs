@@ -5,6 +5,8 @@
     using System.Windows.Controls;
     using System.Windows.Input;
 
+    using DataGridExtensions.Behaviors;
+
     /// <summary>
     /// Some useful tools for data grids.
     /// </summary>

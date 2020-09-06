@@ -1,4 +1,4 @@
-﻿namespace DataGridExtensions
+﻿namespace DataGridExtensions.Behaviors
 {
     using System;
     using System.Collections.Generic;
@@ -58,7 +58,7 @@
             PersistLastKnownSortDescriptions();
         }
 
-        private void ItemsSource_Changed(object sender, EventArgs e)
+        private void ItemsSource_Changed(object? sender, EventArgs e)
         {
             try
             {

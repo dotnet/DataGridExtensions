@@ -14,6 +14,8 @@
         /// <summary>
         /// Gets if the default filters are automatically attached to each column.
         /// </summary>
+        /// <param name="dataGrid">The data grid.</param>
+        /// <returns><c>true</c> is auto-filtering is enabled.</returns>
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
         public static bool GetIsAutoFilterEnabled(this DataGrid dataGrid)
         {
@@ -47,6 +49,8 @@
         /// Filter attached property to attach the DataGridFilterHost instance to the owning DataGrid.
         /// This property is only used by code and is not accessible from XAML.
         /// </summary>
+        /// <param name="dataGrid">The data grid.</param>
+        /// <returns></returns>
         public static DataGridFilterHost GetFilter(this DataGrid dataGrid)
         {
             var value = (DataGridFilterHost)dataGrid.GetValue(FilterProperty);
@@ -163,17 +167,17 @@
 
 
         /// <summary>
-        /// Gets the value of the <see cref="P:DataGridExtensions.GlobalFilter"/> attached property from a given <see cref="DataGrid"/>.
+        /// Gets the value of the <see cref="P:DataGridExtensions.DataGridFilter.GlobalFilter"/> attached property from a given <see cref="DataGrid"/>.
         /// </summary>
         /// <param name="dataGrid">The <see cref="DataGrid"/> from which to read the property value.</param>
-        /// <returns>the value of the <see cref="P:DataGridExtensions.GlobalFilter"/> attached property.</returns>
+        /// <returns>the value of the <see cref="P:DataGridExtensions.DataGridFilter.GlobalFilter"/> attached property.</returns>
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
         public static Predicate<object?>? GetGlobalFilter(DataGrid dataGrid)
         {
             return (Predicate<object?>?)dataGrid.GetValue(GlobalFilterProperty);
         }
         /// <summary>
-        /// Sets the value of the <see cref="P:DataGridExtensions.GlobalFilter" /> attached property to a given <see cref="DataGrid" />.
+        /// Sets the value of the <see cref="P:DataGridExtensions.DataGridFilter.GlobalFilter" /> attached property to a given <see cref="DataGrid" />.
         /// </summary>
         /// <param name="dataGrid">The <see cref="DataGrid" /> on which to set the property value.</param>
         /// <param name="value">The property value to set.</param>
@@ -182,7 +186,7 @@
             dataGrid.SetValue(GlobalFilterProperty, value);
         }
         /// <summary>
-        /// Identifies the <see cref="P:DataGridExtensions.GlobalFilter"/> dependency property.
+        /// Identifies the <see cref="P:DataGridExtensions.DataGridFilter.GlobalFilter"/> dependency property.
         /// </summary>
         /// <AttachedPropertyComments>
         /// <summary>

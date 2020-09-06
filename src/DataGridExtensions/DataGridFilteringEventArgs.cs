@@ -6,7 +6,7 @@
 
     /// <summary>
     /// Notification about additional columns to be filtered.
-    /// Clients can e.g. use this event to cache/preload column data in a different thread and/or display a wait cursor while filtering.
+    /// Clients can e.g. use this event to cache/pre-load column data in a different thread and/or display a wait cursor while filtering.
     /// <remarks>
     /// Clients may only cancel the processing when e.g. the data grid is about to be unloaded. Canceling the process of filtering 
     /// will cause the UI to be inconsistent.
@@ -14,7 +14,6 @@
     /// </summary>
     public class DataGridFilteringEventArgs : CancelEventArgs
     {
-        /// <inheritdoc />
         /// <summary>
         /// Initializes a new instance of the <see cref="T:DataGridExtensions.DataGridFilteringEventArgs" /> class.
         /// </summary>
