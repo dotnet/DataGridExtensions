@@ -1,4 +1,7 @@
-﻿2.4.5
+﻿2.4.6
+- Fix #43: After enabling filtering HeaderStringFormats are being ignored
+
+2.4.5
 - Fix #42: ApplyInitialSorting does not consider grouping
 
 2.4.4
