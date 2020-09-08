@@ -141,6 +141,7 @@
       <!-- The control to host the filter UI for this column -->
       <src:DataGridFilterColumnControl DockPanel.Dock="Right" />
       <ContentPresenter x:Name="PART_Content" Content="{Binding}"
+                        ContentStringFormat="{Binding Column.HeaderStringFormat, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridColumnHeader}}"
                         SnapsToDevicePixels="{Binding SnapsToDevicePixels, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridColumnHeader}}"
                         HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridColumnHeader}}"
                         VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridColumnHeader}}" />

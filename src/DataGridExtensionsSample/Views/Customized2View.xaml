@@ -7,7 +7,6 @@
              xmlns:dgx="urn:tom-englert.de/DataGridExtensions"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
-             xmlns:dataGridExtensionsSample="clr-namespace:DataGridExtensionsSample"
              xmlns:controls="clr-namespace:DataGridExtensionsSample.Controls"
              xmlns:infrastructure="clr-namespace:DataGridExtensionsSample.Infrastructure"
              mc:Ignorable="d"
@@ -120,7 +119,7 @@
                                 Binding="{Binding Path=Flag, Mode=OneWay}"
                                 dgx:DataGridFilterColumn.Template="{StaticResource {x:Static dgx:DataGridFilter.TextColumnFilterTemplateKey}}" />
         <!-- Use the integer filter for the integer column. -->
-        <DataGridTextColumn Header="Integer/Custom"
+        <DataGridTextColumn Header="{Binding Path=Count, Source={StaticResource SortedItems}}" HeaderStringFormat='{}Total: {0}'
                             Binding="{Binding Index, Mode=OneWay}"
                             Width="*"
                             dgx:DataGridFilterColumn.Template="{StaticResource IntegerFilter}" />
