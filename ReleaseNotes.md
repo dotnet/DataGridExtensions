@@ -1,4 +1,7 @@
-﻿2.4.4
+﻿2.4.5
+- Fix #42: ApplyInitialSorting does not consider grouping
+
+2.4.4
 - Fix #41: ApplyInitialSorting may cause exceptions
 
 2.4.3
