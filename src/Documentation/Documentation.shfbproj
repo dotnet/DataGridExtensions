@@ -14,7 +14,7 @@
     <Name>Documentation</Name>
     <!-- SHFB properties -->
     <FrameworkVersion>.NET Framework 4.7.2</FrameworkVersion>
-    <OutputPath>..\..\doc\</OutputPath>
+    <OutputPath>..\..\docs\</OutputPath>
     <HtmlHelpName>API Documentation</HtmlHelpName>
     <Language>en-US</Language>
     <TransformComponentArguments>

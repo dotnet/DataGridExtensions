@@ -11,7 +11,7 @@ function Replace-Version
 
 }
 
-Get-ChildItem '..\..\doc\html\*.htm' | ForEach {
+Get-ChildItem '..\..\docs\html\*.htm' | ForEach {
 (Get-Content $_ -Raw | Replace-Version) | Set-Content -Path $_ -Encoding UTF8
 }
 
