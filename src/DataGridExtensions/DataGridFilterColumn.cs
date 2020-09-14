@@ -15,6 +15,9 @@
         /// <summary>
         /// Control the visibility of the filter for this column.
         /// </summary>
+        /// <param name="column">The column.</param>
+        /// <returns>True if the filter is visible for this column</returns>
+        /// <exception cref="ArgumentNullException">column</exception>
         public static bool GetIsFilterVisible(this DataGridColumn column)
         {
             if (column == null)
@@ -25,6 +28,9 @@
         /// <summary>
         /// Control the visibility of the filter for this column.
         /// </summary>
+        /// <param name="column">The column.</param>
+        /// <param name="value">The value.</param>
+        /// <exception cref="ArgumentNullException">column</exception>
         public static void SetIsFilterVisible(this DataGridColumn column, bool value)
         {
             if (column == null)
@@ -45,6 +51,8 @@
         /// <summary>
         /// Gets the control template for the filter of this column. If the template is null or unset, a default template will be used.
         /// </summary>
+        /// <param name="column">The column.</param>
+        /// <returns>The control template.</returns>
         public static ControlTemplate? GetTemplate(this DataGridColumn column)
         {
             return (ControlTemplate)column.GetValue(TemplateProperty);
@@ -52,6 +60,8 @@
         /// <summary>
         /// Sets the control template for the filter of this column. If the template is null or unset, a default template will be used.
         /// </summary>
+        /// <param name="column">The column.</param>
+        /// <param name="value">The value.</param>
         public static void SetTemplate(this DataGridColumn column, ControlTemplate? value)
         {
             column.SetValue(TemplateProperty, value);
@@ -69,6 +79,8 @@
         /// <summary>
         /// Gets the filter host for the data grid of this column.
         /// </summary>
+        /// <param name="column">The column.</param>
+        /// <returns>The <see cref="DataGridFilterHost"/></returns>
         public static DataGridFilterHost? GetFilterHost(this DataGridColumn column)
         {
             return (DataGridFilterHost?)column.GetValue(FilterHostProperty);
@@ -76,6 +88,8 @@
         /// <summary>
         /// Sets the filter host for the data grid of this column.
         /// </summary>
+        /// <param name="column">The column.</param>
+        /// <param name="value">The value.</param>
         public static void SetFilterHost(this DataGridColumn column, DataGridFilterHost? value)
         {
             column.SetValue(FilterHostProperty, value);
@@ -93,6 +107,8 @@
         /// <summary>
         /// Gets the filter expression of the column.
         /// </summary>
+        /// <param name="column">The column.</param>
+        /// <returns>The filter expression.</returns>
         public static object? GetFilter(this DataGridColumn column)
         {
             return column.GetValue(FilterProperty);
@@ -100,6 +116,8 @@
         /// <summary>
         /// Sets the filter expression of the column.
         /// </summary>
+        /// <param name="column">The column.</param>
+        /// <param name="value">The value.</param>
         public static void SetFilter(this DataGridColumn column, object? value)
         {
             column.SetValue(FilterProperty, value);
@@ -127,6 +145,8 @@
         /// <summary>
         /// Gets the filter expression of the column.
         /// </summary>
+        /// <param name="column">The column.</param>
+        /// <returns>The filter.</returns>
         public static IContentFilter? GetActiveFilter(this DataGridColumn column)
         {
             return (IContentFilter)column.GetValue(ActiveFilterProperty);
@@ -134,6 +154,8 @@
         /// <summary>
         /// Sets the filter expression of the column.
         /// </summary>
+        /// <param name="column">The column.</param>
+        /// <param name="value">The value.</param>
         public static void SetActiveFilter(this DataGridColumn column, IContentFilter? value)
         {
             column.SetValue(ActiveFilterProperty, value);

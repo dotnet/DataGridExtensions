@@ -25,7 +25,12 @@
         public static readonly DependencyProperty TargetProperty =
             DependencyProperty.Register("Target", typeof(UIElement), typeof(DisableTargetWhileEditingBehavior));
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Called after the behavior is attached to an AssociatedObject.
+        /// </summary>
+        /// <remarks>
+        /// Override this to hook up functionality to the AssociatedObject.
+        /// </remarks>
         protected override void OnAttached()
         {
             base.OnAttached();
@@ -36,7 +41,12 @@
             dataGrid.CellEditEnding += DataGrid_CellEditEnding;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Called when the behavior is being detached from its AssociatedObject, but before it has actually occurred.
+        /// </summary>
+        /// <remarks>
+        /// Override this to unhook functionality from the AssociatedObject.
+        /// </remarks>
         protected override void OnDetaching()
         {
             base.OnDetaching();

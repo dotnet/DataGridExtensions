@@ -18,6 +18,7 @@
         /// Gets the flag to enable the 'apply initial sorting' feature.
         /// </summary>
         /// <param name="dataGrid">The data grid.</param>
+        /// <returns><c>true</c> if 'apply initial sorting is enabled.'</returns>
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
         public static bool GetApplyInitialSorting(this DataGrid dataGrid)
         {

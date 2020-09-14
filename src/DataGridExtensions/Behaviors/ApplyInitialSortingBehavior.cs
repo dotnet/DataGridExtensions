@@ -24,7 +24,12 @@
         private IList<KeyValuePair<string, ListSortDirection>>? _mostRecentDescriptions;
         private IList<KeyValuePair<string, ListSortDirection>> _lastKnownActiveDescriptions = new List<KeyValuePair<string, ListSortDirection>>();
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Called after the behavior is attached to an AssociatedObject.
+        /// </summary>
+        /// <remarks>
+        /// Override this to hook up functionality to the AssociatedObject.
+        /// </remarks>
         protected override void OnAttached()
         {
             base.OnAttached();
@@ -35,7 +40,12 @@
             DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(DataGrid)).AddValueChanged(dataGrid, ItemsSource_Changed);
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Called when the behavior is being detached from its AssociatedObject, but before it has actually occurred.
+        /// </summary>
+        /// <remarks>
+        /// Override this to unhook functionality from the AssociatedObject.
+        /// </remarks>
         protected override void OnDetaching()
         {
             base.OnDetaching();

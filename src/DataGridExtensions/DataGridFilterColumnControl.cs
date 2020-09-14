@@ -33,7 +33,6 @@
                 templatePropertyDescriptor.DesignerCoerceValueCallback = Template_CoerceValue;
         }
 
-        /// <inheritdoc />
         /// <summary>
         /// Initializes a new instance of the <see cref="T:DataGridExtensions.DataGridFilterColumnControl" /> class.
         /// </summary>

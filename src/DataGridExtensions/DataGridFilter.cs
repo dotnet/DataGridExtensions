@@ -24,6 +24,8 @@
         /// <summary>
         /// Sets if the default filters are automatically attached to each column. Set to false if you want to control filters by code.
         /// </summary>
+        /// <param name="dataGrid">The data grid.</param>
+        /// <param name="value">The value.</param>
         public static void SetIsAutoFilterEnabled(this DataGrid dataGrid, bool value)
         {
             dataGrid.SetValue(IsAutoFilterEnabledProperty, value);
@@ -50,7 +52,7 @@
         /// This property is only used by code and is not accessible from XAML.
         /// </summary>
         /// <param name="dataGrid">The data grid.</param>
-        /// <returns></returns>
+        /// <returns>The <see cref="DataGridFilterHost"/></returns>
         public static DataGridFilterHost GetFilter(this DataGrid dataGrid)
         {
             var value = (DataGridFilterHost)dataGrid.GetValue(FilterProperty);
@@ -77,6 +79,8 @@
         /// <summary>
         /// Gets the content filter factory for the data grid filter.
         /// </summary>
+        /// <param name="dataGrid">The data grid.</param>
+        /// <returns>The <see cref="IContentFilterFactory"/></returns>
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
         public static IContentFilterFactory GetContentFilterFactory(this DataGrid dataGrid)
         {
@@ -85,6 +89,9 @@
         /// <summary>
         /// Sets the content filter factory for the data grid filter.
         /// </summary>
+        /// <param name="dataGrid">The data grid.</param>
+        /// <param name="value">The value.</param>
+        /// <exception cref="ArgumentNullException">dataGrid</exception>
         public static void SetContentFilterFactory(this DataGrid dataGrid, IContentFilterFactory? value)
         {
             if (dataGrid == null)

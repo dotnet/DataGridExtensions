@@ -3,7 +3,6 @@
     using System;
     using System.Text.RegularExpressions;
 
-    /// <inheritdoc />
     /// <summary>
     /// A content filter using the content as a regular expression to match the string representation of the value.
     /// </summary>
@@ -56,6 +55,9 @@
     /// </summary>
     public class RegexContentFilterFactory : IContentFilterFactory
     {
+        /// <summary>
+        /// The default instance.
+        /// </summary>
         public static readonly IContentFilterFactory Default = new RegexContentFilterFactory();
 
         /// <summary>

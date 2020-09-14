@@ -16,7 +16,6 @@
 
     using Microsoft.Xaml.Behaviors;
 
-    /// <inheritdoc />
     /// <summary>
     /// Extended start size column behavior. Allows columns to get larger than the client area, but not smaller.
     /// The Resizing behavior can be modified using Ctrl or Shift keys: Ctrl resizes all columns to the right proportionally, Shift fits all columns to the right into the client area.
@@ -39,7 +38,6 @@
         /// </summary>
         public static readonly ResourceKey ColumnHeaderGripperToolTipStyleKey = new ComponentResourceKey(typeof(ExtendedStarSizeBehavior), "ColumnHeaderGripperToolTipStyle");
 
-        /// <inheritdoc />
         /// <summary>
         /// Initializes a new instance of the <see cref="DataGridExtensions.Behaviors.ExtendedStarSizeBehavior" /> class.
         /// </summary>
@@ -76,7 +74,12 @@
         public static readonly DependencyProperty ResourceLocatorProperty =
             DependencyProperty.Register("ResourceLocator", typeof(IResourceLocator), typeof(ExtendedStarSizeBehavior));
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Called after the behavior is attached to an AssociatedObject.
+        /// </summary>
+        /// <remarks>
+        /// Override this to hook up functionality to the AssociatedObject.
+        /// </remarks>
         protected override void OnAttached()
         {
             base.OnAttached();

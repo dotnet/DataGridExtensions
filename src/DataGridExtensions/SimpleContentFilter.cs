@@ -46,6 +46,9 @@
     /// </summary>
     public class SimpleContentFilterFactory : IContentFilterFactory
     {
+        /// <summary>
+        /// The default instance.
+        /// </summary>
         public static readonly IContentFilterFactory Default = new SimpleContentFilterFactory();
 
         /// <summary>
