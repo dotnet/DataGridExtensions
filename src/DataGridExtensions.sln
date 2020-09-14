@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\ReleaseNotes.md = ..\ReleaseNotes.md
 	EndProjectSection
 EndProject
+Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "Documentation", "Documentation\Documentation.shfbproj", "{FD7D839F-FB3D-4468-BF6F-71AA2436EA98}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{977C4FEE-4F44-4F64-803B-3F7350F3A487}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{977C4FEE-4F44-4F64-803B-3F7350F3A487}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{977C4FEE-4F44-4F64-803B-3F7350F3A487}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD7D839F-FB3D-4468-BF6F-71AA2436EA98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD7D839F-FB3D-4468-BF6F-71AA2436EA98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD7D839F-FB3D-4468-BF6F-71AA2436EA98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD7D839F-FB3D-4468-BF6F-71AA2436EA98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

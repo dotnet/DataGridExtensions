@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="bdcf301b-c036-4f10-a269-a9f15fce4679" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>
+				This documentation is just about the detailed API of all classes. For usage documentation continue 
+        <externalLink><linkText>here</linkText><linkUri>https://github.com/tom-englert/DataGridExtensions/blob/master/Documentation/README.md</linkUri></externalLink>
+      </para>
+    </introduction>
+
+		<section>
+			<title></title>
+			<content>
+      </content>
+		</section>
+
+		<relatedTopics>
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>
