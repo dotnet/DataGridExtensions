@@ -10,4 +10,6 @@ Click on the topics below to see the individual descriptions and sample usage.
 * [Force Commit On Lost Focus](topics/Tools.md#Force-Commit-On-Lost-Focus)
 * [Multi Line Editing](topics/Tools.md#Multi-Line-Editing)
 
+For further details take a tour through the code of the sample application to see the many possibilities how to use and customize it.
+
 A detailed documentation of the API can be found [here](https://tom-englert.github.io/DataGridExtensions)
