@@ -9,3 +9,5 @@ Click on the topics below to see the individual descriptions and sample usage.
 * [Apply Initial Sorting](topics/Tools.md#Apply_Initial_Sorting)
 * [Force Commit On Lost Focus](topics/Tools.md#Force_Commit_On_Lost_Focus)
 * [Multi Line Editing](topics/Tools.md#Multi_Line_Editing)
+
+A detailed documentation of the API can be found [here](https://tom-englert.github.io/DataGridExtensions)
