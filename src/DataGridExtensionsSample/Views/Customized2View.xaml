@@ -72,6 +72,7 @@
               dgx:DataGridFilter.GlobalFilter="{Binding GlobalFilter}"
               dgx:DataGridFilter.IsAutoFilterEnabled="True"
               dgx:Tools.ApplyInitialSorting="True"
+              dgx:Tools.ForceCommitOnLostFocus="True"
               dgx:DataGridFilter.FilterEvaluationDelay="0:0:0">
       <b:Interaction.Behaviors>
         <dgx:ExtendedStarSizeBehavior />
@@ -124,7 +125,7 @@
                             Width="*"
                             dgx:DataGridFilterColumn.Template="{StaticResource IntegerFilter}" />
         <!-- Hide the filter for this column. -->
-        <DataGridTextColumn Header="Text/No Filter" Binding="{Binding Column5}"
+        <DataGridTextColumn Header="Text/No Filter/MultiLine" Binding="{Binding Column5}"
                             Width="*"
                             dgx:DataGridFilterColumn.IsFilterVisible="False"
                             dgx:Tools.IsMultilineEditingEnabled="True"
