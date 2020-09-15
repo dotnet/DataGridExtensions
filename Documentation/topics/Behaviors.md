@@ -10,14 +10,14 @@ The extension provides the following behaviors:
   </i:Interaction.Behaviors>
 ```
 
-### BeginEditOnCtrlEnterBehavior
+### Begin Edit On Ctrl Enter Behavior
 Adds a new keyboard shortcut to start editing a cell without loosing the current content. 
 
 When you have selected a column, starting to type will clear the content and replace it with the typed text. 
 
 When the `BeginEditOnCtrlEnterBehavior` is enabled, you can click Ctrl+Enter to start editing the cell, preserving it's content.
 
-### ExtendedStarSizeBehavior
+### Extended Star Size Behavior
 Using star sizes as column width limits all columns to the width of the data grid. 
 
 This behavior replaces the standard star size behavior with something more flexible: 
@@ -30,7 +30,7 @@ Pressing the Ctrl-Key while growing the width of a column will grow the width of
 
 Pressing the Shift-Key while resizing a column or the whole gird will fit all columns into the grid again.
 
-### DisableTargetWhileEditingBehavior
+### Disable Target While Editing Behavior
 Disables a control on the page while the grid is in editing mode. 
 
 Some elements that don't grab the focus can execute actions while the data grid is still in editing mode and cause the data grid to throw an exception. 
