@@ -43,7 +43,7 @@ stages:
       condition: false
 
 - stage: CodeSign
-  condition: false # and(succeeded('Build'), ne(variables['build.reason'], 'PullRequest'))
+  condition: and(succeeded('Build'), ne(variables['build.reason'], 'PullRequest'))
   jobs:
   - deployment: CodeSign
     displayName: Code Signing
@@ -69,9 +69,6 @@ stages:
               arguments: install --tool-path . SignClient
             displayName: Install SignTool tool
 
-          - pwsh: Rename-Item -Path "$(Pipeline.Workspace)\BuildPackages\Publish.zip" -NewName Publish.clickonce
-            displayName: 'Rename click-once archive to .clickonce'
-
           - pwsh: |
               .\SignClient "Sign" `
               --baseDirectory "$(Pipeline.Workspace)\BuildPackages" `
@@ -80,23 +77,14 @@ stages:
               --filelist "$(Pipeline.Workspace)\signing\filelist.txt" `
               --user "$(SignClientUser)" `
               --secret "$(SignClientSecret)" `
-              --name "ResX Resource Manager" `
-              --description "ResX Resource Manager" `
-              --descriptionUrl "https://github.com/dotnet/ResXResourceManager"
+              --name "DataGrid Extensions" `
+              --description "DataGrid Extensions" `
+              --descriptionUrl "https://github.com/dotnet/DataGridExtensions"
             displayName: Sign packages
-
-          - pwsh: Rename-Item -Path "$(Pipeline.Workspace)\BuildPackages\Publish.clickonce" -NewName Publish.zip
-            displayName: 'Rename click-once archive back to .zip'
-
-          - task: PowerShell@1
-            displayName: 'Publish to vsix-gallery'
-            inputs:
-              scriptType: inlineScript
-              inlineScript: |
-                (new-object Net.WebClient).DownloadString("https://raw.github.com/tom-englert/BuildScripts/master/BuildScripts.ps1") | iex
-                Vsix-PublishToGallery "$(Pipeline.Workspace)\BuildPackages\ResXManager.Vsix.vsix"
+            condition: false
 
           - publish: $(Pipeline.Workspace)\BuildPackages
             displayName: Publish Signed Packages
             artifact: SignedPackages
+            condition: false
 
