@@ -9,7 +9,6 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageOutputPath>$(SolutionDir)nugets</PackageOutputPath>
     <PackageLicenseFile>License</PackageLicenseFile>
     <PackageIcon>Icon.png</PackageIcon>
     <PackageProjectUrl>https://github.com/tom-englert/DataGridExtensions</PackageProjectUrl>

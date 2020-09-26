@@ -1,0 +1,101 @@
+name: $(Build.DefinitionName) $(date:yyyyMMdd)$(rev:.r)
+
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    pool:
+      vmImage: windows-latest
+
+    variables:
+      BuildPlatform: 'Any CPU'
+      BuildConfiguration: 'Release'
+
+    steps:
+    - task: MSBuild@1
+      displayName: 'Build solution'
+      inputs:
+        solution: 'src\DataGridExtensions.sln'
+        msbuildArguments: '-restore'
+        platform: '$(BuildPlatform)'
+        configuration: '$(BuildConfiguration)'
+
+    - task: CopyFiles@2
+      displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+      inputs:
+        SourceFolder: '$(build.sourcesdirectory)\DataGridExtensions\bin\$(BuildConfiguration)\*.nupkg'
+        Contents: '*.nupkg'
+        TargetFolder: '$(build.artifactstagingdirectory)'
+        CleanTargetFolder: true
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact: BuildPackages'
+      inputs:
+        PathtoPublish: '$(build.artifactstagingdirectory)'
+        ArtifactName: BuildPackages
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact: signing scripts'
+      inputs:
+        PathtoPublish: 'signing'
+        ArtifactName: signing
+      condition: false
+
+- stage: CodeSign
+  condition: false # and(succeeded('Build'), ne(variables['build.reason'], 'PullRequest'))
+  jobs:
+  - deployment: CodeSign
+    displayName: Code Signing
+    pool:
+      vmImage: windows-latest
+    environment: Code Signing
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: CmdLine@2
+            displayName: "AntiMalware Scan"
+            inputs:
+              script: |
+                Dir "$(Pipeline.Workspace)\BuildPackages"
+                "%ProgramFiles%\Windows Defender\MpCmdRun.exe" -Scan -ScanType 3 -File "$(Pipeline.Workspace)\BuildPackages"
+              failOnStderr: true
+
+          - task: DotNetCoreCLI@2
+            inputs:
+              command: custom
+              custom: tool
+              arguments: install --tool-path . SignClient
+            displayName: Install SignTool tool
+
+          - pwsh: Rename-Item -Path "$(Pipeline.Workspace)\BuildPackages\Publish.zip" -NewName Publish.clickonce
+            displayName: 'Rename click-once archive to .clickonce'
+
+          - pwsh: |
+              .\SignClient "Sign" `
+              --baseDirectory "$(Pipeline.Workspace)\BuildPackages" `
+              --input "**/*.*" `
+              --config "$(Pipeline.Workspace)\signing\SignClient.json" `
+              --filelist "$(Pipeline.Workspace)\signing\filelist.txt" `
+              --user "$(SignClientUser)" `
+              --secret "$(SignClientSecret)" `
+              --name "ResX Resource Manager" `
+              --description "ResX Resource Manager" `
+              --descriptionUrl "https://github.com/dotnet/ResXResourceManager"
+            displayName: Sign packages
+
+          - pwsh: Rename-Item -Path "$(Pipeline.Workspace)\BuildPackages\Publish.clickonce" -NewName Publish.zip
+            displayName: 'Rename click-once archive back to .zip'
+
+          - task: PowerShell@1
+            displayName: 'Publish to vsix-gallery'
+            inputs:
+              scriptType: inlineScript
+              inlineScript: |
+                (new-object Net.WebClient).DownloadString("https://raw.github.com/tom-englert/BuildScripts/master/BuildScripts.ps1") | iex
+                Vsix-PublishToGallery "$(Pipeline.Workspace)\BuildPackages\ResXManager.Vsix.vsix"
+
+          - publish: $(Pipeline.Workspace)\BuildPackages
+            displayName: Publish Signed Packages
+            artifact: SignedPackages
+
