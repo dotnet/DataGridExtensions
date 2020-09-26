@@ -15,15 +15,16 @@ stages:
     - task: MSBuild@1
       displayName: 'Build solution'
       inputs:
-        solution: 'src\DataGridExtensions.sln'
-        msbuildArguments: '-restore'
+        solution: '**\DataGridExtensions.sln'
         platform: '$(BuildPlatform)'
         configuration: '$(BuildConfiguration)'
+        msbuildArguments: '-restore'
+        clean: true
 
     - task: CopyFiles@2
       displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
       inputs:
-        SourceFolder: '$(build.sourcesdirectory)\DataGridExtensions\bin\$(BuildConfiguration)\*.nupkg'
+        SourceFolder: 'src\DataGridExtensions\bin\$(BuildConfiguration)'
         Contents: '*.nupkg'
         TargetFolder: '$(build.artifactstagingdirectory)'
         CleanTargetFolder: true
