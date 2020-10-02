@@ -1,7 +1,16 @@
+[<img src="https://raw.githubusercontent.com/dotnet-foundation/swag/master/logo/dotnetfoundation_v4.svg" alt=".NET Foundation" width=100>](https://dotnetfoundation.org)
+
 ### Data Grid Extensions [![Build status](https://ci.appveyor.com/api/projects/status/flhx331adphg1kw3?svg=true)](https://ci.appveyor.com/project/tom-englert/datagridextensions) [![NuGet Status](http://img.shields.io/nuget/v/DataGridExtensions.svg?style=flat)](https://www.nuget.org/packages/DataGridExtensions/)
 ![Icon](Icon.png)
 
 Modular extensions for the WPF DataGrid control.
+
+## Code of Conduct
+This project has adopted the code of conduct defined by the Contributor Covenant to clarify expected behavior in our community.
+For more information see the [.NET Foundation Code of Conduct](https://dotnetfoundation.org/code-of-conduct).
+
+## .NET Foundation
+This project is supported by the [.NET Foundation](https://dotnetfoundation.org).
 
 The binaries are available as [NuGet](http://nuget.org/packages/DataGridExtensions) packages.
 
