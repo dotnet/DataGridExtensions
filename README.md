@@ -12,8 +12,7 @@ For more information see the [.NET Foundation Code of Conduct](https://dotnetfou
 ## .NET Foundation
 This project is supported by the [.NET Foundation](https://dotnetfoundation.org).
 
-The binaries are available as [NuGet](http://nuget.org/packages/DataGridExtensions) packages.
-
+## Summary
 This package contains useful extensions for the WPF DataGrid (`System.Windows.Controls.DataGrid`).
 
 The current version supports the following features and behaviors:
@@ -24,6 +23,9 @@ The current version supports the following features and behaviors:
 * Provide additional column events
 * Start editing a cell with Ctrl+Enter
 * Provide an extended star-size column behavior
+* Methods to easily implement Excel-like copy/paste
+
+The binaries are available as [NuGet](http://nuget.org/packages/DataGridExtensions) packages.
 
 Read the [Documentation](Documentation/README.md) about how to use these features.
 
