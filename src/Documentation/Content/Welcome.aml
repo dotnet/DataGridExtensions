@@ -4,7 +4,7 @@
 		<introduction>
 			<para>
 				This documentation is just about the detailed API of all classes. For usage documentation continue 
-        <externalLink><linkText>here</linkText><linkUri>https://github.com/tom-englert/DataGridExtensions/blob/master/Documentation/README.md</linkUri></externalLink>
+        <externalLink><linkText>here</linkText><linkUri>https://github.com/dotnet/DataGridExtensions/blob/master/Documentation/README.md</linkUri></externalLink>
       </para>
     </introduction>
 

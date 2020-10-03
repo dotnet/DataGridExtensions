@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Authors>Tom Englert</Authors>
     <Company>tom-englert.de</Company>
-    <Copyright>© 2012-2020 tom-englert.de</Copyright>
+    <Copyright>Copyright (c) .NET Foundation and Contributors.</Copyright>
     <Product>Tom's Toolbox</Product>
     <Version>2.4.6</Version>
   </PropertyGroup>

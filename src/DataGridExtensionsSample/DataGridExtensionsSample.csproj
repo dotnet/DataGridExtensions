@@ -3,7 +3,7 @@
     <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <OutputType>WinExe</OutputType>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -34,5 +34,8 @@
     <PackageReference Include="TomsToolbox.Wpf.Composition" Version="2.1.1" />
     <PackageReference Include="TomsToolbox.Wpf.Composition.AttributedModel" Version="2.1.1" />
     <PackageReference Include="TomsToolbox.Wpf.Styles" Version="2.1.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
 </Project>

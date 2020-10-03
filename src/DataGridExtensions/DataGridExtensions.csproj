@@ -11,11 +11,11 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseFile>License</PackageLicenseFile>
     <PackageIcon>Icon.png</PackageIcon>
-    <PackageProjectUrl>https://github.com/tom-englert/DataGridExtensions</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/tom-englert/DataGridExtensions.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/dotnet/DataGridExtensions</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/dotnet/DataGridExtensions.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>DGX DataGrid Filter</PackageTags>
-    <PackageReleaseNotes>https://raw.githubusercontent.com/tom-englert/DataGridExtensions/master/ReleaseNotes.md</PackageReleaseNotes>
+    <PackageReleaseNotes>https://raw.githubusercontent.com/dotnet/DataGridExtensions/master/ReleaseNotes.md</PackageReleaseNotes>
     <Title>Data Grid Extensions</Title>
     <Description>This package contains useful extensions for the MS DataGrid (System.Windows.Controls.DataGrid).
 The current version supports the following features:
