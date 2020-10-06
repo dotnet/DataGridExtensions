@@ -12,4 +12,4 @@ Click on the topics below to see the individual descriptions and sample usage.
 
 For further details take a tour through the code of the sample application to see the many possibilities how to use and customize it.
 
-A detailed documentation of the API can be found [here](https://tom-englert.github.io/DataGridExtensions)
+A detailed documentation of the API can be found [here](https://dotnet.github.io/DataGridExtensions)
