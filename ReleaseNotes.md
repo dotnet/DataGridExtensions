@@ -1,4 +1,7 @@
-﻿2.4.6
+﻿2.4.7
+- Package is now digitally signed
+
+2.4.6
 - Fix #43: After enabling filtering HeaderStringFormats are being ignored
 
 2.4.5
