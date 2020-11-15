@@ -40,7 +40,6 @@ stages:
       inputs:
         PathtoPublish: 'signing'
         ArtifactName: signing
-      condition: false
 
 - stage: CodeSign
   condition: and(succeeded('Build'), ne(variables['build.reason'], 'PullRequest'))
@@ -81,10 +80,7 @@ stages:
               --description "DataGrid Extensions" `
               --descriptionUrl "https://github.com/dotnet/DataGridExtensions"
             displayName: Sign packages
-            condition: false
 
           - publish: $(Pipeline.Workspace)\BuildPackages
             displayName: Publish Signed Packages
             artifact: SignedPackages
-            condition: false
-
