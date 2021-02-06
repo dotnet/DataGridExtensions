@@ -150,7 +150,7 @@
         /// Identifies the IsPopupVisible dependency property
         /// </summary>
         public static readonly DependencyProperty IsPopupVisibleProperty =
-            DependencyProperty.Register("IsPopupVisible", typeof(bool), typeof(DataGridFilterColumnControl));
+            DependencyProperty.Register("IsPopupVisible", typeof(bool), typeof(DataGridFilterColumnControl), new FrameworkPropertyMetadata(false));
 
         private static object? Template_CoerceValue(DependencyObject sender, object? baseValue)
         {
