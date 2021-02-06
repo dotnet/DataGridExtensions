@@ -200,7 +200,7 @@
         /// Identifies the IsPopupVisible dependency property
         /// </summary>
         public static readonly DependencyProperty IsPopupVisibleProperty =
-            DependencyProperty.RegisterAttached("IsPopupVisible", typeof(bool), typeof(DataGridFilterColumn), new FrameworkPropertyMetadata(true));
+            DependencyProperty.RegisterAttached("IsPopupVisible", typeof(bool), typeof(DataGridFilterColumn), new FrameworkPropertyMetadata(false));
 
         #endregion
 
