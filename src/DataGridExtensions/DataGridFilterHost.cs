@@ -143,6 +143,8 @@
         {
             column.SetFilterHost(this);
 
+            column.SetDataGridFilterColumnControl(filterColumnControl);
+
             filterColumnControl.Visibility = _isFilteringEnabled ? Visibility.Visible : Visibility.Hidden;
 
             _filterColumnControls[column] = filterColumnControl;

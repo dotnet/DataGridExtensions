@@ -5,7 +5,7 @@
   <Control.Template>
     <ControlTemplate>
       <Grid>
-        <ToggleButton x:Name="button">
+        <ToggleButton x:Name="button" IsChecked="{Binding Path=IsPopupVisible, ElementName=Control, Mode=TwoWay}">
           <ToggleButton.Style>
             <Style TargetType="Control">
               <!-- Only show the button if the filter is active or if the mouse is over the column header -->
@@ -22,12 +22,12 @@
           <!-- Reuse the standard icon, but change color to green -->
           <Control Style="{DynamicResource {x:Static dgx:DataGridFilter.IconStyleKey}}" Foreground="Green" />
         </ToggleButton>
-        <Popup x:Name="popup" IsOpen="{Binding Path=IsChecked, ElementName=button, Mode=TwoWay}"
+        <Popup x:Name="popup" IsOpen="{Binding Path=IsPopupVisible, ElementName=Control, Mode=TwoWay}"
                AllowsTransparency="True"
                DataContext="{Binding ElementName=Control}" StaysOpen="False">
           <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="3" Padding="4">
             <StackPanel>
-              <TextBlock Text="Enter the limits:" Margin="0,3" />
+              <TextBlock x:Name="Caption" Text="{Binding Path=Caption, ElementName=Control, TargetNullValue='Enter the limits:'}" Margin="0,3" />
               <Grid>
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="Auto" />

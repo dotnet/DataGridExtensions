@@ -29,7 +29,8 @@
       <controls:IntegerGreatherThanFilterControl Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
     </ControlTemplate>
     <ControlTemplate x:Key="FilterWithPopup">
-      <controls:FilterWithPopupControl Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
+      <controls:FilterWithPopupControl Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}"
+                                       IsPopupVisible="{Binding Path=IsPopupVisible, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
     </ControlTemplate>
     <ControlTemplate x:Key="MultipleChoiceFilter">
       <controls:MultipleChoiceFilter Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
@@ -61,13 +62,15 @@
   <DockPanel>
     <DockPanel DockPanel.Dock="Top" Margin="10">
       <Button x:Name="ClearIpsumButton" DockPanel.Dock="Right" VerticalAlignment="Top" Padding="5,2" Command="{Binding ClearIpsumCommand}">Clear Ipsum</Button>
+      <Button x:Name="OpenAndPopulateAFilterButton" DockPanel.Dock="Right" VerticalAlignment="Top" Padding="5,2" Margin="0,0,10,0" Command="{Binding OpenAndPopulateAFilterCommand}">Open &amp; Populate a Filter</Button>
+      <Button x:Name="ProgrammaticAccessToFilterControlButton" DockPanel.Dock="Right" VerticalAlignment="Top" Padding="5,2" Margin="0,0,10,0" Command="{Binding ProgrammaticAccessToFilterControlCommand}">Change Popup Caption</Button>
       <TextBlock TextWrapping="WrapWithOverflow">
         <Run>This tab shows how to customize the filters in XAML when using explicit generated columns. Read the comments in the XAML for details.</Run><LineBreak />
         <Run>- Overrides the default icon style to have a blue icon that changes to red when the column header is hovered.</Run><LineBreak />
         <Run>- Overrides the default styles for some columns.</Run><LineBreak />
       </TextBlock>
     </DockPanel>
-    <DataGrid ItemsSource="{Binding Source={StaticResource SortedItems}}" AutoGenerateColumns="False" FrozenColumnCount="2"
+    <DataGrid Name="DemoDataGrid"  ItemsSource="{Binding Source={StaticResource SortedItems}}" AutoGenerateColumns="False" FrozenColumnCount="2"
               SelectionUnit="Cell"
               dgx:DataGridFilter.GlobalFilter="{Binding GlobalFilter}"
               dgx:DataGridFilter.IsAutoFilterEnabled="True"
@@ -145,8 +148,12 @@
                                 Width="*" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"
                                 ItemsSource="{Binding Source={StaticResource ComboBoxSource}}" />
         <!-- Use a special filter using a toggle button with a popup to enter more than one condition. -->
-        <DataGridTextColumn Header="Double/Custom" Binding="{Binding Probability, Mode=OneWay}" Width="*"
-                            dgx:DataGridFilterColumn.Template="{StaticResource FilterWithPopup}" />
+        <DataGridTextColumn x:Name="Column5"
+                            Header="Double/Custom" Binding="{Binding Probability, Mode=OneWay}" Width="*"
+                            dgx:DataGridFilterColumn.Template="{StaticResource FilterWithPopup}"
+                            dgx:DataGridFilterColumn.Filter="{Binding Column5Filter}"
+                            dgx:DataGridFilterColumn.IsPopupVisible="{Binding Column5PopupVisible}"
+                            dgx:DataGridFilterColumn.DataGridFilterColumnControl="{Binding Column5FilterColumnControl}"/>
         <!-- A template column may contain everything, so we need to specify the SortMemberPath explicitly...-->
         <DataGridTemplateColumn Header="Template" SortMemberPath="Probability">
           <DataGridTemplateColumn.CellTemplate>

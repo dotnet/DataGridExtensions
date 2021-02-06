@@ -9,6 +9,7 @@
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
     using System.Windows.Data;
+    using System.Windows.Media;
     using System.Windows.Threading;
 
     using DataGridExtensions.Framework;
@@ -78,6 +79,9 @@
 
             var filterPropertyPath = new PropertyPath("(0)", DataGridFilterColumn.FilterProperty);
             BindingOperations.SetBinding(this, FilterProperty, new Binding() { Path = filterPropertyPath, Source = column, Mode = BindingMode.TwoWay });
+
+            var isPopupVisiblePropertyPath = new PropertyPath("(0)", DataGridFilterColumn.IsPopupVisibleProperty);
+            BindingOperations.SetBinding(this, IsPopupVisibleProperty, new Binding() { Path = isPopupVisiblePropertyPath, Source = column, Mode = BindingMode.TwoWay });
         }
 
         private void Self_Unloaded(object sender, RoutedEventArgs e)
@@ -130,6 +134,23 @@
         /// </summary>
         public static readonly DependencyProperty FilterProperty =
             DependencyProperty.Register("Filter", typeof(object), typeof(DataGridFilterColumnControl));
+
+        /// <summary>
+        /// If the template includes a popup, the visibility of the popup can be controlled via this property.
+        /// </summary>
+        public bool IsPopupVisible
+        {
+            get => (bool)GetValue(IsPopupVisibleProperty);
+            set {
+                SetValue(IsPopupVisibleProperty, value);
+                OnPropertyChanged(nameof(IsPopupVisible));
+            }
+        }
+        /// <summary>
+        /// Identifies the IsPopupVisible dependency property
+        /// </summary>
+        public static readonly DependencyProperty IsPopupVisibleProperty =
+            DependencyProperty.Register("IsPopupVisible", typeof(bool), typeof(DataGridFilterColumnControl));
 
         private static object? Template_CoerceValue(DependencyObject sender, object? baseValue)
         {
@@ -247,6 +268,29 @@
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// The actual filter control generated at runtime. 
+        /// </summary>
+        public Control? FilterControl
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Populate the FilterControl property once the template is applied.
+        /// </summary>
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+
+            if (VisualTreeHelper.GetChildrenCount(this) == 1
+                && VisualTreeHelper.GetChild(this, 0) is Control filterControl)
+            {
+                FilterControl = filterControl;
+            }
         }
 
         /// <summary>
