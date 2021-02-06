@@ -102,6 +102,34 @@
 
         #endregion
 
+        #region DataGridFilterColumnControl attached property
+
+        /// <summary>
+        /// Gets the filter host for the data grid of this column.
+        /// </summary>
+        /// <param name="column">The column.</param>
+        /// <returns>The <see cref="DataGridFilterColumnControl"/></returns>
+        public static DataGridFilterColumnControl? GetDataGridFilterColumnControl(this DataGridColumn column)
+        {
+            return (DataGridFilterColumnControl?)column.GetValue(DataGridFilterColumnControlProperty);
+        }
+        /// <summary>
+        /// Sets the filter host for the data grid of this column.
+        /// </summary>
+        /// <param name="column">The column.</param>
+        /// <param name="value">The value.</param>
+        public static void SetDataGridFilterColumnControl(this DataGridColumn column, DataGridFilterColumnControl? value)
+        {
+            column.SetValue(DataGridFilterColumnControlProperty, value);
+        }
+        /// <summary>
+        /// Identifies the DataGridFilterColumnControl dependency property.
+        /// </summary>
+        public static readonly DependencyProperty DataGridFilterColumnControlProperty =
+            DependencyProperty.RegisterAttached("DataGridFilterColumnControl", typeof(DataGridFilterColumnControl), typeof(DataGridFilterColumn));
+
+        #endregion
+
         #region Filter attached property
 
         /// <summary>
@@ -137,6 +165,42 @@
             column.SetActiveFilter(args.NewValue as IContentFilter);
             column.GetFilterHost()?.OnFilterChanged();
         }
+
+        #endregion
+
+        #region IsPopupVisible attached property
+
+        /// <summary>
+        /// Control the visibility of the filter for this column.
+        /// </summary>
+        /// <param name="column">The column.</param>
+        /// <returns>True if the filter is visible for this column</returns>
+        /// <exception cref="ArgumentNullException">column</exception>
+        public static bool GetIsPopupVisible(this DataGridColumn column)
+        {
+            if (column == null)
+                throw new ArgumentNullException(nameof(column));
+
+            return (bool)column.GetValue(IsPopupVisibleProperty);
+        }
+        /// <summary>
+        /// Control the visibility of the filter for this column.
+        /// </summary>
+        /// <param name="column">The column.</param>
+        /// <param name="value">The value.</param>
+        /// <exception cref="ArgumentNullException">column</exception>
+        public static void SetIsPopupVisible(this DataGridColumn column, bool value)
+        {
+            if (column == null)
+                throw new ArgumentNullException(nameof(column));
+
+            column.SetValue(IsPopupVisibleProperty, value);
+        }
+        /// <summary>
+        /// Identifies the IsPopupVisible dependency property
+        /// </summary>
+        public static readonly DependencyProperty IsPopupVisibleProperty =
+            DependencyProperty.RegisterAttached("IsPopupVisible", typeof(bool), typeof(DataGridFilterColumn), new FrameworkPropertyMetadata(true));
 
         #endregion
 
