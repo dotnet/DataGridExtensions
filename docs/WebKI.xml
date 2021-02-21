@@ -96,6 +96,8 @@
   <HelpKINode Title="DataGridExtensions.IContentFilterFactory interface" Url="html/c20b07aa-5324-22c3-18b8-3a04323c8f57.htm" />
   <HelpKINode Title="DataGridExtensions.IDataGridEventsProvider interface" Url="html/8bd0fdcc-1bbd-d4ad-e88d-568b2f033626.htm" />
   <HelpKINode Title="DataGridExtensions.IResourceLocator interface" Url="html/9cc35121-338c-959a-4e77-e337704fabe4.htm" />
+  <HelpKINode Title="DataGridExtensions.MultipleChoiceContentFilter class" Url="html/614ede0c-cdc6-576d-0332-f6d473baff44.htm" />
+  <HelpKINode Title="DataGridExtensions.MultipleChoiceFilter class" Url="html/7482dac9-ebcc-6415-2a1c-1fa772dc7d50.htm" />
   <HelpKINode Title="DataGridExtensions.RegexContentFilter class" Url="html/d817b3a5-93fc-fc26-7335-746e2adba7d8.htm" />
   <HelpKINode Title="DataGridExtensions.RegexContentFilterFactory class" Url="html/5aabb85a-4d59-3cb8-d82f-a07bedc1eb6b.htm" />
   <HelpKINode Title="DataGridExtensions.SimpleContentFilter class" Url="html/957f7e42-521f-15a7-eec3-73717ae81cd9.htm" />
@@ -241,7 +243,10 @@
   <HelpKINode Title="ExtensionMethods.HasRectangularCellSelection method" Url="html/a7bd76e7-a978-9408-3d10-28394efac55e.htm" />
   <HelpKINode Title="ExtensionMethods.PasteCells method" Url="html/e2768b39-9545-3388-7f28-89c699b8445c.htm" />
   <HelpKINode Title="Filter attached property" Url="html/e4640362-5da4-92e5-07ea-a7654ab39a07.htm" />
-  <HelpKINode Title="Filter property" Url="html/adf909a0-ab5b-43be-3e15-7518b3960e6c.htm" />
+  <HelpKINode Title="Filter property">
+    <HelpKINode Title="DataGridFilterColumnControl.Filter Property " Url="html/adf909a0-ab5b-43be-3e15-7518b3960e6c.htm" />
+    <HelpKINode Title="MultipleChoiceFilter.Filter Property " Url="html/9abf5d88-0825-d6ac-68de-c749309a4f03.htm" />
+  </HelpKINode>
   <HelpKINode Title="FilterChanged event" Url="html/f266ba89-501d-2df7-d414-8858232758d3.htm" />
   <HelpKINode Title="FilterColumnControls property" Url="html/7e81693e-5db6-6622-a1a6-2f4a2580d6f0.htm" />
   <HelpKINode Title="FilterEvaluationDelay attached property" Url="html/c955c071-52be-e310-b0b7-5a9043e4dd3c.htm" />
@@ -252,6 +257,7 @@
   <HelpKINode Title="FilterProperty field">
     <HelpKINode Title="DataGridFilterColumn.FilterProperty Field" Url="html/454d55c6-4cbd-0e32-0377-251ea80fbc9c.htm" />
     <HelpKINode Title="DataGridFilterColumnControl.FilterProperty Field" Url="html/f11898e8-5ac6-2f90-29be-6889298daa78.htm" />
+    <HelpKINode Title="MultipleChoiceFilter.FilterProperty Field" Url="html/82b9d08f-a559-1d8d-5a4f-3d97213cc09e.htm" />
   </HelpKINode>
   <HelpKINode Title="FindResource method" Url="html/0941c6be-d571-956c-7d60-0a0c2a4f9b9a.htm" />
   <HelpKINode Title="ForceCommitOnLostFocus attached property" Url="html/0b8f8c2a-023f-77ac-897c-8c77cdf25ba9.htm" />
@@ -311,11 +317,38 @@
   <HelpKINode Title="IsFilterVisibleProperty field" Url="html/b46e3a9f-932c-34ce-c27b-49fafc8768c5.htm" />
   <HelpKINode Title="IsMatch method">
     <HelpKINode Title="IContentFilter.IsMatch Method " Url="html/9a0bd5a9-f9c1-c61f-3fc7-b8cd30baaec8.htm" />
+    <HelpKINode Title="MultipleChoiceContentFilter.IsMatch Method " Url="html/a97e53da-aaa0-8ad8-e821-8adfb9bd17c1.htm" />
     <HelpKINode Title="RegexContentFilter.IsMatch Method " Url="html/21f478f3-e850-4b8c-66ca-f61e2e485721.htm" />
     <HelpKINode Title="SimpleContentFilter.IsMatch Method " Url="html/be021e88-f23f-a26b-ada9-20af61b19256.htm" />
   </HelpKINode>
   <HelpKINode Title="IsMultilineEditingEnabled attached property" Url="html/9ab49717-43ee-4773-d64e-c500a3a07874.htm" />
   <HelpKINode Title="IsMultilineEditingEnabledProperty field" Url="html/ac4b43f6-7b99-6f6f-0df1-7166b0c3311b.htm" />
+  <HelpKINode Title="Items property" Url="html/02938f95-8217-bd50-bb6a-83c01e9b9ab5.htm" />
+  <HelpKINode Title="MultipleChoiceContentFilter class">
+    <HelpKINode Title="MultipleChoiceContentFilter Class" Url="html/614ede0c-cdc6-576d-0332-f6d473baff44.htm" />
+    <HelpKINode Title="constructor" Url="html/043cf108-4937-54ee-8218-3cdb83eb4f12.htm" />
+    <HelpKINode Title="methods" Url="html/5d36e4a2-73b5-7f51-b56d-464ba200ca74.htm" />
+    <HelpKINode Title="properties" Url="html/e2046717-08e3-3131-d015-7e63e42c8ca8.htm" />
+  </HelpKINode>
+  <HelpKINode Title="MultipleChoiceContentFilter.IsMatch method" Url="html/a97e53da-aaa0-8ad8-e821-8adfb9bd17c1.htm" />
+  <HelpKINode Title="MultipleChoiceContentFilter.Items property" Url="html/02938f95-8217-bd50-bb6a-83c01e9b9ab5.htm" />
+  <HelpKINode Title="MultipleChoiceContentFilter.MultipleChoiceContentFilter constructor" Url="html/043cf108-4937-54ee-8218-3cdb83eb4f12.htm" />
+  <HelpKINode Title="MultipleChoiceFilter class">
+    <HelpKINode Title="MultipleChoiceFilter Class" Url="html/7482dac9-ebcc-6415-2a1c-1fa772dc7d50.htm" />
+    <HelpKINode Title="constructor" Url="html/7fa5c9b2-e7da-7f23-1131-b402d7e841f7.htm" />
+    <HelpKINode Title="fields" Url="html/5819ad33-c519-64e0-7a18-94aa44aef11b.htm" />
+    <HelpKINode Title="methods" Url="html/667b2f35-ac47-c587-b090-93930db83b0e.htm" />
+    <HelpKINode Title="properties" Url="html/0d01f6e9-3404-b50a-dc23-02d3ed2fe0e2.htm" />
+  </HelpKINode>
+  <HelpKINode Title="MultipleChoiceFilter.Filter property" Url="html/9abf5d88-0825-d6ac-68de-c749309a4f03.htm" />
+  <HelpKINode Title="MultipleChoiceFilter.FilterProperty field" Url="html/82b9d08f-a559-1d8d-5a4f-3d97213cc09e.htm" />
+  <HelpKINode Title="MultipleChoiceFilter.MultipleChoiceFilter constructor" Url="html/7fa5c9b2-e7da-7f23-1131-b402d7e841f7.htm" />
+  <HelpKINode Title="MultipleChoiceFilter.OnApplyTemplate method" Url="html/9c3f6412-8bd9-07f8-110b-1629ba48321f.htm" />
+  <HelpKINode Title="MultipleChoiceFilter.SelectAllContent property" Url="html/b465e241-6ee6-1747-01aa-a2fb6ecc6edf.htm" />
+  <HelpKINode Title="MultipleChoiceFilter.SelectAllContentProperty field" Url="html/55899210-ab73-71e8-144e-6fdc40c10b45.htm" />
+  <HelpKINode Title="MultipleChoiceFilter.Values property" Url="html/a3624078-10ff-4678-6d3c-6a3b4b6462a5.htm" />
+  <HelpKINode Title="MultipleChoiceFilter.ValuesProperty field" Url="html/df83adfd-daff-4471-61e4-8f3c508cff31.htm" />
+  <HelpKINode Title="OnApplyTemplate method" Url="html/9c3f6412-8bd9-07f8-110b-1629ba48321f.htm" />
   <HelpKINode Title="PasteCells method" Url="html/e2768b39-9545-3388-7f28-89c699b8445c.htm" />
   <HelpKINode Title="PropertyChanged event" Url="html/966b99ac-ea77-6dcc-ddb6-2eae10ce76f4.htm" />
   <HelpKINode Title="RegexContentFilter class">
@@ -341,6 +374,8 @@
     <HelpKINode Title="ExtendedStarSizeBehavior.ResourceLocatorProperty Field" Url="html/8c58de49-6239-5393-0b21-9042bb30422a.htm" />
   </HelpKINode>
   <HelpKINode Title="SelectableValues property" Url="html/129bdf8f-7a74-b4da-346e-76bd014d8a9a.htm" />
+  <HelpKINode Title="SelectAllContent property" Url="html/b465e241-6ee6-1747-01aa-a2fb6ecc6edf.htm" />
+  <HelpKINode Title="SelectAllContentProperty field" Url="html/55899210-ab73-71e8-144e-6fdc40c10b45.htm" />
   <HelpKINode Title="SetActiveFilter method" Url="html/b7bc7869-b5c5-304b-1d81-6af1c9fc862e.htm" />
   <HelpKINode Title="SetApplyInitialSorting method" Url="html/983449ff-f4d0-4e2b-9a75-3dcee4de9f94.htm" />
   <HelpKINode Title="SetContentFilterFactory method" Url="html/207c2569-cce2-76c0-fe66-f16acc22c60b.htm" />
@@ -402,6 +437,10 @@
   <HelpKINode Title="Tools.SetApplyInitialSorting method" Url="html/983449ff-f4d0-4e2b-9a75-3dcee4de9f94.htm" />
   <HelpKINode Title="Tools.SetForceCommitOnLostFocus method" Url="html/2c284ebd-3f39-3ffc-ead6-f3732d756d05.htm" />
   <HelpKINode Title="Tools.SetIsMultilineEditingEnabled method" Url="html/f46a9e32-b6a5-3adc-a7e7-277ba955d52c.htm" />
-  <HelpKINode Title="Values property" Url="html/9323208c-c91d-ef54-7381-ce9758128ca0.htm" />
+  <HelpKINode Title="Values property">
+    <HelpKINode Title="DataGridFilterColumnControl.Values Property " Url="html/9323208c-c91d-ef54-7381-ce9758128ca0.htm" />
+    <HelpKINode Title="MultipleChoiceFilter.Values Property " Url="html/a3624078-10ff-4678-6d3c-6a3b4b6462a5.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ValuesProperty field" Url="html/df83adfd-daff-4471-61e4-8f3c508cff31.htm" />
   <HelpKINode Title="Welcome" Url="html/bdcf301b-c036-4f10-a269-a9f15fce4679.htm" />
 </HelpKI>
