@@ -32,7 +32,7 @@
       <controls:FilterWithPopupControl Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
     </ControlTemplate>
     <ControlTemplate x:Key="MultipleChoiceFilter">
-      <controls:MultipleChoiceFilter Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
+      <dgx:MultipleChoiceFilter Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
     </ControlTemplate>
     <ControlTemplate x:Key="ComboboxFilter">
       <Grid d:DataContext="{d:DesignInstance dgx:DataGridFilterColumnControl}">

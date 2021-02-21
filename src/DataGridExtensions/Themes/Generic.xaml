@@ -2,7 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:src="clr-namespace:DataGridExtensions"
                     xmlns:behaviors="clr-namespace:DataGridExtensions.Behaviors"
-                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors">
+                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                    xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+                    xmlns:toms="urn:TomsToolbox">
 
   <!-- Style for a filter check box. The check box is only visible when it's hovered, focused or has a value.  -->
   <Style x:Key="{x:Static src:DataGridFilter.ColumnHeaderSearchCheckBoxStyleKey}" TargetType="CheckBox">
@@ -156,6 +158,85 @@
             <Run Text="+Ctrl => Apply star sizes to right columns" /><LineBreak /><Run Text="+Shift => Extend beyond available size" />
           </TextBlock>
         </DataTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style TargetType="{x:Type src:MultipleChoiceFilter}">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type src:MultipleChoiceFilter}">
+          <StackPanel Orientation="Horizontal">
+            <Decorator Width="5" />
+            <ToggleButton x:Name="ToggleButton" Background="Transparent" Style="{DynamicResource {x:Type ToggleButton}}">
+              <StackPanel Orientation="Horizontal">
+                <TextBlock x:Name="IsFilterActiveMarker" Text="." Margin="2,0,-4,0" Foreground="{Binding ElementName=FilterSymbol, Path=Foreground}" FontWeight="Bold" />
+                <Control x:Name="FilterSymbol" Style="{DynamicResource {x:Static src:DataGridFilter.IconStyleKey}}" />
+              </StackPanel>
+            </ToggleButton>
+            <Popup x:Name="Popup" StaysOpen="False" IsOpen="{Binding Path=IsChecked, ElementName=ToggleButton, Mode=OneWay}">
+              <FrameworkElement.Resources>
+                <CollectionViewSource x:Key="SortedValuesSource" Source="{Binding Values, RelativeSource={RelativeSource TemplatedParent}}">
+                  <CollectionViewSource.SortDescriptions>
+                    <componentModel:SortDescription />
+                  </CollectionViewSource.SortDescriptions>
+                </CollectionViewSource>
+              </FrameworkElement.Resources>
+              <i:Interaction.Behaviors>
+                <toms:PopupFocusManagerBehavior ToggleButton="{Binding ElementName=ToggleButton}" />
+              </i:Interaction.Behaviors>
+              <Border Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+                <DockPanel>
+                  <CheckBox x:Name="SelectAll" DockPanel.Dock="Top" IsThreeState="True" Content="{TemplateBinding SelectAllContent}" Margin="4,3" 
+                            Style="{DynamicResource {x:Type CheckBox}}" />
+                  <Border DockPanel.Dock="Top" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" />
+                  <ListBox x:Name="PART_ListBox" ItemsSource="{Binding Source={StaticResource SortedValuesSource}}" Style="{DynamicResource {x:Type ListBox}}"
+                           SelectionMode="Extended" BorderThickness="0" Margin="1" Background="Transparent" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <ListBox.ItemContainerStyle>
+                      <Style TargetType="ListBoxItem">
+                        <Setter Property="Template">
+                          <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                              <DockPanel>
+                                <CheckBox DockPanel.Dock="Left" Margin="3,2" IsChecked="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}}"
+                                          Style="{DynamicResource {x:Type CheckBox}}" />
+                                <ContentPresenter VerticalAlignment="Center" />
+                              </DockPanel>
+                            </ControlTemplate>
+                          </Setter.Value>
+                        </Setter>
+                      </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                      <DataTemplate>
+                        <TextBlock x:Name="Text" Margin="3,2" Text="{Binding}" VerticalAlignment="Center" />
+                        <DataTemplate.Triggers>
+                          <DataTrigger Binding="{Binding}" Value="">
+                            <Setter TargetName="Text" Property="Text" Value="(Empty)" />
+                          </DataTrigger>
+                        </DataTemplate.Triggers>
+                      </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <i:Interaction.Behaviors>
+                      <toms:ListBoxSelectAllBehavior AreAllFilesSelected="{Binding IsChecked, ElementName=SelectAll}" />
+                    </i:Interaction.Behaviors>
+                  </ListBox>
+                </DockPanel>
+              </Border>
+            </Popup>
+          </StackPanel>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="False">
+              <Setter TargetName="ToggleButton" Property="BorderBrush" Value="Transparent" />
+            </Trigger>
+            <DataTrigger Binding="{Binding Path=Filter.Items, RelativeSource={RelativeSource TemplatedParent}}" Value="{x:Null}">
+              <Setter TargetName="IsFilterActiveMarker" Property="Visibility" Value="Hidden" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding ElementName=ListBox, Path=Items}" Value="1">
+              <Setter TargetName="ToggleButton" Property="IsEnabled" Value="False" />
+            </DataTrigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
       </Setter.Value>
     </Setter>
   </Style>
