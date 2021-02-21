@@ -1,4 +1,7 @@
-﻿2.4.7
+﻿2.5.0
+- #44: Add default implementation for a multiple choice filter.
+
+2.4.7
 - Package is now digitally signed
 
 2.4.6
