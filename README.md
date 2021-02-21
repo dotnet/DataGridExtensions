@@ -1,4 +1,5 @@
-### Data Grid Extensions [![Build status](https://ci.appveyor.com/api/projects/status/flhx331adphg1kw3?svg=true)](https://ci.appveyor.com/project/tom-englert/datagridextensions) [![NuGet Status](http://img.shields.io/nuget/v/DataGridExtensions.svg?style=flat)](https://www.nuget.org/packages/DataGridExtensions/)
+# Data Grid Extensions [![Build Status](https://dev.azure.com/tom-englert/Open%20Source/_apis/build/status/DataGridExtensions?repoName=dotnet%2FDataGridExtensions&branchName=master)](https://dev.azure.com/tom-englert/Open%20Source/_build/latest?definitionId=37&repoName=dotnet%2FDataGridExtensions&branchName=master) [![NuGet Status](http://img.shields.io/nuget/v/DataGridExtensions.svg?style=flat)](https://www.nuget.org/packages/DataGridExtensions/)
+
 ![Icon](Icon.png)
 
 Modular extensions for the WPF DataGrid control.
