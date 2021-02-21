@@ -1,5 +1,7 @@
 ﻿[*.cs]
 
+dotnet_analyzer_diagnostic.severity = warning
+
 # CA1062: Validate arguments of public methods
 dotnet_diagnostic.CA1062.severity = none
 
@@ -11,3 +13,9 @@ dotnet_diagnostic.CA1303.severity = none
 
 # CA1812: Uninstantiated internal class
 dotnet_diagnostic.CA1812.severity = none
+
+# IDE0058: Expression value is never used
+dotnet_diagnostic.IDE0058.severity = silent
+
+# IDE0008: Use explicit type
+dotnet_diagnostic.IDE0008.severity = silent

@@ -12,6 +12,7 @@
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
+#pragma warning disable CA1001 // Types that own disposable fields should be disposable
     public partial class App
     {
         private readonly IKernel _kernel = new StandardKernel();

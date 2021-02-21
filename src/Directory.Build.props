@@ -7,4 +7,9 @@
     <Product>Tom's Toolbox</Product>
     <Version>2.4.7</Version>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+  </PropertyGroup>
 </Project>

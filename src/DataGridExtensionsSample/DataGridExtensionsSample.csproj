@@ -24,11 +24,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers">
-      <Version>3.3.0</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="PropertyChanged.Fody" Version="3.2.9" PrivateAssets="All" />
     <PackageReference Include="TomsToolbox.Composition.Ninject" Version="2.1.1" />
     <PackageReference Include="TomsToolbox.Wpf.Composition" Version="2.1.1" />

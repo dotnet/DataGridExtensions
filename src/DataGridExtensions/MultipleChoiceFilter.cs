@@ -29,7 +29,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="MultipleChoiceFilter"/> class.
         /// </summary>
-        protected MultipleChoiceFilter()
+        public MultipleChoiceFilter()
         {
             Values = new ObservableCollection<string>();
         }
