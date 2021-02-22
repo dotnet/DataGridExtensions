@@ -17,10 +17,6 @@
     public sealed class DataGridFilterHost
     {
         /// <summary>
-        /// Filter information about each column.
-        /// </summary>
-        private readonly IDictionary<DataGridColumn, DataGridFilterColumnControl?> _filterColumnControls = new Dictionary<DataGridColumn, DataGridFilterColumnControl?>();
-        /// <summary>
         /// Timer to defer evaluation of the filter until user has stopped typing.
         /// </summary>
         private DispatcherTimer? _deferFilterEvaluationTimer;
@@ -76,7 +72,7 @@
         /// </summary>
         public void Clear()
         {
-            foreach (var column in _filterColumnControls.Keys)
+            foreach (var column in DataGrid.Columns.Where(column => column.GetDataGridFilterColumnControl() != null))
             {
                 column.SetFilter(null);
             }
@@ -87,7 +83,7 @@
         /// <summary>
         /// Gets a the active filter column controls for this data grid.
         /// </summary>
-        public IEnumerable<DataGridFilterColumnControl> FilterColumnControls => _filterColumnControls.Values.Where(item => item != null)!;
+        public IEnumerable<DataGridFilterColumnControl> FilterColumnControls => DataGrid.Columns.Select(column => column.GetDataGridFilterColumnControl()).Where(item => item != null)!;
 
         /// <summary>
         /// The data grid this filter is attached to.
@@ -146,8 +142,6 @@
             column.SetDataGridFilterColumnControl(filterColumnControl);
 
             filterColumnControl.Visibility = _isFilteringEnabled ? Visibility.Visible : Visibility.Hidden;
-
-            _filterColumnControls[column] = filterColumnControl;
         }
 
         /// <summary>
@@ -155,7 +149,7 @@
         /// </summary>
         internal void DetachColumnControl(DataGridColumn column)
         {
-            _filterColumnControls[column] = null;
+            column.SetDataGridFilterColumnControl(null);
         }
 
         private void DataGrid_Loaded(object sender, RoutedEventArgs e)
@@ -196,16 +190,7 @@
         {
             if (e.Action == NotifyCollectionChangedAction.Reset)
             {
-                _filterColumnControls.Clear();
                 return;
-            }
-
-            if (e.OldItems != null)
-            {
-                foreach (var column in e.OldItems.OfType<DataGridColumn>())
-                {
-                    _filterColumnControls.Remove(column);
-                }
             }
 
             if (e.NewItems == null)
@@ -279,7 +264,7 @@
                 collectionView.Filter = CreatePredicate(filteredColumns);
 
                 // Notify all filters about the change of the collection view.
-                foreach (var control in _filterColumnControls.Values)
+                foreach (var control in FilterColumnControls)
                 {
                     control?.ValuesUpdated();
                 }
@@ -316,7 +301,8 @@
 
         internal ICollection<DataGridColumn> GetFilteredColumns(DataGridColumn? excluded = null)
         {
-            return _filterColumnControls.Keys
+            return DataGrid.Columns
+                .Where(column => column.GetDataGridFilterColumnControl() != null)
                 .Where(column => !ReferenceEquals(column, excluded))
                 .Where(column => column?.Visibility == Visibility.Visible && !string.IsNullOrWhiteSpace(column.GetFilter()?.ToString()))
                 .ToList()

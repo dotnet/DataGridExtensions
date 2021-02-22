@@ -1,29 +1,28 @@
 ﻿namespace DataGridExtensionsSample.Controls
 {
-	using System.ComponentModel;
 	using System.Windows;
 	using DataGridExtensions;
 
-    /// <summary>
-    /// Interaction logic for FilterWithPopupControl.xaml
-    /// </summary>
-    public partial class FilterWithPopupControl: INotifyPropertyChanged
+	/// <summary>
+	/// Interaction logic for FilterWithPopupControl.xaml
+	/// </summary>
+	public partial class FilterWithPopupControl
     {
         public FilterWithPopupControl()
         {
             InitializeComponent();
         }
 
-        private string caption;
         public string Caption
         {
-            get => caption;
-            set
-            {
-                caption = value;
-                OnPropertyChanged(nameof(Caption));
-            }
+            get => (string)GetValue(CaptionProperty);
+            set => SetValue(CaptionProperty, value);
         }
+        /// <summary>
+        /// Identifies the Minimum dependency property
+        /// </summary>
+        public static readonly DependencyProperty CaptionProperty = DependencyProperty.Register("Caption", typeof(string), typeof(FilterWithPopupControl)
+                , new FrameworkPropertyMetadata("Enter the limits:", FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         public double Minimum
         {
@@ -88,24 +87,6 @@
             Minimum = filter.Min;
             Maximum = filter.Max;
         }
-
-        #region INotifyPropertyChanged Members
-
-        /// <summary>
-        /// Raises the PropertyChanged event.
-        /// </summary>
-        /// <param name="propertyName">Name of the property.</param>
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        /// <summary>
-        /// Occurs when a property value changes.
-        /// </summary>
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        #endregion
 
         public class ContentFilter : IContentFilter
         {
