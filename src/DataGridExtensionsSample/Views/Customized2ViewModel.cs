@@ -47,7 +47,10 @@
         private void OpenAndPopulateAFilter()
         {
             Column5Filter = new ContentFilter(0.5d, 1d);
-            Column5PopupVisible = true;
+            if (Column5FilterColumnControl.FilterControl is FilterWithPopupControl filterWithPopupControl)
+            {
+                filterWithPopupControl.IsPopupVisible = true;
+            }
         }
 
         public ICommand ProgrammaticAccessToFilterControlCommand => new DelegateCommand(ProgrammaticAccessToFilterControl);
@@ -57,7 +60,7 @@
             if (Column5FilterColumnControl.FilterControl is FilterWithPopupControl filterWithPopupControl)
             {
                 filterWithPopupControl.Caption = "New Popup Caption:";
-                Column5PopupVisible = true;
+                filterWithPopupControl.IsPopupVisible = true;
             }
         }
     }

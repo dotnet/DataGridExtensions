@@ -79,9 +79,6 @@
 
             var filterPropertyPath = new PropertyPath("(0)", DataGridFilterColumn.FilterProperty);
             BindingOperations.SetBinding(this, FilterProperty, new Binding() { Path = filterPropertyPath, Source = column, Mode = BindingMode.TwoWay });
-
-            var isPopupVisiblePropertyPath = new PropertyPath("(0)", DataGridFilterColumn.IsPopupVisibleProperty);
-            BindingOperations.SetBinding(this, IsPopupVisibleProperty, new Binding() { Path = isPopupVisiblePropertyPath, Source = column, Mode = BindingMode.TwoWay });
         }
 
         private void Self_Unloaded(object sender, RoutedEventArgs e)
@@ -134,23 +131,6 @@
         /// </summary>
         public static readonly DependencyProperty FilterProperty =
             DependencyProperty.Register("Filter", typeof(object), typeof(DataGridFilterColumnControl));
-
-        /// <summary>
-        /// If the template includes a popup, the visibility of the popup can be controlled via this property.
-        /// </summary>
-        public bool IsPopupVisible
-        {
-            get => (bool)GetValue(IsPopupVisibleProperty);
-            set {
-                SetValue(IsPopupVisibleProperty, value);
-                OnPropertyChanged(nameof(IsPopupVisible));
-            }
-        }
-        /// <summary>
-        /// Identifies the IsPopupVisible dependency property
-        /// </summary>
-        public static readonly DependencyProperty IsPopupVisibleProperty =
-            DependencyProperty.Register("IsPopupVisible", typeof(bool), typeof(DataGridFilterColumnControl), new FrameworkPropertyMetadata(false));
 
         private static object? Template_CoerceValue(DependencyObject sender, object? baseValue)
         {

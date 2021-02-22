@@ -168,42 +168,6 @@
 
         #endregion
 
-        #region IsPopupVisible attached property
-
-        /// <summary>
-        /// Control the visibility of the filter for this column.
-        /// </summary>
-        /// <param name="column">The column.</param>
-        /// <returns>True if the filter is visible for this column</returns>
-        /// <exception cref="ArgumentNullException">column</exception>
-        public static bool GetIsPopupVisible(this DataGridColumn column)
-        {
-            if (column == null)
-                throw new ArgumentNullException(nameof(column));
-
-            return (bool)column.GetValue(IsPopupVisibleProperty);
-        }
-        /// <summary>
-        /// Control the visibility of the filter for this column.
-        /// </summary>
-        /// <param name="column">The column.</param>
-        /// <param name="value">The value.</param>
-        /// <exception cref="ArgumentNullException">column</exception>
-        public static void SetIsPopupVisible(this DataGridColumn column, bool value)
-        {
-            if (column == null)
-                throw new ArgumentNullException(nameof(column));
-
-            column.SetValue(IsPopupVisibleProperty, value);
-        }
-        /// <summary>
-        /// Identifies the IsPopupVisible dependency property
-        /// </summary>
-        public static readonly DependencyProperty IsPopupVisibleProperty =
-            DependencyProperty.RegisterAttached("IsPopupVisible", typeof(bool), typeof(DataGridFilterColumn), new FrameworkPropertyMetadata(false));
-
-        #endregion
-
         #region ActiveFilter attached property
 
         /// <summary>

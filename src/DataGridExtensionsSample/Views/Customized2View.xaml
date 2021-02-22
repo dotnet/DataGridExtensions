@@ -29,8 +29,7 @@
       <controls:IntegerGreatherThanFilterControl Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
     </ControlTemplate>
     <ControlTemplate x:Key="FilterWithPopup">
-      <controls:FilterWithPopupControl Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}"
-                                       IsPopupVisible="{Binding Path=IsPopupVisible, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
+      <controls:FilterWithPopupControl Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
     </ControlTemplate>
     <ControlTemplate x:Key="MultipleChoiceFilter">
       <controls:MultipleChoiceFilter Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
@@ -152,7 +151,6 @@
                             Header="Double/Custom" Binding="{Binding Probability, Mode=OneWay}" Width="*"
                             dgx:DataGridFilterColumn.Template="{StaticResource FilterWithPopup}"
                             dgx:DataGridFilterColumn.Filter="{Binding Column5Filter}"
-                            dgx:DataGridFilterColumn.IsPopupVisible="{Binding Column5PopupVisible}"
                             dgx:DataGridFilterColumn.DataGridFilterColumnControl="{Binding Column5FilterColumnControl}"/>
         <!-- A template column may contain everything, so we need to specify the SortMemberPath explicitly...-->
         <DataGridTemplateColumn Header="Template" SortMemberPath="Probability">
