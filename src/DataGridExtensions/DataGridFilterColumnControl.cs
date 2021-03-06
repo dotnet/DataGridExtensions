@@ -55,11 +55,6 @@
             if (column == null)
                 return;
 
-            if (column.ClipboardContentBinding == null && !string.IsNullOrEmpty(column.SortMemberPath))
-            {
-                column.ClipboardContentBinding = new Binding(column.SortMemberPath);
-            }
-
             DataGrid = ColumnHeader.FindAncestorOrSelf<DataGrid>() ?? throw new InvalidOperationException("DataGridFilterColumnControl must be a child element of a DataGridColumnHeader.");
 
             // Find our host and attach our self.

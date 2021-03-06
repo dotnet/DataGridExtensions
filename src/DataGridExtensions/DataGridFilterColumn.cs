@@ -236,7 +236,31 @@
         /// </summary>
         internal static object? GetCellContentData(this DataGridColumn column, object? item)
         {
-            return column.OnCopyingCellClipboardContent(item);
+            var propertyPath = column.SortMemberPath;
+            if (item == null ||string.IsNullOrEmpty(propertyPath))
+                return null;
+
+            try
+            {
+                var type = item.GetType();
+                var property = type.GetProperty(propertyPath);
+                if (property != null)
+                {
+                    return property.GetValue(item);
+                }
+            }
+            catch
+            {
+                // not a plain property, fall-back to binding...
+            }
+
+            // Since already the name "SortMemberPath" implies that this might be not only a simple property name but a full property path
+            // we use binding for evaluation; this will properly handle even complex property paths like e.g. "SubItems[0].Name"
+            BindingOperations.SetBinding(column, _cellValueProperty, new Binding(propertyPath) { Source = item });
+            var propertyValue = column.GetValue(_cellValueProperty);
+            BindingOperations.ClearBinding(column, _cellValueProperty);
+
+            return propertyValue;
         }
     }
 }
