@@ -1,6 +1,7 @@
 ﻿namespace DataGridExtensions
 {
     using System;
+    using System.Diagnostics;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
@@ -235,18 +236,7 @@
         /// </summary>
         internal static object? GetCellContentData(this DataGridColumn column, object? item)
         {
-            var propertyPath = column.SortMemberPath;
-
-            if (String.IsNullOrEmpty(propertyPath))
-                return null;
-
-            // Since already the name "SortMemberPath" implies that this might be not only a simple property name but a full property path
-            // we use binding for evaluation; this will properly handle even complex property paths like e.g. "SubItems[0].Name"
-            BindingOperations.SetBinding(column, _cellValueProperty, new Binding(propertyPath) { Source = item });
-            var propertyValue = column.GetValue(_cellValueProperty);
-            BindingOperations.ClearBinding(column, _cellValueProperty);
-
-            return propertyValue;
+            return column.OnCopyingCellClipboardContent(item);
         }
     }
 }
