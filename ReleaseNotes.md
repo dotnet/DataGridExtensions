@@ -1,4 +1,7 @@
-﻿2.5.0
+﻿2.5.1:
+- #52: Performance: Optimize DataGridFilterColumn.GetCellContentData for simple properties
+
+2.5.0
 - #44: Add default implementation for a multiple choice filter.
 
 2.4.7
