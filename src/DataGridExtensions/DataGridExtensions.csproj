@@ -31,6 +31,10 @@ The current version supports the following features:
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" />
     <PackageReference Include="Fody" Version="6.3.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+    <PackageReference Include="Nullable.Extended.Analyzer" Version="1.2.4089">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Throttle.Fody" Version="1.7.0" PrivateAssets="All" />
     <PackageReference Include="TomsToolbox.Wpf" Version="2.3.2" />
   </ItemGroup>

@@ -10,6 +10,8 @@
     using System.Windows.Input;
     using System.Windows.Threading;
 
+    using TomsToolbox.Essentials;
+
     /// <summary>
     /// This class hosts all filter columns and handles the filter changes on the data grid level.
     /// This class will be attached to the DataGrid.
@@ -23,7 +25,7 @@
         /// <summary>
         /// The columns that we are currently filtering.
         /// </summary>
-        private IEnumerable<DataGridColumn> _filteredColumns = Enumerable.Empty<DataGridColumn>();
+        private IEnumerable<DataGridFilterColumnControl> _filteredColumns = Enumerable.Empty<DataGridFilterColumnControl>();
         /// <summary>
         /// Flag indicating if filtering is currently enabled.
         /// </summary>
@@ -147,7 +149,7 @@
         /// <summary>
         /// Removes an unloaded column.
         /// </summary>
-        internal void DetachColumnControl(DataGridColumn column)
+        internal static void DetachColumnControl(DataGridColumn column)
         {
             column.SetDataGridFilterColumnControl(null);
         }
@@ -244,7 +246,8 @@
 
                 if (newColumns.Length > 0)
                 {
-                    var args = new DataGridFilteringEventArgs(newColumns);
+                    var columns = newColumns.Select(item => item.Column).ExceptNullItems().ToList().AsReadOnly();
+                    var args = new DataGridFilteringEventArgs(columns);
                     Filtering(DataGrid, args);
 
                     if (args.Cancel)
@@ -284,7 +287,12 @@
             }
         }
 
-        internal Predicate<object?>? CreatePredicate(ICollection<DataGridColumn>? filteredColumns)
+        internal Predicate<object?>? CreatePredicate(DataGridColumn? excluded)
+        {
+            return CreatePredicate(GetFilteredColumns(excluded));
+        }
+
+        private Predicate<object?>? CreatePredicate(ICollection<DataGridFilterColumnControl>? filteredColumns)
         {
             if (filteredColumns?.Any() != true)
             {
@@ -293,18 +301,19 @@
 
             if (_globalFilter == null)
             {
-                return item => filteredColumns.All(filter => filter.Matches(DataGrid, item));
+                return item => filteredColumns.All(column => column.Matches(DataGrid, item));
             }
 
-            return item => _globalFilter(item) && filteredColumns.All(filter => filter.Matches(DataGrid, item));
+            return item => _globalFilter(item) && filteredColumns.All(column => column.Matches(DataGrid, item));
         }
 
-        internal ICollection<DataGridColumn> GetFilteredColumns(DataGridColumn? excluded = null)
+        private ICollection<DataGridFilterColumnControl> GetFilteredColumns(DataGridColumn? excluded = null)
         {
             return DataGrid.Columns
-                .Where(column => column.GetDataGridFilterColumnControl() != null)
                 .Where(column => !ReferenceEquals(column, excluded))
-                .Where(column => column?.Visibility == Visibility.Visible && !string.IsNullOrWhiteSpace(column.GetFilter()?.ToString()))
+                .Where(column => column.Visibility == Visibility.Visible && !string.IsNullOrWhiteSpace(column.GetFilter()?.ToString()))
+                .Select(column => column.GetDataGridFilterColumnControl())
+                .ExceptNullItems()
                 .ToList()
                 .AsReadOnly();
         }
