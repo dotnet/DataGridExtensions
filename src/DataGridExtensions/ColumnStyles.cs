@@ -39,7 +39,6 @@
         public static readonly DependencyProperty DefaultColumnStylesProperty =
             DependencyProperty.RegisterAttached("DefaultColumnStyles", typeof(DataGridColumnStyleCollection), typeof(ColumnStyles), new FrameworkPropertyMetadata(null, DefaultColumnStyles_Changed));
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
         private static void DefaultColumnStyles_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var dataGrid = (DataGrid)d;
@@ -56,8 +55,6 @@
             dataGrid.Columns.CollectionChanged += (_, args) => Columns_CollectionChanged(styles, args);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         private static void Columns_CollectionChanged(DataGridColumnStyleCollection styles, NotifyCollectionChangedEventArgs args)
         {
             if (args.Action != NotifyCollectionChangedAction.Add)
