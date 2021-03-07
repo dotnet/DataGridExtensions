@@ -154,10 +154,10 @@
                             dgx:DataGridFilterColumn.DataGridFilterColumnControl="{Binding Column5FilterColumnControl}"/>
         <DataGridTextColumn Header="Column5.Length" 
                             Binding="{Binding Column5.Length}" 
-                             />
+                            dgx:DataGridFilterColumn.Template="{StaticResource MultipleChoiceFilter}" />
         <DataGridTextColumn Header="Column5[1]" 
                             Binding="{Binding Column5[1]}"
-                             />
+                            dgx:DataGridFilterColumn.Template="{StaticResource MultipleChoiceFilter}" />
         <!-- A template column may contain everything, so we need to specify the SortMemberPath explicitly...-->
         <DataGridTemplateColumn Header="Template" SortMemberPath="Probability">
           <DataGridTemplateColumn.CellTemplate>

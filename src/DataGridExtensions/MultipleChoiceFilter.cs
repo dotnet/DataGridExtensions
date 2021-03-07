@@ -93,7 +93,7 @@
             var filterColumnControl = this.FindAncestorOrSelf<DataGridFilterColumnControl>();
 
             BindingOperations.SetBinding(this, FilterProperty, new Binding { Source = filterColumnControl, Path = new PropertyPath(DataGridFilterColumnControl.FilterProperty) });
-            BindingOperations.SetBinding(this, SourceValuesProperty, new Binding { Source = filterColumnControl, Path = new PropertyPath(nameof(DataGridFilterColumnControl.SourceValues)) });
+            BindingOperations.SetBinding(this, SourceValuesProperty, new Binding { Source = filterColumnControl, Path = new PropertyPath(nameof(DataGridFilterColumnControl.SelectableValues)) });
 
             var dataGrid = filterColumnControl?.FindAncestorOrSelf<DataGrid>();
             if (dataGrid == null)
@@ -136,7 +136,7 @@
         protected virtual void OnSourceValuesChanged(IEnumerable<string?>? newValue)
         {
             var values = Values;
-            
+
             if (newValue == null)
                 values.Clear();
             else
@@ -218,7 +218,7 @@
         /// <inheritdoc />
         public virtual bool IsMatch(object? value)
         {
-            var input = value as string;
+            var input = value?.ToString();
             if (string.IsNullOrWhiteSpace(input))
                 return Items?.Contains(string.Empty) ?? true;
 
