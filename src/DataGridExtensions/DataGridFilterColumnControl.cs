@@ -20,8 +20,8 @@
     /// This class is the control hosting all information needed for filtering of one column.
     /// Filtering is enabled by simply adding this control to the header template of the DataGridColumn.
     /// </summary>
-    /// <seealso cref="System.Windows.Controls.Control" />
-    /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
+    /// <seealso cref="Control" />
+    /// <seealso cref="INotifyPropertyChanged" />
     public class DataGridFilterColumnControl : Control, INotifyPropertyChanged
     {
         private static readonly BooleanToVisibilityConverter _booleanToVisibilityConverter = new BooleanToVisibilityConverter();
