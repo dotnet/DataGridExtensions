@@ -74,7 +74,7 @@
         /// </summary>
         public void Clear()
         {
-            foreach (var column in DataGrid.Columns.Where(column => column.GetDataGridFilterColumnControl() != null))
+            foreach (var column in DataGrid.Columns.Where(column => DataGridFilterColumn.GetDataGridFilterColumnControl(column) != null))
             {
                 column.SetFilter(null);
             }
@@ -85,7 +85,7 @@
         /// <summary>
         /// Gets a the active filter column controls for this data grid.
         /// </summary>
-        public IEnumerable<DataGridFilterColumnControl> FilterColumnControls => DataGrid.Columns.Select(column => column.GetDataGridFilterColumnControl()).Where(item => item != null)!;
+        public IEnumerable<DataGridFilterColumnControl> FilterColumnControls => DataGrid.Columns.Select(DataGridFilterColumn.GetDataGridFilterColumnControl).Where(item => item != null)!;
 
         /// <summary>
         /// The data grid this filter is attached to.
@@ -125,7 +125,7 @@
 
             if (_deferFilterEvaluationTimer == null)
             {
-                var throttleDelay = DataGrid.GetFilterEvaluationDelay();
+                var throttleDelay = DataGridFilter.GetFilterEvaluationDelay(DataGrid);
                 _deferFilterEvaluationTimer = new DispatcherTimer(throttleDelay, DispatcherPriority.Input, (_, __) => EvaluateFilter(), Dispatcher.CurrentDispatcher);
             }
 
@@ -200,13 +200,13 @@
 
             var filteredColumnsWithEmptyHeaderTemplate = e.NewItems
                 .OfType<DataGridColumn>()
-                .Where(column => column.GetIsFilterVisible() && (column.HeaderTemplate == null))
+                .Where(column => DataGridFilterColumn.GetIsFilterVisible(column) && (column.HeaderTemplate == null))
                 .ToArray();
 
             if (!filteredColumnsWithEmptyHeaderTemplate.Any())
                 return;
 
-            var resource = DataGrid.GetResourceLocator()?.FindResource(DataGrid, DataGridFilter.ColumnHeaderTemplateKey)
+            var resource = DataGridFilter.GetResourceLocator(DataGrid)?.FindResource(DataGrid, DataGridFilter.ColumnHeaderTemplateKey)
                 ?? DataGrid.TryFindResource(DataGridFilter.ColumnHeaderTemplateKey);
 
             var headerTemplate = (DataTemplate)resource;
@@ -311,8 +311,8 @@
         {
             return DataGrid.Columns
                 .Where(column => !ReferenceEquals(column, excluded))
-                .Where(column => column.Visibility == Visibility.Visible && !string.IsNullOrWhiteSpace(column.GetFilter()?.ToString()))
-                .Select(column => column.GetDataGridFilterColumnControl())
+                .Where(column => column.Visibility == Visibility.Visible && !string.IsNullOrWhiteSpace(DataGridFilterColumn.GetFilter(column)?.ToString()))
+                .Select(DataGridFilterColumn.GetDataGridFilterColumnControl)
                 .ExceptNullItems()
                 .ToList()
                 .AsReadOnly();

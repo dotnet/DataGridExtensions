@@ -1,10 +1,8 @@
 ﻿namespace DataGridExtensions
 {
     using System;
-    using System.Diagnostics;
     using System.Windows;
     using System.Windows.Controls;
-    using System.Windows.Data;
 
     /// <summary>
     /// Defines the attached properties that can be set on the data grid column level.
@@ -19,7 +17,7 @@
         /// <param name="column">The column.</param>
         /// <returns>True if the filter is visible for this column</returns>
         /// <exception cref="ArgumentNullException">column</exception>
-        public static bool GetIsFilterVisible(this DataGridColumn column)
+        public static bool GetIsFilterVisible(DataGridColumn column)
         {
             if (column == null)
                 throw new ArgumentNullException(nameof(column));
@@ -54,7 +52,7 @@
         /// </summary>
         /// <param name="column">The column.</param>
         /// <returns>The control template.</returns>
-        public static ControlTemplate? GetTemplate(this DataGridColumn column)
+        public static ControlTemplate? GetTemplate(DataGridColumn column)
         {
             return (ControlTemplate)column.GetValue(TemplateProperty);
         }
@@ -82,7 +80,7 @@
         /// </summary>
         /// <param name="column">The column.</param>
         /// <returns>The <see cref="DataGridFilterHost"/></returns>
-        public static DataGridFilterHost? GetFilterHost(this DataGridColumn column)
+        public static DataGridFilterHost? GetFilterHost(DataGridColumn column)
         {
             return (DataGridFilterHost?)column.GetValue(FilterHostProperty);
         }
@@ -110,7 +108,7 @@
         /// </summary>
         /// <param name="column">The column.</param>
         /// <returns>The <see cref="DataGridFilterColumnControl"/></returns>
-        public static DataGridFilterColumnControl? GetDataGridFilterColumnControl(this DataGridColumn column)
+        public static DataGridFilterColumnControl? GetDataGridFilterColumnControl(DataGridColumn column)
         {
             return (DataGridFilterColumnControl?)column.GetValue(DataGridFilterColumnControlProperty);
         }
@@ -138,7 +136,7 @@
         /// </summary>
         /// <param name="column">The column.</param>
         /// <returns>The filter expression.</returns>
-        public static object? GetFilter(this DataGridColumn column)
+        public static object? GetFilter(DataGridColumn column)
         {
             return column.GetValue(FilterProperty);
         }
@@ -164,7 +162,7 @@
 
             // Update the effective filter. If the filter is provided as content, the content filter will be recreated when needed.
             column.SetActiveFilter(args.NewValue as IContentFilter);
-            column.GetFilterHost()?.OnFilterChanged();
+            GetFilterHost(column)?.OnFilterChanged();
         }
 
         #endregion
@@ -176,7 +174,7 @@
         /// </summary>
         /// <param name="column">The column.</param>
         /// <returns>The filter.</returns>
-        public static IContentFilter? GetActiveFilter(this DataGridColumn column)
+        public static IContentFilter? GetActiveFilter(DataGridColumn column)
         {
             return (IContentFilter)column.GetValue(ActiveFilterProperty);
         }
@@ -202,7 +200,7 @@
         /// </summary>
         internal static IContentFilter CreateContentFilter(this DataGrid dataGrid, object? content)
         {
-            return dataGrid.GetContentFilterFactory().Create(content);
+            return DataGridFilter.GetContentFilterFactory(dataGrid).Create(content);
         }
     }
 }

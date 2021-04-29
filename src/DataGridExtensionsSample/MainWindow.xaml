@@ -4,7 +4,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:composition="urn:TomsToolbox.Composition"
-        xmlns:dataGridExtensionsSample="clr-namespace:DataGridExtensionsSample"
         xmlns:infrastructure="clr-namespace:DataGridExtensionsSample.Infrastructure"
         mc:Ignorable="d"
         Title="DataGrid Extensions Sample"

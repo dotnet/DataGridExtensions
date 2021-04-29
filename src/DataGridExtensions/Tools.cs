@@ -20,7 +20,7 @@
         /// <param name="dataGrid">The data grid.</param>
         /// <returns><c>true</c> if 'apply initial sorting is enabled.'</returns>
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
-        public static bool GetApplyInitialSorting(this DataGrid dataGrid)
+        public static bool GetApplyInitialSorting(DataGrid dataGrid)
         {
             return (bool)dataGrid.GetValue(ApplyInitialSortingProperty);
         }

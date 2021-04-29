@@ -150,7 +150,7 @@
 
             var resourceKey = new ComponentResourceKey(typeof(DataGridFilter), columnType);
 
-            return control.DataGrid?.GetResourceLocator()?.FindResource(control, resourceKey) ?? control.TryFindResource(resourceKey);
+            return DataGridFilter.GetResourceLocator(control.DataGrid)?.FindResource(control, resourceKey) ?? control.TryFindResource(resourceKey);
         }
 
         /// <summary>
@@ -316,10 +316,10 @@
             if (column == null)
                 return true;
 
-            var activeFilter = column.GetActiveFilter();
+            var activeFilter = DataGridFilterColumn.GetActiveFilter(column);
             if (activeFilter == null)
             {
-                var filter = column.GetFilter();
+                var filter = DataGridFilterColumn.GetFilter(column);
                 if (filter == null)
                     return true;
 

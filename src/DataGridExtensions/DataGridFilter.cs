@@ -17,7 +17,7 @@
         /// <param name="dataGrid">The data grid.</param>
         /// <returns><c>true</c> is auto-filtering is enabled.</returns>
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
-        public static bool GetIsAutoFilterEnabled(this DataGrid dataGrid)
+        public static bool GetIsAutoFilterEnabled(DataGrid dataGrid)
         {
             return (bool)dataGrid.GetValue(IsAutoFilterEnabledProperty);
         }
@@ -82,7 +82,7 @@
         /// <param name="dataGrid">The data grid.</param>
         /// <returns>The <see cref="IContentFilterFactory"/></returns>
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
-        public static IContentFilterFactory GetContentFilterFactory(this DataGrid dataGrid)
+        public static IContentFilterFactory GetContentFilterFactory(DataGrid dataGrid)
         {
             return (IContentFilterFactory)dataGrid.GetValue(ContentFilterFactoryProperty) ?? DefaultContentFilterFactory;
         }
@@ -120,7 +120,7 @@
         /// </summary>
         /// <param name="dataGrid">The data grid</param>
         /// <returns>The throttle delay.</returns>
-        public static TimeSpan GetFilterEvaluationDelay(this DataGrid dataGrid)
+        public static TimeSpan GetFilterEvaluationDelay(DataGrid dataGrid)
         {
             return (TimeSpan)dataGrid.GetValue(FilterEvaluationDelayProperty);
         }
@@ -148,9 +148,9 @@
         /// <param name="dataGrid">The object.</param>
         /// <returns>The locator</returns>
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
-        public static IResourceLocator? GetResourceLocator(this DataGrid dataGrid)
+        public static IResourceLocator? GetResourceLocator(DataGrid? dataGrid)
         {
-            return (IResourceLocator)dataGrid.GetValue(ResourceLocatorProperty);
+            return (IResourceLocator?)dataGrid?.GetValue(ResourceLocatorProperty);
         }
         /// <summary>
         /// Sets the resource locator.
@@ -188,7 +188,7 @@
         /// </summary>
         /// <param name="dataGrid">The <see cref="DataGrid" /> on which to set the property value.</param>
         /// <param name="value">The property value to set.</param>
-        public static void SetGlobalFilter(DataGrid dataGrid, Predicate<object?>? value)
+        public static void SetGlobalFilter(this DataGrid dataGrid, Predicate<object?>? value)
         {
             dataGrid.SetValue(GlobalFilterProperty, value);
         }

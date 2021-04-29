@@ -82,44 +82,44 @@
             SortDirectionPropertyDescriptor.AddValueChanged(column, DataGridColumnSortDirection_Changed);
         }
 
-        private void OnColumnVisibilityChanged(DataGridColumn column)
+        private void OnColumnVisibilityChanged(DataGridColumn? column)
         {
             ColumnVisibilityChanged?.Invoke(_dataGrid, new DataGridColumnEventArgs(column));
         }
 
-        private void OnColumnActualWidthChanged(DataGridColumn column)
+        private void OnColumnActualWidthChanged(DataGridColumn? column)
         {
             ColumnActualWidthChanged?.Invoke(_dataGrid, new DataGridColumnEventArgs(column));
         }
 
-        private void OnColumnDisplayIndexChanged(DataGridColumn column)
+        private void OnColumnDisplayIndexChanged(DataGridColumn? column)
         {
             ColumnDisplayIndexChanged?.Invoke(_dataGrid, new DataGridColumnEventArgs(column));
         }
 
-        private void OnColumnSortDirectionChanged(DataGridColumn column)
+        private void OnColumnSortDirectionChanged(DataGridColumn? column)
         {
             ColumnSortDirectionChanged?.Invoke(_dataGrid, new DataGridColumnEventArgs(column));
         }
 
         private void DataGridColumnVisibility_Changed(object? source, EventArgs e)
         {
-            OnColumnVisibilityChanged((DataGridColumn)source!);
+            OnColumnVisibilityChanged((DataGridColumn?)source);
         }
 
         private void DataGridColumnActualWidth_Changed(object? source, EventArgs e)
         {
-            OnColumnActualWidthChanged((DataGridColumn)source!);
+            OnColumnActualWidthChanged((DataGridColumn?)source);
         }
 
         private void DataGridColumnDisplayIndex_Changed(object? source, EventArgs e)
         {
-            OnColumnDisplayIndexChanged((DataGridColumn)source!);
+            OnColumnDisplayIndexChanged((DataGridColumn?)source);
         }
 
         private void DataGridColumnSortDirection_Changed(object? source, EventArgs e)
         {
-            OnColumnSortDirectionChanged((DataGridColumn)source!);
+            OnColumnSortDirectionChanged((DataGridColumn?)source);
         }
     }
 }
