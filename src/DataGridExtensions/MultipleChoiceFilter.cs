@@ -90,6 +90,11 @@
         {
             base.OnApplyTemplate();
 
+            var listBox = _listBox = Template?.FindName("PART_ListBox", this) as ListBox;
+            if (listBox == null)
+                return;
+            listBox.SelectionChanged += ListBox_SelectionChanged;
+
             var filterColumnControl = this.FindAncestorOrSelf<DataGridFilterColumnControl>();
 
             BindingOperations.SetBinding(this, FilterProperty, new Binding { Source = filterColumnControl, Path = new PropertyPath(DataGridFilterColumnControl.FilterProperty) });
@@ -102,10 +107,6 @@
             var dataGridItems = (INotifyCollectionChanged)dataGrid.Items;
             dataGridItems.CollectionChanged += (_, __) => UpdateSourceValuesTarget();
 
-            var listBox = _listBox = Template?.FindName("PART_ListBox", this) as ListBox;
-            if (listBox == null)
-                return;
-
             var filter = Filter;
 
             if (filter?.Items == null)
@@ -113,7 +114,6 @@
                 listBox.SelectAll();
             }
 
-            listBox.SelectionChanged += ListBox_SelectionChanged;
             var items = (INotifyCollectionChanged)listBox.Items;
 
             items.CollectionChanged += ListBox_ItemsCollectionChanged;
