@@ -11,162 +11,166 @@
              xmlns:infrastructure="clr-namespace:DataGridExtensionsSample.Infrastructure"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance local:Customized2ViewModel}">
-  <UserControl.Resources>
-    <CollectionViewSource x:Key="SortedItems" Source="{Binding DataProvider.Items}">
-      <CollectionViewSource.SortDescriptions>
-        <componentModel:SortDescription PropertyName="Column1" />
-      </CollectionViewSource.SortDescriptions>
-    </CollectionViewSource>
-    <Style x:Key="DataGridComboBoxStyle" TargetType="ComboBox">
-      <Setter Property="BorderThickness" Value="0" />
-      <Setter Property="Padding" Value="3,2,0,0" />
-      <Setter Property="Foreground" Value="Green" />
-    </Style>
-    <Style x:Key="DataGridTextBlockStyle" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="Blue" />
-    </Style>
-    <ControlTemplate x:Key="IntegerFilter">
-      <controls:IntegerGreatherThanFilterControl Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
-    </ControlTemplate>
-    <ControlTemplate x:Key="FilterWithPopup">
-      <controls:FilterWithPopupControl Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
-    </ControlTemplate>
-    <ControlTemplate x:Key="MultipleChoiceFilter">
-      <dgx:MultipleChoiceFilter Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
-    </ControlTemplate>
-    <ControlTemplate x:Key="ComboboxFilter">
-      <Grid d:DataContext="{d:DesignInstance dgx:DataGridFilterColumnControl}">
-        <Grid>
-          <Control Style="{DynamicResource {x:Static dgx:DataGridFilter.IconStyleKey}}" />
-          <ComboBox x:Name="ComboBox" Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding SourceValues}" IsEditable="True" />
-        </Grid>
-      </Grid>
-      <ControlTemplate.Triggers>
-        <Trigger SourceName="ComboBox" Property="Text" Value="">
-          <Setter TargetName="ComboBox" Property="Opacity" Value="0" />
-        </Trigger>
-        <Trigger SourceName="ComboBox" Property="Text" Value="{x:Null}">
-          <Setter TargetName="ComboBox" Property="Opacity" Value="0" />
-        </Trigger>
-        <Trigger SourceName="ComboBox" Property="IsMouseOver" Value="True">
-          <Setter TargetName="ComboBox" Property="Opacity" Value="1" />
-        </Trigger>
-        <Trigger SourceName="ComboBox" Property="IsFocused" Value="True">
-          <Setter TargetName="ComboBox" Property="Opacity" Value="1" />
-        </Trigger>
-      </ControlTemplate.Triggers>
-    </ControlTemplate>
-    <XmlDataProvider x:Key="ComboBoxSource" Source="../SampleList.xml" XPath="Items/Item" />
-  </UserControl.Resources>
-  <DockPanel>
-    <DockPanel DockPanel.Dock="Top" Margin="10">
-      <Button x:Name="ClearIpsumButton" DockPanel.Dock="Right" VerticalAlignment="Top" Padding="5,2" Command="{Binding ClearIpsumCommand}">Clear Ipsum</Button>
-      <Button x:Name="OpenAndPopulateAFilterButton" DockPanel.Dock="Right" VerticalAlignment="Top" Padding="5,2" Margin="0,0,10,0" Command="{Binding OpenAndPopulateAFilterCommand}">Open &amp; Populate a Filter</Button>
-      <Button x:Name="ProgrammaticAccessToFilterControlButton" DockPanel.Dock="Right" VerticalAlignment="Top" Padding="5,2" Margin="0,0,10,0" Command="{Binding ProgrammaticAccessToFilterControlCommand}">Change Popup Caption</Button>
-      <TextBlock TextWrapping="WrapWithOverflow">
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="SortedItems" Source="{Binding DataProvider.Items}">
+            <CollectionViewSource.SortDescriptions>
+                <componentModel:SortDescription PropertyName="Column1" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+        <Style x:Key="DataGridComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="3,2,0,0" />
+            <Setter Property="Foreground" Value="Green" />
+        </Style>
+        <Style x:Key="DataGridTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="Blue" />
+        </Style>
+        <ControlTemplate x:Key="IntegerFilter">
+            <controls:IntegerGreatherThanFilterControl Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
+        </ControlTemplate>
+        <ControlTemplate x:Key="FilterWithPopup">
+            <controls:FilterWithPopupControl Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
+        </ControlTemplate>
+        <ControlTemplate x:Key="MultipleChoiceFilter">
+            <dgx:MultipleChoiceFilter Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
+        </ControlTemplate>
+        <ControlTemplate x:Key="ComboboxFilter">
+            <Grid d:DataContext="{d:DesignInstance dgx:DataGridFilterColumnControl}">
+                <Grid>
+                    <Control Style="{DynamicResource {x:Static dgx:DataGridFilter.IconStyleKey}}" />
+                    <ComboBox x:Name="ComboBox" Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding SourceValues}" IsEditable="True" />
+                </Grid>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger SourceName="ComboBox" Property="Text" Value="">
+                    <Setter TargetName="ComboBox" Property="Opacity" Value="0" />
+                </Trigger>
+                <Trigger SourceName="ComboBox" Property="Text" Value="{x:Null}">
+                    <Setter TargetName="ComboBox" Property="Opacity" Value="0" />
+                </Trigger>
+                <Trigger SourceName="ComboBox" Property="IsMouseOver" Value="True">
+                    <Setter TargetName="ComboBox" Property="Opacity" Value="1" />
+                </Trigger>
+                <Trigger SourceName="ComboBox" Property="IsFocused" Value="True">
+                    <Setter TargetName="ComboBox" Property="Opacity" Value="1" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <XmlDataProvider x:Key="ComboBoxSource" Source="../SampleList.xml" XPath="Items/Item" />
+    </UserControl.Resources>
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top" Margin="10">
+            <Button x:Name="ClearIpsumButton" DockPanel.Dock="Right" VerticalAlignment="Top" Padding="5,2" Command="{Binding ClearIpsumCommand}">Clear Ipsum</Button>
+            <Button x:Name="OpenAndPopulateAFilterButton" DockPanel.Dock="Right" VerticalAlignment="Top" Padding="5,2" Margin="0,0,10,0" Command="{Binding OpenAndPopulateAFilterCommand}">Open &amp; Populate a Filter</Button>
+            <Button x:Name="ProgrammaticAccessToFilterControlButton" DockPanel.Dock="Right" VerticalAlignment="Top" Padding="5,2" Margin="0,0,10,0" Command="{Binding ProgrammaticAccessToFilterControlCommand}">Change Popup Caption</Button>
+            <TextBlock TextWrapping="WrapWithOverflow">
         <Run>This tab shows how to customize the filters in XAML when using explicit generated columns. Read the comments in the XAML for details.</Run><LineBreak />
         <Run>- Overrides the default icon style to have a blue icon that changes to red when the column header is hovered.</Run><LineBreak />
         <Run>- Overrides the default styles for some columns.</Run><LineBreak />
-      </TextBlock>
-    </DockPanel>
-    <DataGrid Name="DemoDataGrid"  ItemsSource="{Binding Source={StaticResource SortedItems}}" AutoGenerateColumns="False" FrozenColumnCount="2"
+            </TextBlock>
+        </DockPanel>
+        <DataGrid Name="DemoDataGrid"  ItemsSource="{Binding Source={StaticResource SortedItems}}" AutoGenerateColumns="False" FrozenColumnCount="2"
               SelectionUnit="Cell"
               dgx:DataGridFilter.GlobalFilter="{Binding GlobalFilter}"
               dgx:DataGridFilter.IsAutoFilterEnabled="True"
               dgx:Tools.ApplyInitialSorting="True"
               dgx:Tools.ForceCommitOnLostFocus="True"
               dgx:DataGridFilter.FilterEvaluationDelay="0:0:0">
-      <b:Interaction.Behaviors>
-        <dgx:ExtendedStarSizeBehavior />
-        <dgx:BeginEditOnCtrlEnterBehavior />
-        <dgx:DisableTargetWhileEditingBehavior Target="{Binding ElementName=ClearIpsumButton}" />
-      </b:Interaction.Behaviors>
+            <b:Interaction.Behaviors>
+                <dgx:ExtendedStarSizeBehavior />
+                <dgx:BeginEditOnCtrlEnterBehavior />
+                <dgx:DisableTargetWhileEditingBehavior Target="{Binding ElementName=ClearIpsumButton}" />
+            </b:Interaction.Behaviors>
 
-      <!-- Override the default styles for some columns... -->
-      <dgx:ColumnStyles.DefaultColumnStyles>
-        <dgx:DataGridColumnStyleCollection>
-          <dgx:DataGridColumnStyle ColumnType="DataGridComboBoxColumn" EditingElementStyle="{StaticResource DataGridComboBoxStyle}" />
-          <dgx:DataGridColumnStyle ColumnType="DataGridTextColumn" ElementStyle="{StaticResource DataGridTextBlockStyle}" />
-        </dgx:DataGridColumnStyleCollection>
-      </dgx:ColumnStyles.DefaultColumnStyles>
+            <!-- Override the default styles for some columns... -->
+            <dgx:ColumnStyles.DefaultColumnStyles>
+                <dgx:DataGridColumnStyleCollection>
+                    <dgx:DataGridColumnStyle ColumnType="DataGridComboBoxColumn" EditingElementStyle="{StaticResource DataGridComboBoxStyle}" />
+                    <dgx:DataGridColumnStyle ColumnType="DataGridTextColumn" ElementStyle="{StaticResource DataGridTextBlockStyle}" />
+                </dgx:DataGridColumnStyleCollection>
+            </dgx:ColumnStyles.DefaultColumnStyles>
 
-      <DataGrid.Resources>
-        <!-- Override default icon style to have a blue icon that changes to red when the column header is hovered. -->
-        <Style TargetType="Control" x:Key="{x:Static dgx:DataGridFilter.IconStyleKey}" BasedOn="{StaticResource {x:Static dgx:DataGridFilter.IconStyleKey}}">
-          <Setter Property="Foreground" Value="Blue" />
-          <Style.Triggers>
-            <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridColumnHeader}}" Value="True">
-              <Setter Property="Foreground" Value="Red" />
-            </DataTrigger>
-          </Style.Triggers>
-        </Style>
+            <DataGrid.Resources>
+                <!-- Override default icon style to have a blue icon that changes to red when the column header is hovered. -->
+                <Style TargetType="Control" x:Key="{x:Static dgx:DataGridFilter.IconStyleKey}" BasedOn="{StaticResource {x:Static dgx:DataGridFilter.IconStyleKey}}">
+                    <Setter Property="Foreground" Value="Blue" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridColumnHeader}}" Value="True">
+                            <Setter Property="Foreground" Value="Red" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
 
-        <DataTemplate x:Key="CustomHeaderWithLeftAlignedSearch">
-          <DockPanel>
-            <!-- The control to host the filter UI for this column -->
-            <dgx:DataGridFilterColumnControl DockPanel.Dock="Left" />
-            <ContentPresenter x:Name="PART_Content" Content="{Binding}"
+                <DataTemplate x:Key="CustomHeaderWithLeftAlignedSearch">
+                    <DockPanel>
+                        <!-- The control to host the filter UI for this column -->
+                        <dgx:DataGridFilterColumnControl DockPanel.Dock="Left" />
+                        <ContentPresenter x:Name="PART_Content" Content="{Binding}"
                               SnapsToDevicePixels="{Binding SnapsToDevicePixels, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridColumnHeader}}"
                               HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridColumnHeader}}"
                               VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridColumnHeader}}" />
-          </DockPanel>
-        </DataTemplate>
+                    </DockPanel>
+                </DataTemplate>
 
-      </DataGrid.Resources>
+            </DataGrid.Resources>
 
-      <DataGrid.Columns>
-        <!-- Use a check box column for the boolean property "Flag" but override the column data type to use the default text filter template; also
+            <DataGrid.Columns>
+                <!-- Use a check box column for the boolean property "Flag" but override the column data type to use the default text filter template; also
                   overrides the HeaderTemplate to show customization of the filter control. -->
-        <DataGridCheckBoxColumn Header="Bool/Text"
+                <DataGridCheckBoxColumn Header="Bool/Text"
                                 HeaderTemplate="{StaticResource ResourceKey=CustomHeaderWithLeftAlignedSearch}"
                                 Binding="{Binding Path=Flag, Mode=OneWay}"
                                 dgx:DataGridFilterColumn.Template="{StaticResource {x:Static dgx:DataGridFilter.TextColumnFilterTemplateKey}}" />
-        <!-- Use the integer filter for the integer column. -->
-        <DataGridTextColumn Header="{Binding Path=Count, Source={StaticResource SortedItems}}" HeaderStringFormat='{}Total: {0}'
+                <!-- Use the integer filter for the integer column. -->
+                <DataGridTextColumn Header="{Binding Path=Count, Source={StaticResource SortedItems}}" HeaderStringFormat='{}Total: {0}'
                             Binding="{Binding Index, Mode=OneWay}"
                             Width="*"
                             dgx:DataGridFilterColumn.Template="{StaticResource IntegerFilter}" />
-        <!-- Hide the filter for this column. -->
-        <DataGridTextColumn Header="Text/No Filter/MultiLine" Binding="{Binding Column5}"
+                <!-- Hide the filter for this column. -->
+                <DataGridTextColumn Header="Text/No Filter/MultiLine" Binding="{Binding Column5}"
                             Width="*"
                             dgx:DataGridFilterColumn.IsFilterVisible="False"
                             dgx:Tools.IsMultilineEditingEnabled="True"
                             SortDirection="Descending" />
-        <!-- Use the default filter for this column. -->
-        <DataGridTextColumn x:Name="Column2"
+                <!-- Use the default filter for this column. -->
+                <DataGridTextColumn x:Name="Column2"
                             Header="Text/Text"
                             Binding="{Binding Column2, Mode=OneWay}"
                             Width="*"
                             dgx:DataGridFilterColumn.Filter="{Binding Column2Filter}" />
-        <!-- Use a MultipleChoiceFilter for filtering -->
-        <DataGridComboBoxColumn Header="Text/Custom" SelectedValueBinding="{Binding Column5}"
+                <!-- Use a MultipleChoiceFilter for filtering -->
+                <DataGridComboBoxColumn Header="Text/Custom" SelectedValueBinding="{Binding Column5}"
                                 Width="*" dgx:DataGridFilterColumn.Template="{StaticResource MultipleChoiceFilter}"
                                 ItemsSource="{Binding Source={StaticResource ComboBoxSource}}" />
-        <!-- Use a simple combo box for filtering -->
-        <DataGridComboBoxColumn Header="Text/Custom" SelectedValueBinding="{Binding Column5}"
+                <!-- Use a simple combo box for filtering -->
+                <DataGridComboBoxColumn Header="Text/Custom" SelectedValueBinding="{Binding Column5}"
                                 Width="*" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"
                                 ItemsSource="{Binding Source={StaticResource ComboBoxSource}}" />
-        <!-- Use a special filter using a toggle button with a popup to enter more than one condition. -->
-        <DataGridTextColumn x:Name="Column5"
+                <!-- Use a special filter using a toggle button with a popup to enter more than one condition. -->
+                <DataGridTextColumn x:Name="Column5"
                             Header="Double/Custom" Binding="{Binding Probability, Mode=OneWay}" Width="*"
                             dgx:DataGridFilterColumn.Template="{StaticResource FilterWithPopup}"
                             dgx:DataGridFilterColumn.Filter="{Binding Column5Filter}"
                             dgx:DataGridFilterColumn.DataGridFilterColumnControl="{Binding Column5FilterColumnControl}"/>
-        <DataGridTextColumn Header="Column5.Length" 
+                <DataGridTextColumn Header="Column5.Length" 
                             Binding="{Binding Column5.Length}" 
                             dgx:DataGridFilterColumn.Template="{StaticResource MultipleChoiceFilter}" />
-        <DataGridTextColumn Header="Column5[1]" 
+                <DataGridTextColumn Header="Column5[1]" 
                             Binding="{Binding Column5[1]}"
                             dgx:DataGridFilterColumn.Template="{StaticResource MultipleChoiceFilter}" />
-        <!-- A template column may contain everything, so we need to specify the SortMemberPath explicitly...-->
-        <DataGridTemplateColumn Header="Template" SortMemberPath="Probability">
-          <DataGridTemplateColumn.CellTemplate>
-            <DataTemplate DataType="infrastructure:DataItem">
-              <TextBlock Margin="2" Text="{Binding Probability}" />
-            </DataTemplate>
-          </DataGridTemplateColumn.CellTemplate>
-        </DataGridTemplateColumn>
-      </DataGrid.Columns>
-    </DataGrid>
-  </DockPanel>
+                <DataGridTextColumn x:Name="ColumnTextWithPrefilter"
+                            Header="WithPreFilter" Binding="{Binding Column5}" Width="*"
+                            dgx:DataGridFilterColumn.Template="{StaticResource MultipleChoiceFilter}"
+                            dgx:DataGridFilterColumn.Filter="{Binding ColumnTextWithPrefilterFilter}"/>
+                <!-- A template column may contain everything, so we need to specify the SortMemberPath explicitly...-->
+                <DataGridTemplateColumn Header="Template" SortMemberPath="Probability">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="infrastructure:DataItem">
+                            <TextBlock Margin="2" Text="{Binding Probability}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
 </UserControl>

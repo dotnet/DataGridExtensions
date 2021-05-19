@@ -19,6 +19,7 @@
             BindingOperations.SetBinding(Column2, DataGridFilterColumn.FilterProperty, new Binding("DataContext.Column2Filter") { Source = this, Mode = BindingMode.TwoWay });
             BindingOperations.SetBinding(Column5, DataGridFilterColumn.FilterProperty, new Binding("DataContext.Column5Filter") { Source = this, Mode = BindingMode.TwoWay });
             BindingOperations.SetBinding(Column5, DataGridFilterColumn.DataGridFilterColumnControlProperty, new Binding("DataContext.Column5FilterColumnControl") { Source = this, Mode = BindingMode.TwoWay });
+            BindingOperations.SetBinding(ColumnTextWithPrefilter, DataGridFilterColumn.FilterProperty, new Binding("DataContext.ColumnTextWithPrefilterFilter") { Source = this, Mode = BindingMode.TwoWay });
         }
     }
 }
