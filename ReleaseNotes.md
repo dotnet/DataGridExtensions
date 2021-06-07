@@ -1,4 +1,10 @@
-﻿2.5.1:
+﻿2.5.3:
+- Fix #62: MultipleChoiceFilter: listbox items not selected
+
+2.5.2:
+- Fix #58: provide net5.0-windows target in package
+
+2.5.1:
 - #52: Performance: Optimize DataGridFilterColumn.GetCellContentData for simple properties
 
 2.5.0
