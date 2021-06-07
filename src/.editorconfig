@@ -37,3 +37,6 @@ dotnet_diagnostic.IDE0083.severity = silent
 
 # IDE0010: Add missing cases
 dotnet_diagnostic.IDE0010.severity = silent
+
+# CA1031: Do not catch general exception types
+dotnet_diagnostic.CA1031.severity = silent

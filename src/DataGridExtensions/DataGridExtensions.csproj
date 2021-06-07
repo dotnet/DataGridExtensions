@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <TargetFrameworks>net45;netcoreapp3.0;net5.0-windows</TargetFrameworks>
+    <TargetFrameworks>net45;netcoreapp3.1;net5.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -36,7 +36,7 @@ The current version supports the following features:
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Throttle.Fody" Version="1.7.0" PrivateAssets="All" />
-    <PackageReference Include="TomsToolbox.Wpf" Version="2.5.3" />
+    <PackageReference Include="TomsToolbox.Wpf" Version="2.5.5" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Icon.png" Link="Icon.png" Pack="true" PackagePath="\" />
