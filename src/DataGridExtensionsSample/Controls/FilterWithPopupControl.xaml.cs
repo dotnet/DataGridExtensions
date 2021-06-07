@@ -1,12 +1,12 @@
 ﻿namespace DataGridExtensionsSample.Controls
 {
-	using System.Windows;
-	using DataGridExtensions;
+    using System.Windows;
+    using DataGridExtensions;
 
-	/// <summary>
-	/// Interaction logic for FilterWithPopupControl.xaml
-	/// </summary>
-	public partial class FilterWithPopupControl
+    /// <summary>
+    /// Interaction logic for FilterWithPopupControl.xaml
+    /// </summary>
+    public partial class FilterWithPopupControl
     {
         public FilterWithPopupControl()
         {
@@ -56,11 +56,7 @@
         /// Identifies the IsPopupVisible dependency property
         /// </summary>
         public static readonly DependencyProperty IsPopupVisibleProperty =
-            DependencyProperty.Register("IsPopupVisible", typeof(bool), typeof(FilterWithPopupControl), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (sender, e) => ((FilterWithPopupControl)sender).IsPopupVisible_Changed()));
-
-        private void IsPopupVisible_Changed()
-        {
-        }
+            DependencyProperty.Register("IsPopupVisible", typeof(bool), typeof(FilterWithPopupControl), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         private void Range_Changed()
         {
@@ -90,18 +86,15 @@
 
         public class ContentFilter : IContentFilter
         {
-            private readonly double _min;
-            private readonly double _max;
-
             public ContentFilter(double min, double max)
             {
-                _min = min;
-                _max = max;
+                Min = min;
+                Max = max;
             }
 
-            public double Min => _min;
+            public double Min { get; }
 
-            public double Max => _max;
+            public double Max { get; }
 
             public bool IsMatch(object? value)
             {
@@ -113,7 +106,7 @@
                     return false;
                 }
 
-                return (number >= _min) && (number <= _max);
+                return (number >= Min) && (number <= Max);
             }
         }
 

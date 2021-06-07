@@ -143,7 +143,7 @@
                 values.SynchronizeWith(newValue.ExceptNullItems().ToArray());
         }
 
-        private void ListBox_ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        private void ListBox_ItemsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
         {
             var filter = Filter;
 

@@ -60,15 +60,16 @@
             if (args.Action != NotifyCollectionChangedAction.Add)
                 return;
 
-            var column = (DataGridColumn)args.NewItems[0];
+            var column = (DataGridColumn?)args.NewItems![0];
 
             ApplyStyle(styles, column);
         }
 
-        private static void ApplyStyle(DataGridColumnStyleCollection styles, DependencyObject column)
+        private static void ApplyStyle(DataGridColumnStyleCollection styles, DependencyObject? column)
         {
-            var style = styles.FirstOrDefault(s => s.ColumnType == column.GetType());
+            var columnType = column?.GetType();
 
+            var style = styles.FirstOrDefault(s => s.ColumnType == columnType);
             if (style == null)
                 return;
 

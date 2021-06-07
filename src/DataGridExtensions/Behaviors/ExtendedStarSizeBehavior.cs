@@ -39,7 +39,7 @@
         public static readonly ResourceKey ColumnHeaderGripperToolTipStyleKey = new ComponentResourceKey(typeof(ExtendedStarSizeBehavior), "ColumnHeaderGripperToolTipStyle");
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataGridExtensions.Behaviors.ExtendedStarSizeBehavior" /> class.
+        /// Initializes a new instance of the <see cref="ExtendedStarSizeBehavior" /> class.
         /// </summary>
         public ExtendedStarSizeBehavior()
         {
@@ -118,9 +118,11 @@
             InjectColumnHeaderStyle(dataGrid);
         }
 
-        private void DataGrid_Unloaded(object sender, RoutedEventArgs e)
+        private void DataGrid_Unloaded(object? sender, RoutedEventArgs e)
         {
-            var dataGrid = (DataGrid)sender;
+            var dataGrid = (DataGrid?)sender;
+            if (dataGrid == null)
+                return;
 
             var scrollViewer = _scrollViewer;
             if (scrollViewer == null)
@@ -142,7 +144,7 @@
             _updateColumnGripperToolTipVisibilityThrottle.Tick();
         }
 
-        private void Columns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void Columns_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             var dataGrid = AssociatedObject;
             if (dataGrid == null)
@@ -213,7 +215,7 @@
             var dataGridColumns = dataGrid.Columns
                 .OrderBy(c => c.DisplayIndex)
                 .Skip(dataGrid.FrozenColumnCount)
-                .Where(c => (c.Visibility == Visibility.Visible))
+                .Where(c => c.Visibility == Visibility.Visible)
                 .ToArray();
 
             _columnsAreFitWithinViewPort = !ApplyStarSize(dataGridColumns, modifiedColumn) && DistributeAvailableSize(dataGrid, dataGridColumns, modifiedColumn, updateMode);
@@ -250,8 +252,15 @@
 
             var startColumnIndex = modifiedColumn?.DisplayIndex ?? 0;
 
-            bool IsFixedColumn(DataGridColumn c) => (GetStarSize(c) <= double.Epsilon) || (c.DisplayIndex <= startColumnIndex);
-            bool IsVariableColumn(DataGridColumn c) => !IsFixedColumn(c);
+            bool IsFixedColumn(DataGridColumn c)
+            {
+                return (GetStarSize(c) <= double.Epsilon) || (c.DisplayIndex <= startColumnIndex);
+            }
+
+            bool IsVariableColumn(DataGridColumn c)
+            {
+                return !IsFixedColumn(c);
+            }
 
             var fixedColumnsWidth = dataGridColumns
                 .Where(IsFixedColumn)

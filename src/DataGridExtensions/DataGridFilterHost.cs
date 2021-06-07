@@ -188,7 +188,7 @@
             e.CanExecute = DataGrid.CanSelectAll() || (DataGrid.Items.Count == 0);
         }
 
-        private void Columns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void Columns_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.Action == NotifyCollectionChangedAction.Reset)
             {

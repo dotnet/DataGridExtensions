@@ -35,30 +35,30 @@
 
         public event EventHandler<DataGridColumnEventArgs>? ColumnSortDirectionChanged;
 
-        private void Columns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void Columns_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    foreach (var column in e.NewItems.OfType<DataGridColumn>())
+                    foreach (var column in e.NewItems!.OfType<DataGridColumn>())
                     {
                         AddEventHandlers(column);
                     }
                     break;
 
                 case NotifyCollectionChangedAction.Remove:
-                    foreach (var column in e.OldItems.OfType<DataGridColumn>())
+                    foreach (var column in e.OldItems!.OfType<DataGridColumn>())
                     {
                         RemoveEventHandlers(column);
                     }
                     break;
 
                 case NotifyCollectionChangedAction.Replace:
-                    foreach (var column in e.OldItems.OfType<DataGridColumn>())
+                    foreach (var column in e.OldItems!.OfType<DataGridColumn>())
                     {
                         RemoveEventHandlers(column);
                     }
-                    foreach (var column in e.NewItems.OfType<DataGridColumn>())
+                    foreach (var column in e.NewItems!.OfType<DataGridColumn>())
                     {
                         AddEventHandlers(column);
                     }

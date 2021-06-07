@@ -362,7 +362,9 @@
                         return property.GetValue(item);
                     }
                 }
+#pragma warning disable CA1031 // Do not catch general exception types
                 catch
+#pragma warning restore CA1031 // Do not catch general exception types
                 {
                     // not a plain property, fall-back to binding...
                 }
