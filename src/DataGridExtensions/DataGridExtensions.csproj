@@ -36,7 +36,7 @@ The current version supports the following features:
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Throttle.Fody" Version="1.7.0" PrivateAssets="All" />
-    <PackageReference Include="TomsToolbox.Wpf" Version="2.5.5" />
+    <PackageReference Include="TomsToolbox.Wpf" Version="2.5.5" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Icon.png" Link="Icon.png" Pack="true" PackagePath="\" />
