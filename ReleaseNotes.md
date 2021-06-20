@@ -1,4 +1,7 @@
-﻿2.5.3:
+﻿2.5.4:
+- Fix #65: Calling DataGrid.GetFilter() from code turns filter controls visible, even though IsAutoFilterEnabled is false.
+
+2.5.3:
 - Fix #62: MultipleChoiceFilter: listbox items not selected
 
 2.5.2:
