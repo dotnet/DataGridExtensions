@@ -24,6 +24,7 @@
                 // Sample to manipulate the filter values by code.
                 DataGrid.Columns[0].SetFilter("True");
                 DataGrid.Columns[2].SetFilter("3");
+                DataGrid.Columns[3].SetIsFilterVisible(false);
             }));
 
             // Sample usage of the filtering event

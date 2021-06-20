@@ -100,14 +100,14 @@
         {
             _isFilteringEnabled = value;
 
-            var visibility = value ? Visibility.Visible : Visibility.Hidden;
-
-            foreach (var control in FilterColumnControls)
+            if (!value)
             {
-                control.Visibility = visibility;
+                Clear();
             }
-
-            EvaluateFilter();
+            else
+            {
+                EvaluateFilter();
+            }
         }
 
         /// <summary>

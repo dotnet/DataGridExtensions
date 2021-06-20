@@ -15,6 +15,8 @@
     using DataGridExtensions.Framework;
 
     using Throttle;
+    using TomsToolbox.Wpf.Converters;
+    using BooleanToVisibilityConverter = TomsToolbox.Wpf.Converters.BooleanToVisibilityConverter;
 
     /// <summary>
     /// This class is the control hosting all information needed for filtering of one column.
@@ -24,7 +26,6 @@
     /// <seealso cref="INotifyPropertyChanged" />
     public class DataGridFilterColumnControl : Control, INotifyPropertyChanged
     {
-        private static readonly BooleanToVisibilityConverter _booleanToVisibilityConverter = new BooleanToVisibilityConverter();
         private static readonly ControlTemplate _emptyControlTemplate = new ControlTemplate();
 
         private bool _getCellContentMustUseBinding;
@@ -74,7 +75,23 @@
             // Bind our IsFilterVisible and Template properties to the corresponding properties attached to the
             // DataGridColumnHeader.Column property. Use binding instead of simple assignment since columnHeader.Column is still null at this point.
             var isFilterVisiblePropertyPath = new PropertyPath("(0)", DataGridFilterColumn.IsFilterVisibleProperty);
-            BindingOperations.SetBinding(this, VisibilityProperty, new Binding() { Path = isFilterVisiblePropertyPath, Source = column, Mode = BindingMode.OneWay, Converter = _booleanToVisibilityConverter });
+            var isAutoFilterEnabledPropertyPath = new PropertyPath("(0)", DataGridFilter.IsAutoFilterEnabledProperty);
+
+            BindingOperations.SetBinding(this, VisibilityProperty, new MultiBinding()
+            {
+                Converter = new CompositeMultiValueConverter()
+                {
+                    MultiValueConverter = LogicalMultiValueConverter.And,
+                    Converters = {
+                        TomsToolbox.Wpf.Converters.BooleanToVisibilityConverter.Default
+                    }
+                },
+                Bindings =
+                {
+                    new Binding() { Path = isFilterVisiblePropertyPath, Source = column, Mode = BindingMode.OneWay },
+                    new Binding() { Path = isAutoFilterEnabledPropertyPath, Source = DataGrid, Mode = BindingMode.OneWay }
+                }
+            }); ;
 
             var templatePropertyPath = new PropertyPath("(0)", DataGridFilterColumn.TemplateProperty);
             BindingOperations.SetBinding(this, TemplateProperty, new Binding() { Path = templatePropertyPath, Source = column, Mode = BindingMode.OneWay });
