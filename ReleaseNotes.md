@@ -1,4 +1,7 @@
-﻿2.5.4:
+﻿2.5.5:
+- Fix #66: DGX Should not list TomsToolbox as a dependency
+
+2.5.4:
 - Fix #65: Calling DataGrid.GetFilter() from code turns filter controls visible, even though IsAutoFilterEnabled is false.
 
 2.5.3:
