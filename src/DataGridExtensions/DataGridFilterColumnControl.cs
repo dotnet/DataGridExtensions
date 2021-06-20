@@ -82,9 +82,7 @@
                 Converter = new CompositeMultiValueConverter()
                 {
                     MultiValueConverter = LogicalMultiValueConverter.And,
-                    Converters = {
-                        TomsToolbox.Wpf.Converters.BooleanToVisibilityConverter.Default
-                    }
+                    Converters = { BooleanToVisibilityConverter.Default }
                 },
                 Bindings =
                 {
