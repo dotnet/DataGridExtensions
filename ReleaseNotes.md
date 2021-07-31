@@ -1,4 +1,8 @@
-﻿2.5.5:
+﻿2.5.6:
+- Fix #68: Filter gets lost if using column virtualization and filtered colum gets out of view.
+- Fix #67: Filtering multiple columns, previous filters will fail
+
+2.5.5:
 - Fix #66: DGX Should not list TomsToolbox as a dependency
 
 2.5.4:
