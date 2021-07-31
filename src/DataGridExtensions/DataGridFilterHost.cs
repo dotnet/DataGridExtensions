@@ -25,7 +25,7 @@
         /// <summary>
         /// The columns that we are currently filtering.
         /// </summary>
-        private IEnumerable<DataGridFilterColumnControl> _filteredColumns = Enumerable.Empty<DataGridFilterColumnControl>();
+        private IEnumerable<DataGridColumn> _filteredColumns = Enumerable.Empty<DataGridColumn>();
         /// <summary>
         /// Flag indicating if filtering is currently enabled.
         /// </summary>
@@ -246,7 +246,7 @@
 
                 if (newColumns.Length > 0)
                 {
-                    var columns = newColumns.Select(item => item.Column).ExceptNullItems().ToList().AsReadOnly();
+                    var columns = newColumns.ExceptNullItems().ToList().AsReadOnly();
                     var args = new DataGridFilteringEventArgs(columns);
                     Filtering(DataGrid, args);
 
@@ -292,7 +292,7 @@
             return CreatePredicate(GetFilteredColumns(excluded));
         }
 
-        private Predicate<object?>? CreatePredicate(ICollection<DataGridFilterColumnControl>? filteredColumns)
+        private Predicate<object?>? CreatePredicate(ICollection<DataGridColumn>? filteredColumns)
         {
             if (filteredColumns?.Any() != true)
             {
@@ -307,12 +307,11 @@
             return item => _globalFilter(item) && filteredColumns.All(column => column.Matches(DataGrid, item));
         }
 
-        private ICollection<DataGridFilterColumnControl> GetFilteredColumns(DataGridColumn? excluded = null)
+        private ICollection<DataGridColumn> GetFilteredColumns(DataGridColumn? excluded = null)
         {
             return DataGrid.Columns
                 .Where(column => !ReferenceEquals(column, excluded))
                 .Where(column => column.Visibility == Visibility.Visible && !string.IsNullOrWhiteSpace(column.GetFilter()?.ToString()))
-                .Select(column => column.GetDataGridFilterColumnControl())
                 .ExceptNullItems()
                 .ToList()
                 .AsReadOnly();

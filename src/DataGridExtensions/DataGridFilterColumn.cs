@@ -1,7 +1,6 @@
 ﻿namespace DataGridExtensions
 {
     using System;
-    using System.Diagnostics;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
@@ -203,6 +202,80 @@
         internal static IContentFilter CreateContentFilter(this DataGrid dataGrid, object? content)
         {
             return dataGrid.GetContentFilterFactory().Create(content);
+        }
+
+        /// <summary>
+        /// Returns true if the given item matches the filter condition for this column.
+        /// </summary>
+        internal static bool Matches(this DataGridColumn column, DataGrid dataGrid, object? item)
+        {
+            if (column == null)
+                return true;
+
+            var activeFilter = column.GetActiveFilter();
+            if (activeFilter == null)
+            {
+                var filter = column.GetFilter();
+                if (filter == null)
+                    return true;
+
+                activeFilter = dataGrid.CreateContentFilter(filter);
+                column.SetActiveFilter(activeFilter);
+            }
+
+            return activeFilter.IsMatch(GetCellContentData(column, item));
+        }
+
+        /// <summary>
+        /// Identifies the CellValue dependency property, a private helper property used to evaluate the property path for the list items.
+        /// </summary>
+        private static readonly DependencyProperty CellValueProperty =
+            DependencyProperty.Register("CellValue", typeof(object), typeof(DataGridFilterColumn));
+
+        /// <summary>
+        /// Identifies the GetCellContentMustUseBinding dependency property, a private helper property used to evaluate the property path for the list items.
+        /// </summary>
+        private static readonly DependencyProperty GetCellContentMustUseBindingProperty =
+            DependencyProperty.Register("GetCellContentMustUseBinding", typeof(bool), typeof(DataGridFilterColumn));
+
+        /// <summary>
+        /// Examines the property path and returns the objects value for this column.
+        /// Filtering is applied on the SortMemberPath, this is the path used to create the binding.
+        /// </summary>
+        internal static object? GetCellContentData(this DataGridColumn column, object? item)
+        {
+            var propertyPath = column?.SortMemberPath;
+            if (item == null || string.IsNullOrEmpty(propertyPath))
+            {
+                return null;
+            }
+
+            if (!(bool)column.GetValue(GetCellContentMustUseBindingProperty))
+            {
+                try
+                {
+                    var type = item.GetType();
+                    var property = type.GetProperty(propertyPath);
+                    if (property != null)
+                    {
+                        return property.GetValue(item);
+                    }
+                }
+                catch
+                {
+                    // not a plain property, fall-back to binding...
+                }
+            }
+
+            column.SetValue(GetCellContentMustUseBindingProperty, true);
+
+            // Since already the name "SortMemberPath" implies that this might be not only a simple property name but a full property path
+            // we now use binding for evaluation; this will properly handle even complex property paths like e.g. "SubItems[0].Name"
+            BindingOperations.SetBinding(column, CellValueProperty, new Binding(propertyPath) { Source = item });
+            var propertyValue = column.GetValue(CellValueProperty);
+            BindingOperations.ClearBinding(column, CellValueProperty);
+
+            return propertyValue;
         }
     }
 }

@@ -28,8 +28,6 @@
     {
         private static readonly ControlTemplate _emptyControlTemplate = new ControlTemplate();
 
-        private bool _getCellContentMustUseBinding;
-
         static DataGridFilterColumnControl()
         {
             var templatePropertyDescriptor = DependencyPropertyDescriptor.FromProperty(TemplateProperty, typeof(Control));
@@ -298,7 +296,7 @@
             return DataGrid?.Items
                 .Cast<object>()
                 .Where(item => item != null)
-                .Select(GetCellContentData)
+                .Select(item => Column?.GetCellContentData(item))
                 .Select(content => content?.ToString() ?? string.Empty) ?? Enumerable.Empty<string>();
         }
 
@@ -318,80 +316,8 @@
 
             return items.Cast<object>()
                 .Where(item => item != null && predicate(item))
-                .Select(GetCellContentData)
+                .Select(item => Column?.GetCellContentData(item))
                 .Select(content => content?.ToString() ?? string.Empty);
-        }
-
-        /// <summary>
-        /// Returns true if the given item matches the filter condition for this column.
-        /// </summary>
-        internal bool Matches(DataGrid dataGrid, object? item)
-        {
-            var column = Column;
-            if (column == null)
-                return true;
-
-            var activeFilter = column.GetActiveFilter();
-            if (activeFilter == null)
-            {
-                var filter = column.GetFilter();
-                if (filter == null)
-                    return true;
-
-                activeFilter = dataGrid.CreateContentFilter(filter);
-                column.SetActiveFilter(activeFilter);
-            }
-
-            return activeFilter.IsMatch(GetCellContentData(item));
-        }
-
-
-        /// <summary>
-        /// Identifies the CellValue dependency property, a private helper property used to evaluate the property path for the list items.
-        /// </summary>
-        private static readonly DependencyProperty CellValueProperty =
-            DependencyProperty.Register("CellValue", typeof(object), typeof(DataGridFilterColumn));
-
-        /// <summary>
-        /// Examines the property path and returns the objects value for this column.
-        /// Filtering is applied on the SortMemberPath, this is the path used to create the binding.
-        /// </summary>
-        internal object? GetCellContentData(object? item)
-        {
-            var column = Column;
-
-            var propertyPath = column?.SortMemberPath;
-            if (item == null || string.IsNullOrEmpty(propertyPath))
-            {
-                return null;
-            }
-
-            if (!_getCellContentMustUseBinding)
-            {
-                try
-                {
-                    var type = item.GetType();
-                    var property = type.GetProperty(propertyPath);
-                    if (property != null)
-                    {
-                        return property.GetValue(item);
-                    }
-                }
-                catch
-                {
-                    // not a plain property, fall-back to binding...
-                }
-            }
-
-            _getCellContentMustUseBinding = true;
-
-            // Since already the name "SortMemberPath" implies that this might be not only a simple property name but a full property path
-            // we now use binding for evaluation; this will properly handle even complex property paths like e.g. "SubItems[0].Name"
-            BindingOperations.SetBinding(column, CellValueProperty, new Binding(propertyPath) { Source = item });
-            var propertyValue = column.GetValue(CellValueProperty);
-            BindingOperations.ClearBinding(column, CellValueProperty);
-
-            return propertyValue;
         }
 
         #region INotifyPropertyChanged Members
