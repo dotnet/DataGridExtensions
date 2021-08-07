@@ -1,4 +1,7 @@
-﻿2.5.6:
+﻿2.5.7:
+- Performance improvement for MultipleChoiceFilter
+
+2.5.6:
 - Fix #68: Filter gets lost if using column virtualization and filtered colum gets out of view.
 - Fix #67: Filtering multiple columns, previous filters will fail
 
