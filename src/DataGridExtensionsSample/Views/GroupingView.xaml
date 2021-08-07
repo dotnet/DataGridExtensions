@@ -13,6 +13,9 @@
         <PropertyGroupDescription PropertyName="Column5" />
       </CollectionViewSource.GroupDescriptions>
     </CollectionViewSource>
+    <ControlTemplate x:Key="MultipleChoiceFilter">
+      <dgx:MultipleChoiceFilter Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
+    </ControlTemplate>
   </UserControl.Resources>
   <DockPanel>
     <StackPanel DockPanel.Dock="Top" Margin="10">
@@ -37,7 +40,7 @@
       </DataGrid.Style>
       <DataGrid.Columns>
         <DataGridTextColumn Header="Index" Binding="{Binding Index}" />
-        <DataGridTextColumn Header="Value1" Binding="{Binding Column6}" SortDirection="Ascending" />
+        <DataGridTextColumn Header="Value1" Binding="{Binding Column6}" SortDirection="Ascending" dgx:DataGridFilterColumn.Template="{StaticResource MultipleChoiceFilter}" />
         <DataGridTextColumn Header="Value2" Binding="{Binding Column2}" SortDirection="Ascending" />
         <DataGridTextColumn Header="Value3" Binding="{Binding Column3}" />
       </DataGrid.Columns>

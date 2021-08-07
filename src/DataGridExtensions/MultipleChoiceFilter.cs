@@ -204,13 +204,13 @@
         /// <param name="items">The items.</param>
         public MultipleChoiceContentFilter(IEnumerable<string?>? items)
         {
-            Items = items?.ToArray();
+            Items = items != null ? new HashSet<string?>(items) : null;
         }
 
         /// <summary>
         /// Gets the items to filter.
         /// </summary>
-        public IList<string?>? Items
+        public ICollection<string?>? Items
         {
             get;
         }
