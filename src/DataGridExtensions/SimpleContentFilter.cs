@@ -73,9 +73,9 @@
         /// Gets or sets the string comparison.
         /// </summary>
         public StringComparison StringComparison
-        { 
-            get; 
-            set; 
+        {
+            get;
+            set;
         }
 
         #region IFilterFactory Members

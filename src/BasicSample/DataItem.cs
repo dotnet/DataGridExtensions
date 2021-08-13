@@ -6,7 +6,7 @@
     public class DataItem
     {
         private static readonly Random _rand = new Random();
-        private static readonly string[] _samples = new[] {"lorem", "ipsum", "dolor", "sit", "amet"};
+        private static readonly string[] _samples = new[] { "lorem", "ipsum", "dolor", "sit", "amet" };
 
         public DataItem(int index)
         {
