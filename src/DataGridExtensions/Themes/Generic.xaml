@@ -3,8 +3,7 @@
                     xmlns:src="clr-namespace:DataGridExtensions"
                     xmlns:behaviors="clr-namespace:DataGridExtensions.Behaviors"
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-                    xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
-                    xmlns:toms="urn:TomsToolbox">
+                    xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase">
 
   <!-- Style for a filter check box. The check box is only visible when it's hovered, focused or has a value.  -->
   <Style x:Key="{x:Static src:DataGridFilter.ColumnHeaderSearchCheckBoxStyleKey}" TargetType="CheckBox">
@@ -183,7 +182,7 @@
                 </CollectionViewSource>
               </FrameworkElement.Resources>
               <i:Interaction.Behaviors>
-                <toms:PopupFocusManagerBehavior ToggleButton="{Binding ElementName=ToggleButton}" />
+                <src:PopupFocusManagerBehavior ToggleButton="{Binding ElementName=ToggleButton}" />
               </i:Interaction.Behaviors>
               <Border Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
                 <DockPanel>
@@ -218,7 +217,7 @@
                       </DataTemplate>
                     </ListBox.ItemTemplate>
                     <i:Interaction.Behaviors>
-                      <toms:ListBoxSelectAllBehavior AreAllFilesSelected="{Binding IsChecked, ElementName=SelectAll}" />
+                      <src:ListBoxSelectAllBehavior AreAllFilesSelected="{Binding IsChecked, ElementName=SelectAll}" />
                     </i:Interaction.Behaviors>
                   </ListBox>
                 </DockPanel>
