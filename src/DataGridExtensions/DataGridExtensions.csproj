@@ -27,16 +27,16 @@ The current version supports the following features:
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="ILMerge.Fody" Version="1.16.0" PrivateAssets="All" />
+    <PackageReference Include="ILMerge.Fody" Version="1.17.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" />
-    <PackageReference Include="Fody" Version="6.5.1" PrivateAssets="All" />
+    <PackageReference Include="Fody" Version="6.5.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
     <PackageReference Include="Nullable.Extended.Analyzer" Version="1.2.4089">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Throttle.Fody" Version="1.7.0" PrivateAssets="All" />
-    <PackageReference Include="TomsToolbox.Wpf" Version="2.5.5" PrivateAssets="All" />
+    <PackageReference Include="TomsToolbox.Wpf" Version="2.7.0" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Icon.png" Link="Icon.png" Pack="true" PackagePath="\" />
