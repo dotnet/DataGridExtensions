@@ -21,14 +21,14 @@
             Probability = _rand.NextDouble();
         }
 
-        public bool Flag { get; private set; }
-        public int Index { get; private set; }
+        public bool Flag { get; }
+        public int Index { get; }
         public string Column1 { get; set; }
         public string Column2 { get; set; }
         public string Column3 { get; set; }
         public string Column4 { get; set; }
         public string Column5 { get; set; }
         public Visibility Column6 { get; set; }
-        public double Probability { get; private set; }
+        public double Probability { get; }
     }
 }

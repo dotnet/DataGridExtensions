@@ -126,7 +126,7 @@
             if (_deferFilterEvaluationTimer == null)
             {
                 var throttleDelay = DataGrid.GetFilterEvaluationDelay();
-                _deferFilterEvaluationTimer = new DispatcherTimer(throttleDelay, DispatcherPriority.Input, (_, __) => EvaluateFilter(), Dispatcher.CurrentDispatcher);
+                _deferFilterEvaluationTimer = new DispatcherTimer(throttleDelay, DispatcherPriority.Input, (_, _) => EvaluateFilter(), Dispatcher.CurrentDispatcher);
             }
 
             _deferFilterEvaluationTimer.Restart();

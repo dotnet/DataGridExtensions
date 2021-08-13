@@ -26,7 +26,7 @@
     /// <seealso cref="INotifyPropertyChanged" />
     public class DataGridFilterColumnControl : Control, INotifyPropertyChanged
     {
-        private static readonly ControlTemplate _emptyControlTemplate = new ControlTemplate();
+        private static readonly ControlTemplate _emptyControlTemplate = new();
 
         static DataGridFilterColumnControl()
         {
@@ -87,7 +87,7 @@
                     new Binding() { Path = isFilterVisiblePropertyPath, Source = column, Mode = BindingMode.OneWay },
                     new Binding() { Path = isAutoFilterEnabledPropertyPath, Source = DataGrid, Mode = BindingMode.OneWay }
                 }
-            }); ;
+            });
 
             var templatePropertyPath = new PropertyPath("(0)", DataGridFilterColumn.TemplateProperty);
             BindingOperations.SetBinding(this, TemplateProperty, new Binding() { Path = templatePropertyPath, Source = column, Mode = BindingMode.OneWay });

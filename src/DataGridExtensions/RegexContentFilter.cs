@@ -80,10 +80,10 @@
         /// <summary>
         /// Gets or sets the regex options.
         /// </summary>
-        RegexOptions RegexOptions 
-        { 
-            get; 
-            set; 
+        public RegexOptions RegexOptions
+        {
+            get;
+            set;
         }
 
         #region IFilterFactory Members

@@ -46,7 +46,7 @@
         /// The filter property
         /// </summary>
         public static readonly DependencyProperty FilterProperty =
-            DependencyProperty.Register("Filter", typeof(MultipleChoiceContentFilter), typeof(MultipleChoiceFilter), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (sender, e) => ((MultipleChoiceFilter)sender).Filter_Changed()));
+            DependencyProperty.Register("Filter", typeof(MultipleChoiceContentFilter), typeof(MultipleChoiceFilter), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (sender, _) => ((MultipleChoiceFilter)sender).Filter_Changed()));
 
         private static readonly DependencyProperty SourceValuesProperty =
             DependencyProperty.Register("SourceValues", typeof(IList<string>), typeof(MultipleChoiceFilter), new FrameworkPropertyMetadata(null, (sender, e) => ((MultipleChoiceFilter)sender).SourceValues_Changed((IList<string>)e.NewValue)));
@@ -105,7 +105,7 @@
                 return;
 
             var dataGridItems = (INotifyCollectionChanged)dataGrid.Items;
-            dataGridItems.CollectionChanged += (_, __) => UpdateSourceValuesTarget();
+            dataGridItems.CollectionChanged += (_, _) => UpdateSourceValuesTarget();
 
             var filter = Filter;
 

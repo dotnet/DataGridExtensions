@@ -13,7 +13,7 @@
 
     [VisualCompositionExport(RegionId.Main, Sequence = 1)]
     [DisplayName("Basic usage")]
-    class BasicViewModel : ObservableObject
+    internal class BasicViewModel : ObservableObject
     {
         public BasicViewModel(DataProvider dataProvider)
         {
@@ -24,7 +24,7 @@
 
         public ICommand ClearAllFiltersCommand => new DelegateCommand<DataGrid>(ClearAllFilters);
 
-        private void ClearAllFilters(DataGrid dataGrid)
+        private void ClearAllFilters(DataGrid? dataGrid)
         {
             dataGrid?.GetFilter().Clear();
         }

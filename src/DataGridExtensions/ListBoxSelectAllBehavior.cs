@@ -59,7 +59,7 @@
             listBox.SelectAll();
 
             listBox.SelectionChanged += ListBox_SelectionChanged;
-            ((INotifyCollectionChanged)listBox.Items).CollectionChanged += (_, __) => _collectionChangedThrottle.Tick();
+            ((INotifyCollectionChanged)listBox.Items).CollectionChanged += (_, _) => _collectionChangedThrottle.Tick();
         }
 
         private void ListBox_SelectionChanged(object? sender, EventArgs? e)

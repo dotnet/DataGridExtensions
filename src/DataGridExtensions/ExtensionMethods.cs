@@ -52,8 +52,7 @@
             else
             {
                 // Return without Ctrl: Forward to parent, grid should move focused cell down.
-                var parent = (FrameworkElement)editingElement.Parent;
-                if (parent == null)
+                if (editingElement.Parent is not FrameworkElement parent)
                     return;
 
                 var args = new KeyEventArgs(e.KeyboardDevice, e.InputSource, e.Timestamp, Key.Return)
@@ -194,6 +193,7 @@
                 return false;
 
             // n:x*n
+            // ReSharper disable InconsistentNaming
             foreach (var row in selectedRows.Zip(Repeat(data, verticalFactor), (Row, CellValues) => new { Row, CellValues }))
             {
                 foreach (var column in selectedColumns.Zip(Repeat(row.CellValues, horizontalFactor), (DataGridColumn, CellValue) => new { DataGridColumn, CellValue }))
@@ -201,6 +201,7 @@
                     column.DataGridColumn.OnPastingCellClipboardContent(row.Row, column.CellValue);
                 }
             }
+            // ReSharper restore InconsistentNaming
 
             return true;
         }
@@ -216,7 +217,7 @@
             var selectedCells = dataGrid?.SelectedCells;
 
             return selectedCells?
-                .Where(cellInfo => cellInfo.IsValid && (cellInfo.Column != null) && (cellInfo.Column.Visibility == Visibility.Visible))
+                .Where(cellInfo => cellInfo.IsValid && cellInfo.Column is { Visibility: Visibility.Visible })
                 .ToArray();
         }
 
@@ -229,7 +230,7 @@
         /// </returns>
         public static bool CanSelectAll(this DataGrid dataGrid)
         {
-            return (dataGrid.SelectionMode != DataGridSelectionMode.Single && dataGrid.SelectionUnit != DataGridSelectionUnit.Cell);
+            return dataGrid.SelectionMode != DataGridSelectionMode.Single && dataGrid.SelectionUnit != DataGridSelectionUnit.Cell;
         }
 
 

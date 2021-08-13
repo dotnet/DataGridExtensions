@@ -35,6 +35,7 @@
             if (value == null)
                 return false;
 
+            // ReSharper disable once ConstantConditionalAccessQualifier => net5.0 
             return value.ToString()?.IndexOf(_content, _stringComparison) >= 0;
         }
 

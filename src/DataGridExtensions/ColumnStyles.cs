@@ -22,7 +22,7 @@
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
         public static DataGridColumnStyleCollection? GetDefaultColumnStyles(DataGrid dataGrid)
         {
-            return (DataGridColumnStyleCollection)dataGrid.GetValue(DefaultColumnStylesProperty);
+            return (DataGridColumnStyleCollection?)dataGrid.GetValue(DefaultColumnStylesProperty);
         }
         /// <summary>
         /// Sets the default column styles.
@@ -43,8 +43,7 @@
         {
             var dataGrid = (DataGrid)d;
 
-            var styles = (DataGridColumnStyleCollection)e.NewValue;
-            if (styles == null)
+            if (e.NewValue is not DataGridColumnStyleCollection styles)
                 return;
 
             foreach (var col in dataGrid.Columns)

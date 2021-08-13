@@ -55,7 +55,7 @@
         /// <returns>The control template.</returns>
         public static ControlTemplate? GetTemplate(this DataGridColumn column)
         {
-            return (ControlTemplate)column.GetValue(TemplateProperty);
+            return (ControlTemplate?)column.GetValue(TemplateProperty);
         }
         /// <summary>
         /// Sets the control template for the filter of this column. If the template is null or unset, a default template will be used.
@@ -177,7 +177,7 @@
         /// <returns>The filter.</returns>
         public static IContentFilter? GetActiveFilter(this DataGridColumn column)
         {
-            return (IContentFilter)column.GetValue(ActiveFilterProperty);
+            return (IContentFilter?)column.GetValue(ActiveFilterProperty);
         }
         /// <summary>
         /// Sets the filter expression of the column.
@@ -207,7 +207,7 @@
         /// <summary>
         /// Returns true if the given item matches the filter condition for this column.
         /// </summary>
-        internal static bool Matches(this DataGridColumn column, DataGrid dataGrid, object? item)
+        internal static bool Matches(this DataGridColumn? column, DataGrid dataGrid, object? item)
         {
             if (column == null)
                 return true;
@@ -242,7 +242,7 @@
         /// Examines the property path and returns the objects value for this column.
         /// Filtering is applied on the SortMemberPath, this is the path used to create the binding.
         /// </summary>
-        internal static object? GetCellContentData(this DataGridColumn column, object? item)
+        internal static object? GetCellContentData(this DataGridColumn? column, object? item)
         {
             var propertyPath = column?.SortMemberPath;
             if (item == null || string.IsNullOrEmpty(propertyPath))

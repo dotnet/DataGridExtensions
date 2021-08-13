@@ -37,7 +37,7 @@
 
         public DataGridFilterColumnControl? Column5FilterColumnControl { get; set; }
 
-        public Predicate<object> GlobalFilter { get; } = item => (item as DataItem)?.Column1?.Contains("7") ?? false;
+        public Predicate<object> GlobalFilter { get; } = item => (item as DataItem)?.Column1?.Contains('7') ?? false;
 
         public ICommand ClearIpsumCommand => new DelegateCommand(ClearIpsum);
 

@@ -55,8 +55,7 @@
         /// <returns>The <see cref="DataGridFilterHost"/></returns>
         public static DataGridFilterHost GetFilter(this DataGrid dataGrid)
         {
-            var value = (DataGridFilterHost)dataGrid.GetValue(FilterProperty);
-            if (value == null)
+            if (dataGrid.GetValue(FilterProperty) is not DataGridFilterHost value)
             {
                 value = new DataGridFilterHost(dataGrid);
                 dataGrid.SetValue(FilterProperty, value);
@@ -84,7 +83,7 @@
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
         public static IContentFilterFactory GetContentFilterFactory(this DataGrid dataGrid)
         {
-            return (IContentFilterFactory)dataGrid.GetValue(ContentFilterFactoryProperty) ?? DefaultContentFilterFactory;
+            return (IContentFilterFactory?)dataGrid.GetValue(ContentFilterFactoryProperty) ?? DefaultContentFilterFactory;
         }
         /// <summary>
         /// Sets the content filter factory for the data grid filter.
@@ -150,7 +149,7 @@
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
         public static IResourceLocator? GetResourceLocator(this DataGrid dataGrid)
         {
-            return (IResourceLocator)dataGrid.GetValue(ResourceLocatorProperty);
+            return (IResourceLocator?)dataGrid.GetValue(ResourceLocatorProperty);
         }
         /// <summary>
         /// Sets the resource locator.

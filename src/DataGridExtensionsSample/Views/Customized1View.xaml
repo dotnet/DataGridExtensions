@@ -6,7 +6,6 @@
              xmlns:local="clr-namespace:DataGridExtensionsSample.Views"
              xmlns:dgx="urn:tom-englert.de/DataGridExtensions"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:dataGridExtensionsSample="clr-namespace:DataGridExtensionsSample"
              xmlns:controls="clr-namespace:DataGridExtensionsSample.Controls"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800"
@@ -22,7 +21,7 @@
       <TextBlock TextWrapping="WrapWithOverflow">
         <Run>This tab shows how to customize the filters when using auto generated columns. See the DataGrid_AutoGeneratingColumn event handler for details.</Run><LineBreak />
         <Run>- Overrides the content filter factory to use the regex matching instead of the default simple "string contains" matching.</Run><LineBreak />
-        <Run>- Uses the sample IntergerFilter for the Index column.</Run><LineBreak />
+        <Run>- Uses the sample IntegerFilter for the Index column.</Run><LineBreak />
         <Run>- Overrides the icon template to show an orange filter symbol.</Run>
       </TextBlock>
     </DockPanel>
