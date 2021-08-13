@@ -1,4 +1,7 @@
-﻿2.5.7:
+﻿2.5.8:
+- Fix #69: MultipleChoiceFilter introduces reflection-only dependency to TomsToolbox.Wpf
+
+2.5.7:
 - Performance improvement for MultipleChoiceFilter
 
 2.5.6:

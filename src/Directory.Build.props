@@ -5,7 +5,7 @@
     <Company>tom-englert.de</Company>
     <Copyright>Copyright (c) .NET Foundation and Contributors.</Copyright>
     <Product>Tom's Toolbox</Product>
-    <Version>2.5.7</Version>
+    <Version>2.5.8</Version>
   </PropertyGroup>
 
   <PropertyGroup>
