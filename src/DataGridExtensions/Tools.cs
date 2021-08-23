@@ -169,6 +169,82 @@
             dataGrid.CommitEdit(); // Commit row
         }
 
-        #endregion  
+        #endregion
+
+        #region Track focused cell
+
+        /// <summary>
+        /// Gets a value that indicates if the last focused cell of the data grid will be tracked.
+        /// </summary>
+        /// <param name="dataGrid">The data grid.</param>
+        /// <returns><c>true</c> if if the last focused cell of the data grid will be tracked.</returns>
+        [AttachedPropertyBrowsableForType(typeof(DataGrid))]
+        public static bool GetTrackFocusedCell(this DataGrid dataGrid)
+        {
+            return (bool)dataGrid.GetValue(TrackFocusedCellProperty);
+        }
+        /// <summary>
+        /// Sets a value that indicates if the last focused cell of the data grid will be tracked.
+        /// </summary>
+        /// <param name="dataGrid">The data grid.</param>
+        /// <param name="value"><c>true</c> if if the last focused cell of the data grid should be tracked.</param>
+        public static void SetTrackFocusedCell(this DataGrid dataGrid, bool value)
+        {
+            dataGrid.SetValue(TrackFocusedCellProperty, value);
+        }
+        /// <summary>
+        /// Identifies the TrackFocusedCell property.
+        /// </summary>
+        public static readonly DependencyProperty TrackFocusedCellProperty = DependencyProperty.RegisterAttached(
+            "TrackFocusedCell", typeof(bool), typeof(Tools), new FrameworkPropertyMetadata(default(bool), TrackFocusedCell_Changed));
+
+        /// <summary>
+        /// Gets the cell that has/had the focus; requires <see cref="TrackFocusedCellProperty"/> to be set to true;
+        /// </summary>
+        /// <param name="dataGrid">The data grid.</param>
+        /// <returns>The cell that has/had the focus; <c>null</c> if no cell was recently focused or <see cref="TrackFocusedCellProperty"/> is not true.</returns>
+        public static DataGridCell? GetLastFocusedCell(this DataGrid dataGrid)
+        {
+            return (DataGridCell?)dataGrid.GetValue(LastFocusedCellProperty);
+        }
+        private static void SetLastFocusedCell(DataGrid dataGrid, DataGridCell value)
+        {
+            dataGrid.SetValue(LastFocusedCellPropertyKey, value);
+        }
+        private static readonly DependencyPropertyKey LastFocusedCellPropertyKey = DependencyProperty.RegisterAttachedReadOnly(
+            "LastFocusedCell", typeof(DataGridCell), typeof(Tools), new PropertyMetadata(default(DataGridCell)));
+        /// <summary>
+        /// Identifies the LastFocusedCell property.
+        /// </summary>
+        public static readonly DependencyProperty LastFocusedCellProperty = LastFocusedCellPropertyKey.DependencyProperty;
+
+        private static void TrackFocusedCell_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is not DataGrid dataGrid)
+                return;
+
+            if (true.Equals(e.NewValue))
+            {
+                dataGrid.GotFocus += DataGrid_GotFocus;
+            }
+            else
+            {
+                dataGrid.GotFocus -= DataGrid_GotFocus;
+
+            }
+        }
+
+        private static void DataGrid_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (sender is not DataGrid dataGrid)
+                return;
+
+            if (e.OriginalSource is DataGridCell cell)
+            {
+                SetLastFocusedCell(dataGrid, cell);
+            }
+        }
+
+        #endregion
     }
 }
