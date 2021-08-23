@@ -75,6 +75,7 @@
               dgx:DataGridFilter.IsAutoFilterEnabled="True"
               dgx:Tools.ApplyInitialSorting="True"
               dgx:Tools.ForceCommitOnLostFocus="True"
+              dgx:DataGridFilter.StartFilteringKeyGesture="Ctrl+F"
               dgx:DataGridFilter.FilterEvaluationDelay="0:0:0">
       <b:Interaction.Behaviors>
         <dgx:ExtendedStarSizeBehavior />

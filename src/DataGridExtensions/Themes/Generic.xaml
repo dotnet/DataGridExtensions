@@ -106,7 +106,8 @@
     <Grid>
       <Control Style="{DynamicResource {x:Static src:DataGridFilter.IconStyleKey}}" />
       <TextBox Style="{DynamicResource {x:Static src:DataGridFilter.ColumnHeaderSearchTextBoxStyleKey}}"
-               Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}" />
+               Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}"
+               src:Tools.MoveFocusOnNavigationKey="true" />
     </Grid>
   </ControlTemplate>
 
@@ -115,7 +116,8 @@
     <Grid>
       <Control Style="{DynamicResource {x:Static src:DataGridFilter.IconStyleKey}}" />
       <CheckBox Style="{DynamicResource {x:Static src:DataGridFilter.ColumnHeaderSearchCheckBoxStyleKey}}"
-                IsChecked="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}" />
+                IsChecked="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}"
+                src:Tools.MoveFocusOnNavigationKey="true" />
     </Grid>
   </ControlTemplate>
 
@@ -124,7 +126,8 @@
     <Grid>
       <Control Style="{DynamicResource {x:Static src:DataGridFilter.IconStyleKey}}" />
       <TextBox Style="{DynamicResource {x:Static src:DataGridFilter.ColumnHeaderSearchTextBoxStyleKey}}"
-               Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}" />
+               Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}"
+               src:Tools.MoveFocusOnNavigationKey="true" />
     </Grid>
   </ControlTemplate>
 
@@ -132,7 +135,8 @@
     <Grid>
       <Control Style="{DynamicResource {x:Static src:DataGridFilter.IconStyleKey}}" />
       <TextBox Style="{DynamicResource {x:Static src:DataGridFilter.ColumnHeaderSearchTextBoxStyleKey}}"
-               Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}" />
+               Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}"
+               src:Tools.MoveFocusOnNavigationKey="true" />
     </Grid>
   </ControlTemplate>
 
@@ -169,7 +173,8 @@
           <StackPanel Orientation="Horizontal">
             <Decorator Width="5" />
             <ToggleButton x:Name="ToggleButton" 
-                          Background="Transparent" 
+                          Background="Transparent"
+                          IsChecked="{Binding IsPopupOpen, RelativeSource={RelativeSource TemplatedParent}}"
                           Style="{DynamicResource {x:Type ToggleButton}}">
               <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="IsFilterActiveMarker" 
@@ -180,7 +185,7 @@
                          Style="{DynamicResource {x:Static src:DataGridFilter.IconStyleKey}}" />
               </StackPanel>
             </ToggleButton>
-            <Popup x:Name="Popup" StaysOpen="False" IsOpen="{Binding Path=IsChecked, ElementName=ToggleButton, Mode=OneWay}">
+            <Popup x:Name="Popup" StaysOpen="False" IsOpen="{Binding IsPopupOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}">
               <FrameworkElement.Resources>
                 <CollectionViewSource x:Key="SortedValuesSource" 
                                       Source="{Binding Values, RelativeSource={RelativeSource TemplatedParent}}">

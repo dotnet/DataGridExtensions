@@ -4,8 +4,11 @@
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
+    using System.Windows.Threading;
 
     using DataGridExtensions.Behaviors;
+
+    using TomsToolbox.Wpf;
 
     /// <summary>
     /// Some useful tools for data grids.
@@ -54,7 +57,7 @@
         /// <returns>The event provider.</returns>
         public static IDataGridEventsProvider GetAdditionalEvents(this DataGrid dataGrid)
         {
-            if (!(dataGrid.GetValue(DataGridEventsProviderProperty) is IDataGridEventsProvider eventsProvider))
+            if (dataGrid.GetValue(DataGridEventsProviderProperty) is not IDataGridEventsProvider eventsProvider)
             {
                 eventsProvider = new DataGridEventsProvider(dataGrid);
                 dataGrid.SetValue(DataGridEventsProviderProperty, eventsProvider);
@@ -156,10 +159,10 @@
         private static void DataGrid_OnPreviewLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             // ReSharper disable once SuspiciousTypeConversion.Global
-            if (!(e.NewFocus is DependencyObject newFocus))
+            if (e.NewFocus is not DependencyObject newFocus)
                 return;
 
-            if (!(sender is DataGrid dataGrid))
+            if (sender is not DataGrid dataGrid)
                 return;
 
             if (newFocus.AncestorsAndSelf().Any(item => ReferenceEquals(item, dataGrid)))
@@ -246,5 +249,92 @@
         }
 
         #endregion
+
+        #region Move focus on navigation key
+
+        /// <summary>
+        /// Gets a value that indicates if the focus should move out of the control when the user presses the Up/Down navigation keys.
+        /// </summary>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static bool GetMoveFocusOnNavigationKey(UIElement element)
+        {
+            return (bool)element.GetValue(MoveFocusOnNavigationKeyProperty);
+        }
+        /// <summary>
+        /// Sets a value that indicates if the focus should move out of the control when the user presses the Up/Down navigation keys.
+        /// </summary>
+        public static void SetMoveFocusOnNavigationKey(UIElement element, bool value)
+        {
+            element.SetValue(MoveFocusOnNavigationKeyProperty, value);
+        }
+        /// <summary>
+        /// Identifies the MoveFocusOnNavigationKey property.
+        /// </summary>
+        public static readonly DependencyProperty MoveFocusOnNavigationKeyProperty = DependencyProperty.RegisterAttached(
+            "MoveFocusOnNavigationKey", typeof(bool), typeof(Tools), new FrameworkPropertyMetadata(default(bool), MoveFocusOnNavigationKey_Changed));
+
+        private static void MoveFocusOnNavigationKey_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is UIElement element)
+            {
+                if (true.Equals(e.NewValue))
+                {
+                    element.PreviewKeyDown += Element_KeyDown;
+                }
+                else
+                {
+                    element.PreviewKeyDown -= Element_KeyDown;
+                }
+            }
+
+        }
+
+        private static void Element_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Down || e.Key == Key.Up)
+            {
+                if (sender is UIElement element)
+                {
+                    e.Handled = true;
+                    var dataGrid = element.TryFindAncestorOrSelf<DataGrid>();
+                    if (dataGrid != null)
+                    {
+                        MoveFocusToDataGrid(element, dataGrid);
+                    }
+                    else
+                    {
+                        element.BeginInvoke(() => element.MoveFocus(new TraversalRequest(FocusNavigationDirection.Down)));
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Tries to move the focus from the origin element to the data grid control.
+        /// </summary>
+        /// <param name="origin">The element that starts this request-</param>
+        /// <param name="target">The data grid that should receive the focus.</param>
+        public static void MoveFocusToDataGrid(this UIElement origin, DataGrid? target)
+        {
+            var lastFocusedCell = target?.GetLastFocusedCell();
+
+            origin.BeginInvoke(DispatcherPriority.Background, () =>
+            {
+                if (origin.IsKeyboardFocusWithin)
+                {
+                    if (lastFocusedCell?.IsLoaded == true)
+                    {
+                        lastFocusedCell.Focus();
+                    }
+                    else
+                    {
+                        var focusedElement = Keyboard.FocusedElement;
+                        (focusedElement as UIElement)?.MoveFocus(new TraversalRequest(FocusNavigationDirection.Down));
+                    }
+                }
+            });
+        }
     }
 }

@@ -154,7 +154,7 @@
             if (baseValue != null)
                 return baseValue;
 
-            if (!(sender is DataGridFilterColumnControl control))
+            if (sender is not DataGridFilterColumnControl control)
                 return null;
 
             // Just resolved the binding to the template property attached to the column, and the value has not been set on the column:
@@ -329,7 +329,7 @@
 
             if (e.Key == Key.Escape && !e.Handled)
             {
-                DataGrid?.GetLastFocusedCell()?.Focus();
+                this.MoveFocusToDataGrid(DataGrid);
             }
         }
 

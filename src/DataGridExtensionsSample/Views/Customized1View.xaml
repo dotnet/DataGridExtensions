@@ -29,7 +29,8 @@
               AutoGeneratingColumn="DataGrid_AutoGeneratingColumn"
               EnableColumnVirtualization="True"
               dgx:DataGridFilter.ContentFilterFactory="{x:Static dgx:RegexContentFilterFactory.Default}"
-              dgx:DataGridFilter.IsAutoFilterEnabled="True">
+              dgx:DataGridFilter.IsAutoFilterEnabled="True"
+              dgx:DataGridFilter.StartFilteringKeyGesture="Ctrl+F">
       <DataGrid.Resources>
         <!-- Override the filter icon used in the default templates with a fat orange symbol; active for this grid only -->
         <ControlTemplate x:Key="{x:Static dgx:DataGridFilter.IconTemplateKey}">

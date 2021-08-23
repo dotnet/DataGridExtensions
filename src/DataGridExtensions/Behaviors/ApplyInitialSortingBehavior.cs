@@ -117,7 +117,7 @@
 
         internal static void IsEnabled_Changed(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            if (!(sender is DataGrid dataGrid))
+            if (sender is not DataGrid dataGrid)
                 return;
 
             var behaviors = Interaction.GetBehaviors(dataGrid);

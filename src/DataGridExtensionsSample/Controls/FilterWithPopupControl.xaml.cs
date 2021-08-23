@@ -77,7 +77,7 @@
 
         private void Filter_Changed()
         {
-            if (!(Filter is ContentFilter filter))
+            if (Filter is not ContentFilter filter)
                 return;
 
             Minimum = filter.Min;

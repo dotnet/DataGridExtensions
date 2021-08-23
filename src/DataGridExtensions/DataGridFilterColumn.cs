@@ -158,7 +158,7 @@
 
         private static void Filter_Changed(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
-            if (!(d is DataGridColumn column))
+            if (d is not DataGridColumn column)
                 return;
 
             // Update the effective filter. If the filter is provided as content, the content filter will be recreated when needed.

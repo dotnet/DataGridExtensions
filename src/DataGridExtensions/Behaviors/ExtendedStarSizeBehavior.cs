@@ -157,7 +157,7 @@
 
         private void DataGrid_NonFrozenColumnsViewportHorizontalOffsetChanged(object? sender, EventArgs e)
         {
-            if (!(sender is DataGrid dataGrid))
+            if (sender is not DataGrid dataGrid)
                 return;
 
             if (_changingGridSizeCounter > 0)
@@ -187,7 +187,7 @@
             if (column == null)
                 return;
 
-            if (!(sender is DataGrid dataGrid))
+            if (sender is not DataGrid dataGrid)
                 return;
 
             if (_changingGridSizeCounter > 0)
@@ -203,7 +203,7 @@
 
         private void DataGrid_ColumnVisibilityChanged(object? sender, EventArgs e)
         {
-            if (!(sender is DataGrid dataGrid))
+            if (sender is not DataGrid dataGrid)
                 return;
 
             UpdateColumnWidths(dataGrid, null, UpdateMode.ResetStarSize);
@@ -373,10 +373,10 @@
 
         private static void ColumnHeaderGripperExtender_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (!(d is DataGridColumnHeader columnHeader))
+            if (d is not DataGridColumnHeader columnHeader)
                 return;
 
-            if (!(e.NewValue is ExtendedStarSizeBehavior self))
+            if (e.NewValue is not ExtendedStarSizeBehavior self)
                 return;
 
             var dataGrid = self.AssociatedObject;
@@ -390,7 +390,7 @@
 
         private void ApplyGripperToolTip(DataGridColumnHeader columnHeader, string gripperName, DependencyProperty toolTipProperty)
         {
-            if (!(columnHeader.Template?.FindName(gripperName, columnHeader) is Thumb gripper))
+            if (columnHeader.Template?.FindName(gripperName, columnHeader) is not Thumb gripper)
                 return;
 
             var dataGrid = AssociatedObject;

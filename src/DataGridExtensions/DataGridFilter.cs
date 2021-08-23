@@ -1,8 +1,12 @@
 ﻿namespace DataGridExtensions
 {
     using System;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Input;
+
+    using TomsToolbox.Wpf;
 
     /// <summary>
     /// Defines the attached properties that can be set on the data grid level.
@@ -138,6 +142,43 @@
         /// </summary>
         public static readonly DependencyProperty FilterEvaluationDelayProperty =
             DependencyProperty.RegisterAttached("FilterEvaluationDelay", typeof(TimeSpan), typeof(DataGridFilter), new FrameworkPropertyMetadata(TimeSpan.FromSeconds(0.5)));
+
+        #endregion
+
+        #region gesture
+
+        public static KeyGesture GetStartFilteringKeyGesture(DataGrid element)
+        {
+            return (KeyGesture)element.GetValue(StartFilteringKeyGestureProperty);
+        }
+        public static void SetStartFilteringKeyGesture(DataGrid element, KeyGesture value)
+        {
+            element.SetValue(StartFilteringKeyGestureProperty, value);
+        }
+        public static readonly DependencyProperty StartFilteringKeyGestureProperty = DependencyProperty.RegisterAttached(
+            "StartFilteringKeyGesture", typeof(KeyGesture), typeof(DataGridFilter), new FrameworkPropertyMetadata(null, StartFilteringKeyGesture_Changed));
+
+        private static void StartFilteringKeyGesture_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue is not KeyGesture gesture)
+                return;
+            if (d is not DataGrid dataGrid)
+                return;
+
+            dataGrid.KeyDown += (sender, args) =>
+            {
+                if (!gesture.Matches(sender, args))
+                    return;
+
+                var selectedColumn = (args.OriginalSource as DependencyObject).TryFindAncestorOrSelf<DataGridCell>()?.Column;
+
+                var control = selectedColumn.GetDataGridFilterColumnControl();
+
+                var focusTarget = control?.VisualDescendantsAndSelf().OfType<UIElement>().FirstOrDefault(item => item.Focusable);
+
+                focusTarget?.Focus();
+            };
+        }
 
         #endregion
 

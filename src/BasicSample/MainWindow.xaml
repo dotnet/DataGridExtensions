@@ -14,10 +14,10 @@
   </Window.Resources>
   <Grid>
     <DataGrid ItemsSource="{Binding Source={x:Static basicSample:DataProvider.Items}}"
-              dgx:DataGridFilter.IsAutoFilterEnabled="True">
+              dgx:DataGridFilter.IsAutoFilterEnabled="True"
+              dgx:DataGridFilter.StartFilteringKeyGesture="Ctrl+F">
       <DataGrid.Columns>
         <DataGridTextColumn Header="Multiple" Binding="{Binding Column5}" dgx:DataGridFilterColumn.Template="{StaticResource MultipleChoiceFilter}"/>
-
       </DataGrid.Columns>
     </DataGrid>
   </Grid>

@@ -16,14 +16,16 @@
         </TextBlock>
         <Decorator Height="10" />
         <StackPanel Orientation="Horizontal">
-          <CheckBox x:Name="IsFilterEnabled" DockPanel.Dock="Top" IsChecked="True" Content="Enable filters" VerticalAlignment="Center" />
+          <CheckBox x:Name="IsFilterEnabled" DockPanel.Dock="Top" IsChecked="True" Content="Enable filters"
+                    VerticalAlignment="Center" />
           <Decorator Width="20" />
           <Button Command="{Binding ClearAllFiltersCommand}" CommandParameter="{Binding ElementName=DataGrid}">Clear all filters</Button>
         </StackPanel>
       </StackPanel>
       <DataGrid Name="DataGrid" SelectionMode="Single"
                 ItemsSource="{Binding DataProvider.Items}"
-                dgx:DataGridFilter.IsAutoFilterEnabled="{Binding Path=IsChecked, ElementName=IsFilterEnabled}" />
+                dgx:DataGridFilter.IsAutoFilterEnabled="{Binding Path=IsChecked, ElementName=IsFilterEnabled}"
+                dgx:DataGridFilter.StartFilteringKeyGesture="Ctrl+F" />
     </DockPanel>
   </Grid>
 </UserControl>

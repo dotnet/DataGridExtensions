@@ -7,6 +7,8 @@
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
+    using System.Windows.Input;
+    using System.Windows.Threading;
 
     using Throttle;
 
@@ -19,6 +21,7 @@
     [TemplatePart(Name = "PART_ListBox", Type = typeof(ListBox))]
     public class MultipleChoiceFilter : Control
     {
+        private DataGrid? _dataGrid;
         private ListBox? _listBox;
 
         static MultipleChoiceFilter()
@@ -83,7 +86,29 @@
         /// The select all content property
         /// </summary>
         public static readonly DependencyProperty SelectAllContentProperty = DependencyProperty.Register(
-            "SelectAllContent", typeof(object), typeof(MultipleChoiceFilter), new PropertyMetadata("(Select All)"));
+            "SelectAllContent", typeof(object), typeof(MultipleChoiceFilter), new FrameworkPropertyMetadata("(Select All)"));
+
+        /// <summary>
+        /// Gets or sets a value that controls if the popup is open.
+        /// </summary>
+        public bool IsPopupOpen
+        {
+            get => (bool)GetValue(IsPopupOpenProperty);
+            set => SetValue(IsPopupOpenProperty, value);
+        }
+        /// <summary>
+        /// The is popup open property
+        /// </summary>
+        public static readonly DependencyProperty IsPopupOpenProperty = DependencyProperty.Register(
+            "IsPopupOpen", typeof(bool), typeof(MultipleChoiceFilter), new FrameworkPropertyMetadata(default(bool), (sender, e) => ((MultipleChoiceFilter)sender).IsPopupOpen_Changed((bool)e.NewValue)));
+
+        private void IsPopupOpen_Changed(bool newValue)
+        {
+            if (!newValue)
+            {
+                this.MoveFocusToDataGrid(_dataGrid);
+            }
+        }
 
         /// <inheritdoc />
         public override void OnApplyTemplate()
@@ -100,12 +125,14 @@
             BindingOperations.SetBinding(this, FilterProperty, new Binding { Source = filterColumnControl, Path = new PropertyPath(DataGridFilterColumnControl.FilterProperty) });
             BindingOperations.SetBinding(this, SourceValuesProperty, new Binding { Source = filterColumnControl, Path = new PropertyPath(nameof(DataGridFilterColumnControl.SelectableValues)) });
 
-            var dataGrid = filterColumnControl?.FindAncestorOrSelf<DataGrid>();
-            if (dataGrid == null)
+            _dataGrid = filterColumnControl?.FindAncestorOrSelf<DataGrid>();
+            if (_dataGrid == null)
                 return;
 
-            var dataGridItems = (INotifyCollectionChanged)dataGrid.Items;
+            var dataGridItems = (INotifyCollectionChanged)_dataGrid.Items;
             dataGridItems.CollectionChanged += (_, _) => UpdateSourceValuesTarget();
+
+            _dataGrid.SetTrackFocusedCell(true);
 
             var filter = Filter;
 
@@ -141,6 +168,17 @@
                 values.Clear();
             else
                 values.SynchronizeWith(newValue.ExceptNullItems().ToArray());
+        }
+
+        /// <inheritdoc />
+        protected override void OnIsKeyboardFocusWithinChanged(DependencyPropertyChangedEventArgs e)
+        {
+            base.OnIsKeyboardFocusWithinChanged(e);
+
+            if (true.Equals(e.NewValue))
+            {
+                this.BeginInvoke(() => IsPopupOpen = true);
+            }
         }
 
         private void ListBox_ItemsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)

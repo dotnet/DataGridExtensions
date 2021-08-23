@@ -82,7 +82,7 @@
 
         private void Popup_Opened(object? sender, EventArgs? e)
         {
-            if (!(sender is Popup popup))
+            if (sender is not Popup popup)
                 return;
 
             var child = popup.Child;
