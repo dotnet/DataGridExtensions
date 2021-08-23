@@ -9,6 +9,7 @@
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
     using System.Windows.Data;
+    using System.Windows.Input;
     using System.Windows.Media;
     using System.Windows.Threading;
 
@@ -57,6 +58,7 @@
                 return;
 
             DataGrid = ColumnHeader.FindAncestorOrSelf<DataGrid>() ?? throw new InvalidOperationException("DataGridFilterColumnControl must be a child element of a DataGridColumnHeader.");
+            DataGrid.SetTrackFocusedCell(true);
 
             // Find our host and attach our self.
             FilterHost = DataGrid.GetFilter();
@@ -318,6 +320,17 @@
                 .Where(item => item != null && predicate(item))
                 .Select(item => Column?.GetCellContentData(item))
                 .Select(content => content?.ToString() ?? string.Empty);
+        }
+
+        /// <inheritdoc />
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+
+            if (e.Key == Key.Escape && !e.Handled)
+            {
+                DataGrid?.GetLastFocusedCell()?.Focus();
+            }
         }
 
         #region INotifyPropertyChanged Members
