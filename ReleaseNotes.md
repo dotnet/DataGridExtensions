@@ -1,4 +1,10 @@
-﻿2.5.8:
+﻿2.5.9:
+- new feature "Track focused cell"
+- Pressing ESC key in the filter control returns the focus back to the DataGrid
+- UX improvements for keyboard navigation
+- MultipleChoiceFilter supports also text search (composite mode)
+
+2.5.8:
 - Fix #69: MultipleChoiceFilter introduces reflection-only dependency to TomsToolbox.Wpf
 
 2.5.7:
