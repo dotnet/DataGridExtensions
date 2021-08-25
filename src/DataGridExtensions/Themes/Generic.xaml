@@ -29,11 +29,44 @@
       <Setter.Value>
         <ControlTemplate TargetType="ButtonBase">
           <Border Background="Transparent">
-            <Path Data="M0,0 L7,7 M0,7 L7,0" Stroke="{TemplateBinding Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center" StrokeThickness="2" Margin="3" />
+            <Path Data="M0,0 L7,7 M0,7 L7,0" Stroke="{TemplateBinding Foreground}" HorizontalAlignment="Center"
+                  VerticalAlignment="Center" StrokeThickness="2" Margin="3" />
           </Border>
           <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
               <Setter Property="Foreground" Value="Gray" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style x:Key="{x:Static src:DataGridFilter.SearchTextBoxStyleKey}" TargetType="{x:Type TextBox}">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type TextBox}">
+          <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}"
+                  SnapsToDevicePixels="True">
+            <DockPanel>
+              <Button x:Name="clear" DockPanel.Dock="Right" Focusable="False"
+                      Style="{DynamicResource {x:Static src:DataGridFilter.ColumnHeaderSearchTextBoxClearButtonStyleKey}}">
+                <i:Interaction.Behaviors>
+                  <behaviors:ClearTextBoxOnButtonClickBehavior
+                    TextBox="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
+                </i:Interaction.Behaviors>
+              </Button>
+              <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden"
+                            VerticalScrollBarVisibility="Hidden" />
+            </DockPanel>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+              <Setter Property="Opacity" TargetName="border" Value="0.56" />
+            </Trigger>
+            <Trigger Property="Text" Value="">
+              <Setter Property="Visibility" TargetName="clear" Value="Hidden" />
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -48,14 +81,19 @@
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type TextBox}">
-          <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+          <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}"
+                  SnapsToDevicePixels="True">
             <DockPanel>
-              <Button x:Name="clear" DockPanel.Dock="Right" Focusable="False" Style="{DynamicResource {x:Static src:DataGridFilter.ColumnHeaderSearchTextBoxClearButtonStyleKey}}">
+              <Button x:Name="clear" DockPanel.Dock="Right" Focusable="False"
+                      Style="{DynamicResource {x:Static src:DataGridFilter.ColumnHeaderSearchTextBoxClearButtonStyleKey}}">
                 <i:Interaction.Behaviors>
-                  <behaviors:ClearTextBoxOnButtonClickBehavior TextBox="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
+                  <behaviors:ClearTextBoxOnButtonClickBehavior
+                    TextBox="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
                 </i:Interaction.Behaviors>
               </Button>
-              <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" />
+              <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden"
+                            VerticalScrollBarVisibility="Hidden" />
             </DockPanel>
           </Border>
           <ControlTemplate.Triggers>
@@ -90,7 +128,8 @@
 
   <!-- Reusable filter symbol -->
   <ControlTemplate x:Key="{x:Static src:DataGridFilter.IconTemplateKey}">
-    <Path Data="M0,0 L10,0 6,4 6,9 4,9 4,4 Z" Fill="{TemplateBinding Foreground}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2,0" />
+    <Path Data="M0,0 L10,0 6,4 6,9 4,9 4,4 Z" Fill="{TemplateBinding Foreground}" VerticalAlignment="Center"
+          HorizontalAlignment="Right" Margin="2,0" />
   </ControlTemplate>
 
   <Style TargetType="Control" x:Key="{x:Static src:DataGridFilter.IconStyleKey}">
@@ -107,7 +146,7 @@
       <Control Style="{DynamicResource {x:Static src:DataGridFilter.IconStyleKey}}" />
       <TextBox Style="{DynamicResource {x:Static src:DataGridFilter.ColumnHeaderSearchTextBoxStyleKey}}"
                Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}"
-               src:Tools.MoveFocusOnNavigationKey="true" />
+               src:Tools.MoveFocusToDataGridOnNavigationKey="true" />
     </Grid>
   </ControlTemplate>
 
@@ -117,7 +156,7 @@
       <Control Style="{DynamicResource {x:Static src:DataGridFilter.IconStyleKey}}" />
       <CheckBox Style="{DynamicResource {x:Static src:DataGridFilter.ColumnHeaderSearchCheckBoxStyleKey}}"
                 IsChecked="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}"
-                src:Tools.MoveFocusOnNavigationKey="true" />
+                src:Tools.MoveFocusToDataGridOnNavigationKey="true" />
     </Grid>
   </ControlTemplate>
 
@@ -127,7 +166,7 @@
       <Control Style="{DynamicResource {x:Static src:DataGridFilter.IconStyleKey}}" />
       <TextBox Style="{DynamicResource {x:Static src:DataGridFilter.ColumnHeaderSearchTextBoxStyleKey}}"
                Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}"
-               src:Tools.MoveFocusOnNavigationKey="true" />
+               src:Tools.MoveFocusToDataGridOnNavigationKey="true" />
     </Grid>
   </ControlTemplate>
 
@@ -136,7 +175,7 @@
       <Control Style="{DynamicResource {x:Static src:DataGridFilter.IconStyleKey}}" />
       <TextBox Style="{DynamicResource {x:Static src:DataGridFilter.ColumnHeaderSearchTextBoxStyleKey}}"
                Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}"
-               src:Tools.MoveFocusOnNavigationKey="true" />
+               src:Tools.MoveFocusToDataGridOnNavigationKey="true" />
     </Grid>
   </ControlTemplate>
 
@@ -172,22 +211,23 @@
         <ControlTemplate TargetType="{x:Type src:MultipleChoiceFilter}">
           <StackPanel Orientation="Horizontal">
             <Decorator Width="5" />
-            <ToggleButton x:Name="ToggleButton" 
+            <ToggleButton x:Name="ToggleButton"
                           Background="Transparent"
                           IsChecked="{Binding IsPopupOpen, RelativeSource={RelativeSource TemplatedParent}}"
                           Style="{DynamicResource {x:Type ToggleButton}}">
               <StackPanel Orientation="Horizontal">
-                <TextBlock x:Name="IsFilterActiveMarker" 
+                <TextBlock x:Name="IsFilterActiveMarker"
                            Text="."
-                           Margin="2,0,-4,0" 
+                           Margin="2,0,-4,0"
                            Foreground="{Binding ElementName=FilterSymbol, Path=Foreground}" FontWeight="Bold" />
-                <Control x:Name="FilterSymbol" 
+                <Control x:Name="FilterSymbol"
                          Style="{DynamicResource {x:Static src:DataGridFilter.IconStyleKey}}" />
               </StackPanel>
             </ToggleButton>
-            <Popup x:Name="Popup" StaysOpen="False" IsOpen="{Binding IsPopupOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}">
+            <Popup x:Name="Popup" StaysOpen="False"
+                   IsOpen="{Binding IsPopupOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}">
               <FrameworkElement.Resources>
-                <CollectionViewSource x:Key="SortedValuesSource" 
+                <CollectionViewSource x:Key="SortedValuesSource"
                                       Source="{Binding Values, RelativeSource={RelativeSource TemplatedParent}}">
                   <CollectionViewSource.SortDescriptions>
                     <componentModel:SortDescription />
@@ -197,27 +237,37 @@
               <i:Interaction.Behaviors>
                 <src:PopupFocusManagerBehavior ToggleButton="{Binding ElementName=ToggleButton}" />
               </i:Interaction.Behaviors>
-              <Border Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" 
-                      BorderThickness="1" 
+              <Border Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+                      BorderThickness="1"
+                      MinWidth="100"
                       BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
                 <DockPanel KeyboardNavigation.DirectionalNavigation="Cycle">
-                  <CheckBox x:Name="SelectAll" 
-                            DockPanel.Dock="Top" 
-                            IsThreeState="True" 
-                            Content="{TemplateBinding SelectAllContent}" 
-                            Margin="4,3" 
-                            Style="{DynamicResource {x:Type CheckBox}}" />
-                  <Border DockPanel.Dock="Top" 
-                          BorderThickness="0,1,0,0" 
-                          BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" />
-                  <ListBox x:Name="PART_ListBox" 
+                  <StackPanel DockPanel.Dock="Top">
+                    <StackPanel x:Name="CompositeTextBox" Visibility="Collapsed">
+                      <TextBox src:Tools.MoveFocusOnNavigationKey="True"
+                               BorderThickness="0"
+                               Margin="3"
+                               Style="{DynamicResource {x:Static src:DataGridFilter.SearchTextBoxStyleKey}}"
+                               Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
+                      <Border BorderThickness="0,1,0,0"
+                              BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" />
+                    </StackPanel>
+                    <CheckBox x:Name="SelectAll"
+                              IsThreeState="True"
+                              Content="{TemplateBinding SelectAllContent}"
+                              Margin="4,3,14,3"
+                              Style="{DynamicResource {x:Type CheckBox}}" />
+                    <Border BorderThickness="0,1,0,0"
+                            BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" />
+                  </StackPanel>
+                  <ListBox x:Name="PART_ListBox"
                            KeyboardNavigation.DirectionalNavigation="Continue"
-                           ItemsSource="{Binding Source={StaticResource SortedValuesSource}}" 
+                           ItemsSource="{Binding Source={StaticResource SortedValuesSource}}"
                            Style="{DynamicResource {x:Type ListBox}}"
-                           SelectionMode="Multiple" 
-                           BorderThickness="0" 
-                           Margin="1" 
-                           Background="Transparent" 
+                           SelectionMode="Multiple"
+                           BorderThickness="0"
+                           Margin="1"
+                           Background="Transparent"
                            ScrollViewer.VerticalScrollBarVisibility="Auto">
                     <ListBox.ItemContainerStyle>
                       <Style TargetType="ListBoxItem">
@@ -225,10 +275,12 @@
                           <Setter.Value>
                             <ControlTemplate TargetType="ListBoxItem">
                               <DockPanel>
-                                <CheckBox DockPanel.Dock="Left" 
-                                          Margin="3,2" 
+                                <CheckBox DockPanel.Dock="Left"
+                                          Margin="3,2"
                                           IsChecked="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}}"
                                           Style="{DynamicResource {x:Type CheckBox}}" />
+                                <Decorator DockPanel.Dock="Right"
+                                           Width="10" />
                                 <ContentPresenter VerticalAlignment="Center" />
                               </DockPanel>
                             </ControlTemplate>
@@ -255,17 +307,23 @@
             </Popup>
           </StackPanel>
           <ControlTemplate.Triggers>
-            <Trigger Property="IsMouseOver" 
+            <Trigger Property="IsMouseOver"
                      Value="False">
-              <Setter TargetName="ToggleButton" 
-                      Property="BorderBrush" 
+              <Setter TargetName="ToggleButton"
+                      Property="BorderBrush"
                       Value="Transparent" />
             </Trigger>
-            <DataTrigger Binding="{Binding Path=Filter.Items, RelativeSource={RelativeSource TemplatedParent}}" 
+            <DataTrigger Binding="{Binding Path=Filter.Items, RelativeSource={RelativeSource Self}}"
                          Value="{x:Null}">
-              <Setter TargetName="IsFilterActiveMarker" 
-                      Property="Visibility" 
+              <Setter TargetName="IsFilterActiveMarker"
+                      Property="Visibility"
                       Value="Hidden" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=HasTextFilter, RelativeSource={RelativeSource Self}}"
+                         Value="true">
+              <Setter TargetName="CompositeTextBox"
+                      Property="Visibility"
+                      Value="Visible" />
             </DataTrigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Windows.Input;
 
@@ -24,6 +25,8 @@
         {
             DataProvider = dataProvider;
         }
+
+        public ObservableCollection<DataItem> SelectedItems { get; } = new ObservableCollection<DataItem>();
 
         public DataProvider DataProvider { get; }
 

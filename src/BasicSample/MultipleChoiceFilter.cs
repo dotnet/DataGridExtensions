@@ -15,6 +15,7 @@
         public MultipleChoiceFilter()
         {
             SelectAllContent = "Alle!";
+            HasTextFilter = true;
         }
     }
 }

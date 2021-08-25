@@ -25,10 +25,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="PropertyChanged.Fody" Version="3.4.0" PrivateAssets="All" />
-    <PackageReference Include="TomsToolbox.Composition.Ninject" Version="2.7.0" />
-    <PackageReference Include="TomsToolbox.Wpf.Composition" Version="2.7.0" />
-    <PackageReference Include="TomsToolbox.Wpf.Composition.AttributedModel" Version="2.7.0" />
-    <PackageReference Include="TomsToolbox.Wpf.Styles" Version="2.7.0" />
+    <PackageReference Include="TomsToolbox.Composition.Ninject" Version="2.7.1" />
+    <PackageReference Include="TomsToolbox.Wpf.Composition" Version="2.7.1" />
+    <PackageReference Include="TomsToolbox.Wpf.Composition.AttributedModel" Version="2.7.1" />
+    <PackageReference Include="TomsToolbox.Wpf.Styles" Version="2.7.1" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

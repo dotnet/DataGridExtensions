@@ -86,7 +86,7 @@
                 return;
 
             var child = popup.Child;
-            var focusable = child?.VisualDescendantsAndSelf().OfType<UIElement>().FirstOrDefault(item => item.Focusable);
+            var focusable = child?.VisualDescendantsAndSelf().OfType<UIElement>().FirstOrDefault(item => item.Focusable && item.IsVisible);
             if (focusable != null)
             {
                 popup.BeginInvoke(() => focusable.Focus());

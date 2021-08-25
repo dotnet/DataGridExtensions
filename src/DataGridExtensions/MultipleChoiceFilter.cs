@@ -1,14 +1,14 @@
 ﻿namespace DataGridExtensions
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
-    using System.Windows.Input;
-    using System.Windows.Threading;
 
     using Throttle;
 
@@ -51,6 +51,16 @@
         public static readonly DependencyProperty FilterProperty =
             DependencyProperty.Register("Filter", typeof(MultipleChoiceContentFilter), typeof(MultipleChoiceFilter), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (sender, _) => ((MultipleChoiceFilter)sender).Filter_Changed()));
 
+        public bool HasTextFilter
+        {
+            get => (bool)GetValue(HasTextFilterProperty);
+            set => SetValue(HasTextFilterProperty, value);
+        }
+        public static readonly DependencyProperty HasTextFilterProperty = DependencyProperty.Register(
+            "HasTextFilter", typeof(bool), typeof(MultipleChoiceFilter), new PropertyMetadata(default(bool)));
+
+        private IEnumerable<string?>? SourceValues => (IEnumerable<string?>?)GetValue(SourceValuesProperty);
+
         private static readonly DependencyProperty SourceValuesProperty =
             DependencyProperty.Register("SourceValues", typeof(IList<string>), typeof(MultipleChoiceFilter), new FrameworkPropertyMetadata(null, (sender, e) => ((MultipleChoiceFilter)sender).SourceValues_Changed((IList<string>)e.NewValue)));
 
@@ -87,6 +97,26 @@
         /// </summary>
         public static readonly DependencyProperty SelectAllContentProperty = DependencyProperty.Register(
             "SelectAllContent", typeof(object), typeof(MultipleChoiceFilter), new FrameworkPropertyMetadata("(Select All)"));
+
+        /// <summary>
+        /// Gets or sets an optional text to pre-filter the list
+        /// </summary>
+        public string? Text
+        {
+            get => (string)GetValue(TextProperty);
+            set => SetValue(TextProperty, value);
+        }
+        /// <summary>
+        /// Defines the Text property.
+        /// </summary>
+        public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
+            "Text", typeof(string), typeof(MultipleChoiceFilter), new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (sender, e) => ((MultipleChoiceFilter)sender).Text_Changed()));
+
+        private void Text_Changed()
+        {
+            Filter = CreateFilter(Filter?.Items, Text);
+            OnSourceValuesChanged(SourceValues);
+        }
 
         /// <summary>
         /// Gets or sets a value that controls if the popup is open.
@@ -150,10 +180,11 @@
         /// Creates the filter.
         /// </summary>
         /// <param name="items">The items to filter.</param>
+        /// <param name="text">The optional text to pre-filter the items.</param>
         /// <returns>The filter.</returns>
-        protected virtual MultipleChoiceContentFilter CreateFilter(IEnumerable<string?>? items)
+        protected virtual MultipleChoiceContentFilter CreateFilter(IEnumerable<string?>? items, string? text = null)
         {
-            return new MultipleChoiceContentFilter(items);
+            return new MultipleChoiceContentFilter(items, text);
         }
 
         /// <summary>
@@ -163,11 +194,18 @@
         protected virtual void OnSourceValuesChanged(IEnumerable<string?>? newValue)
         {
             var values = Values;
+            var filterRegex = Filter?.Regex;
 
             if (newValue == null)
+            {
                 values.Clear();
+            }
             else
-                values.SynchronizeWith(newValue.ExceptNullItems().ToArray());
+            {
+                values.SynchronizeWith(newValue.ExceptNullItems()
+                    .Where(item => filterRegex?.IsMatch(item) != false)
+                    .ToArray());
+            }
         }
 
         /// <inheritdoc />
@@ -198,6 +236,9 @@
                 return;
 
             var filter = Filter;
+
+            Text = filter?.Text;
+
             if (filter?.Items == null)
             {
                 listBox.SelectAll();
@@ -221,7 +262,7 @@
 
             var areAllItemsSelected = listBox.Items.Count == selectedItems.Length;
 
-            Filter = CreateFilter(areAllItemsSelected ? null : selectedItems);
+            Filter = CreateFilter(areAllItemsSelected ? null : selectedItems, Text);
         }
 
         [Throttled(typeof(DispatcherThrottle))]
@@ -240,27 +281,50 @@
         /// Initializes a new instance of the <see cref="MultipleChoiceContentFilter"/> class.
         /// </summary>
         /// <param name="items">The items.</param>
-        public MultipleChoiceContentFilter(IEnumerable<string?>? items)
+        /// <param name="text">The optional regex to filter</param>
+        public MultipleChoiceContentFilter(IEnumerable<string?>? items, string? text = null)
         {
-            Items = items != null ? new HashSet<string?>(items) : null;
+            Text = text;
+            try
+            {
+                Regex = text.IsNullOrWhiteSpace() ? null : new Regex(text, RegexOptions.IgnoreCase);
+            }
+            catch (ArgumentException)
+            {
+                // invalid user input, just go with a null expression.
+            }
+
+            Items = items != null ? new HashSet<string?>(items.Where(item => Regex?.IsMatch(item) != false)) : null;
         }
 
         /// <summary>
         /// Gets the items to filter.
         /// </summary>
-        public ICollection<string?>? Items
-        {
-            get;
-        }
+        public ICollection<string?>? Items { get; }
+
+        /// <summary>
+        ///  Gets the text to filter.
+        /// </summary>
+        public string? Text { get; }
+
+        /// <summary>
+        /// Gets the text regex to filter.
+        /// </summary>
+        public Regex? Regex { get; }
 
         /// <inheritdoc />
         public virtual bool IsMatch(object? value)
         {
             var input = value?.ToString();
-            if (string.IsNullOrWhiteSpace(input))
-                return Items?.Contains(string.Empty) ?? true;
+            var items = Items;
 
-            return Items?.ContainsAny(input) ?? true;
+            if (items == null)
+                return Regex?.IsMatch(input) ?? true;
+
+            if (string.IsNullOrWhiteSpace(input))
+                return items.Contains(string.Empty);
+
+            return items.ContainsAny(input);
         }
     }
 }

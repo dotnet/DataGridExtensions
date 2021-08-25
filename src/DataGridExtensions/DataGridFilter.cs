@@ -170,11 +170,11 @@
                 if (!gesture.Matches(sender, args))
                     return;
 
-                var selectedColumn = (args.OriginalSource as DependencyObject).TryFindAncestorOrSelf<DataGridCell>()?.Column;
+                var selectedColumn = (args.OriginalSource as DependencyObject)?.TryFindAncestorOrSelf<DataGridCell>()?.Column;
 
-                var control = selectedColumn.GetDataGridFilterColumnControl();
+                var control = selectedColumn?.GetDataGridFilterColumnControl();
 
-                var focusTarget = control?.VisualDescendantsAndSelf().OfType<UIElement>().FirstOrDefault(item => item.Focusable);
+                var focusTarget = control?.VisualDescendantsAndSelf().OfType<UIElement>().FirstOrDefault(item => item.Focusable && item.IsVisible);
 
                 focusTarget?.Focus();
             };
@@ -299,6 +299,11 @@
         /// Style for the clear button in the filter text box in a filtered DataGridTextColumn.
         /// </summary>
         public static readonly ResourceKey ColumnHeaderSearchTextBoxClearButtonStyleKey = new ComponentResourceKey(typeof(DataGridFilter), "ColumnHeaderSearchTextBoxClearButtonStyle");
+
+        /// <summary>
+        /// Template for a filter text box.
+        /// </summary>
+        public static readonly ResourceKey SearchTextBoxStyleKey = new ComponentResourceKey(typeof(DataGridFilter), "SearchTextBoxTemplateKey");
 
         #endregion
     }

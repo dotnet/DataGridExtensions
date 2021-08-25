@@ -279,17 +279,70 @@
             {
                 if (true.Equals(e.NewValue))
                 {
-                    element.PreviewKeyDown += Element_KeyDown;
+                    element.PreviewKeyDown += MoveFocusOnNavigationKey_KeyDown;
                 }
                 else
                 {
-                    element.PreviewKeyDown -= Element_KeyDown;
+                    element.PreviewKeyDown -= MoveFocusOnNavigationKey_KeyDown;
                 }
             }
 
         }
 
-        private static void Element_KeyDown(object sender, KeyEventArgs e)
+        private static void MoveFocusOnNavigationKey_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Down || e.Key == Key.Up)
+            {
+                if (sender is UIElement element)
+                {
+                    e.Handled = true;
+                    element.BeginInvoke(() => element.MoveFocus(new TraversalRequest(e.Key == Key.Down ? FocusNavigationDirection.Down : FocusNavigationDirection.Up)));
+                }
+            }
+        }
+
+        #endregion
+
+        #region Move focus to data grid on navigation key
+
+        /// <summary>
+        /// Gets a value that indicates if the focus should move out of the control when the user presses the Up/Down navigation keys.
+        /// </summary>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static bool GetMoveFocusToDataGridOnNavigationKey(UIElement element)
+        {
+            return (bool)element.GetValue(MoveFocusOnNavigationKeyProperty);
+        }
+        /// <summary>
+        /// Sets a value that indicates if the focus should move out of the control when the user presses the Up/Down navigation keys.
+        /// </summary>
+        public static void SetMoveFocusToDataGridOnNavigationKey(UIElement element, bool value)
+        {
+            element.SetValue(MoveFocusOnNavigationKeyProperty, value);
+        }
+        /// <summary>
+        /// Identifies the MoveFocusToDataGridOnNavigationKey property.
+        /// </summary>
+        public static readonly DependencyProperty MoveFocusToDataGridOnNavigationKeyProperty = DependencyProperty.RegisterAttached(
+            "MoveFocusToDataGridOnNavigationKey", typeof(bool), typeof(Tools), new FrameworkPropertyMetadata(default(bool), MoveFocusToDataGridOnNavigationKey_Changed));
+
+        private static void MoveFocusToDataGridOnNavigationKey_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is UIElement element)
+            {
+                if (true.Equals(e.NewValue))
+                {
+                    element.PreviewKeyDown += MoveFocusToDataGridOnNavigationKey_KeyDown;
+                }
+                else
+                {
+                    element.PreviewKeyDown -= MoveFocusToDataGridOnNavigationKey_KeyDown;
+                }
+            }
+
+        }
+
+        private static void MoveFocusToDataGridOnNavigationKey_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Down || e.Key == Key.Up)
             {
