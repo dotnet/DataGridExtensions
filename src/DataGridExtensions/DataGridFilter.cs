@@ -147,14 +147,27 @@
 
         #region gesture
 
+        /// <summary>
+        /// Gets the key gesture that moves the focus into the filter control.
+        /// </summary>
+        /// <param name="element">The data grid.</param>
+        /// <returns>The gesture</returns>
         public static KeyGesture GetStartFilteringKeyGesture(DataGrid element)
         {
             return (KeyGesture)element.GetValue(StartFilteringKeyGestureProperty);
         }
+        /// <summary>
+        /// Sets the key gesture that moves the focus into the filter control.
+        /// </summary>
+        /// <param name="element">The data grid.</param>
+        /// <param name="value">The gesture</param>
         public static void SetStartFilteringKeyGesture(DataGrid element, KeyGesture value)
         {
             element.SetValue(StartFilteringKeyGestureProperty, value);
         }
+        /// <summary>
+        /// Identifies the StartFilteringKeyGesture dependency property
+        /// </summary>
         public static readonly DependencyProperty StartFilteringKeyGestureProperty = DependencyProperty.RegisterAttached(
             "StartFilteringKeyGesture", typeof(KeyGesture), typeof(DataGridFilter), new FrameworkPropertyMetadata(null, StartFilteringKeyGesture_Changed));
 

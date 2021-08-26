@@ -51,11 +51,17 @@
         public static readonly DependencyProperty FilterProperty =
             DependencyProperty.Register("Filter", typeof(MultipleChoiceContentFilter), typeof(MultipleChoiceFilter), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (sender, _) => ((MultipleChoiceFilter)sender).Filter_Changed()));
 
+        /// <summary>
+        /// Gets or sets a value that controls if the optional text filter is visible.
+        /// </summary>
         public bool HasTextFilter
         {
             get => (bool)GetValue(HasTextFilterProperty);
             set => SetValue(HasTextFilterProperty, value);
         }
+        /// <summary>
+        /// Identifies the HasTextFilter dependency property.
+        /// </summary>
         public static readonly DependencyProperty HasTextFilterProperty = DependencyProperty.Register(
             "HasTextFilter", typeof(bool), typeof(MultipleChoiceFilter), new PropertyMetadata(default(bool)));
 
@@ -294,7 +300,7 @@
                 // invalid user input, just go with a null expression.
             }
 
-            Items = items != null ? new HashSet<string?>(items.Where(item => Regex?.IsMatch(item) != false)) : null;
+            Items = items != null ? new HashSet<string?>(items.Where(item => Regex?.IsMatch(item ?? string.Empty) != false)) : null;
         }
 
         /// <summary>
@@ -324,7 +330,7 @@
             var items = Items;
 
             if (items == null)
-                return Regex?.IsMatch(input) ?? true;
+                return Regex?.IsMatch(input ?? string.Empty) ?? true;
 
             if (string.IsNullOrWhiteSpace(input))
                 return items.Contains(string.Empty);
