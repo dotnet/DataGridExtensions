@@ -1,4 +1,7 @@
-﻿2.5.9:
+﻿2.5.10:
+- Fix: Filter symbol in MultipleChoiceContentFilter not always updated
+
+2.5.9:
 - new feature "Track focused cell"
 - Pressing ESC key in the filter control returns the focus back to the DataGrid
 - UX improvements for keyboard navigation
