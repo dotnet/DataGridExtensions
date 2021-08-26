@@ -312,6 +312,11 @@
         /// </summary>
         public Regex? Regex { get; }
 
+        /// <summary>
+        /// Get a value that indicates if this filter has some filter conditions.
+        /// </summary>
+        public bool IsFiltered => Items != null || Regex != null;
+
         /// <inheritdoc />
         public virtual bool IsMatch(object? value)
         {

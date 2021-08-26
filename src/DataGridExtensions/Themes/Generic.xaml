@@ -6,7 +6,7 @@
                     xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase">
 
   <!-- Style for a filter check box. The check box is only visible when it's hovered, focused or has a value.  -->
-  <Style x:Key="{x:Static src:DataGridFilter.ColumnHeaderSearchCheckBoxStyleKey}" TargetType="CheckBox">
+  <Style x:Key="{x:Static src:DataGridFilter.ColumnHeaderSearchCheckBoxStyleKey}" TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
     <Setter Property="IsThreeState" Value="True" />
     <Setter Property="Margin" Value="4,0,2,0" />
     <Style.Triggers>
@@ -313,8 +313,8 @@
                       Property="BorderBrush"
                       Value="Transparent" />
             </Trigger>
-            <DataTrigger Binding="{Binding Path=Filter.Items, RelativeSource={RelativeSource Self}}"
-                         Value="{x:Null}">
+            <DataTrigger Binding="{Binding Path=Filter.IsFiltered, RelativeSource={RelativeSource Self}}"
+                         Value="False">
               <Setter TargetName="IsFilterActiveMarker"
                       Property="Visibility"
                       Value="Hidden" />
