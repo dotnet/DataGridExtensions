@@ -52,9 +52,9 @@
             textBox.Text = (newValue as ContentFilter)?.Value ?? string.Empty;
         }
 
-        class ContentFilter : IContentFilter
+        private class ContentFilter : IContentFilter
         {
-            readonly int _threshold;
+            private readonly int _threshold;
 
             public ContentFilter(int threshold)
             {

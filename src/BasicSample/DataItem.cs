@@ -1,4 +1,6 @@
-﻿namespace BasicSample
+﻿#pragma warning disable CA5394 // Do not use insecure randomness
+
+namespace BasicSample
 {
     using System;
     using System.Windows;

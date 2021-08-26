@@ -1,4 +1,6 @@
-﻿namespace DataGridExtensionsSample.Infrastructure
+﻿#pragma warning disable CA5394 // Do not use insecure randomness
+
+namespace DataGridExtensionsSample.Infrastructure
 {
     using System;
     using System.Windows;

@@ -31,14 +31,14 @@
             DataGrid.GetFilter().Filtering += DataGrid_Filtering;
         }
 
-        void DataGrid_Filtering(object? sender, DataGridFilteringEventArgs e)
+        private void DataGrid_Filtering(object? sender, DataGridFilteringEventArgs e)
         {
             // Here we could prepare some data or even cancel the filtering process.
 
             Dispatcher.BeginInvoke(new Action(DataGrid_Filtered));
         }
 
-        void DataGrid_Filtered()
+        private void DataGrid_Filtered()
         {
             // Here we could show some information about the result of the filtering.
 

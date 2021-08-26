@@ -72,18 +72,11 @@
             {
                 _isListBoxUpdating = true;
 
-                if (listBox.Items.Count == listBox.SelectedItems.Count)
-                {
-                    AreAllFilesSelected = true;
-                }
-                else if (listBox.SelectedItems.Count == 0)
-                {
-                    AreAllFilesSelected = false;
-                }
-                else
-                {
-                    AreAllFilesSelected = null;
-                }
+                AreAllFilesSelected = listBox.Items.Count == listBox.SelectedItems.Count
+                    ? true
+                    : listBox.SelectedItems.Count == 0
+                        ? false
+                        : null;
             }
             finally
             {

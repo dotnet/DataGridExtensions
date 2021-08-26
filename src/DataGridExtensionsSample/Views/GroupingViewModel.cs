@@ -9,7 +9,7 @@
 
     [VisualCompositionExport(RegionId.Main, Sequence = 5)]
     [DisplayName("Grouping")]
-    class GroupingViewModel : ObservableObject
+    internal class GroupingViewModel : ObservableObject
     {
         public GroupingViewModel(DataProvider dataProvider)
         {

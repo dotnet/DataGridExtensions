@@ -15,8 +15,6 @@
     using TomsToolbox.Wpf;
     using TomsToolbox.Wpf.Composition.AttributedModel;
 
-    using static DataGridExtensionsSample.Controls.FilterWithPopupControl;
-
     [VisualCompositionExport(RegionId.Main, Sequence = 3)]
     [DisplayName("Customized 2")]
     internal class Customized2ViewModel : ObservableObject
@@ -40,7 +38,9 @@
 
         public DataGridFilterColumnControl? Column5FilterColumnControl { get; set; }
 
+#pragma warning disable CA1307 // Specify StringComparison for clarity => only supported in net5.0!
         public Predicate<object> GlobalFilter { get; } = item => (item as DataItem)?.Column1?.Contains('7') ?? false;
+#pragma warning restore CA1307 // Specify StringComparison for clarity
 
         public ICommand ClearIpsumCommand => new DelegateCommand(ClearIpsum);
 

@@ -10,7 +10,7 @@
 
     [VisualCompositionExport(RegionId.Main, Sequence = 2)]
     [DisplayName("Customized 1")]
-    class Customized1ViewModel : ObservableObject
+    internal class Customized1ViewModel : ObservableObject
     {
         public Customized1ViewModel(DataProvider dataProvider)
         {

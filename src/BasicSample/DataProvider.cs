@@ -4,7 +4,7 @@
     using System.Collections.ObjectModel;
     using System.Linq;
 
-    public class DataProvider
+    public static class DataProvider
     {
         /// <summary>
         /// Provide a simple list of 100 random items.

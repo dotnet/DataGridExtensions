@@ -84,31 +84,31 @@
             Maximum = filter.Max;
         }
 
-        public class ContentFilter : IContentFilter
+    }
+
+    public class ContentFilter : IContentFilter
+    {
+        public ContentFilter(double min, double max)
         {
-            public ContentFilter(double min, double max)
-            {
-                Min = min;
-                Max = max;
-            }
-
-            public double Min { get; }
-
-            public double Max { get; }
-
-            public bool IsMatch(object? value)
-            {
-                if (value == null)
-                    return false;
-
-                if (!double.TryParse(value.ToString(), out var number))
-                {
-                    return false;
-                }
-
-                return (number >= Min) && (number <= Max);
-            }
+            Min = min;
+            Max = max;
         }
 
+        public double Min { get; }
+
+        public double Max { get; }
+
+        public bool IsMatch(object? value)
+        {
+            if (value == null)
+                return false;
+
+            if (!double.TryParse(value.ToString(), out var number))
+            {
+                return false;
+            }
+
+            return (number >= Min) && (number <= Max);
+        }
     }
 }

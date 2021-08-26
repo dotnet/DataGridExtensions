@@ -59,14 +59,15 @@
             if (args.Action != NotifyCollectionChangedAction.Add)
                 return;
 
-            var column = (DataGridColumn?)args.NewItems![0];
+            if (args.NewItems?[0] is not DataGridColumn column)
+                return;
 
             ApplyStyle(styles, column);
         }
 
-        private static void ApplyStyle(DataGridColumnStyleCollection styles, DependencyObject? column)
+        private static void ApplyStyle(DataGridColumnStyleCollection styles, DependencyObject column)
         {
-            var columnType = column?.GetType();
+            var columnType = column.GetType();
 
             var style = styles.FirstOrDefault(s => s.ColumnType == columnType);
             if (style == null)

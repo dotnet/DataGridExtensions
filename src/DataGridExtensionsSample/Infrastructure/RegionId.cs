@@ -1,6 +1,6 @@
 ﻿namespace DataGridExtensionsSample.Infrastructure
 {
-    class RegionId
+    internal class RegionId
     {
         public const string Shell = "Shell";
         public const string Main = "Main";
