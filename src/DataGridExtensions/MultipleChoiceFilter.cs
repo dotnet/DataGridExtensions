@@ -65,12 +65,12 @@
         public static readonly DependencyProperty HasTextFilterProperty = DependencyProperty.Register(
             "HasTextFilter", typeof(bool), typeof(MultipleChoiceFilter), new PropertyMetadata(default(bool)));
 
-        private IEnumerable<string?>? SourceValues => (IEnumerable<string?>?)GetValue(SourceValuesProperty);
+        private IReadOnlyCollection<string?>? SourceValues => (IReadOnlyCollection<string?>?)GetValue(SourceValuesProperty);
 
         private static readonly DependencyProperty SourceValuesProperty =
-            DependencyProperty.Register("SourceValues", typeof(IList<string>), typeof(MultipleChoiceFilter), new FrameworkPropertyMetadata(null, (sender, e) => ((MultipleChoiceFilter)sender).SourceValues_Changed((IList<string>)e.NewValue)));
+            DependencyProperty.Register("SourceValues", typeof(IReadOnlyCollection<string>), typeof(MultipleChoiceFilter), new FrameworkPropertyMetadata(null, (sender, e) => ((MultipleChoiceFilter)sender).SourceValues_Changed((IReadOnlyCollection<string>)e.NewValue)));
 
-        private void SourceValues_Changed(IEnumerable<string?>? newValue)
+        private void SourceValues_Changed(IReadOnlyCollection<string?>? newValue)
         {
             OnSourceValuesChanged(newValue);
         }
@@ -197,12 +197,12 @@
         /// Called when the source values have changed.
         /// </summary>
         /// <param name="newValue">The new value.</param>
-        protected virtual void OnSourceValuesChanged(IEnumerable<string?>? newValue)
+        protected virtual void OnSourceValuesChanged(IReadOnlyCollection<string?>? newValue)
         {
             var values = Values;
             var filterRegex = Filter?.Regex;
 
-            if (newValue == null)
+            if (newValue == null || !newValue.Any())
             {
                 values.Clear();
             }

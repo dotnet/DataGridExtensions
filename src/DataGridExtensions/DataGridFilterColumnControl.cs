@@ -176,7 +176,7 @@
         /// You may need to include "NotifyOnTargetUpdated=true" in the binding of the DataGrid.ItemsSource to get up-to-date
         /// values when the source object changes.
         /// </remarks>
-        public IEnumerable<string> Values => InternalValues().Distinct().ToList().AsReadOnly();
+        public IReadOnlyCollection<string> Values => InternalValues().Distinct().ToList().AsReadOnly();
 
         /// <summary>
         /// Returns all distinct source values of this column as string.
@@ -186,7 +186,7 @@
         /// You may need to include "NotifyOnTargetUpdated=true" in the binding of the DataGrid.ItemsSource to get up-to-date 
         /// values when the source object changes.
         /// </remarks>
-        public IEnumerable<string> SourceValues
+        public IReadOnlyCollection<string> SourceValues
         {
             get
             {
@@ -205,7 +205,7 @@
         /// You may need to include "NotifyOnTargetUpdated=true" in the binding of the DataGrid.ItemsSource to get up-to-date 
         /// values when the source object changes.
         /// </remarks>
-        public IEnumerable<string> SelectableValues
+        public IReadOnlyCollection<string> SelectableValues
         {
             get
             {
