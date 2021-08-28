@@ -217,6 +217,7 @@
                           Style="{DynamicResource {x:Type ToggleButton}}">
               <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="IsFilterActiveMarker"
+                           Visibility="Hidden"
                            Text="."
                            Margin="2,0,-4,0"
                            Foreground="{Binding ElementName=FilterSymbol, Path=Foreground}" FontWeight="Bold" />
@@ -314,10 +315,10 @@
                       Value="Transparent" />
             </Trigger>
             <DataTrigger Binding="{Binding Path=Filter.IsFiltered, RelativeSource={RelativeSource Self}}"
-                         Value="False">
+                         Value="True">
               <Setter TargetName="IsFilterActiveMarker"
                       Property="Visibility"
-                      Value="Hidden" />
+                      Value="Visible" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=HasTextFilter, RelativeSource={RelativeSource Self}}"
                          Value="true">
