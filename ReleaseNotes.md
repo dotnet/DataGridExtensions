@@ -1,4 +1,8 @@
-﻿2.5.10:
+﻿2.5.11:
+- Fix MultipleChoiceFilter: concurrent filter may lock out each other
+- Fix MultipleChoiceFilter: Active filter marker is visible when grid is empty
+
+2.5.10:
 - Fix: Filter symbol in MultipleChoiceContentFilter not always updated
 
 2.5.9:
