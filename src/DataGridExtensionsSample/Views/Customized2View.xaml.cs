@@ -1,5 +1,6 @@
 ﻿namespace DataGridExtensionsSample.Views
 {
+    using System.Composition;
     using System.Windows.Data;
 
     using DataGridExtensions;
@@ -10,6 +11,7 @@
     /// Interaction logic for Customized2View.xaml
     /// </summary>
     [DataTemplate(typeof(Customized2ViewModel))]
+    [Shared]
     public partial class Customized2View
     {
         public Customized2View()

@@ -40,16 +40,16 @@
         /// <summary>
         /// Gets or sets the filter.
         /// </summary>
-        public MultipleChoiceContentFilter? Filter
+        public IMultipleChoiceContentFilter? Filter
         {
-            get => (MultipleChoiceContentFilter)GetValue(FilterProperty);
+            get => (IMultipleChoiceContentFilter)GetValue(FilterProperty);
             set => SetValue(FilterProperty, value);
         }
         /// <summary>
         /// The filter property
         /// </summary>
         public static readonly DependencyProperty FilterProperty =
-            DependencyProperty.Register("Filter", typeof(MultipleChoiceContentFilter), typeof(MultipleChoiceFilter), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (sender, _) => ((MultipleChoiceFilter)sender).Filter_Changed()));
+            DependencyProperty.Register("Filter", typeof(IMultipleChoiceContentFilter), typeof(MultipleChoiceFilter), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (sender, _) => ((MultipleChoiceFilter)sender).Filter_Changed()));
 
         /// <summary>
         /// Gets or sets a value that controls if the optional text filter is visible.
@@ -116,7 +116,7 @@
         /// Defines the Text property.
         /// </summary>
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
-            "Text", typeof(string), typeof(MultipleChoiceFilter), new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (sender, e) => ((MultipleChoiceFilter)sender).Text_Changed()));
+            "Text", typeof(string), typeof(MultipleChoiceFilter), new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (sender, _) => ((MultipleChoiceFilter)sender).Text_Changed()));
 
         private void Text_Changed()
         {
@@ -188,7 +188,7 @@
         /// <param name="items">The items to filter.</param>
         /// <param name="text">The optional text to pre-filter the items.</param>
         /// <returns>The filter.</returns>
-        protected virtual MultipleChoiceContentFilter CreateFilter(IEnumerable<string?>? items, string? text = null)
+        protected virtual IMultipleChoiceContentFilter CreateFilter(IEnumerable<string?>? items, string? text = null)
         {
             return new MultipleChoiceContentFilter(items, text);
         }
@@ -264,6 +264,9 @@
         {
             var listBox = (ListBox)sender;
 
+            if (!listBox.IsLoaded)
+                return;
+
             var selectedItems = listBox.SelectedItems.Cast<string>().ToArray();
 
             var areAllItemsSelected = listBox.Items.Count == selectedItems.Length;
@@ -279,9 +282,30 @@
     }
 
     /// <summary>
-    /// Base class for a multiple choice content filter
+    /// Interface for a multiple choice content filter
     /// </summary>
-    public class MultipleChoiceContentFilter : IContentFilter
+    public interface IMultipleChoiceContentFilter : IContentFilter
+    {
+        /// <summary>
+        /// Gets the items to filter.
+        /// </summary>
+        ICollection<string?>? Items { get; }
+
+        /// <summary>
+        ///  Gets the text to filter.
+        /// </summary>
+        string? Text { get; }
+
+        /// <summary>
+        /// Gets the text regex to filter.
+        /// </summary>
+        Regex? Regex { get; }
+    }
+
+    /// <summary>
+    /// Default implementation for a multiple choice content filter
+    /// </summary>
+    public class MultipleChoiceContentFilter : IMultipleChoiceContentFilter
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MultipleChoiceContentFilter"/> class.
