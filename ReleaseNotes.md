@@ -1,4 +1,7 @@
-﻿2.5.11:
+﻿2.5.12:
+- Fix: MultipleChoiceFilter looses selection when control gets unloaded.
+
+2.5.11:
 - Fix MultipleChoiceFilter: concurrent filter may lock out each other
 - Fix MultipleChoiceFilter: Active filter marker is visible when grid is empty
 
