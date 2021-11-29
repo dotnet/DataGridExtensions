@@ -229,7 +229,7 @@
         {
             var filter = Filter;
 
-            if (filter?.Items == null)
+            if (filter?.Items == null && _listBox?.IsLoaded == true)
             {
                 _listBox?.SelectAll();
             }
