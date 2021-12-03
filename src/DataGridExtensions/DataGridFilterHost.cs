@@ -85,7 +85,7 @@
         /// <summary>
         /// Gets a the active filter column controls for this data grid.
         /// </summary>
-        public IEnumerable<DataGridFilterColumnControl> FilterColumnControls => DataGrid.Columns.Select(column => column.GetDataGridFilterColumnControl()).Where(item => item != null)!;
+        public IEnumerable<DataGridFilterColumnControl> FilterColumnControls => DataGrid.Columns.Select(column => column.GetDataGridFilterColumnControl()).ExceptNullItems();
 
         /// <summary>
         /// The data grid this filter is attached to.
@@ -294,17 +294,19 @@
 
         private Predicate<object?>? CreatePredicate(ICollection<DataGridColumn>? filteredColumns)
         {
+            var globalFilter = _globalFilter;
+
             if (filteredColumns?.Any() != true)
             {
-                return _globalFilter;
+                return globalFilter;
             }
 
-            if (_globalFilter == null)
+            if (globalFilter == null)
             {
                 return item => filteredColumns.All(column => column.Matches(DataGrid, item));
             }
 
-            return item => _globalFilter(item) && filteredColumns.All(column => column.Matches(DataGrid, item));
+            return item => globalFilter(item) && filteredColumns.All(column => column.Matches(DataGrid, item));
         }
 
         private ICollection<DataGridColumn> GetFilteredColumns(DataGridColumn? excluded = null)

@@ -37,32 +37,34 @@
 
         private void Columns_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
+#nullable disable
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    foreach (var column in e.NewItems!.OfType<DataGridColumn>())
+                    foreach (var column in e.NewItems.OfType<DataGridColumn>())
                     {
                         AddEventHandlers(column);
                     }
                     break;
 
                 case NotifyCollectionChangedAction.Remove:
-                    foreach (var column in e.OldItems!.OfType<DataGridColumn>())
+                    foreach (var column in e.OldItems.OfType<DataGridColumn>())
                     {
                         RemoveEventHandlers(column);
                     }
                     break;
 
                 case NotifyCollectionChangedAction.Replace:
-                    foreach (var column in e.OldItems!.OfType<DataGridColumn>())
+                    foreach (var column in e.OldItems.OfType<DataGridColumn>())
                     {
                         RemoveEventHandlers(column);
                     }
-                    foreach (var column in e.NewItems!.OfType<DataGridColumn>())
+                    foreach (var column in e.NewItems.OfType<DataGridColumn>())
                     {
                         AddEventHandlers(column);
                     }
                     break;
+#nullable restore
             }
         }
 
@@ -104,21 +106,25 @@
 
         private void DataGridColumnVisibility_Changed(object? source, EventArgs e)
         {
+            // ! source is never null
             OnColumnVisibilityChanged((DataGridColumn)source!);
         }
 
         private void DataGridColumnActualWidth_Changed(object? source, EventArgs e)
         {
+            // ! source is never null
             OnColumnActualWidthChanged((DataGridColumn)source!);
         }
 
         private void DataGridColumnDisplayIndex_Changed(object? source, EventArgs e)
         {
+            // ! source is never null
             OnColumnDisplayIndexChanged((DataGridColumn)source!);
         }
 
         private void DataGridColumnSortDirection_Changed(object? source, EventArgs e)
         {
+            // ! source is never null
             OnColumnSortDirectionChanged((DataGridColumn)source!);
         }
     }
