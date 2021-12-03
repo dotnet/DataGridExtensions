@@ -1,4 +1,7 @@
-﻿2.5.12:
+﻿2.5.13:
+- Fix  #75: Exception in MultipleChoiceFilter.ListBox_ItemsCollectionChanged
+
+2.5.12:
 - Fix: MultipleChoiceFilter looses selection when control gets unloaded.
 
 2.5.11:
