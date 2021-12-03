@@ -245,9 +245,12 @@
 
             Text = filter?.Text;
 
-            if (filter?.Items == null && listBox.IsLoaded)
+            if (filter?.Items == null)
             {
-                listBox.SelectAll();
+                if (listBox.IsLoaded)
+                {
+                    listBox.SelectAll();
+                }
                 return;
             }
 

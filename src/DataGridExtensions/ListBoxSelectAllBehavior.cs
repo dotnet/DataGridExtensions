@@ -90,7 +90,10 @@
 
             if (AreAllFilesSelected.GetValueOrDefault())
             {
-                listBox?.SelectAll();
+                if (listBox?.IsLoaded == true)
+                {
+                    listBox.SelectAll();
+                }
             }
         }
 
