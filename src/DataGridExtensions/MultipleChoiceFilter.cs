@@ -172,7 +172,7 @@
 
             var filter = Filter;
 
-            if (filter?.Items == null)
+            if (filter?.Items == null && listBox.IsLoaded)
             {
                 listBox.SelectAll();
             }
@@ -231,7 +231,7 @@
 
             if (filter?.Items == null && _listBox?.IsLoaded == true)
             {
-                _listBox?.SelectAll();
+                _listBox.SelectAll();
             }
         }
 
@@ -245,7 +245,7 @@
 
             Text = filter?.Text;
 
-            if (filter?.Items == null)
+            if (filter?.Items == null && listBox.IsLoaded)
             {
                 listBox.SelectAll();
                 return;
