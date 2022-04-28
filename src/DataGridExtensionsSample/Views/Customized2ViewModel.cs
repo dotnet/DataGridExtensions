@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
+    using System.Windows.Controls;
     using System.Windows.Input;
 
     using DataGridExtensions;
@@ -41,6 +42,14 @@
 #pragma warning disable CA1307 // Specify StringComparison for clarity => only supported in net5.0!
         public Predicate<object> GlobalFilter { get; } = item => (item as DataItem)?.Column1?.Contains('7') ?? false;
 #pragma warning restore CA1307 // Specify StringComparison for clarity
+
+
+        public ICommand ClearFilterCommand => new DelegateCommand<DataGrid>(ClearFilter);
+
+        private void ClearFilter(DataGrid? dataGrid)
+        {
+            dataGrid?.GetFilter().Clear();
+        }
 
         public ICommand ClearIpsumCommand => new DelegateCommand(ClearIpsum);
 

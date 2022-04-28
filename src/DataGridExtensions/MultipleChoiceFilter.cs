@@ -229,9 +229,9 @@
         {
             var filter = Filter;
 
-            if (filter?.Items == null && _listBox?.IsLoaded == true)
+            if (filter?.Items == null)
             {
-                _listBox.SelectAll();
+                _listBox?.SelectAll();
             }
         }
 
@@ -247,10 +247,8 @@
 
             if (filter?.Items == null)
             {
-                if (listBox.IsLoaded)
-                {
-                    listBox.SelectAll();
-                }
+
+                listBox.SelectAll();
                 return;
             }
 
@@ -266,9 +264,6 @@
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var listBox = (ListBox)sender;
-
-            if (!listBox.IsLoaded)
-                return;
 
             var selectedItems = listBox.SelectedItems.Cast<string>().ToArray();
 
