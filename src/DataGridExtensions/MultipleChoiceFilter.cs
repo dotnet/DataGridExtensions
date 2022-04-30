@@ -23,6 +23,7 @@
     {
         private DataGrid? _dataGrid;
         private ListBox? _listBox;
+        private bool _isFilterChanging;
 
         static MultipleChoiceFilter()
         {
@@ -236,31 +237,42 @@
 
         private void Filter_Changed()
         {
-            var listBox = _listBox;
-            if (listBox == null)
-                return;
+            _isFilterChanging = true;
 
-            var filter = Filter;
-
-            Text = filter?.Text;
-
-            if (filter?.Items == null)
+            try
             {
-                listBox.SelectAll();
-                return;
+                var listBox = _listBox;
+                if (listBox == null)
+                    return;
+
+                var filter = Filter;
+
+                Text = filter?.Text;
+
+                if (filter?.Items == null)
+                {
+                    listBox.SelectAll();
+                    return;
+                }
+
+                listBox.SelectedItems.Clear();
+
+                foreach (var item in filter.Items)
+                {
+                    listBox.SelectedItems.Add(item);
+                }
             }
-
-            if (listBox.SelectedItems.Count != 0)
-                return;
-
-            foreach (var item in filter.Items)
+            finally
             {
-                listBox.SelectedItems.Add(item);
+                _isFilterChanging = false;
             }
         }
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (_isFilterChanging)
+                return;
+
             var listBox = (ListBox)sender;
 
             if (!listBox.IsLoaded)

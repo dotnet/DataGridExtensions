@@ -33,7 +33,7 @@
 
         public object? Column5Filter { get; set; }
 
-        public object ColumnTextWithPrefilterFilter { get; set; } = new MultipleChoiceContentFilter(new List<string> { "amet" });
+        public MultipleChoiceContentFilter ColumnTextWithPrefilterFilter { get; set; } = new(new List<string> { "amet" });
 
         public bool Column5PopupVisible { get; set; }
 
@@ -56,6 +56,17 @@
         private void ClearIpsum()
         {
             DataProvider.Items.RemoveWhere(item => item.Column5 == "ipsum");
+        }
+
+        public ICommand AddLoremCommand => new DelegateCommand(AddLorem);
+
+        private void AddLorem()
+        {
+            var items = ColumnTextWithPrefilterFilter.Items ?? new HashSet<string>();
+
+            items.Add("lorem");
+
+            ColumnTextWithPrefilterFilter = new MultipleChoiceContentFilter(items);
         }
 
         public ICommand OpenAndPopulateAFilterCommand => new DelegateCommand(OpenAndPopulateAFilter);
