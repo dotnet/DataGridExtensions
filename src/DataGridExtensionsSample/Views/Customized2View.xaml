@@ -70,6 +70,8 @@
           <Decorator Width="10" />
           <Button x:Name="OpenAndPopulateAFilterButton" VerticalAlignment="Top" Padding="5,2" Command="{Binding OpenAndPopulateAFilterCommand}">Open &amp; Populate a Filter</Button>
           <Decorator Width="10" />
+          <Button x:Name="ClearFilter" VerticalAlignment="Top" Padding="5,2" Command="{Binding ClearFilterCommand}" CommandParameter="{Binding ElementName=DemoDataGrid}">Clear Filter</Button>
+          <Decorator Width="10" />
           <Button x:Name="ProgrammaticAccessToFilterControlButton" VerticalAlignment="Top" Padding="5,2" Command="{Binding ProgrammaticAccessToFilterControlCommand}">Change Popup Caption</Button>
         </StackPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Right">

@@ -154,7 +154,9 @@
             var listBox = _listBox = Template?.FindName("PART_ListBox", this) as ListBox;
             if (listBox == null)
                 return;
+
             listBox.SelectionChanged += ListBox_SelectionChanged;
+            listBox.Loaded += ListBox_Loaded;
 
             var filterColumnControl = this.FindAncestorOrSelf<DataGridFilterColumnControl>();
 
@@ -170,15 +172,7 @@
 
             _dataGrid.SetTrackFocusedCell(true);
 
-            var filter = Filter;
-
-            if (filter?.Items == null && listBox.IsLoaded)
-            {
-                listBox.SelectAll();
-            }
-
             var items = (INotifyCollectionChanged)listBox.Items;
-
             items.CollectionChanged += ListBox_ItemsCollectionChanged;
         }
 
@@ -235,6 +229,11 @@
             }
         }
 
+        private void ListBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            Filter_Changed();
+        }
+
         private void Filter_Changed()
         {
             var listBox = _listBox;
@@ -247,10 +246,7 @@
 
             if (filter?.Items == null)
             {
-                if (listBox.IsLoaded)
-                {
-                    listBox.SelectAll();
-                }
+                listBox.SelectAll();
                 return;
             }
 
