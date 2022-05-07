@@ -1,4 +1,7 @@
-﻿2.5.13:
+﻿2.5.14
+- Fix #81: GetFilter().Clear doesn't clear the Listbox of the MultiplechoiceFilters
+
+2.5.13:
 - Fix  #75: Exception in MultipleChoiceFilter.ListBox_ItemsCollectionChanged
 
 2.5.12:
