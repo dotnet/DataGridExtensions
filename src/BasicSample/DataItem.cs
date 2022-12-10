@@ -3,9 +3,10 @@
 namespace BasicSample
 {
     using System;
+    using System.ComponentModel;
     using System.Windows;
 
-    public class DataItem
+    public partial class DataItem : INotifyPropertyChanged
     {
         private static readonly Random _rand = new Random();
         private static readonly string[] _samples = new[] { "lorem", "ipsum", "dolor", "sit", "amet" };

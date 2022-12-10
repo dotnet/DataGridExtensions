@@ -9,15 +9,28 @@
         Title="MainWindow" Height="450" Width="800">
   <Window.Resources>
     <ControlTemplate x:Key="MultipleChoiceFilter">
-      <basicSample:MultipleChoiceFilter Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
+      <basicSample:MultipleChoiceFilter />
     </ControlTemplate>
   </Window.Resources>
   <Grid>
     <DataGrid ItemsSource="{Binding Source={x:Static basicSample:DataProvider.Items}}"
+              AutoGenerateColumns="False"
               dgx:DataGridFilter.IsAutoFilterEnabled="True"
               dgx:DataGridFilter.StartFilteringKeyGesture="Ctrl+F">
       <DataGrid.Columns>
         <DataGridTextColumn Header="Multiple" Binding="{Binding Column5}" dgx:DataGridFilterColumn.Template="{StaticResource MultipleChoiceFilter}"/>
+        <DataGridTemplateColumn Header="Template" SortMemberPath="Column5" dgx:DataGridFilterColumn.Template="{StaticResource MultipleChoiceFilter}">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate DataType="{x:Type basicSample:DataItem}" >
+              <TextBlock Margin="2" Text="{Binding Column5}"/>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+          <DataGridTemplateColumn.CellEditingTemplate>
+            <DataTemplate DataType="{x:Type basicSample:DataItem}" >
+              <TextBox Margin="2" Text="{Binding Column5}"/>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellEditingTemplate>
+        </DataGridTemplateColumn>
       </DataGrid.Columns>
     </DataGrid>
   </Grid>
