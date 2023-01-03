@@ -31,7 +31,7 @@ The current version supports the following features and behaviors:
 The binaries are available as [NuGet](http://nuget.org/packages/DataGridExtensions) packages.
 
 Read the [Documentation](Documentation/README.md) about how to use these features.
-The [API Documemtation](https://dotnet.github.io/DataGridExtensions/) describes the global API for DGX.
+The [API Documentation](https://dotnet.github.io/DataGridExtensions/) describes the global API for DGX.
 
 Every feature is individually configurable.
 
