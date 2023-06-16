@@ -1,4 +1,7 @@
-﻿2.5.14
+﻿2.5.15
+- Fix memory leak in ApplyInitialSortingBehavior
+
+2.5.14
 - Fix #81: GetFilter().Clear doesn't clear the Listbox of the MultiplechoiceFilters
 
 2.5.13:
