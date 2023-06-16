@@ -5,11 +5,11 @@
     <Company>tom-englert.de</Company>
     <Copyright>Copyright (c) .NET Foundation and Contributors.</Copyright>
     <Product>Tom's Toolbox</Product>
-    <Version>2.5.14</Version>
+    <Version>2.5.15</Version>
   </PropertyGroup>
 
   <PropertyGroup>
     <EnableNETAnalyzers>True</EnableNETAnalyzers>
-    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+    <AnalysisLevel>latest-All</AnalysisLevel>
   </PropertyGroup>
 </Project>

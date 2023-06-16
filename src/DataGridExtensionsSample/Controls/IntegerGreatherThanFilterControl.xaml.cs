@@ -41,7 +41,7 @@
         /// Identifies the Filter dependency property
         /// </summary>
         public static readonly DependencyProperty FilterProperty =
-            DependencyProperty.Register("Filter", typeof(IContentFilter), typeof(IntegerGreatherThanFilterControl), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (o, args) => ((IntegerGreatherThanFilterControl)o).Filter_Changed(args.NewValue)));
+            DependencyProperty.Register(nameof(Filter), typeof(IContentFilter), typeof(IntegerGreatherThanFilterControl), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (o, args) => ((IntegerGreatherThanFilterControl)o).Filter_Changed(args.NewValue)));
 
         private void Filter_Changed(object newValue)
         {
@@ -52,7 +52,7 @@
             textBox.Text = (newValue as ContentFilter)?.Value ?? string.Empty;
         }
 
-        private class ContentFilter : IContentFilter
+        private sealed class ContentFilter : IContentFilter
         {
             private readonly int _threshold;
 

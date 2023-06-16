@@ -147,7 +147,7 @@
         /// Identifies the Filter dependency property
         /// </summary>
         public static readonly DependencyProperty FilterProperty =
-            DependencyProperty.Register("Filter", typeof(object), typeof(DataGridFilterColumnControl));
+            DependencyProperty.Register(nameof(Filter), typeof(object), typeof(DataGridFilterColumnControl));
 
         private static object? Template_CoerceValue(DependencyObject sender, object? baseValue)
         {

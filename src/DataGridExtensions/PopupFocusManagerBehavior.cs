@@ -15,7 +15,7 @@
     /// When the popup opens, the focus is set to the first focusable control in the popup.
     /// When the popup closes, the focus is set back to the button.
     /// </summary>
-    internal class PopupFocusManagerBehavior : Behavior<Popup>
+    internal sealed class PopupFocusManagerBehavior : Behavior<Popup>
     {
         /// <summary>
         /// Gets or sets the toggle button that controls the popup.
@@ -29,7 +29,7 @@
         /// Identifies the <see cref="ToggleButton"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ToggleButtonProperty =
-            DependencyProperty.Register("ToggleButton", typeof(ToggleButton), typeof(PopupFocusManagerBehavior));
+            DependencyProperty.Register(nameof(ToggleButton), typeof(ToggleButton), typeof(PopupFocusManagerBehavior));
 
         /// <summary>
         /// Called after the behavior is attached to an AssociatedObject.

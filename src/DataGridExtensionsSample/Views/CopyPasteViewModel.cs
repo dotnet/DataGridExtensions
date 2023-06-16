@@ -14,7 +14,7 @@
 
     [VisualCompositionExport(RegionId.Main, Sequence = 4)]
     [DisplayName("Copy/Paste")]
-    internal class CopyPasteViewModel : ObservableObject
+    internal sealed class CopyPasteViewModel : ObservableObject
     {
         private const char TextColumnSeparator = '\t';
 

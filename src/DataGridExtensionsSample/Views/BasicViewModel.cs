@@ -13,7 +13,7 @@
 
     [VisualCompositionExport(RegionId.Main, Sequence = 1)]
     [DisplayName("Basic usage")]
-    internal class BasicViewModel : ObservableObject
+    internal sealed class BasicViewModel : ObservableObject
     {
         public BasicViewModel(DataProvider dataProvider)
         {

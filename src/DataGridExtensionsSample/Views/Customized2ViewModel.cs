@@ -18,7 +18,7 @@
 
     [VisualCompositionExport(RegionId.Main, Sequence = 3)]
     [DisplayName("Customized 2")]
-    internal class Customized2ViewModel : ObservableObject
+    internal sealed class Customized2ViewModel : ObservableObject
     {
         public Customized2ViewModel(DataProvider dataProvider)
         {
@@ -62,7 +62,7 @@
 
         private void AddLorem()
         {
-            var items = ColumnTextWithPrefilterFilter.Items ?? new HashSet<string>();
+            var items = ColumnTextWithPrefilterFilter.Items ?? new HashSet<string?>();
 
             items.Add("lorem");
 

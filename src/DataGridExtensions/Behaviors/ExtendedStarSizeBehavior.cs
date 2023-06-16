@@ -58,7 +58,7 @@
         /// Identifies the ColumnHeaderGripperToolTipStyle dependency property
         /// </summary>
         public static readonly DependencyProperty ColumnHeaderGripperToolTipStyleProperty =
-            DependencyProperty.Register("ColumnHeaderGripperToolTipStyle", typeof(Style), typeof(ExtendedStarSizeBehavior));
+            DependencyProperty.Register(nameof(ColumnHeaderGripperToolTipStyle), typeof(Style), typeof(ExtendedStarSizeBehavior));
 
         /// <summary>
         /// Gets or sets the resource locator.
@@ -72,7 +72,7 @@
         /// Identifies the <see cref="ResourceLocator"/> dependency property
         /// </summary>
         public static readonly DependencyProperty ResourceLocatorProperty =
-            DependencyProperty.Register("ResourceLocator", typeof(IResourceLocator), typeof(ExtendedStarSizeBehavior));
+            DependencyProperty.Register(nameof(ResourceLocator), typeof(IResourceLocator), typeof(ExtendedStarSizeBehavior));
 
         /// <summary>
         /// Called after the behavior is attached to an AssociatedObject.

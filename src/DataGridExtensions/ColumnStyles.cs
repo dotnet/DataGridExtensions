@@ -128,7 +128,7 @@
         /// Identifies the <see cref="ElementStyle"/> dependency property
         /// </summary>
         public static readonly DependencyProperty ElementStyleProperty =
-            DependencyProperty.Register("ElementStyle", typeof(Style), typeof(DataGridColumnStyle));
+            DependencyProperty.Register(nameof(ElementStyle), typeof(Style), typeof(DataGridColumnStyle));
 
         /// <summary>
         /// Gets or sets the editing element style for the column.
@@ -142,6 +142,6 @@
         /// Identifies the <see cref="EditingElementStyle"/> dependency property
         /// </summary>
         public static readonly DependencyProperty EditingElementStyleProperty =
-            DependencyProperty.Register("EditingElementStyle", typeof(Style), typeof(DataGridColumnStyle));
+            DependencyProperty.Register(nameof(EditingElementStyle), typeof(Style), typeof(DataGridColumnStyle));
     }
 }

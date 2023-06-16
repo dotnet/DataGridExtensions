@@ -52,7 +52,7 @@
         /// Identifies the <see cref="TextBox"/> dependency property
         /// </summary>
         public static readonly DependencyProperty TextBoxProperty =
-            DependencyProperty.Register("TextBox", typeof (TextBox), typeof (ClearTextBoxOnButtonClickBehavior));
+            DependencyProperty.Register(nameof(TextBox), typeof (TextBox), typeof (ClearTextBoxOnButtonClickBehavior));
 
         private void AssociatedObject_Click(object sender, RoutedEventArgs e)
         {

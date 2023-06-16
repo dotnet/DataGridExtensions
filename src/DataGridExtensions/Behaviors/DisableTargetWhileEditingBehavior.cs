@@ -23,7 +23,7 @@
         /// Identifies the Target dependency property
         /// </summary>
         public static readonly DependencyProperty TargetProperty =
-            DependencyProperty.Register("Target", typeof(UIElement), typeof(DisableTargetWhileEditingBehavior));
+            DependencyProperty.Register(nameof(Target), typeof(UIElement), typeof(DisableTargetWhileEditingBehavior));
 
         /// <summary>
         /// Called after the behavior is attached to an AssociatedObject.

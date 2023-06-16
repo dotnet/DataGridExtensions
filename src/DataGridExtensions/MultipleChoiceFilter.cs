@@ -50,7 +50,7 @@
         /// The filter property
         /// </summary>
         public static readonly DependencyProperty FilterProperty =
-            DependencyProperty.Register("Filter", typeof(IMultipleChoiceContentFilter), typeof(MultipleChoiceFilter), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (sender, _) => ((MultipleChoiceFilter)sender).Filter_Changed()));
+            DependencyProperty.Register(nameof(Filter), typeof(IMultipleChoiceContentFilter), typeof(MultipleChoiceFilter), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (sender, _) => ((MultipleChoiceFilter)sender).Filter_Changed()));
 
         /// <summary>
         /// Gets or sets a value that controls if the optional text filter is visible.
@@ -64,7 +64,7 @@
         /// Identifies the HasTextFilter dependency property.
         /// </summary>
         public static readonly DependencyProperty HasTextFilterProperty = DependencyProperty.Register(
-            "HasTextFilter", typeof(bool), typeof(MultipleChoiceFilter), new PropertyMetadata(default(bool)));
+            nameof(HasTextFilter), typeof(bool), typeof(MultipleChoiceFilter), new PropertyMetadata(default(bool)));
 
         private IReadOnlyCollection<string?>? SourceValues => (IReadOnlyCollection<string?>?)GetValue(SourceValuesProperty);
 
@@ -103,7 +103,7 @@
         /// The select all content property
         /// </summary>
         public static readonly DependencyProperty SelectAllContentProperty = DependencyProperty.Register(
-            "SelectAllContent", typeof(object), typeof(MultipleChoiceFilter), new FrameworkPropertyMetadata("(Select All)"));
+            nameof(SelectAllContent), typeof(object), typeof(MultipleChoiceFilter), new FrameworkPropertyMetadata("(Select All)"));
 
         /// <summary>
         /// Gets or sets an optional text to pre-filter the list
@@ -117,7 +117,7 @@
         /// Defines the Text property.
         /// </summary>
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
-            "Text", typeof(string), typeof(MultipleChoiceFilter), new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (sender, _) => ((MultipleChoiceFilter)sender).Text_Changed()));
+            nameof(Text), typeof(string), typeof(MultipleChoiceFilter), new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (sender, _) => ((MultipleChoiceFilter)sender).Text_Changed()));
 
         private void Text_Changed()
         {
@@ -137,7 +137,7 @@
         /// The is popup open property
         /// </summary>
         public static readonly DependencyProperty IsPopupOpenProperty = DependencyProperty.Register(
-            "IsPopupOpen", typeof(bool), typeof(MultipleChoiceFilter), new FrameworkPropertyMetadata(default(bool), (sender, e) => ((MultipleChoiceFilter)sender).IsPopupOpen_Changed((bool)e.NewValue)));
+            nameof(IsPopupOpen), typeof(bool), typeof(MultipleChoiceFilter), new FrameworkPropertyMetadata(default(bool), (sender, e) => ((MultipleChoiceFilter)sender).IsPopupOpen_Changed((bool)e.NewValue)));
 
         private void IsPopupOpen_Changed(bool newValue)
         {

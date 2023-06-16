@@ -15,7 +15,7 @@
     /// A behavior for a list box to handle the interaction between the list box and a "select all" checkbox.
     /// </summary>
     /// <seealso cref="Behavior{T}" />
-    internal class ListBoxSelectAllBehavior : Behavior<ListBox>
+    internal sealed class ListBoxSelectAllBehavior : Behavior<ListBox>
     {
         private readonly DispatcherThrottle _collectionChangedThrottle;
         private bool _isListBoxUpdating;
@@ -40,7 +40,7 @@
         /// Identifies the <see cref="AreAllFilesSelected"/> dependency property
         /// </summary>
         public static readonly DependencyProperty AreAllFilesSelectedProperty =
-            DependencyProperty.Register("AreAllFilesSelected", typeof(bool?), typeof(ListBoxSelectAllBehavior), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (sender, e) => ((ListBoxSelectAllBehavior)sender)?.AreAllFilesSelected_Changed((bool?)e.NewValue)));
+            DependencyProperty.Register(nameof(AreAllFilesSelected), typeof(bool?), typeof(ListBoxSelectAllBehavior), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (sender, e) => ((ListBoxSelectAllBehavior)sender)?.AreAllFilesSelected_Changed((bool?)e.NewValue)));
 
         /// <summary>
         /// Called after the behavior is attached to an AssociatedObject.
