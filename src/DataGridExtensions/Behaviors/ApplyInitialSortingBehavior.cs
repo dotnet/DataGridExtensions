@@ -21,6 +21,8 @@
     /// </summary>
     public class ApplyInitialSortingBehavior : Behavior<DataGrid>
     {
+        private static readonly DependencyPropertyDescriptor _dependencyPropertyDescriptor = DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(DataGrid));
+
         private IList<KeyValuePair<string, ListSortDirection>>? _mostRecentDescriptions;
         private IList<KeyValuePair<string, ListSortDirection>> _lastKnownActiveDescriptions = new List<KeyValuePair<string, ListSortDirection>>();
 
@@ -36,8 +38,8 @@
 
             var dataGrid = AssociatedObject;
 
-            ((INotifyCollectionChanged)dataGrid.Items.SortDescriptions).CollectionChanged += SortDescriptions_CollectionChanged;
-            DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(DataGrid)).AddValueChanged(dataGrid, ItemsSource_Changed);
+            dataGrid.Loaded += DataGrid_Loaded;
+            dataGrid.Unloaded += DataGrid_Unloaded;
         }
 
         /// <summary>
@@ -52,8 +54,29 @@
 
             var dataGrid = AssociatedObject;
 
+            dataGrid.Loaded -= DataGrid_Loaded;
+            dataGrid.Unloaded -= DataGrid_Unloaded;
+        }
+
+        private void DataGrid_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (sender is not DataGrid dataGrid)
+                return;
+
             ((INotifyCollectionChanged)dataGrid.Items.SortDescriptions).CollectionChanged -= SortDescriptions_CollectionChanged;
-            DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(DataGrid)).RemoveValueChanged(dataGrid, ItemsSource_Changed);
+            _dependencyPropertyDescriptor.RemoveValueChanged(dataGrid, ItemsSource_Changed);
+
+            ((INotifyCollectionChanged)dataGrid.Items.SortDescriptions).CollectionChanged += SortDescriptions_CollectionChanged;
+            _dependencyPropertyDescriptor.AddValueChanged(dataGrid, ItemsSource_Changed);
+        }
+
+        private void DataGrid_Unloaded(object sender, RoutedEventArgs e)
+        {
+            if (sender is not DataGrid dataGrid)
+                return;
+
+            ((INotifyCollectionChanged)dataGrid.Items.SortDescriptions).CollectionChanged -= SortDescriptions_CollectionChanged;
+            _dependencyPropertyDescriptor.RemoveValueChanged(dataGrid, ItemsSource_Changed);
         }
 
         private void SortDescriptions_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
