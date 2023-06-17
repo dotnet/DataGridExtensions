@@ -31,6 +31,7 @@
             </DataTemplate>
           </DataGridTemplateColumn.CellEditingTemplate>
         </DataGridTemplateColumn>
+        <DataGridTextColumn Header="Converter can't work" Binding="{Binding Index, Converter={basicSample:ModuloConverter}}" />
       </DataGrid.Columns>
     </DataGrid>
   </Grid>
