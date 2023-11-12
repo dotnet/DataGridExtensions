@@ -49,6 +49,8 @@ stages:
     displayName: Code Signing
     pool:
       vmImage: windows-latest # Code signing must run on a Windows agent for Authenticode signing (dll/exe)
+    variables:
+    - group: Sign Client Credentials # This is a variable group with secrets in it 
 
     steps:
 
@@ -69,26 +71,30 @@ stages:
           "%ProgramFiles%\Windows Defender\MpCmdRun.exe" -Scan -ScanType 3 -File "$(Pipeline.Workspace)\BuildPackages"
         failOnStderr: true
 
+    # Install the code signing tool
     - task: DotNetCoreCLI@2
       inputs:
         command: custom
         custom: tool
-        arguments: install --tool-path . SignClient
+        arguments: install --tool-path . sign --version 0.9.1-beta.23530.1
       displayName: Install SignTool tool
 
     - pwsh: |
-        .\SignClient "Sign" `
-        --baseDirectory "$(Pipeline.Workspace)\BuildPackages" `
-        --input "**/*.*" `
-        --config "$(Pipeline.Workspace)\signing\SignClient.json" `
+        .\sign code azure-key-vault `
+        "**/*.*" `
+        --base-directory "$(Pipeline.Workspace)\BuildPackages" `
         --filelist "$(Pipeline.Workspace)\signing\filelist.txt" `
-        --user "$(SignClientUser)" `
-        --secret "$(SignClientSecret)" `
-        --name "DataGrid Extensions" `
+        --publisher-name "tom-englert" `
         --description "DataGrid Extensions" `
         --descriptionUrl "https://github.com/dotnet/DataGridExtensions"
+        --azure-key-vault-tenant-id "$(SignTenantId)" `
+        --azure-key-vault-client-id "$(SignClientId)" `
+        --azure-key-vault-client-secret '$(SignClientSecret)' `
+        --azure-key-vault-certificate "$(SignKeyVaultCertificate)" `
+        --azure-key-vault-url "$(SignKeyVaultUrl)"
       displayName: Sign packages
 
-    - publish: $(Pipeline.Workspace)\BuildPackages
+    # Publish the signed packages
+    - publish: $(Pipeline.Workspace)/BuildPackages
       displayName: Publish Signed Packages
       artifact: SignedPackages
