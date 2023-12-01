@@ -83,10 +83,10 @@ stages:
         .\sign code azure-key-vault `
         "**/*.*" `
         --base-directory "$(Pipeline.Workspace)\BuildPackages" `
-        --filelist "$(Pipeline.Workspace)\signing\filelist.txt" `
+        --file-list "$(Pipeline.Workspace)\signing\filelist.txt" `
         --publisher-name "tom-englert" `
         --description "DataGrid Extensions" `
-        --descriptionUrl "https://github.com/dotnet/DataGridExtensions" `
+        --description-url "https://github.com/dotnet/DataGridExtensions" `
         --azure-key-vault-tenant-id "$(SignTenantId)" `
         --azure-key-vault-client-id "$(SignClientId)" `
         --azure-key-vault-client-secret "$(SignClientSecret2)" `
