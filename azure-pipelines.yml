@@ -86,10 +86,10 @@ stages:
         --filelist "$(Pipeline.Workspace)\signing\filelist.txt" `
         --publisher-name "tom-englert" `
         --description "DataGrid Extensions" `
-        --descriptionUrl "https://github.com/dotnet/DataGridExtensions"
+        --descriptionUrl "https://github.com/dotnet/DataGridExtensions" `
         --azure-key-vault-tenant-id "$(SignTenantId)" `
         --azure-key-vault-client-id "$(SignClientId)" `
-        --azure-key-vault-client-secret '$(SignClientSecret2)' `
+        --azure-key-vault-client-secret "$(SignClientSecret2)" `
         --azure-key-vault-certificate "$(SignKeyVaultCertificate)" `
         --azure-key-vault-url "$(SignKeyVaultUrl)"
       displayName: Sign packages
