@@ -49,11 +49,8 @@ stages:
     displayName: Code Signing
     pool:
       vmImage: windows-latest # Code signing must run on a Windows agent for Authenticode signing (dll/exe)
-    variables:
-    - group: Sign Client Credentials # This is a variable group with secrets in it 
 
     steps:
-
     # Retreive unsigned artifacts and file list
     - download: current
       artifact: signing
