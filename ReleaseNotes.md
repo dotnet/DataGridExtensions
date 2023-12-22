@@ -1,4 +1,7 @@
-﻿2.5.15
+﻿2.6.0
+- Update dependencies; native net8.0 support.
+
+2.5.15
 - Fix memory leak in ApplyInitialSortingBehavior
 
 2.5.14
