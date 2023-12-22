@@ -25,6 +25,7 @@ The current version supports the following features:
 - Attaches to the existing DataGrid</Description>
     <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
+    <IsDeploymentTarget>true</IsDeploymentTarget>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="ILMerge.Fody" Version="1.24.0" PrivateAssets="All" />

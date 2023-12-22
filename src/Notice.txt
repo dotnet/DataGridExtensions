@@ -1,0 +1,11 @@
+This product bundles the following components under the described licenses:
+
+--------------------------------------------------------------------------------
+
+Microsoft.Xaml.Behaviors.Wpf
+
+Id:      Microsoft.Xaml.Behaviors.Wpf
+Version: 1.1.77
+Project: https://github.com/Microsoft/XamlBehaviorsWpf
+License: MIT
+
