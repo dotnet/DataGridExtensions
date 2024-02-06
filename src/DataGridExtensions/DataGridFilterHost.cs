@@ -64,6 +64,11 @@
         public event EventHandler<DataGridFilteringEventArgs>? Filtering;
 
         /// <summary>
+        /// Occurs after filtering.
+        /// </summary>
+        public event EventHandler<DataGridFilteredEventArgs>? Filtered;
+
+        /// <summary>
         /// Occurs when any filter has changed.
         /// </summary>
         public event EventHandler? FilterChanged;
@@ -277,6 +282,8 @@
                 {
                     DataGrid.Dispatcher.BeginInvoke(DispatcherPriority.Background, (Action)(() => DataGrid.ScrollIntoView(selectedItem)));
                 }
+                var args = new DataGridFilteredEventArgs(collectionView.Count);
+                Filtered?.Invoke(this, args);
             }
             catch (InvalidOperationException)
             {
