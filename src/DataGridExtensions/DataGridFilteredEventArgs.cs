@@ -1,6 +1,7 @@
 ﻿namespace DataGridExtensions
 {
     using System;
+    using System.Collections;
 
     /// <summary>
     /// Notification about filtering completed.
@@ -8,16 +9,17 @@
     public class DataGridFilteredEventArgs : EventArgs
     {
         /// <summary>
+        /// Elements which match the filter(s).
+        /// </summary>
+        public IList MatchingItems { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DataGridFilteredEventArgs"/> class.
         /// </summary>
-        /// <param name="itemsCount">Number of elements which match the filter(s).</param>
-        public DataGridFilteredEventArgs(int itemsCount)
+        /// <param name="itemsList"><see cref="IList"/> of element which match the filter(s).
+        public DataGridFilteredEventArgs(IList itemsList)
         {
-            MatchingItemsCount = itemsCount;
+            MatchingItems = itemsList;
         }
-        /// <summary>
-        /// Gets the number of elements which match the filter(s).
-        /// </summary>
-        public int MatchingItemsCount { get; }
     }
 }

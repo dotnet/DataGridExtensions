@@ -282,8 +282,11 @@
                 {
                     DataGrid.Dispatcher.BeginInvoke(DispatcherPriority.Background, (Action)(() => DataGrid.ScrollIntoView(selectedItem)));
                 }
-                var args = new DataGridFilteredEventArgs(collectionView.Count);
-                Filtered?.Invoke(this, args);
+                if (Filtered != null)
+                {
+                    var args = new DataGridFilteredEventArgs(collectionView);
+                    Filtered.Invoke(this, args);
+                }
             }
             catch (InvalidOperationException)
             {
