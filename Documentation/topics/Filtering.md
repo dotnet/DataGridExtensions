@@ -19,7 +19,7 @@ By overriding the default template you can simply create individual filters:
 ![Sample2](Filtering_Sample2.jpg)
 
 ### Filtering and Sorting a Template Column
-Since a Template Column may content everything, we must specify which member will be used to filter and sort content using `SortMemberPath`:
+Since a Template Column may contain everything, we must specify which member will be used to filter and sort content using `SortMemberPath`:
 
 ```xml
 <DataGridTemplateColumn Header="Template" 
