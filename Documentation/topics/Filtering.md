@@ -18,4 +18,20 @@ By overriding the default template you can simply create individual filters:
 
 ![Sample2](Filtering_Sample2.jpg)
 
+### Filtering and Sorting a Template Column
+Since a Template Column may content everything, we must specify which member will be used to filter and sort content using `SortMemberPath`:
+
+```xml
+<DataGridTemplateColumn Header="Template" 
+                        SortMemberPath="Column5" 
+                        dgx:DataGridFilterColumn.Template="{StaticResource MultipleChoiceFilter}"> 
+    <DataGridTemplateColumn.CellTemplate> 
+        <DataTemplate DataType="{x:Type basicSample:DataItem}" > 
+            <TextBox Text="{Binding Column5}"/> 
+        </DataTemplate> 
+    </DataGridTemplateColumn.CellTemplate> 
+</DataGridTemplateColumn>
+```
+
+
 For further details take a tour through the code of the sample application to see the many possibilities how to use and customize it.
