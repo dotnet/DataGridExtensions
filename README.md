@@ -2,7 +2,6 @@
 
 [![Build Status](https://dev.azure.com/tom-englert/Open%20Source/_apis/build/status/DataGridExtensions?repoName=dotnet%2FDataGridExtensions&branchName=master)](https://dev.azure.com/tom-englert/Open%20Source/_build/latest?definitionId=37&repoName=dotnet%2FDataGridExtensions&branchName=master) 
 [![NuGet Status](http://img.shields.io/nuget/v/DataGridExtensions.svg?style=flat)](https://www.nuget.org/packages/DataGridExtensions/)
-[<img src="https://api.gitsponsors.com/api/badge/img?id=61982799" height="20">](https://api.gitsponsors.com/api/badge/link?p=hjS5OSUXdkuAqVNMSyWkuSdusW8AAr7Hx7nVt7KD83HA17Q3Sdh7BU5cS2Xj3YKlNpF24XIohFQrfqUp3FviKpOLEPOFJrfKyM8EOP0foldAmFwfULMoCkfU8dWcytV8uyh0DJ/LCKcMmWlGuUSzDg==)
 
 ![Icon](Icon.png)
 
