@@ -12,5 +12,6 @@ using System.Windows.Markup;
 [assembly: XmlnsPrefix("urn:tom-englert.de/DataGridExtensions", "dgx")]
 [assembly: XmlnsDefinition("urn:tom-englert.de/DataGridExtensions", "DataGridExtensions")]
 [assembly: XmlnsDefinition("urn:tom-englert.de/DataGridExtensions", "DataGridExtensions.Behaviors")]
+[assembly: XmlnsDefinition("urn:tom-englert.de/DataGridExtensions", "DataGridExtensions.Wrappers")]
 
 

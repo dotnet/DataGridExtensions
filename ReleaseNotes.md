@@ -1,4 +1,7 @@
-﻿2.6.0
+﻿2.7.0
+- Add DataGrid wrapper to fix https://github.com/dotnet/wpf/issues/5428
+
+2.6.0
 - Update dependencies; native net8.0 support.
 
 2.5.15
