@@ -137,8 +137,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EWSoftware.SHFB" Version="2023.7.8" />
-    <PackageReference Include="EWSoftware.SHFB.NETFramework" Version="4.8.0.2" />
+    <PackageReference Include="EWSoftware.SHFB" Version="2025.3.22" />
+    <PackageReference Include="EWSoftware.SHFB.NETFramework" Version="4.8.0.3" />
   </ItemGroup>
   <!-- Import the SHFB build targets -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="'$(MSBuildRestoreSessionId)' != ''" />

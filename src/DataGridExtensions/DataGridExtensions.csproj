@@ -29,19 +29,12 @@ The current version supports the following features:
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="ILMerge.Fody" Version="1.24.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
-    <PackageReference Include="Fody" Version="6.8.0" PrivateAssets="all">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="all">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Nullable.Extended.Analyzer" Version="1.14.6129">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+    <PackageReference Include="Fody" Version="6.9.3" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="all" />
+    <PackageReference Include="Nullable.Extended.Analyzer" Version="1.15.6581" PrivateAssets="all" />
     <PackageReference Include="Throttle.Fody" Version="1.7.0" PrivateAssets="All" />
-    <PackageReference Include="TomsToolbox.Wpf" Version="2.11.0" PrivateAssets="All" />
+    <PackageReference Include="TomsToolbox.Wpf" Version="2.22.2" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Icon.png" Link="Icon.png" Pack="true" PackagePath="\" />

@@ -19,15 +19,12 @@
     <ProjectReference Include="..\DataGridExtensions\DataGridExtensions.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Fody" Version="6.8.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="Fody" Version="6.9.3" PrivateAssets="all" />
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" PrivateAssets="All" />
-    <PackageReference Include="TomsToolbox.Composition.Ninject" Version="2.11.0" />
-    <PackageReference Include="TomsToolbox.Wpf.Composition" Version="2.11.0" />
-    <PackageReference Include="TomsToolbox.Wpf.Composition.AttributedModel" Version="2.11.0" />
-    <PackageReference Include="TomsToolbox.Wpf.Styles" Version="2.10.0" />
+    <PackageReference Include="TomsToolbox.Composition.Ninject" Version="2.22.2" />
+    <PackageReference Include="TomsToolbox.Wpf.Composition" Version="2.22.2" />
+    <PackageReference Include="TomsToolbox.Wpf.Composition.AttributedModel" Version="2.22.2" />
+    <PackageReference Include="TomsToolbox.Wpf.Styles" Version="2.22.2" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
