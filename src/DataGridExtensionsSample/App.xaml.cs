@@ -1,51 +1,50 @@
-﻿namespace DataGridExtensionsSample
-{
-    using System.Windows;
+﻿namespace DataGridExtensionsSample;
 
-    using Ninject;
+using System.Windows;
 
-    using TomsToolbox.Composition;
-    using TomsToolbox.Composition.Ninject;
-    using TomsToolbox.Wpf.Composition;
-    using TomsToolbox.Wpf.Styles;
+using Ninject;
 
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
+using TomsToolbox.Composition;
+using TomsToolbox.Composition.Ninject;
+using TomsToolbox.Wpf.Composition;
+using TomsToolbox.Wpf.Styles;
+
+/// <summary>
+/// Interaction logic for App.xaml
+/// </summary>
 #pragma warning disable CA1001 // Types that own disposable fields should be disposable
-    public partial class App
+public partial class App
+{
+    private readonly StandardKernel _kernel = new();
+
+    protected override void OnStartup(StartupEventArgs e)
     {
-        private readonly StandardKernel _kernel = new();
+        base.OnStartup(e);
 
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
+        // modern styling
+        Resources.MergedDictionaries.Add(WpfStyles.GetDefaultStyles());
+        Resources.RegisterDefaultWindowStyle();
 
-            // modern styling
-            Resources.MergedDictionaries.Add(WpfStyles.GetDefaultStyles());
-            Resources.RegisterDefaultWindowStyle();
+        // setup visual composition infrastructure, using Ninject
+        _kernel.BindExports(GetType().Assembly);
+        IExportProvider exportProvider = new ExportProvider(_kernel);
+        _kernel.Bind<IExportProvider>().ToConstant(exportProvider);
 
-            // setup visual composition infrastructure, using Ninject
-            _kernel.BindExports(GetType().Assembly);
-            IExportProvider exportProvider = new ExportProvider(_kernel);
-            _kernel.Bind<IExportProvider>().ToConstant(exportProvider);
+        // setup global export provider locator for XAML
+        ExportProviderLocator.Register(exportProvider);
 
-            // setup global export provider locator for XAML
-            ExportProviderLocator.Register(exportProvider);
+        // register all controls tagged as data templates
+        var dynamicDataTemplates = DataTemplateManager.CreateDynamicDataTemplates(exportProvider);
+        Resources.MergedDictionaries.Add(dynamicDataTemplates);
 
-            // register all controls tagged as data templates
-            var dynamicDataTemplates = DataTemplateManager.CreateDynamicDataTemplates(exportProvider);
-            Resources.MergedDictionaries.Add(dynamicDataTemplates);
+        MainWindow = exportProvider.GetExportedValue<MainWindow>();
+        MainWindow.Show();
+    }
 
-            MainWindow = exportProvider.GetExportedValue<MainWindow>();
-            MainWindow.Show();
-        }
+    protected override void OnExit(ExitEventArgs e)
+    {
+        base.OnExit(e);
 
-        protected override void OnExit(ExitEventArgs e)
-        {
-            base.OnExit(e);
-
-            _kernel.Dispose();
-        }
+        _kernel.Dispose();
     }
 }

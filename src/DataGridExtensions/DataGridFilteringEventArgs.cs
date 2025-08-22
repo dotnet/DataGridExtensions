@@ -1,31 +1,30 @@
-﻿namespace DataGridExtensions
+﻿namespace DataGridExtensions;
+
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Controls;
+
+/// <summary>
+/// Notification about additional columns to be filtered.
+/// Clients can e.g. use this event to cache/pre-load column data in a different thread and/or display a wait cursor while filtering.
+/// <remarks>
+/// Clients may only cancel the processing when e.g. the data grid is about to be unloaded. Canceling the process of filtering 
+/// will cause the UI to be inconsistent.
+/// </remarks>
+/// </summary>
+public class DataGridFilteringEventArgs : CancelEventArgs
 {
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Windows.Controls;
+    /// <summary>
+    /// Initializes a new instance of the <see cref="T:DataGridExtensions.DataGridFilteringEventArgs" /> class.
+    /// </summary>
+    /// <param name="columns">The additional columns that will be filtered.</param>
+    public DataGridFilteringEventArgs(ICollection<DataGridColumn> columns)
+    {
+        Columns = columns;
+    }
 
     /// <summary>
-    /// Notification about additional columns to be filtered.
-    /// Clients can e.g. use this event to cache/pre-load column data in a different thread and/or display a wait cursor while filtering.
-    /// <remarks>
-    /// Clients may only cancel the processing when e.g. the data grid is about to be unloaded. Canceling the process of filtering 
-    /// will cause the UI to be inconsistent.
-    /// </remarks>
+    /// Gets the additional columns that will be filtered.
     /// </summary>
-    public class DataGridFilteringEventArgs : CancelEventArgs
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:DataGridExtensions.DataGridFilteringEventArgs" /> class.
-        /// </summary>
-        /// <param name="columns">The additional columns that will be filtered.</param>
-        public DataGridFilteringEventArgs(ICollection<DataGridColumn> columns)
-        {
-            Columns = columns;
-        }
-
-        /// <summary>
-        /// Gets the additional columns that will be filtered.
-        /// </summary>
-        public ICollection<DataGridColumn> Columns { get; }
-    }
+    public ICollection<DataGridColumn> Columns { get; }
 }

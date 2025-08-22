@@ -1,16 +1,15 @@
-﻿namespace DataGridExtensionsSample.Views
-{
-    using TomsToolbox.Wpf.Composition.AttributedModel;
+﻿namespace DataGridExtensionsSample.Views;
 
-    /// <summary>
-    /// Interaction logic for CopyPasteView.xaml
-    /// </summary>
-    [DataTemplate(typeof(CopyPasteViewModel))]
-    public partial class CopyPasteView 
+using TomsToolbox.Wpf.Composition.AttributedModel;
+
+/// <summary>
+/// Interaction logic for CopyPasteView.xaml
+/// </summary>
+[DataTemplate(typeof(CopyPasteViewModel))]
+public partial class CopyPasteView 
+{
+    public CopyPasteView()
     {
-        public CopyPasteView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

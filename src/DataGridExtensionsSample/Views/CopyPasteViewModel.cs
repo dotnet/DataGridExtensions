@@ -1,54 +1,53 @@
-﻿namespace DataGridExtensionsSample.Views
+﻿namespace DataGridExtensionsSample.Views;
+
+using System.ComponentModel;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+
+using DataGridExtensions;
+
+using DataGridExtensionsSample.Infrastructure;
+
+using TomsToolbox.Wpf;
+using TomsToolbox.Wpf.Composition.AttributedModel;
+
+[VisualCompositionExport(RegionId.Main, Sequence = 4)]
+[DisplayName("Copy/Paste")]
+internal sealed class CopyPasteViewModel : ObservableObject
 {
-    using System.ComponentModel;
-    using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Input;
+    private const char TextColumnSeparator = '\t';
 
-    using DataGridExtensions;
-
-    using DataGridExtensionsSample.Infrastructure;
-
-    using TomsToolbox.Wpf;
-    using TomsToolbox.Wpf.Composition.AttributedModel;
-
-    [VisualCompositionExport(RegionId.Main, Sequence = 4)]
-    [DisplayName("Copy/Paste")]
-    internal sealed class CopyPasteViewModel : ObservableObject
+    public CopyPasteViewModel(DataProvider dataProvider)
     {
-        private const char TextColumnSeparator = '\t';
+        DataProvider = dataProvider;
+    }
 
-        public CopyPasteViewModel(DataProvider dataProvider)
+    public DataProvider DataProvider { get; }
+
+    public ICommand CopyCommand => new DelegateCommand<DataGrid>(Copy);
+
+    public ICommand PasteCommand => new DelegateCommand<DataGrid>(Paste);
+
+    private void Copy(DataGrid dataGrid)
+    {
+        if (!dataGrid.HasRectangularCellSelection())
         {
-            DataProvider = dataProvider;
+            MessageBox.Show("Invalid selection for copy");
+            return;
         }
 
-        public DataProvider DataProvider { get; }
+        var cellSelection = dataGrid.GetCellSelection();
 
-        public ICommand CopyCommand => new DelegateCommand<DataGrid>(Copy);
-
-        public ICommand PasteCommand => new DelegateCommand<DataGrid>(Paste);
-
-        private void Copy(DataGrid dataGrid)
-        {
-            if (!dataGrid.HasRectangularCellSelection())
-            {
-                MessageBox.Show("Invalid selection for copy");
-                return;
-            }
-
-            var cellSelection = dataGrid.GetCellSelection();
-
-            Clipboard.SetText(cellSelection?.ToString(TextColumnSeparator));
+        Clipboard.SetText(cellSelection?.ToString(TextColumnSeparator));
             
-        }
+    }
 
-        private void Paste(DataGrid dataGrid)
+    private void Paste(DataGrid dataGrid)
+    {
+        if (!dataGrid.PasteCells(Clipboard.GetText().ParseTable(TextColumnSeparator)))
         {
-            if (!dataGrid.PasteCells(Clipboard.GetText().ParseTable(TextColumnSeparator)))
-            {
-                MessageBox.Show("Selection does not match data.");
-            }
+            MessageBox.Show("Selection does not match data.");
         }
     }
 }

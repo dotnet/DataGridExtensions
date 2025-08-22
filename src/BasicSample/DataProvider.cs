@@ -1,19 +1,18 @@
-﻿namespace BasicSample
+﻿namespace BasicSample;
+
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+
+public static class DataProvider
 {
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Linq;
+    /// <summary>
+    /// Provide a simple list of 100 random items.
+    /// </summary>
+    public static IList<DataItem> Items { get; } = CreateItems();
 
-    public static class DataProvider
+    private static ObservableCollection<DataItem> CreateItems()
     {
-        /// <summary>
-        /// Provide a simple list of 100 random items.
-        /// </summary>
-        public static IList<DataItem> Items { get; } = CreateItems();
-
-        private static ObservableCollection<DataItem> CreateItems()
-        {
-            return new ObservableCollection<DataItem>(Enumerable.Range(0, 100).Select(index => new DataItem(index)));
-        }
+        return new ObservableCollection<DataItem>(Enumerable.Range(0, 100).Select(index => new DataItem(index)));
     }
 }

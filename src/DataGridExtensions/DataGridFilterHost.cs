@@ -1,323 +1,322 @@
-﻿namespace DataGridExtensions
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Collections.Specialized;
-    using System.Linq;
-    using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Controls.Primitives;
-    using System.Windows.Input;
-    using System.Windows.Threading;
+﻿namespace DataGridExtensions;
 
-    using TomsToolbox.Essentials;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
+using System.Windows.Threading;
+
+using TomsToolbox.Essentials;
+
+/// <summary>
+/// This class hosts all filter columns and handles the filter changes on the data grid level.
+/// This class will be attached to the DataGrid.
+/// </summary>
+public sealed class DataGridFilterHost
+{
+    /// <summary>
+    /// Timer to defer evaluation of the filter until user has stopped typing.
+    /// </summary>
+    private DispatcherTimer? _deferFilterEvaluationTimer;
+    /// <summary>
+    /// The columns that we are currently filtering.
+    /// </summary>
+    private IEnumerable<DataGridColumn> _filteredColumns = [];
+    /// <summary>
+    /// Flag indicating if filtering is currently enabled.
+    /// </summary>
+    private bool _isFilteringEnabled;
+    /// <summary>
+    /// A global filter that is applied in addition to the column filters.
+    /// </summary>
+    private Predicate<object?>? _globalFilter;
 
     /// <summary>
-    /// This class hosts all filter columns and handles the filter changes on the data grid level.
-    /// This class will be attached to the DataGrid.
+    /// Create a new filter host for the given data grid.
     /// </summary>
-    public sealed class DataGridFilterHost
+    /// <param name="dataGrid">The data grid to filter.</param>
+    internal DataGridFilterHost(DataGrid dataGrid)
     {
-        /// <summary>
-        /// Timer to defer evaluation of the filter until user has stopped typing.
-        /// </summary>
-        private DispatcherTimer? _deferFilterEvaluationTimer;
-        /// <summary>
-        /// The columns that we are currently filtering.
-        /// </summary>
-        private IEnumerable<DataGridColumn> _filteredColumns = [];
-        /// <summary>
-        /// Flag indicating if filtering is currently enabled.
-        /// </summary>
-        private bool _isFilteringEnabled;
-        /// <summary>
-        /// A global filter that is applied in addition to the column filters.
-        /// </summary>
-        private Predicate<object?>? _globalFilter;
+        DataGrid = dataGrid;
 
-        /// <summary>
-        /// Create a new filter host for the given data grid.
-        /// </summary>
-        /// <param name="dataGrid">The data grid to filter.</param>
-        internal DataGridFilterHost(DataGrid dataGrid)
+        dataGrid.Columns.CollectionChanged += Columns_CollectionChanged;
+        dataGrid.Loaded += DataGrid_Loaded;
+        dataGrid.CommandBindings.Add(new CommandBinding(DataGrid.SelectAllCommand, DataGrid_SelectAll, DataGrid_CanSelectAll));
+
+        if (dataGrid.ColumnHeaderStyle != null)
+            return;
+
+        // Assign a default style that changes HorizontalContentAlignment to "Stretch", so our filter symbol will appear on the right edge of the column.
+        var baseStyle = (Style)dataGrid.FindResource(typeof(DataGridColumnHeader));
+        var newStyle = new Style(typeof(DataGridColumnHeader), baseStyle);
+        newStyle.Setters.Add(new Setter(Control.HorizontalContentAlignmentProperty, HorizontalAlignment.Stretch));
+
+        dataGrid.ColumnHeaderStyle = newStyle;
+    }
+
+    /// <summary>
+    /// Occurs before new columns are filtered.
+    /// </summary>
+    public event EventHandler<DataGridFilteringEventArgs>? Filtering;
+
+    /// <summary>
+    /// Occurs when any filter has changed.
+    /// </summary>
+    public event EventHandler? FilterChanged;
+
+
+    /// <summary>
+    /// Clear all existing filter conditions.
+    /// </summary>
+    public void Clear()
+    {
+        foreach (var column in DataGrid.Columns.Where(column => column.GetDataGridFilterColumnControl() != null))
         {
-            DataGrid = dataGrid;
-
-            dataGrid.Columns.CollectionChanged += Columns_CollectionChanged;
-            dataGrid.Loaded += DataGrid_Loaded;
-            dataGrid.CommandBindings.Add(new CommandBinding(DataGrid.SelectAllCommand, DataGrid_SelectAll, DataGrid_CanSelectAll));
-
-            if (dataGrid.ColumnHeaderStyle != null)
-                return;
-
-            // Assign a default style that changes HorizontalContentAlignment to "Stretch", so our filter symbol will appear on the right edge of the column.
-            var baseStyle = (Style)dataGrid.FindResource(typeof(DataGridColumnHeader));
-            var newStyle = new Style(typeof(DataGridColumnHeader), baseStyle);
-            newStyle.Setters.Add(new Setter(Control.HorizontalContentAlignmentProperty, HorizontalAlignment.Stretch));
-
-            dataGrid.ColumnHeaderStyle = newStyle;
+            column.SetFilter(null);
         }
 
-        /// <summary>
-        /// Occurs before new columns are filtered.
-        /// </summary>
-        public event EventHandler<DataGridFilteringEventArgs>? Filtering;
+        EvaluateFilter();
+    }
 
-        /// <summary>
-        /// Occurs when any filter has changed.
-        /// </summary>
-        public event EventHandler? FilterChanged;
+    /// <summary>
+    /// Gets a the active filter column controls for this data grid.
+    /// </summary>
+    public IEnumerable<DataGridFilterColumnControl> FilterColumnControls => DataGrid.Columns.Select(column => column.GetDataGridFilterColumnControl()).ExceptNullItems();
 
+    /// <summary>
+    /// The data grid this filter is attached to.
+    /// </summary>
+    public DataGrid DataGrid { get; }
 
-        /// <summary>
-        /// Clear all existing filter conditions.
-        /// </summary>
-        public void Clear()
+    /// <summary>
+    /// Enables filtering by showing or hiding the filter controls.
+    /// </summary>
+    /// <param name="value">if set to <c>true</c>, filters controls are visible and filtering is enabled.</param>
+    internal void Enable(bool value)
+    {
+        _isFilteringEnabled = value;
+
+        if (!value)
         {
-            foreach (var column in DataGrid.Columns.Where(column => column.GetDataGridFilterColumnControl() != null))
-            {
-                column.SetFilter(null);
-            }
-
-            EvaluateFilter();
-        }
-
-        /// <summary>
-        /// Gets a the active filter column controls for this data grid.
-        /// </summary>
-        public IEnumerable<DataGridFilterColumnControl> FilterColumnControls => DataGrid.Columns.Select(column => column.GetDataGridFilterColumnControl()).ExceptNullItems();
-
-        /// <summary>
-        /// The data grid this filter is attached to.
-        /// </summary>
-        public DataGrid DataGrid { get; }
-
-        /// <summary>
-        /// Enables filtering by showing or hiding the filter controls.
-        /// </summary>
-        /// <param name="value">if set to <c>true</c>, filters controls are visible and filtering is enabled.</param>
-        internal void Enable(bool value)
-        {
-            _isFilteringEnabled = value;
-
-            if (!value)
-            {
-                Clear();
-            }
-            else
-            {
-                EvaluateFilter();
-            }
-        }
-
-        /// <summary>
-        /// When any filter condition has changed restart the evaluation timer to defer
-        /// the evaluation until the user has stopped typing.
-        /// </summary>
-        internal void OnFilterChanged()
-        {
-            if (!_isFilteringEnabled)
-                return;
-
-            // Ensure that no cell is in editing state, this would cause an exception when trying to change the filter!
-            DataGrid.CommitEdit(); // Commit cell
-            DataGrid.CommitEdit(); // Commit row
-
-            if (_deferFilterEvaluationTimer == null)
-            {
-                var throttleDelay = DataGrid.GetFilterEvaluationDelay();
-                _deferFilterEvaluationTimer = new DispatcherTimer(throttleDelay, DispatcherPriority.Input, (_, _) => EvaluateFilter(), Dispatcher.CurrentDispatcher);
-            }
-
-            _deferFilterEvaluationTimer.Restart();
-        }
-
-        /// <summary>
-        /// Adds a new column.
-        /// </summary>
-        /// <param name="column"></param>
-        /// <param name="filterColumnControl"></param>
-        internal void AttachColumnControl(DataGridColumn column, DataGridFilterColumnControl filterColumnControl)
-        {
-            column.SetFilterHost(this);
-
-            column.SetDataGridFilterColumnControl(filterColumnControl);
-
-            filterColumnControl.Visibility = _isFilteringEnabled ? Visibility.Visible : Visibility.Hidden;
-        }
-
-        /// <summary>
-        /// Removes an unloaded column.
-        /// </summary>
-        internal static void DetachColumnControl(DataGridColumn column)
-        {
-            column.SetDataGridFilterColumnControl(null);
-        }
-
-        private void DataGrid_Loaded(object sender, RoutedEventArgs e)
-        {
-            // To improve keyboard navigation we should not step into the headers filter controls with the TAB key,
-            // but only with navigation keys.
-
-            var scrollViewer = DataGrid.Template?.FindName("DG_ScrollViewer", DataGrid) as ScrollViewer;
-
-            var headersPresenter = (FrameworkElement?)scrollViewer?.Template?.FindName("PART_ColumnHeadersPresenter", scrollViewer);
-
-            headersPresenter?.SetValue(KeyboardNavigation.TabNavigationProperty, KeyboardNavigationMode.None);
-        }
-
-        private void DataGrid_SelectAll(object? sender, ExecutedRoutedEventArgs e)
-        {
-            e.Handled = true;
-
-            if (!_isFilteringEnabled || (DataGrid.Items.Count > 0))
-            {
-                if (DataGrid.CanSelectAll())
-                {
-                    DataGrid.SelectAll();
-                }
-
-                return;
-            }
-
             Clear();
         }
-
-        private void DataGrid_CanSelectAll(object? sender, CanExecuteRoutedEventArgs e)
+        else
         {
-            e.CanExecute = DataGrid.CanSelectAll() || (DataGrid.Items.Count == 0);
+            EvaluateFilter();
+        }
+    }
+
+    /// <summary>
+    /// When any filter condition has changed restart the evaluation timer to defer
+    /// the evaluation until the user has stopped typing.
+    /// </summary>
+    internal void OnFilterChanged()
+    {
+        if (!_isFilteringEnabled)
+            return;
+
+        // Ensure that no cell is in editing state, this would cause an exception when trying to change the filter!
+        DataGrid.CommitEdit(); // Commit cell
+        DataGrid.CommitEdit(); // Commit row
+
+        if (_deferFilterEvaluationTimer == null)
+        {
+            var throttleDelay = DataGrid.GetFilterEvaluationDelay();
+            _deferFilterEvaluationTimer = new DispatcherTimer(throttleDelay, DispatcherPriority.Input, (_, _) => EvaluateFilter(), Dispatcher.CurrentDispatcher);
         }
 
-        private void Columns_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        _deferFilterEvaluationTimer.Restart();
+    }
+
+    /// <summary>
+    /// Adds a new column.
+    /// </summary>
+    /// <param name="column"></param>
+    /// <param name="filterColumnControl"></param>
+    internal void AttachColumnControl(DataGridColumn column, DataGridFilterColumnControl filterColumnControl)
+    {
+        column.SetFilterHost(this);
+
+        column.SetDataGridFilterColumnControl(filterColumnControl);
+
+        filterColumnControl.Visibility = _isFilteringEnabled ? Visibility.Visible : Visibility.Hidden;
+    }
+
+    /// <summary>
+    /// Removes an unloaded column.
+    /// </summary>
+    internal static void DetachColumnControl(DataGridColumn column)
+    {
+        column.SetDataGridFilterColumnControl(null);
+    }
+
+    private void DataGrid_Loaded(object sender, RoutedEventArgs e)
+    {
+        // To improve keyboard navigation we should not step into the headers filter controls with the TAB key,
+        // but only with navigation keys.
+
+        var scrollViewer = DataGrid.Template?.FindName("DG_ScrollViewer", DataGrid) as ScrollViewer;
+
+        var headersPresenter = (FrameworkElement?)scrollViewer?.Template?.FindName("PART_ColumnHeadersPresenter", scrollViewer);
+
+        headersPresenter?.SetValue(KeyboardNavigation.TabNavigationProperty, KeyboardNavigationMode.None);
+    }
+
+    private void DataGrid_SelectAll(object? sender, ExecutedRoutedEventArgs e)
+    {
+        e.Handled = true;
+
+        if (!_isFilteringEnabled || (DataGrid.Items.Count > 0))
         {
-            if (e.Action == NotifyCollectionChangedAction.Reset)
+            if (DataGrid.CanSelectAll())
             {
-                return;
+                DataGrid.SelectAll();
             }
 
-            if (e.NewItems == null)
-                return;
+            return;
+        }
 
-            var filteredColumnsWithEmptyHeaderTemplate = e.NewItems
-                .OfType<DataGridColumn>()
-                .Where(column => column.GetIsFilterVisible() && (column.HeaderTemplate == null))
+        Clear();
+    }
+
+    private void DataGrid_CanSelectAll(object? sender, CanExecuteRoutedEventArgs e)
+    {
+        e.CanExecute = DataGrid.CanSelectAll() || (DataGrid.Items.Count == 0);
+    }
+
+    private void Columns_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (e.Action == NotifyCollectionChangedAction.Reset)
+        {
+            return;
+        }
+
+        if (e.NewItems == null)
+            return;
+
+        var filteredColumnsWithEmptyHeaderTemplate = e.NewItems
+            .OfType<DataGridColumn>()
+            .Where(column => column.GetIsFilterVisible() && (column.HeaderTemplate == null))
+            .ToArray();
+
+        if (filteredColumnsWithEmptyHeaderTemplate.Length == 0)
+            return;
+
+        var resource = DataGrid.GetResourceLocator()?.FindResource(DataGrid, DataGridFilter.ColumnHeaderTemplateKey)
+                       ?? DataGrid.TryFindResource(DataGridFilter.ColumnHeaderTemplateKey);
+
+        var headerTemplate = (DataTemplate)resource;
+
+        foreach (var column in filteredColumnsWithEmptyHeaderTemplate)
+        {
+            column.HeaderTemplate = headerTemplate;
+        }
+    }
+
+    internal void SetGlobalFilter(Predicate<object?>? globalFilter)
+    {
+        _globalFilter = globalFilter;
+
+        OnFilterChanged();
+    }
+
+    /// <summary>
+    /// Evaluates the current filters and applies the filtering to the collection view of the items control.
+    /// </summary>
+    private void EvaluateFilter()
+    {
+        _deferFilterEvaluationTimer?.Stop();
+
+        var collectionView = DataGrid.Items;
+
+        // Collect all active filters of all known columns.
+        var filteredColumns = GetFilteredColumns();
+
+        if (Filtering != null)
+        {
+            // Notify client about additional columns being filtered.
+
+            var newColumns = filteredColumns
+                .Except(_filteredColumns)
                 .ToArray();
 
-            if (filteredColumnsWithEmptyHeaderTemplate.Length == 0)
-                return;
-
-            var resource = DataGrid.GetResourceLocator()?.FindResource(DataGrid, DataGridFilter.ColumnHeaderTemplateKey)
-                ?? DataGrid.TryFindResource(DataGridFilter.ColumnHeaderTemplateKey);
-
-            var headerTemplate = (DataTemplate)resource;
-
-            foreach (var column in filteredColumnsWithEmptyHeaderTemplate)
+            if (newColumns.Length > 0)
             {
-                column.HeaderTemplate = headerTemplate;
-            }
-        }
+                var columns = newColumns.ExceptNullItems().ToList().AsReadOnly();
+                var args = new DataGridFilteringEventArgs(columns);
+                Filtering(DataGrid, args);
 
-        internal void SetGlobalFilter(Predicate<object?>? globalFilter)
-        {
-            _globalFilter = globalFilter;
-
-            OnFilterChanged();
-        }
-
-        /// <summary>
-        /// Evaluates the current filters and applies the filtering to the collection view of the items control.
-        /// </summary>
-        private void EvaluateFilter()
-        {
-            _deferFilterEvaluationTimer?.Stop();
-
-            var collectionView = DataGrid.Items;
-
-            // Collect all active filters of all known columns.
-            var filteredColumns = GetFilteredColumns();
-
-            if (Filtering != null)
-            {
-                // Notify client about additional columns being filtered.
-
-                var newColumns = filteredColumns
-                    .Except(_filteredColumns)
-                    .ToArray();
-
-                if (newColumns.Length > 0)
+                if (args.Cancel)
                 {
-                    var columns = newColumns.ExceptNullItems().ToList().AsReadOnly();
-                    var args = new DataGridFilteringEventArgs(columns);
-                    Filtering(DataGrid, args);
-
-                    if (args.Cancel)
-                    {
-                        return;
-                    }
-                }
-
-                _filteredColumns = filteredColumns;
-            }
-
-            FilterChanged?.Invoke(this, EventArgs.Empty);
-
-            try
-            {
-                // Apply filter to collection view
-                collectionView.Filter = CreatePredicate(filteredColumns);
-
-                // Notify all filters about the change of the collection view.
-                foreach (var control in FilterColumnControls)
-                {
-                    control?.ValuesUpdated();
-                }
-
-                var selectedItem = DataGrid.SelectedItem;
-                if (selectedItem != null)
-                {
-                    DataGrid.Dispatcher.BeginInvoke(DispatcherPriority.Background, () => DataGrid.ScrollIntoView(selectedItem));
+                    return;
                 }
             }
-            catch (InvalidOperationException)
-            {
-                // InvalidOperation Exception: "'Filter' is not allowed during an AddNew or EditItem transaction."
-                // Grid seems to be still in editing mode, even though we have called DataGrid.CommitEdit().
-                // Found no way to fix this by code, but after changing the filter another time by typing text it's OK again!
-                // Very strange!
-            }
+
+            _filteredColumns = filteredColumns;
         }
 
-        internal Predicate<object?>? CreatePredicate(DataGridColumn? excluded)
-        {
-            return CreatePredicate(GetFilteredColumns(excluded));
-        }
+        FilterChanged?.Invoke(this, EventArgs.Empty);
 
-        private Predicate<object?>? CreatePredicate(ReadOnlyCollection<DataGridColumn>? filteredColumns)
+        try
         {
-            var globalFilter = _globalFilter;
+            // Apply filter to collection view
+            collectionView.Filter = CreatePredicate(filteredColumns);
 
-            if (filteredColumns is not { Count: > 0 })
+            // Notify all filters about the change of the collection view.
+            foreach (var control in FilterColumnControls)
             {
-                return globalFilter;
+                control?.ValuesUpdated();
             }
 
-            if (globalFilter == null)
+            var selectedItem = DataGrid.SelectedItem;
+            if (selectedItem != null)
             {
-                return item => filteredColumns.All(column => column.Matches(DataGrid, item));
+                DataGrid.Dispatcher.BeginInvoke(DispatcherPriority.Background, () => DataGrid.ScrollIntoView(selectedItem));
             }
-
-            return item => globalFilter(item) && filteredColumns.All(column => column.Matches(DataGrid, item));
         }
-
-        private ReadOnlyCollection<DataGridColumn> GetFilteredColumns(DataGridColumn? excluded = null)
+        catch (InvalidOperationException)
         {
-            return DataGrid.Columns
-                .Where(column => !ReferenceEquals(column, excluded))
-                .Where(column => column.Visibility == Visibility.Visible && !string.IsNullOrWhiteSpace(column.GetFilter()?.ToString()))
-                .ExceptNullItems()
-                .ToList()
-                .AsReadOnly();
+            // InvalidOperation Exception: "'Filter' is not allowed during an AddNew or EditItem transaction."
+            // Grid seems to be still in editing mode, even though we have called DataGrid.CommitEdit().
+            // Found no way to fix this by code, but after changing the filter another time by typing text it's OK again!
+            // Very strange!
         }
+    }
+
+    internal Predicate<object?>? CreatePredicate(DataGridColumn? excluded)
+    {
+        return CreatePredicate(GetFilteredColumns(excluded));
+    }
+
+    private Predicate<object?>? CreatePredicate(ReadOnlyCollection<DataGridColumn>? filteredColumns)
+    {
+        var globalFilter = _globalFilter;
+
+        if (filteredColumns is not { Count: > 0 })
+        {
+            return globalFilter;
+        }
+
+        if (globalFilter == null)
+        {
+            return item => filteredColumns.All(column => column.Matches(DataGrid, item));
+        }
+
+        return item => globalFilter(item) && filteredColumns.All(column => column.Matches(DataGrid, item));
+    }
+
+    private ReadOnlyCollection<DataGridColumn> GetFilteredColumns(DataGridColumn? excluded = null)
+    {
+        return DataGrid.Columns
+            .Where(column => !ReferenceEquals(column, excluded))
+            .Where(column => column.Visibility == Visibility.Visible && !string.IsNullOrWhiteSpace(column.GetFilter()?.ToString()))
+            .ExceptNullItems()
+            .ToList()
+            .AsReadOnly();
     }
 }

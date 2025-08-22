@@ -1,16 +1,15 @@
-﻿namespace DataGridExtensionsSample.Views
-{
-    using TomsToolbox.Wpf.Composition.AttributedModel;
+﻿namespace DataGridExtensionsSample.Views;
 
-    /// <summary>
-    /// Interaction logic for GroupingView.xaml
-    /// </summary>
-    [DataTemplate(typeof(GroupingViewModel))]
-    public partial class GroupingView 
+using TomsToolbox.Wpf.Composition.AttributedModel;
+
+/// <summary>
+/// Interaction logic for GroupingView.xaml
+/// </summary>
+[DataTemplate(typeof(GroupingViewModel))]
+public partial class GroupingView 
+{
+    public GroupingView()
     {
-        public GroupingView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

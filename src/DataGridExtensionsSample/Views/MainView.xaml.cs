@@ -1,16 +1,15 @@
-﻿namespace DataGridExtensionsSample.Views
-{
-    using TomsToolbox.Wpf.Composition.AttributedModel;
+﻿namespace DataGridExtensionsSample.Views;
 
-    /// <summary>
-    /// Interaction logic for MainView.xaml
-    /// </summary>
-    [DataTemplate(typeof(MainViewModel))]
-    public partial class MainView
+using TomsToolbox.Wpf.Composition.AttributedModel;
+
+/// <summary>
+/// Interaction logic for MainView.xaml
+/// </summary>
+[DataTemplate(typeof(MainViewModel))]
+public partial class MainView
+{
+    public MainView()
     {
-        public MainView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

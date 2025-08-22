@@ -1,16 +1,15 @@
-﻿namespace DataGridExtensionsSample
-{
-    using System.Composition;
+﻿namespace DataGridExtensionsSample;
 
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    [Export]
-    public partial class MainWindow
+using System.Composition;
+
+/// <summary>
+/// Interaction logic for MainWindow.xaml
+/// </summary>
+[Export]
+public partial class MainWindow
+{
+    public MainWindow()
     {
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }
