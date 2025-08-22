@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
   <PropertyGroup>
+    <Version>2.6.0</Version>
     <Authors>Tom Englert</Authors>
     <Company>tom-englert.de</Company>
     <Copyright>Copyright (c) .NET Foundation and Contributors.</Copyright>
     <Product>Tom's Toolbox</Product>
-    <Version>2.6.0</Version>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <EnableNETAnalyzers>True</EnableNETAnalyzers>
-    <AnalyzerMode>All</AnalyzerMode>
-    <AnalysisLevel>latest</AnalysisLevel>
   </PropertyGroup>
 </Project>

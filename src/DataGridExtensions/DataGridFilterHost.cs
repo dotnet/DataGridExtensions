@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Linq;
     using System.Windows;
@@ -25,7 +26,7 @@
         /// <summary>
         /// The columns that we are currently filtering.
         /// </summary>
-        private IEnumerable<DataGridColumn> _filteredColumns = Enumerable.Empty<DataGridColumn>();
+        private IEnumerable<DataGridColumn> _filteredColumns = [];
         /// <summary>
         /// Flag indicating if filtering is currently enabled.
         /// </summary>
@@ -203,7 +204,7 @@
                 .Where(column => column.GetIsFilterVisible() && (column.HeaderTemplate == null))
                 .ToArray();
 
-            if (!filteredColumnsWithEmptyHeaderTemplate.Any())
+            if (filteredColumnsWithEmptyHeaderTemplate.Length == 0)
                 return;
 
             var resource = DataGrid.GetResourceLocator()?.FindResource(DataGrid, DataGridFilter.ColumnHeaderTemplateKey)
@@ -275,7 +276,7 @@
                 var selectedItem = DataGrid.SelectedItem;
                 if (selectedItem != null)
                 {
-                    DataGrid.Dispatcher.BeginInvoke(DispatcherPriority.Background, (Action)(() => DataGrid.ScrollIntoView(selectedItem)));
+                    DataGrid.Dispatcher.BeginInvoke(DispatcherPriority.Background, () => DataGrid.ScrollIntoView(selectedItem));
                 }
             }
             catch (InvalidOperationException)
@@ -292,11 +293,11 @@
             return CreatePredicate(GetFilteredColumns(excluded));
         }
 
-        private Predicate<object?>? CreatePredicate(ICollection<DataGridColumn>? filteredColumns)
+        private Predicate<object?>? CreatePredicate(ReadOnlyCollection<DataGridColumn>? filteredColumns)
         {
             var globalFilter = _globalFilter;
 
-            if (filteredColumns?.Any() != true)
+            if (filteredColumns is not { Count: > 0 })
             {
                 return globalFilter;
             }
@@ -309,7 +310,7 @@
             return item => globalFilter(item) && filteredColumns.All(column => column.Matches(DataGrid, item));
         }
 
-        private ICollection<DataGridColumn> GetFilteredColumns(DataGridColumn? excluded = null)
+        private ReadOnlyCollection<DataGridColumn> GetFilteredColumns(DataGridColumn? excluded = null)
         {
             return DataGrid.Columns
                 .Where(column => !ReferenceEquals(column, excluded))

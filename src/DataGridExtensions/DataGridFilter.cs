@@ -97,9 +97,6 @@
         /// <exception cref="ArgumentNullException">dataGrid</exception>
         public static void SetContentFilterFactory(this DataGrid dataGrid, IContentFilterFactory? value)
         {
-            if (dataGrid == null)
-                throw new ArgumentNullException(nameof(dataGrid));
-
             dataGrid.SetValue(ContentFilterFactoryProperty, value);
         }
         /// <summary>

@@ -20,9 +20,6 @@
         /// <exception cref="ArgumentNullException">column</exception>
         public static bool GetIsFilterVisible(this DataGridColumn column)
         {
-            if (column == null)
-                throw new ArgumentNullException(nameof(column));
-
             return (bool)column.GetValue(IsFilterVisibleProperty);
         }
         /// <summary>
@@ -33,9 +30,6 @@
         /// <exception cref="ArgumentNullException">column</exception>
         public static void SetIsFilterVisible(this DataGridColumn column, bool value)
         {
-            if (column == null)
-                throw new ArgumentNullException(nameof(column));
-
             column.SetValue(IsFilterVisibleProperty, value);
         }
         /// <summary>

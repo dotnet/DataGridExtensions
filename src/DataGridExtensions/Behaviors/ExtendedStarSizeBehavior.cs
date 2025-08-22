@@ -264,15 +264,13 @@
 
             var fixedColumnsWidth = dataGridColumns
                 .Where(IsFixedColumn)
-                .Select(c => c.ActualWidth)
-                .Sum();
+                .Sum(c => c.ActualWidth);
 
             var getEffectiveColumnSize = (updateMode == UpdateMode.ResetStarSize) ? (Func<DataGridColumn, double>)GetStarSize : GetActualWidth;
 
             var variableColumnWidths = dataGridColumns
                 .Where(IsVariableColumn)
-                .Select(getEffectiveColumnSize)
-                .Sum();
+                .Sum(getEffectiveColumnSize);
 
             var availableWidth = scrollViewer.ViewportWidth - dataGrid.CellsPanelHorizontalOffset;
             var nonFrozenColumnsOffset = dataGrid.NonFrozenColumnsViewportHorizontalOffset;

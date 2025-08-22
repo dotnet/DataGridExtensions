@@ -15,7 +15,7 @@
 #pragma warning disable CA1001 // Types that own disposable fields should be disposable
     public partial class App
     {
-        private readonly IKernel _kernel = new StandardKernel();
+        private readonly StandardKernel _kernel = new();
 
         protected override void OnStartup(StartupEventArgs e)
         {

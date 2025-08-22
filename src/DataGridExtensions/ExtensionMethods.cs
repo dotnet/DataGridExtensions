@@ -93,7 +93,7 @@
             var rowIndexes = selectedCells
                 .Select(cell => cell.Item)
                 .Distinct()
-                .Select(item => dataGrid.Items.IndexOf(item))
+                .Select(dataGrid.Items.IndexOf)
                 .ToArray();
 
             var columnIndexes = selectedCells
@@ -124,7 +124,7 @@
                 .GroupBy(i => i.Item)
                 .OrderBy(i => dataGrid.Items.IndexOf(i.Key));
 
-            return orderedRows.Select(GetRowContent).ToArray();
+            return [.. orderedRows.Select(GetRowContent)];
         }
 
         /// <summary>
@@ -162,26 +162,24 @@
             var selectedRows = selectedCells
                 .Select(cellInfo => cellInfo.Item)
                 .Distinct()
-                .OrderBy(item => dataGrid.Items.IndexOf(item))
+                .OrderBy(dataGrid.Items.IndexOf)
                 .ToArray();
 
             if ((selectedColumns.Length == 1) && (selectedRows.Length == 1))
             {
                 // n:1 => n:n, extend selection to match data
                 var selectedColumn = selectedColumns[0];
-                selectedColumns = dataGrid.Columns
+                selectedColumns = [.. dataGrid.Columns
                     .Where(col => col.DisplayIndex >= selectedColumn.DisplayIndex)
                     .OrderBy(col => col.DisplayIndex)
                     .Where(col => col.Visibility == Visibility.Visible)
-                    .Take(numberOfDataColumns)
-                    .ToArray();
+                    .Take(numberOfDataColumns)];
 
                 var selectedItem = selectedRows[0];
-                selectedRows = dataGrid.Items
+                selectedRows = [.. dataGrid.Items
                     .Cast<object>()
                     .Skip(dataGrid.Items.IndexOf(selectedItem))
-                    .Take(numberOfDataRows)
-                    .ToArray();
+                    .Take(numberOfDataRows)];
             }
 
             var verticalFactor = selectedRows.Length / numberOfDataRows;
@@ -247,11 +245,10 @@
 
         private static IList<string> GetRowContent(IGrouping<object, DataGridCellInfo> row)
         {
-            return row
+            return [.. row
                 .OrderBy(i => i.Column.DisplayIndex)
                 .Select(i => i.Column.OnCopyingCellClipboardContent(i.Item))
-                .Select(i => i?.ToString() ?? string.Empty)
-                .ToArray();
+                .Select(i => i?.ToString() ?? string.Empty)];
         }
 
         #endregion

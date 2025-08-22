@@ -83,10 +83,9 @@
         {
             var dataGrid = AssociatedObject;
 
-            _mostRecentDescriptions = dataGrid.Items.SortDescriptions
+            _mostRecentDescriptions = [.. dataGrid.Items.SortDescriptions
                 .Skip(dataGrid.Items.GroupDescriptions.Count)
-                .Select(s => new KeyValuePair<string, ListSortDirection>(s.PropertyName, s.Direction))
-                .ToList();
+                .Select(s => new KeyValuePair<string, ListSortDirection>(s.PropertyName, s.Direction))];
 
             PersistLastKnownSortDescriptions();
         }

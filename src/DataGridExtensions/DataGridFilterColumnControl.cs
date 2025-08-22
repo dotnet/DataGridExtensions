@@ -299,7 +299,7 @@
                 .Cast<object>()
                 .Where(item => item != null)
                 .Select(item => Column?.GetCellContentData(item))
-                .Select(content => content?.ToString() ?? string.Empty) ?? Enumerable.Empty<string>();
+                .Select(content => content?.ToString() ?? string.Empty) ?? [];
         }
 
         /// <summary>
@@ -310,7 +310,7 @@
             var itemsSource = DataGrid?.ItemsSource;
 
             if (itemsSource == null)
-                return Enumerable.Empty<string>();
+                return [];
 
             var collectionView = itemsSource as ICollectionView;
 

@@ -197,15 +197,13 @@
             var values = Values;
             var filterRegex = Filter?.Regex;
 
-            if (newValue == null || !newValue.Any())
+            if (newValue is not { Count: > 0 })
             {
                 values.Clear();
             }
             else
             {
-                values.SynchronizeWith(newValue.ExceptNullItems()
-                    .Where(item => filterRegex?.IsMatch(item) != false)
-                    .ToArray());
+                values.SynchronizeWith([.. newValue.ExceptNullItems().Where(item => filterRegex?.IsMatch(item) != false)]);
             }
         }
 
