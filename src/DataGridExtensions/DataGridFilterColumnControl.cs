@@ -13,9 +13,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 
-using DataGridExtensions.Framework;
-
 using Throttle;
+
 using TomsToolbox.Wpf.Converters;
 using BooleanToVisibilityConverter = TomsToolbox.Wpf.Converters.BooleanToVisibilityConverter;
 
@@ -28,6 +27,9 @@ using BooleanToVisibilityConverter = TomsToolbox.Wpf.Converters.BooleanToVisibil
 public class DataGridFilterColumnControl : Control, INotifyPropertyChanged
 {
     private static readonly ControlTemplate _emptyControlTemplate = new();
+    private static readonly DependencyPropertyDescriptor _displayIndexPropertyDescriptor = DependencyPropertyDescriptor.FromProperty(DataGridColumnHeader.DisplayIndexProperty, typeof(DataGridColumnHeader));
+
+    private bool _isLoaded;
 
     static DataGridFilterColumnControl()
     {
@@ -48,7 +50,7 @@ public class DataGridFilterColumnControl : Control, INotifyPropertyChanged
         DataContext = this;
     }
 
-    private void Self_Loaded(object sender, RoutedEventArgs e)
+    private void Self_Loaded(object? sender = null, RoutedEventArgs? _ = null)
     {
         // Find the ancestor column header and data grid controls.
         ColumnHeader = this.FindAncestorOrSelf<DataGridColumnHeader>();
@@ -56,6 +58,8 @@ public class DataGridFilterColumnControl : Control, INotifyPropertyChanged
         var column = ColumnHeader?.Column;
         if (column == null)
             return;
+
+        _displayIndexPropertyDescriptor.AddValueChanged(ColumnHeader, DisplayIndex_Changed);
 
         DataGrid = ColumnHeader.FindAncestorOrSelf<DataGrid>() ?? throw new InvalidOperationException("DataGridFilterColumnControl must be a child element of a DataGridColumnHeader.");
         DataGrid.SetTrackFocusedCell(true);
@@ -96,9 +100,11 @@ public class DataGridFilterColumnControl : Control, INotifyPropertyChanged
 
         var filterPropertyPath = new PropertyPath("(0)", DataGridFilterColumn.FilterProperty);
         BindingOperations.SetBinding(this, FilterProperty, new Binding() { Path = filterPropertyPath, Source = column, Mode = BindingMode.TwoWay });
+
+        _isLoaded = true;
     }
 
-    private void Self_Unloaded(object sender, RoutedEventArgs e)
+    private void Self_Unloaded(object? sender = null, RoutedEventArgs? _ = null)
     {
         var dataGrid = DataGrid;
         if (dataGrid != null)
@@ -113,6 +119,25 @@ public class DataGridFilterColumnControl : Control, INotifyPropertyChanged
         BindingOperations.ClearBinding(this, VisibilityProperty);
         BindingOperations.ClearBinding(this, TemplateProperty);
         BindingOperations.ClearBinding(this, FilterProperty);
+
+        if (ColumnHeader is not null)
+        {
+            _displayIndexPropertyDescriptor.RemoveValueChanged(ColumnHeader, DisplayIndex_Changed);
+        }
+
+        _isLoaded = false;
+    }
+
+    private void DisplayIndex_Changed(object? sender, EventArgs e)
+    {
+        if (!_isLoaded)
+            return;
+
+        // When columns are virtualized, the column headers are reused for different columns when scrolling horizontally.
+        // The loaded/unload events are not reliably raised after a new column is attached to the control, but the display index changes when 
+        // the control is reused for a different column, so we can use this as a hint to reinitialize our bindings.
+        Self_Unloaded();
+        Self_Loaded();
     }
 
     private void DataGrid_SourceOrTargetUpdated(object? sender, DataTransferEventArgs e)
@@ -225,7 +250,7 @@ public class DataGridFilterColumnControl : Control, INotifyPropertyChanged
     /// <summary>
     /// Notification of the filter that the content of the values might have changed.
     /// </summary>
-    [Throttled(typeof(DispatcherThrottle), (int)DispatcherPriority.Background)]
+    [Throttled(typeof(Framework.DispatcherThrottle), (int)DispatcherPriority.Background)]
     internal void ValuesUpdated()
     {
         // We simply raise a change event for the properties and create the output on the fly in the getter of the properties;
