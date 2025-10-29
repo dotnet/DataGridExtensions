@@ -1,4 +1,7 @@
-﻿2.7.0
+﻿2.8.0
+Fix: When columns are virtualized, column headers may interfere with unrelated columns. (https://github.com/dotnet/ResXResourceManager/issues/725)
+
+2.7.0
 - Add DataGrid wrapper to fix https://github.com/dotnet/wpf/issues/5428
 
 2.6.0
