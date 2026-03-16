@@ -1,5 +1,8 @@
-﻿2.8.0
-Fix: When columns are virtualized, column headers may interfere with unrelated columns. (https://github.com/dotnet/ResXResourceManager/issues/725)
+﻿2.9.0
+- Feature: Support paging by introducing optional custom filter logic.
+
+2.8.0
+- Fix: When columns are virtualized, column headers may interfere with unrelated columns. (https://github.com/dotnet/ResXResourceManager/issues/725)
 
 2.7.0
 - Add DataGrid wrapper to fix https://github.com/dotnet/wpf/issues/5428
