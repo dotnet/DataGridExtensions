@@ -1,4 +1,7 @@
-﻿2.9.0
+﻿2.9.1
+- Feature: Allow to disable sorting by multiple columns for custom filters
+
+2.9.0
 - Feature: Support paging by introducing optional custom filter logic.
 
 2.8.0
