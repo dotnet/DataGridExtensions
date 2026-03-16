@@ -71,6 +71,8 @@
             ResetCursor();
         }
 
+        public bool DisableMultipleColumnSorting => false;
+
         [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
         private void ResetCursor()
         {

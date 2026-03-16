@@ -348,7 +348,7 @@ public sealed class DataGridFilterHost
             ? ListSortDirection.Descending
             : ListSortDirection.Ascending;
 
-        if (Keyboard.Modifiers.HasFlag(ModifierKeys.Shift))
+        if (Keyboard.Modifiers.HasFlag(ModifierKeys.Shift) && !customFilter.DisableMultipleColumnSorting)
         {
             var existingSort = _sortDescriptions.FirstOrDefault(sd => sd.PropertyName == sortPropertyName);
             if (existingSort.PropertyName != null)

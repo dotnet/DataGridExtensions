@@ -23,5 +23,12 @@ namespace DataGridExtensions
         /// <param name="dataGrid"></param>
         /// <param name="dataGridColumns">The current collection of DataGrid columns with filter criteria.</param>
         void OnFilterChanged(DataGrid dataGrid, IReadOnlyCollection<DataGridColumn> dataGridColumns);
+
+        /// <summary>
+        /// Gets a value indicating whether sorting by multiple columns is disabled.
+        /// </summary>
+        /// <remarks>When this property is set to <see langword="true"/>, users can only sort by a single
+        /// column at a time. If <see langword="false"/>, multiple columns can be used for sorting holding the Shift key.</remarks>
+        bool DisableMultipleColumnSorting { get; }
     }
 }
