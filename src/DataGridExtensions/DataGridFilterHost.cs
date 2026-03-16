@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -35,6 +36,11 @@ public sealed class DataGridFilterHost
     /// A global filter that is applied in addition to the column filters.
     /// </summary>
     private Predicate<object?>? _globalFilter;
+    /// <summary>
+    /// A collection of sort descriptions for the current sorting state of the data grid;
+    /// needed when the data grid is bound to a view model that supports custom filtering and sorting by implementing ICustomFilter.
+    /// </summary>
+    private readonly SortDescriptionCollection _sortDescriptions = [];
 
     /// <summary>
     /// Create a new filter host for the given data grid.
@@ -47,6 +53,7 @@ public sealed class DataGridFilterHost
         dataGrid.Columns.CollectionChanged += Columns_CollectionChanged;
         dataGrid.Loaded += DataGrid_Loaded;
         dataGrid.CommandBindings.Add(new CommandBinding(DataGrid.SelectAllCommand, DataGrid_SelectAll, DataGrid_CanSelectAll));
+        dataGrid.Sorting += DataGrid_Sorting;
 
         if (dataGrid.ColumnHeaderStyle != null)
             return;
@@ -68,7 +75,6 @@ public sealed class DataGridFilterHost
     /// Occurs when any filter has changed.
     /// </summary>
     public event EventHandler? FilterChanged;
-
 
     /// <summary>
     /// Clear all existing filter conditions.
@@ -262,6 +268,13 @@ public sealed class DataGridFilterHost
 
         FilterChanged?.Invoke(this, EventArgs.Empty);
 
+        if (DataGrid.DataContext is ICustomFilter customFilter)
+        {
+            collectionView.Filter = null;
+            customFilter.OnFilterChanged(DataGrid, filteredColumns.ToArray());
+            return;
+        }
+
         try
         {
             // Apply filter to collection view
@@ -318,5 +331,45 @@ public sealed class DataGridFilterHost
             .ExceptNullItems()
             .ToList()
             .AsReadOnly();
+    }
+
+    private void DataGrid_Sorting(object sender, DataGridSortingEventArgs e)
+    {
+        if (DataGrid.DataContext is not ICustomFilter customFilter)
+            return;
+
+        var column = e.Column;
+        var sortPropertyName = column.SortMemberPath;
+
+        if (string.IsNullOrEmpty(sortPropertyName))
+            return;
+
+        var direction = column.SortDirection == ListSortDirection.Ascending
+            ? ListSortDirection.Descending
+            : ListSortDirection.Ascending;
+
+        if (Keyboard.Modifiers.HasFlag(ModifierKeys.Shift))
+        {
+            var existingSort = _sortDescriptions.FirstOrDefault(sd => sd.PropertyName == sortPropertyName);
+            if (existingSort.PropertyName != null)
+            {
+                _sortDescriptions.Remove(existingSort);
+            }
+        }
+        else
+        {
+            _sortDescriptions.Clear();
+            foreach (var col in DataGrid.Columns)
+            {
+                col.SortDirection = null;
+            }
+        }
+
+        column.SortDirection = direction;
+
+        _sortDescriptions.Add(new SortDescription(sortPropertyName, direction));
+
+        customFilter.OnSortChanged(DataGrid, _sortDescriptions);
+        e.Handled = true;
     }
 }

@@ -26,7 +26,4 @@
     <PackageReference Include="TomsToolbox.Wpf.Composition.AttributedModel" Version="2.22.2" />
     <PackageReference Include="TomsToolbox.Wpf.Styles" Version="2.22.2" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
 </Project>
