@@ -8,18 +8,33 @@ stages:
       vmImage: windows-latest
 
     variables:
-      BuildPlatform: 'Any CPU'
       BuildConfiguration: 'Release'
 
     steps:
-    - task: MSBuild@1
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        version: '8.0.x'
+      displayName: 'Install DotNet SDK 8'
+
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        version: '10.0.x'
+      displayName: 'Install DotNet SDK 10'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Restore solution'
+      inputs:
+        command: 'restore'
+        projects: '**\DataGridExtensions.sln'
+
+    - task: DotNetCoreCLI@2
       displayName: 'Build solution'
       inputs:
-        solution: '**\DataGridExtensions.sln'
-        platform: '$(BuildPlatform)'
-        configuration: '$(BuildConfiguration)'
-        msbuildArguments: '-restore'
-        clean: true
+        command: 'build'
+        projects: '**\DataGridExtensions.sln'
+        arguments: '--configuration $(BuildConfiguration) --no-restore'
 
     - task: CopyFiles@2
       displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
