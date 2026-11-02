@@ -1,6 +1,6 @@
 # Data Grid Extensions 
 
-[![Build Status](https://dev.azure.com/tom-englert/Open%20Source/_apis/build/status/DataGridExtensions?repoName=dotnet%2FDataGridExtensions&branchName=master)](https://dev.azure.com/tom-englert/Open%20Source/_build/latest?definitionId=37&repoName=dotnet%2FDataGridExtensions&branchName=master) 
+[![Build Status](https://github.com/dotnet/DataGridExtensions/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/dotnet/DataGridExtensions/actions/workflows/build.yml)
 [![NuGet Status](http://img.shields.io/nuget/v/DataGridExtensions.svg?style=flat)](https://www.nuget.org/packages/DataGridExtensions/)
 
 ![Icon](Icon.png)

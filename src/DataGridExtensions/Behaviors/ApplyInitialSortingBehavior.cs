@@ -24,7 +24,7 @@ public class ApplyInitialSortingBehavior : Behavior<DataGrid>
     private static readonly DependencyPropertyDescriptor _dependencyPropertyDescriptor = DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(DataGrid));
 
     private IList<KeyValuePair<string, ListSortDirection>>? _mostRecentDescriptions;
-    private IList<KeyValuePair<string, ListSortDirection>> _lastKnownActiveDescriptions = new List<KeyValuePair<string, ListSortDirection>>();
+    private IList<KeyValuePair<string, ListSortDirection>> _lastKnownActiveDescriptions = [];
 
     /// <summary>
     /// Called after the behavior is attached to an AssociatedObject.
@@ -97,15 +97,13 @@ public class ApplyInitialSortingBehavior : Behavior<DataGrid>
             var dataGrid = AssociatedObject;
             var dataGridItems = dataGrid.Items;
 
-            if (_lastKnownActiveDescriptions.Any() && !dataGridItems.SortDescriptions.Any())
+            if (_lastKnownActiveDescriptions.Count > 0 && dataGridItems.SortDescriptions.Count == 0)
             {
                 foreach (var item in _lastKnownActiveDescriptions)
                 {
                     var column = dataGrid.Columns.FirstOrDefault(col => col.SortMemberPath == item.Key);
-                    if (column != null)
-                    {
-                        column.SortDirection = item.Value;
-                    }
+
+                    column?.SortDirection = item.Value;
                 }
             }
 

@@ -81,7 +81,7 @@ public static class ExtensionMethods
     {
         var selectedCells = dataGrid.GetVisibleSelectedCells();
 
-        if (selectedCells == null || !selectedCells.Any())
+        if (selectedCells == null || selectedCells.Count == 0)
             return false;
 
         var visibleColumnIndexes = dataGrid.Columns
@@ -117,7 +117,7 @@ public static class ExtensionMethods
     {
         var selectedCells = dataGrid.GetVisibleSelectedCells();
 
-        if ((selectedCells == null) || !selectedCells.Any())
+        if ((selectedCells == null) || (selectedCells.Count == 0))
             return null;
 
         var orderedRows = selectedCells
@@ -149,7 +149,7 @@ public static class ExtensionMethods
 
         var selectedCells = dataGrid.GetVisibleSelectedCells();
 
-        if ((selectedCells == null) || !selectedCells.Any())
+        if ((selectedCells == null) || (selectedCells.Count == 0))
             return false;
 
         var selectedColumns = selectedCells

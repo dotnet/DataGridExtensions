@@ -87,6 +87,8 @@ csharp_style_deconstructed_variable_declaration = true:suggestion
 csharp_prefer_simple_default_expression = true:suggestion
 csharp_style_prefer_local_over_anonymous_function = true:suggestion
 csharp_style_inlined_variable_declaration = true:suggestion
+# Namespace preferences
+csharp_style_namespace_declarations = file_scoped:warning
 ###############################
 # C# Formatting Rules         #
 ###############################
@@ -162,3 +164,6 @@ dotnet_diagnostic.IDE0010.severity = silent
 
 # CA1031: Do not catch general exception types
 dotnet_diagnostic.CA1031.severity = silent
+
+# IDE0290: Use primary constructor
+dotnet_diagnostic.IDE0290.severity = silent

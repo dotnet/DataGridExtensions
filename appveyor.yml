@@ -1,7 +1,0 @@
-image: Visual Studio 2019
-configuration: Release
-platform: Any CPU
-build_script:
-- cmd: MSBuild -restore /p:Configuration=Release /verbosity:minimal  src\DataGridExtensions.sln
-artifacts:
-- path: src/**/*.nupkg
