@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net8.0-windows7.0</TargetFrameworks>
+    <TargetFrameworks>net10.0-windows7.0</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <OutputType>WinExe</OutputType>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
@@ -21,9 +21,9 @@
   <ItemGroup>
     <PackageReference Include="Fody" Version="6.9.3" PrivateAssets="all" />
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" PrivateAssets="All" />
-    <PackageReference Include="TomsToolbox.Composition.Ninject" Version="2.22.2" />
-    <PackageReference Include="TomsToolbox.Wpf.Composition" Version="2.22.2" />
-    <PackageReference Include="TomsToolbox.Wpf.Composition.AttributedModel" Version="2.22.2" />
-    <PackageReference Include="TomsToolbox.Wpf.Styles" Version="2.22.2" />
+    <PackageReference Include="TomsToolbox.Composition.Ninject" Version="2.26.1" />
+    <PackageReference Include="TomsToolbox.Wpf.Composition" Version="2.26.1" />
+    <PackageReference Include="TomsToolbox.Wpf.Composition.AttributedModel" Version="2.26.1" />
+    <PackageReference Include="TomsToolbox.Wpf.Styles" Version="2.26.1" />
   </ItemGroup>
 </Project>

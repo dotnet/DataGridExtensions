@@ -39,8 +39,8 @@ internal sealed class CopyPasteViewModel : ObservableObject
 
         var cellSelection = dataGrid.GetCellSelection();
 
-        Clipboard.SetText(cellSelection?.ToString(TextColumnSeparator));
-            
+        Clipboard.SetText(cellSelection?.ToString(TextColumnSeparator) ?? string.Empty);
+
     }
 
     private void Paste(DataGrid dataGrid)

@@ -6,7 +6,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>DataGridExtensions.snk</AssemblyOriginatorKeyFile>
-    <LangVersion>13.0</LangVersion>
+    <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseFile>License</PackageLicenseFile>
@@ -29,12 +29,12 @@ The current version supports the following features:
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="ILMerge.Fody" Version="1.24.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.142" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.161" />
     <PackageReference Include="Fody" Version="6.9.3" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.201" PrivateAssets="all" />
-    <PackageReference Include="Nullable.Extended.Analyzer" Version="1.15.6581" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.403" PrivateAssets="all" />
+    <PackageReference Include="Nullable.Extended.Analyzer" Version="1.19.0" PrivateAssets="all" />
     <PackageReference Include="Throttle.Fody" Version="1.7.0" PrivateAssets="All" />
-    <PackageReference Include="TomsToolbox.Wpf" Version="2.22.2" PrivateAssets="All" />
+    <PackageReference Include="TomsToolbox.Wpf" Version="2.26.1" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Icon.png" Link="Icon.png" Pack="true" PackagePath="\" />
