@@ -50,15 +50,14 @@ stages:
         PathtoPublish: '$(build.artifactstagingdirectory)'
         ArtifactName: BuildPackages
 
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Artifact: signing scripts'
-      inputs:
-        PathtoPublish: 'signing'
-        ArtifactName: signing
-
 - stage: CodeSign
   dependsOn: Build
   condition: and(succeeded('Build'), ne(variables['build.reason'], 'PullRequest'))
+  variables:
+    SignTenantId: 16076fdc-fcc1-4a15-b1ca-32c9a255900e
+    SignClientId: a9d17a09-7120-475d-bae5-1b65594e95f9
+    SignKeyVaultUrl: https://sc-datagridext-60d06b7d6.vault.azure.net/
+    SignKeyVaultCertificate: DataGridExtSC
   jobs:
   - job: CodeSign
     displayName: Code Signing
@@ -66,36 +65,30 @@ stages:
       vmImage: windows-latest # Code signing must run on a Windows agent for Authenticode signing (dll/exe)
 
     steps:
-    # Retreive unsigned artifacts and file list
-    - download: current
-      artifact: signing
-      displayName: Download signing file list
+    - checkout: none
 
+    # Retrieve unsigned artifacts
     - download: current
       artifact: BuildPackages
       displayName: Download build artifacts
-
-    - task: CmdLine@2
-      displayName: "AntiMalware Scan"
-      inputs:
-        script: |
-          Dir "$(Pipeline.Workspace)\BuildPackages"
-          "%ProgramFiles%\Windows Defender\MpCmdRun.exe" -Scan -ScanType 3 -File "$(Pipeline.Workspace)\BuildPackages"
-        failOnStderr: true
 
     # Install the code signing tool
     - task: DotNetCoreCLI@2
       inputs:
         command: custom
         custom: tool
-        arguments: install --tool-path . sign --version 0.9.1-beta.23530.1
+        arguments: update --tool-path . --prerelease sign
       displayName: Install SignTool tool
+
+    - pwsh: |
+        @('**/DataGridExtensions.*') | Set-Content -Path "$(Pipeline.Workspace)\filelist.txt"
+      displayName: 'Create signing file list'
 
     - pwsh: |
         .\sign code azure-key-vault `
         "**/*.*" `
         --base-directory "$(Pipeline.Workspace)\BuildPackages" `
-        --file-list "$(Pipeline.Workspace)\signing\filelist.txt" `
+        --file-list "$(Pipeline.Workspace)\filelist.txt" `
         --publisher-name "tom-englert" `
         --description "DataGrid Extensions" `
         --description-url "https://github.com/dotnet/DataGridExtensions" `
